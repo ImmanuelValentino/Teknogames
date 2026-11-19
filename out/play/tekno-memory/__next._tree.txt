@@ -1,5 +1,5 @@
-:HL["/games/_next/static/css/cdff0fedd6672d70.css","style"]
+:HL["/games/_next/static/css/9b1ee34338432084.css","style"]
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"d","k":"tekno-memory","s":[]},"h":96,"c":"$Q3"}]]
 1:[["children",{"s":"play","h":96,"c":"$Q2"}]]
-0:{"b":"IFMeTLu6kQrg76JYPxU57","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"vWjTIr4l1LcNsS9iuNX1j","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

@@ -8,6 +8,24 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.4.2] - 2026-11-19
+### Added (Google AdSense Official Integration & ads.txt Verification)
+- **Implementasi Skrip Loader & Konfigurasi AdSense ([layout.tsx](src/app/layout.tsx), [.env.local](.env.local)):**
+  - Memasang skrip resmi Google AdSense loader di `<head>` dengan client ID `ca-pub-3146007647541379`.
+  - Mendaftarkan entri verifikasi resmi AdSense ke file `public/ads.txt`: `google.com, pub-3146007647541379, DIRECT, f08c47fec0942fa0`.
+  - Mengonfigurasi variabel `NEXT_PUBLIC_ADSENSE_CLIENT_ID` dan template slot iklan di `.env.local` dan `.env.example`.
+  - Menyiapkan integrasi dinamis pada seluruh placeholder (Skyscraper 160x600, Leaderboard 1080x90, dan Anchor Mobile 320x50) agar langsung aktif begitu slot ID diisi.
+
+## [3.4.1] - 2026-11-19
+### Added (SEO & Social Meta Tags Integration in Layout Header)
+- **Implementasi Meta Tags SEO & OpenGraph ([layout.tsx](src/app/layout.tsx)):**
+  - Menambahkan title persis: `Game Online Gratis Tanpa Download – TeknoGame`.
+  - Menambahkan meta description, robots (`index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1`), dan link canonical `https://www.teknotama.com/games/`.
+  - Menambahkan OpenGraph meta tags (`og:type`, `og:locale`, `og:site_name`, `og:title`, `og:description`, `og:url`, `og:image`, `og:image:alt`).
+  - Menambahkan Twitter Card meta tags (`twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`).
+  - Menambahkan JSON-LD Schema.org `WebSite` structured data pada baris baru untuk meningkatkan rich snippets pencarian Google.
+  - Memverifikasi output build statis di folder `out/` agar seluruh metadata terinjeksi ke file HTML.
+
 ## [3.4.0] - 2026-11-19
 ### Redesign Total Frontend (Figma-Driven), Auto-Discovery Game, & Standardisasi Ads (1080 x 90)
 
