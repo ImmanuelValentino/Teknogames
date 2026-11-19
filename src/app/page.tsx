@@ -1,49 +1,66 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   Cloud,
   Code2,
   ExternalLink,
-  Gamepad2,
+  Heart,
   Network,
   Play,
   ShieldCheck,
   Trophy,
-  Zap,
 } from "lucide-react";
 import GameHero from "@/components/game/GameHero";
 import CategoryChips from "@/components/game/CategoryChips";
 import GameGrid from "@/components/game/GameGrid";
+import GameCard from "@/components/game/GameCard";
 import GoogleAdSlot from "@/components/ads/GoogleAdSlot";
 import { CATEGORIES, INITIAL_GAMES } from "@/lib/games-data";
-import { GameCategory } from "@/types/game";
-import { getLocalScores } from "@/lib/local-storage";
+import { GameCategory, Game } from "@/types/game";
+import { getLocalScores, getLocalFavorites } from "@/lib/local-storage";
 import { getGamePortalUrl } from "@/lib/site";
-import Link from "next/link";
 
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<GameCategory>("all");
   const [topScores, setTopScores] = useState<
     { gameId: string; title: string; slug: string; score: number }[]
   >([]);
+  const [favoriteGames, setFavoriteGames] = useState<Game[]>([]);
 
+  // Sinkronisasi Rekor Skor & Game Favorit dari LocalStorage
   useEffect(() => {
-    const scores = getLocalScores();
-    const parsed = Object.entries(scores)
-      .map(([gameId, score]) => {
-        const game = INITIAL_GAMES.find((g) => g.id === gameId);
-        return {
-          gameId,
-          title: game?.title || gameId.replace(/-/g, " "),
-          slug: game?.slug || gameId,
-          score,
-        };
-      })
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 4);
+    const updateLocalData = () => {
+      // 1. Rekor Skor
+      const scores = getLocalScores();
+      const parsed = Object.entries(scores)
+        .map(([gameId, score]) => {
+          const game = INITIAL_GAMES.find((g) => g.id === gameId);
+          return {
+            gameId,
+            title: game?.title || gameId.replace(/-/g, " "),
+            slug: game?.slug || gameId,
+            score,
+          };
+        })
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 4);
+      setTopScores(parsed);
 
-    setTopScores(parsed);
+      // 2. Game Favorit
+      const favIds = getLocalFavorites();
+      const favs = INITIAL_GAMES.filter((g) => favIds.includes(g.id));
+      setFavoriteGames(favs);
+    };
+
+    updateLocalData();
+    window.addEventListener("storage", updateLocalData);
+    window.addEventListener("focus", updateLocalData);
+    return () => {
+      window.removeEventListener("storage", updateLocalData);
+      window.removeEventListener("focus", updateLocalData);
+    };
   }, []);
 
   const featuredGames = INITIAL_GAMES.filter((g) => g.featured);
@@ -84,109 +101,59 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* 1. Hero Section & Showcase Alami */}
+      {/* 1. Hero Section (Split-Hero Modern Sesuai Desain Figma) */}
       <GameHero featuredGames={featuredGames} />
 
-      <section
-        aria-label="Ringkasan Tekno Game"
-        className="stats-strip mb-8 grid grid-cols-2 divide-x divide-y divide-white/10 sm:grid-cols-4 sm:divide-y-0"
-      >
-        {[
-          {
-            icon: <Gamepad2 className="h-4 w-4 text-[#8caeff]" />,
-            value: INITIAL_GAMES.length,
-            label: "Permainan pilihan",
-          },
-          {
-            icon: <Zap className="h-4 w-4 text-amber-200" />,
-            value: INITIAL_GAMES.reduce((total, game) => total + game.playCount, 0).toLocaleString("id-ID"),
-            label: "Total permainan",
-          },
-          {
-            icon: <ShieldCheck className="h-4 w-4 text-emerald-200" />,
-            value: "100%",
-            label: "Gratis dimainkan",
-          },
-          {
-            icon: <Trophy className="h-4 w-4 text-[#8caeff]" />,
-            value: "Lokal",
-            label: "Skor tersimpan",
-          },
-        ].map((stat) => (
-          <div
-            key={stat.label}
-            className="flex items-center gap-3 px-4 py-4 sm:justify-center sm:px-3"
-          >
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.04]">
-              {stat.icon}
-            </span>
-            <span>
-              <span className="block font-mono text-sm font-bold text-white">
-                {stat.value}
-              </span>
-              <span className="block text-[0.66rem] text-slate-400">
-                {stat.label}
-              </span>
-            </span>
-          </div>
-        ))}
-      </section>
-
-      {/* 2. Slot Iklan Google AdSense Top Leaderboard (728x90) */}
+      {/* 2. Slot Iklan Tengah Horizontal (1080 x 90) */}
       <GoogleAdSlot
-        slotType="leaderboard-728x90"
+        slotType="leaderboard-1080x90"
         adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_TOP || ""}
       />
 
-      {/* 3. Jelajahi Kategori Filter Chips */}
-      <CategoryChips
-        selectedCategory={selectedCategory}
-        onSelectCategory={setSelectedCategory}
-      />
+      {/* 3. Pilihan Game: Filter Kategori & Semua Koleksi Permainan */}
+      <div id="katalog" className="scroll-mt-24">
+        <CategoryChips
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+        />
 
-      {/* 4. The Tekno Game Catalog Grid (2 Kolom Mobile, 3 Kolom Tablet, 4 Kolom Desktop) */}
-      <GameGrid
-        games={displayGames}
-        title={
-          selectedCategory === "all"
-            ? "Semua Koleksi Permainan"
-            : `Koleksi Permainan: ${selectedCategoryLabel}`
-        }
-      />
+        <GameGrid
+          games={displayGames}
+          title={
+            selectedCategory === "all"
+              ? "Semua Koleksi Permainan"
+              : `Koleksi Permainan: ${selectedCategoryLabel}`
+          }
+        />
+      </div>
 
-      {/* 5. Slot Iklan Google AdSense Mid Leaderboard (728x90) */}
-      <GoogleAdSlot
-        slotType="leaderboard-728x90"
-        adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_MID || ""}
-      />
-
-      {/* 6. Rekor Skor Tertinggi Saya (Tersimpan Lokal di Browser) */}
-      <section className="mb-10 rounded-2xl card-natural p-5 sm:p-7">
-        <div className="mb-5 flex flex-col items-start justify-between gap-3 border-b border-white/10 pb-4 sm:flex-row sm:items-center">
+      {/* 4. Section Papan Skor Mandiri (id="papan-skor") */}
+      <section id="papan-skor" className="mb-14 scroll-mt-24 rounded-2xl card-natural p-6 sm:p-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 border-b border-white/10 pb-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-amber-200/20 bg-amber-100/[0.06] text-amber-300">
+            <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-300 shrink-0">
               <Trophy className="w-5 h-5 text-amber-300" />
             </div>
             <div>
-              <h3 className="font-heading text-lg font-bold text-white">
-                Rekor Skor Saya
-              </h3>
+              <h2 className="font-heading text-lg sm:text-xl font-bold text-white">
+                Papan Skor Saya
+              </h2>
               <p className="text-xs text-slate-300">
-                Pencapaian skor Anda yang tersimpan di browser ini
+                Pencapaian skor tertinggi Anda yang tersimpan di peramban ini
               </p>
             </div>
           </div>
         </div>
 
         {topScores.length === 0 ? (
-          <div className="rounded-xl border border-white/10 bg-white/[0.025] py-8 text-center">
+          <div className="py-8 text-center bg-white/[0.02] rounded-xl border border-white/10">
             <p className="text-xs sm:text-sm text-slate-300">
-              Belum ada skor yang dicatat. Mainkan salah satu permainan untuk mulai mencatat rekor terbaik Anda.
+              Belum ada skor yang dicatat. Mainkan salah satu permainan sekarang untuk mulai mencatat skor terbaik Anda.
             </p>
-            <div className="mt-3">
+            <div className="mt-4">
               <Link
                 href="/play/nusantara-runner"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl btn-primary-clean text-xs font-semibold"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full btn-primary-clean text-xs font-semibold shadow-md"
               >
                 <span>Mainkan Nusantara Runner</span>
                 <Play className="w-3.5 h-3.5 fill-current" />
@@ -198,10 +165,10 @@ export default function HomePage() {
             {topScores.map((item, idx) => (
               <div
                 key={item.gameId}
-                className="p-3.5 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between gap-3"
+                className="p-4 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-3 hover:border-[#255dce]/40 transition-colors"
               >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="w-6 h-6 rounded-md bg-white/10 text-white text-xs font-bold flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="w-7 h-7 rounded-lg bg-[#255dce]/20 border border-[#255dce]/30 text-[#8caeff] text-xs font-bold flex items-center justify-center shrink-0">
                     {idx + 1}
                   </span>
                   <div className="min-w-0">
@@ -219,7 +186,7 @@ export default function HomePage() {
                   className="p-2 rounded-lg btn-primary-clean text-white shrink-0"
                   title="Mainkan lagi"
                 >
-                  <Play className="w-3 h-3 fill-current" />
+                  <Play className="w-3.5 h-3.5 fill-current" />
                 </Link>
               </div>
             ))}
@@ -227,18 +194,63 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* 7. Section Branding Resmi Tekno Game */}
-      <section className="mb-8 grid gap-5 rounded-2xl card-natural p-5 sm:p-7 md:grid-cols-[0.7fr_1.3fr] md:items-center">
+      {/* 5. Section Favorit Mandiri (id="favorit") */}
+      <section id="favorit" className="mb-14 scroll-mt-24 rounded-2xl card-natural p-6 sm:p-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 border-b border-white/10 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-300 shrink-0">
+              <Heart className="w-5 h-5 text-rose-400" />
+            </div>
+            <div>
+              <h2 className="font-heading text-lg sm:text-xl font-bold text-white">
+                Permainan Favorit Saya
+              </h2>
+              <p className="text-xs text-slate-300">
+                Daftar permainan yang Anda tandai dengan ikon hati
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {favoriteGames.length === 0 ? (
+          <div className="py-8 text-center bg-white/[0.02] rounded-xl border border-white/10">
+            <p className="text-xs sm:text-sm text-slate-300">
+              Belum ada permainan favorit yang disimpan. Klik ikon hati pada permainan favorit Anda untuk menambahkannya ke sini.
+            </p>
+            <div className="mt-4">
+              <Link
+                href="#katalog"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.04] text-xs font-semibold text-slate-200 hover:text-white hover:border-[#255dce]/40 transition-colors"
+              >
+                <span>Lihat Koleksi Permainan</span>
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-3.5 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
+            {favoriteGames.map((game) => (
+              <GameCard key={game.id} game={game} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* 6. Section Tentang Portal & Layanan Mitra Sesuai Referensi Gambar */}
+      {/* Kartu Atas: Tentang Portal */}
+      <section className="card-natural mb-6 grid gap-6 p-6 sm:p-8 md:grid-cols-[1.1fr_1.9fr] md:items-center">
         <div>
           <p className="section-kicker mb-2">Tentang portal</p>
-          <h2 className="section-heading">Dirancang untuk <span>langsung bermain.</span></h2>
+          <h2 className="section-heading">
+            Dirancang untuk <span>langsung bermain.</span>
+          </h2>
         </div>
-        <p className="max-w-3xl text-sm leading-7 text-slate-300">
+        <p className="text-sm leading-7 text-slate-300">
           Tekno Game adalah portal permainan web HTML5 resmi yang dioperasikan sebagai subdirektori dari <strong className="text-white">PT Teknotama Prakarsa Mulia</strong> (<a href="https://teknotama.com" target="_blank" rel="noopener noreferrer" className="font-medium text-[#8caeff] underline underline-offset-4">teknotama.com</a>). Portal ini menyajikan berbagai permainan yang dapat dimainkan secara gratis langsung melalui peramban tanpa perlu memasang aplikasi.
         </p>
       </section>
 
-      <section className="mb-8" aria-labelledby="partner-services-title">
+      {/* Kartu Tengah: Layanan Mitra (4 Kartu) */}
+      <section className="mb-6" aria-labelledby="partner-services-title">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="section-kicker mb-2">Layanan mitra</p>
@@ -252,7 +264,7 @@ export default function HomePage() {
             rel="noopener noreferrer"
             className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 px-4 text-xs font-semibold text-slate-200 transition-colors hover:border-[#255dce]/50 hover:text-white"
           >
-            Lihat layanan Teknotama
+            <span>Lihat layanan Teknotama</span>
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </div>
@@ -288,24 +300,26 @@ export default function HomePage() {
               href="https://teknotama.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="partner-service-card group rounded-2xl border border-white/10 bg-white/[0.025] p-4 transition-colors hover:border-[#255dce]/40 hover:bg-white/[0.045]"
+              className="partner-service-card group rounded-2xl border border-white/10 bg-white/[0.025] p-5 transition-all duration-200 hover:border-[#255dce]/50 hover:bg-white/[0.045] flex flex-col justify-between"
             >
-              <span className="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-[#255dce]/25 bg-[#021861]/30 text-[#8caeff] transition-colors group-hover:text-white">
-                {service.icon}
-              </span>
-              <span className="block text-sm font-bold text-white">
-                {service.title}
-              </span>
-              <span className="mt-2 block text-xs leading-5 text-slate-400">
-                {service.description}
-              </span>
+              <div>
+                <span className="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-[#255dce]/25 bg-[#021861]/30 text-[#8caeff] transition-colors group-hover:text-white">
+                  {service.icon}
+                </span>
+                <span className="block text-sm font-bold text-white">
+                  {service.title}
+                </span>
+                <span className="mt-2 block text-xs leading-5 text-slate-400">
+                  {service.description}
+                </span>
+              </div>
             </a>
           ))}
         </div>
       </section>
 
-      {/* 8. Section Kemitraan Resmi Teknotama */}
-      <section className="partner-panel mb-8 flex flex-col items-start justify-between gap-6 p-5 sm:p-7 md:flex-row md:items-center">
+      {/* Kartu Bawah: Partner Panel Teknotama */}
+      <section className="partner-panel mb-14 flex flex-col items-start justify-between gap-6 p-6 sm:p-8 md:flex-row md:items-center">
         <div className="relative z-10 max-w-2xl space-y-2">
           <span className="section-kicker">
             Partner Teknologi Resmi
@@ -322,7 +336,7 @@ export default function HomePage() {
             href="https://teknotama.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold btn-sponsor-clean md:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold btn-sponsor-clean md:w-auto shadow-md"
           >
             <span>Kunjungi teknotama.com</span>
             <ExternalLink className="w-4 h-4" />

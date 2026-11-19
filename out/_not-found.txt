@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
 2:"static/chunks/342-09b82f536993903d.js"
-3:"static/chunks/634-18bfd9c6c720e50e.js"
-4:"static/chunks/117-b15a57c9d5af5119.js"
-5:"static/chunks/app/layout-1b5ce5f68c038b50.js"
-6:I[2978,["342","$2","634","$3","117","$4","177","$5"],"default"]
+3:"static/chunks/699-56dcdfce0c29058d.js"
+4:"static/chunks/117-40f33247a5aa0dcf.js"
+5:"static/chunks/app/layout-09fd95228a8a1c27.js"
+6:I[1671,["342","$2","699","$3","117","$4","177","$5"],"default"]
 7:I[7121,[],""]
 8:I[4581,[],""]
 9:"static/chunks/app/not-found-48943435bdb0bd32.js"
@@ -16,11 +16,11 @@ e:I[1304,[],"ClientPageRoot"]
 17:"MetadataBoundary"
 18:I[484,[],"$17"]
 1a:I[7123,[],"default",1]
-:HL["/games/_next/static/css/f7116c7b29abf851.css","style"]
+:HL["/games/_next/static/css/142bfeab3a70fe87.css","style"]
 c:X
 d:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":[["$","$Le",null,{"Component":"$a","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@f","$@10"]}}],null,["$","$L11",null,{"children":["$","$12",null,{"name":"Next.MetadataOutlet","children":"$@13"}]}]]}],"p":false,"v":null}}]]
 b:[["children",{"s":"_not-found","h":512,"d":{"r":["$","$1","c",{"children":[null,["$","$L7",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L8",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],"p":false,"v":"$c"},"c":"$Qd"}]]
-0:{"P":null,"c":["","_not-found"],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/games/_next/static/css/f7116c7b29abf851.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"id","suppressHydrationWarning":true,"className":"__variable_8dde1a __variable_4b29c8 antialiased dark","children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://pagead2.googlesyndication.com"}],["$","link",null,{"rel":"preconnect","href":"https://teknotama.com"}],["$","link",null,{"rel":"dns-prefetch","href":"https://pagead2.googlesyndication.com"}],["$","link",null,{"rel":"dns-prefetch","href":"https://teknotama.com"}]]}],["$","body",null,{"className":"min-h-full text-[#F8FAFC]","suppressHydrationWarning":true,"children":["$","$L6",null,{"children":["$","$L7",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L8",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","$La",null,{}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}]]}],"p":false,"v":null},"c":"$Qb"},"h":{"r":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L15",null,{"children":"$L16"}],["$","$L18",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$12",null,{"name":"Next.Metadata","children":"$L19"}]}],null]}],null]}],"p":false,"v":null}},"m":"$undefined","G":["$1a",[]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"kP54Pdrhfz8QNWIwI_O0D"}
+0:{"P":null,"c":["","_not-found"],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/games/_next/static/css/142bfeab3a70fe87.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"id","suppressHydrationWarning":true,"className":"__variable_8dde1a __variable_4b29c8 antialiased dark","children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://pagead2.googlesyndication.com"}],["$","link",null,{"rel":"preconnect","href":"https://teknotama.com"}],["$","link",null,{"rel":"dns-prefetch","href":"https://pagead2.googlesyndication.com"}],["$","link",null,{"rel":"dns-prefetch","href":"https://teknotama.com"}]]}],["$","body",null,{"className":"min-h-full text-[#F8FAFC]","suppressHydrationWarning":true,"children":["$","$L6",null,{"children":["$","$L7",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L8",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","$La",null,{}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}]]}],"p":false,"v":null},"c":"$Qb"},"h":{"r":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L15",null,{"children":"$L16"}],["$","$L18",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$12",null,{"name":"Next.Metadata","children":"$L19"}]}],null]}],null]}],"p":false,"v":null}},"m":"$undefined","G":["$1a",[]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"AxwBZJyY47Qm20-XrNXH3"}
 c:C
 f:{}
 10:"$d:0:1:d:r:props:children:0:props:serverProvidedParams:params"

@@ -8,6 +8,43 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.4.0] - 2026-11-19
+### Redesign Total Frontend (Figma-Driven), Auto-Discovery Game, & Standardisasi Ads (1080 x 90)
+
+#### 1. Rangkuman Perubahan Utama
+- **Struktur Halaman Beranda Baru (Split-Hero Modern Sesuai Desain Figma):**
+  - Menerapkan layout hero split modern dengan branding Tekno Game, judul utama (`<h1>`), deskripsi portal web HTML5 resmi persembahan PT Teknotama Prakarsa Mulia, CTA jelajahi katalog, dan visual cover perisai GT.
+  - Menghapus total blok sorotan tambahan sekunder di bawah Hero (`02 PETUALANGAN` & `03 TEKA-TEKI`).
+  - Menghapus total bar metrik/statistik 4 kolom (`Permainan pilihan`, `Total permainan`, `Gratis dimainkan`, `Skor tersimpan`).
+  - Menghapus komponen modal/popup mengambang untuk Papan Skor dan Favorit.
+- **Section Mandiri Papan Skor & Favorit:**
+  - Menambahkan Section Papan Skor (`#papan-skor`) langsung di dalam halaman beranda yang terhubung dengan menu Navbar (`localStorage` sinkron).
+  - Menambahkan Section Favorit (`#favorit`) langsung di dalam halaman beranda lengkap dengan kondisi kosong (*empty state*) yang estetis.
+- **Section Tentang Portal & 4 Layanan Teknotama:**
+  - Menampilkan 4 kartu layanan enterprise (*Infrastruktur Jaringan*, *Sistem Awan*, *Keamanan Data*, dan *Perangkat Lunak*) yang mengarah ke website resmi `https://teknotama.com`.
+- **Sistem Auto-Discovery Folder Game (`src/lib/games.ts`):**
+  - Modul plug-and-play berbasis Node.js `fs` / `path` yang secara otomatis memindai seluruh sub-direktori di `public/games/` yang memiliki `index.html`.
+  - Penambahan game baru ke depan cukup menaruh folder game baru ke dalam `public/games/[slug-game]/` tanpa perlu mengubah kode frontend.
+- **Dynamic Sitemap (`src/app/sitemap.ts`):**
+  - Mengotomatiskan sitemap XML statis yang mendaftarkan URL root, 6 kategori, dan seluruh game yang terdeteksi dari auto-discovery.
+- **Standardisasi Iklan Horizontal Tengah (1080 × 90):**
+  - Memperbarui ukuran slot iklan horizontal bagian tengah di beranda, kategori, dan play page menjadi standar `1080 x 90` (`GoogleAdSlot`).
+  - Menjamin dimensi terkunci anti-CLS (Cumulative Layout Shift = 0).
+- **Halaman Kategori & Kondisi Kosong (Empty State):**
+  - Menambahkan tampilan kondisi kosong khusus yang elegan pada kategori Olahraga (dan kategori lain bila belum ada game).
+
+#### 2. Panduan Menambahkan Game Baru (Plug-and-Play)
+Untuk menambahkan game HTML5 baru ke dalam Tekno Game:
+1. Siapkan folder game Anda, pastikan memiliki file utama `index.html` dan aset-aset pendukungnya.
+2. Tempatkan folder tersebut ke dalam direktori `public/games/[nama-game]/` (contoh: `public/games/balap-karung/index.html`).
+3. Jalankan `npm run build`. Sistem Auto-Discovery secara otomatis akan:
+   - Mendeteksi game baru tersebut.
+   - Membuat rute bermain di `/play/[nama-game]`.
+   - Mendaftarkannya ke dalam `sitemap.xml`.
+   - Menampilkannya di katalog beranda dan pencarian instan.
+
+---
+
 ## [3.3.3] - 2026-11-18
 ### Mengganti Logo Sorotan dengan Cover Permainan
 - Menghapus logo Tekno Game dari area sorotan beranda.

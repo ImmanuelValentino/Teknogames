@@ -114,14 +114,34 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </div>
       </div>
 
-      {/* Slot Iklan Google AdSense Top Leaderboard (728x90) */}
+      {/* Slot Iklan Horizontal Tengah Ukuran 1080 x 90 */}
       <GoogleAdSlot
-        slotType="leaderboard-728x90"
+        slotType="leaderboard-1080x90"
         adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_CATEGORY || ""}
       />
 
-      {/* Grid Katalog */}
-      <GameGrid games={games} title={`Permainan ${validCat.label}`} />
+      {/* Grid Katalog atau Tampilan Kondisi Kosong (Empty State) untuk Olahraga / Kategori Kosong */}
+      {games.length === 0 ? (
+        <div className="card-natural rounded-2xl p-10 sm:p-16 text-center my-8">
+          <div className="w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center mx-auto mb-4 text-amber-300">
+            <Trophy className="w-8 h-8" />
+          </div>
+          <h3 className="font-heading text-lg sm:text-xl font-bold text-white mb-2">
+            Belum Ada Permainan di Kategori {validCat.label}
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto mb-6 leading-relaxed">
+            Permainan dalam kategori {validCat.label.toLowerCase()} sedang dalam tahap pengembangan oleh tim pengembang kami. Silakan jelajahi kategori permainan menarik lainnya!
+          </p>
+          <Link
+            href="/#katalog"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full btn-primary-clean text-xs font-semibold shadow-md"
+          >
+            <span>Jelajahi Kategori Lainnya</span>
+          </Link>
+        </div>
+      ) : (
+        <GameGrid games={games} title={`Permainan ${validCat.label}`} />
+      )}
     </div>
   );
 }

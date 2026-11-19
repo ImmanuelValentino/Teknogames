@@ -24,15 +24,9 @@ import { GameCategory } from "@/types/game";
 
 interface NavbarProps {
   onOpenSearch?: () => void;
-  onOpenLeaderboard?: () => void;
-  onOpenFavorites?: () => void;
 }
 
-export default function Navbar({
-  onOpenSearch,
-  onOpenLeaderboard,
-  onOpenFavorites,
-}: NavbarProps) {
+export default function Navbar({ onOpenSearch }: NavbarProps) {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -119,7 +113,7 @@ export default function Navbar({
               Beranda
             </Link>
 
-            {/* Pilihan kategori */}
+            {/* Pilihan Kategori (Dropdown 6 Kategori) */}
             <div className="relative" ref={dropdownRef}>
               <button
                 type="button"
@@ -136,9 +130,9 @@ export default function Navbar({
               </button>
 
               {dropdownOpen && (
-                <div className="absolute top-full left-0 mt-1.5 w-52 rounded-2xl glass-modal p-1.5 z-50">
+                <div className="absolute top-full left-0 mt-1.5 w-52 rounded-2xl glass-modal p-1.5 z-50 shadow-2xl border border-white/10">
                   <Link
-                    href="/"
+                    href="/#katalog"
                     onClick={() => setDropdownOpen(false)}
                     className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/8 transition-colors"
                   >
@@ -161,6 +155,7 @@ export default function Navbar({
               )}
             </div>
 
+            {/* Main Acak */}
             <button
               type="button"
               onClick={handleRandomPlay}
@@ -170,26 +165,26 @@ export default function Navbar({
               <span>Main Acak</span>
             </button>
 
-            <button
-              type="button"
-              onClick={onOpenLeaderboard}
+            {/* Papan Skor (Direct Smooth Scroll Anchor) */}
+            <Link
+              href="/#papan-skor"
               className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
             >
               <Trophy className="w-4 h-4 text-amber-400" />
               <span>Papan Skor</span>
-            </button>
+            </Link>
 
-            <button
-              type="button"
-              onClick={onOpenFavorites}
+            {/* Favorit (Direct Smooth Scroll Anchor) */}
+            <Link
+              href="/#favorit"
               className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
             >
               <Heart className="w-4 h-4 text-rose-400" />
               <span>Favorit</span>
-            </button>
+            </Link>
           </nav>
 
-          {/* Pencarian dan mitra */}
+          {/* Sisi Kanan: Pencarian dan Link Sponsor teknotama.com */}
           <div className="flex items-center gap-2.5">
             <button
               type="button"
@@ -242,7 +237,7 @@ export default function Navbar({
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat.id}
-                href={cat.id === "all" ? "/" : `/category/${cat.id}`}
+                href={cat.id === "all" ? "/#katalog" : `/category/${cat.id}`}
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-white/8 transition-colors"
               >
@@ -263,29 +258,23 @@ export default function Navbar({
             <span>Main Acak</span>
           </button>
 
-          <button
-            type="button"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              onOpenLeaderboard?.();
-            }}
+          <Link
+            href="/#papan-skor"
+            onClick={() => setMobileMenuOpen(false)}
             className="flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/8"
           >
             <Trophy className="w-4 h-4 text-amber-400" />
             <span>Papan Skor</span>
-          </button>
+          </Link>
 
-          <button
-            type="button"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              onOpenFavorites?.();
-            }}
+          <Link
+            href="/#favorit"
+            onClick={() => setMobileMenuOpen(false)}
             className="flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/8"
           >
             <Heart className="w-4 h-4 text-rose-400" />
             <span>Favorit</span>
-          </button>
+          </Link>
 
           <div className="pt-2">
             <a

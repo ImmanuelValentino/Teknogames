@@ -6,8 +6,6 @@ import Footer from "./Footer";
 import LayoutWrapper from "./LayoutWrapper";
 import AdBottomAnchor from "../ads/AdBottomAnchor";
 import SearchModal from "../game/SearchModal";
-import LeaderboardModal from "../game/LeaderboardModal";
-import FavoritesModal from "../game/FavoritesModal";
 
 interface ClientLayoutProps {
   children: React.ReactNode;
@@ -15,36 +13,22 @@ interface ClientLayoutProps {
 
 export default function ClientLayout({ children }: ClientLayoutProps) {
   const [searchOpen, setSearchOpen] = useState(false);
-  const [leaderboardOpen, setLeaderboardOpen] = useState(false);
-  const [favoritesOpen, setFavoritesOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col selection:bg-[#255dce]/30 selection:text-white">
-      {/* Navbar */}
-      <Navbar
-        onOpenSearch={() => setSearchOpen(true)}
-        onOpenLeaderboard={() => setLeaderboardOpen(true)}
-        onOpenFavorites={() => setFavoritesOpen(true)}
-      />
+      {/* Navbar Resmi */}
+      <Navbar onOpenSearch={() => setSearchOpen(true)} />
 
-      {/* Main Content */}
+      {/* Main Content dengan Floating Side Ads Terkunci */}
       <LayoutWrapper>{children}</LayoutWrapper>
 
       {/* Mobile Anchor Ad */}
       <AdBottomAnchor />
 
-      {/* Modals */}
+      {/* Search Modal Saja (Papan Skor & Favorit sudah mandiri di halaman beranda) */}
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-      <LeaderboardModal
-        isOpen={leaderboardOpen}
-        onClose={() => setLeaderboardOpen(false)}
-      />
-      <FavoritesModal
-        isOpen={favoritesOpen}
-        onClose={() => setFavoritesOpen(false)}
-      />
 
-      {/* Footer */}
+      {/* Footer Resmi */}
       <Footer />
     </div>
   );

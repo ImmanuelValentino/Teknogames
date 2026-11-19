@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 
 interface GoogleAdSlotProps {
   slotType:
+    | "leaderboard-1080x90"
     | "leaderboard-728x90"
     | "rectangle-300x250"
     | "skyscraper-160x600"
@@ -39,6 +40,38 @@ export default function GoogleAdSlot({
 
   // Dimensi terkunci ketat anti-CLS sesuai standar IAB / Google Display Network
   switch (slotType) {
+    case "leaderboard-1080x90":
+      return (
+        <div className={`w-full flex flex-col items-center my-6 ${className}`}>
+          <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1 select-none font-medium">
+            Iklan
+          </span>
+          <div
+            style={{ minHeight: "90px", width: "100%", maxWidth: "1080px" }}
+            className="w-full max-w-[1080px] h-[90px] min-h-[90px] rounded-xl border border-dashed border-white/20 bg-white/[0.03] flex flex-col items-center justify-center p-2 text-center overflow-hidden relative"
+          >
+            {client && slot ? (
+              <ins
+                ref={adRef}
+                className="adsbygoogle"
+                style={{ display: "inline-block", width: "100%", maxWidth: "1080px", height: "90px" }}
+                data-ad-client={client}
+                data-ad-slot={slot}
+              />
+            ) : (
+              <div className="space-y-0.5 select-none">
+                <span className="text-xs font-semibold text-white/80 block">
+                  Slot Google AdSense (1080 × 90)
+                </span>
+                <span className="text-[10px] text-white/40 block">
+                  Tinggal masukkan data-ad-client &amp; data-ad-slot untuk menampilkan iklan
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+
     case "leaderboard-728x90":
       return (
         <div className={`w-full flex flex-col items-center my-6 ${className}`}>
@@ -46,21 +79,21 @@ export default function GoogleAdSlot({
             Iklan
           </span>
           <div
-            style={{ minHeight: "90px", width: "100%", maxWidth: "728px" }}
-            className="w-full max-w-[728px] h-[90px] min-h-[90px] rounded-xl border border-dashed border-white/20 bg-white/[0.03] flex flex-col items-center justify-center p-2 text-center overflow-hidden relative"
+            style={{ minHeight: "90px", width: "100%", maxWidth: "1080px" }}
+            className="w-full max-w-[1080px] h-[90px] min-h-[90px] rounded-xl border border-dashed border-white/20 bg-white/[0.03] flex flex-col items-center justify-center p-2 text-center overflow-hidden relative"
           >
             {client && slot ? (
               <ins
                 ref={adRef}
                 className="adsbygoogle"
-                style={{ display: "inline-block", width: "728px", height: "90px" }}
+                style={{ display: "inline-block", width: "100%", maxWidth: "1080px", height: "90px" }}
                 data-ad-client={client}
                 data-ad-slot={slot}
               />
             ) : (
               <div className="space-y-0.5 select-none">
                 <span className="text-xs font-semibold text-white/80 block">
-                  Slot Google AdSense (728 × 90)
+                  Slot Google AdSense (1080 × 90)
                 </span>
                 <span className="text-[10px] text-white/40 block">
                   Tinggal masukkan data-ad-client &amp; data-ad-slot untuk menampilkan iklan
@@ -95,7 +128,7 @@ export default function GoogleAdSlot({
                   Slot Google AdSense (300 × 250)
                 </span>
                 <span className="text-[10px] text-white/40 block max-w-[220px] mx-auto leading-relaxed">
-                  Iklan persegi panjang sedang • Siap menghubungkan kode unit Google AdSense
+                  Medium Rectangle Ad • Siap menghubungkan kode unit iklan Google
                 </span>
               </div>
             )}
@@ -130,7 +163,7 @@ export default function GoogleAdSlot({
                   160 × 600
                 </span>
                 <span className="text-[9px] text-white/40 block leading-tight mt-2">
-                  Iklan vertikal siap digunakan
+                  Skyscraper Banner Siap Pasang
                 </span>
               </div>
             )}
@@ -159,7 +192,7 @@ export default function GoogleAdSlot({
                   Iklan
                 </span>
                 <span className="text-xs font-medium text-white/70">
-                  Iklan melekat Google AdSense (320 × 50)
+                  Google AdSense Anchor (320 × 50)
                 </span>
               </div>
             )}
@@ -191,7 +224,7 @@ export default function GoogleAdSlot({
             ) : (
               <>
                 <span className="text-xs font-semibold text-white/80 block">
-                  Iklan di dalam katalog
+                  In-Feed Native Ad
                 </span>
                 <p className="text-[11px] text-white/40 leading-relaxed max-w-[180px] mx-auto">
                   Slot Iklan AdSense Grid • Siap konfigurasi data-ad-slot
@@ -202,7 +235,7 @@ export default function GoogleAdSlot({
 
           <div className="text-center">
             <span className="text-[10px] text-white/30 block">
-              Unit Iklan Google
+              Google Ad Unit
             </span>
           </div>
         </div>

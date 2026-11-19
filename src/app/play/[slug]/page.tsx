@@ -11,6 +11,7 @@ import { getGamePortalPath, getGamePortalUrl } from "@/lib/site";
 import GameFrame from "@/components/game/GameFrame";
 import AdCompanion from "@/components/ads/AdCompanion";
 import GameCard from "@/components/game/GameCard";
+import GoogleAdSlot from "@/components/ads/GoogleAdSlot";
 import { ArrowLeft, Keyboard, Smartphone, Info, ExternalLink } from "lucide-react";
 
 interface PlayPageProps {
@@ -176,7 +177,7 @@ export default async function PlayPage({ params }: PlayPageProps) {
           <div className="rounded-2xl card-natural p-6 space-y-4 text-slate-300">
             <div>
               <h3 className="font-heading text-base font-bold text-white flex items-center gap-2">
-                <Info className="w-4 h-4 text-rose-200" />
+                <Info className="w-4 h-4 text-[#8caeff]" />
                 <span>Tentang {game.title}</span>
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
@@ -225,7 +226,7 @@ export default async function PlayPage({ params }: PlayPageProps) {
           <AdCompanion />
 
           <div className="w-[300px] rounded-2xl card-natural p-5 space-y-2.5">
-            <span className="text-[10px] uppercase font-semibold text-rose-200 tracking-wider">
+            <span className="text-[10px] uppercase font-semibold text-[#8caeff] tracking-wider">
               Sponsor Resmi
             </span>
             <h4 className="font-heading text-sm font-bold text-white leading-snug">
@@ -249,8 +250,14 @@ export default async function PlayPage({ params }: PlayPageProps) {
         </div>
       </div>
 
+      {/* Slot Iklan Horizontal Tengah Ukuran 1080 x 90 */}
+      <GoogleAdSlot
+        slotType="leaderboard-1080x90"
+        adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_PLAY || ""}
+      />
+
       {/* Rekomendasi Game Lainnya */}
-      <section className="pt-6">
+      <section className="pt-4">
         <h3 className="font-heading text-base sm:text-lg font-bold text-white mb-4">
           Permainan Lainnya Untuk Anda
         </h3>
