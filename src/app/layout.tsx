@@ -158,6 +158,13 @@ export default function RootLayout({
         <link rel="preconnect" href="https://teknotama.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://teknotama.com" />
+
+        {/* Google AdSense Official Loader */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3146007647541379"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="min-h-full text-[#F8FAFC]" suppressHydrationWarning>
         <ClientLayout>{children}</ClientLayout>

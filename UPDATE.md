@@ -8,6 +8,14 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.4.2] - 2026-11-19
+### Added (Google AdSense Official Integration & ads.txt Verification)
+- **Implementasi Skrip Loader & Konfigurasi AdSense ([layout.tsx](src/app/layout.tsx), [.env.local](.env.local)):**
+  - Memasang skrip resmi Google AdSense loader di `<head>` dengan client ID `ca-pub-3146007647541379`.
+  - Mendaftarkan entri verifikasi resmi AdSense ke file `public/ads.txt`: `google.com, pub-3146007647541379, DIRECT, f08c47fec0942fa0`.
+  - Mengonfigurasi variabel `NEXT_PUBLIC_ADSENSE_CLIENT_ID` dan template slot iklan di `.env.local` dan `.env.example`.
+  - Menyiapkan integrasi dinamis pada seluruh placeholder (Skyscraper 160x600, Leaderboard 1080x90, dan Anchor Mobile 320x50) agar langsung aktif begitu slot ID diisi.
+
 ## [3.4.1] - 2026-11-19
 ### Added (SEO & Social Meta Tags Integration in Layout Header)
 - **Implementasi Meta Tags SEO & OpenGraph ([layout.tsx](src/app/layout.tsx)):**
