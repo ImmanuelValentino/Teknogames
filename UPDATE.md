@@ -8,6 +8,18 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.5.1] - 2026-11-19
+### Fixed & Improved (Catalog Thumbnail Previews for All 15 Games & Hero Card Cover)
+- **Generasi Preview Gambar 600x400 untuk Seluruh 15 Game ([scripts/generate-all-previews.js](scripts/generate-all-previews.js)):**
+  - Membuat aset `preview.png` (600x400px, aspect ratio 3:2, ukuran < 50 KB, clean typography, zero emoji) menggunakan Sharp SVG renderer untuk seluruh 15 game.
+  - Mendistribusikan file preview ke rute `public/games/<slug>/preview.png` dan fallback ganda `public/<slug>/preview.png`.
+  - Mengonversi dan menyalin aset ke format webp dan png di `public/images/games/<slug>.webp` serta `public/games/images/games/<slug>.webp` untuk kompatibilitas penuh.
+- **Pembaruan Komponen Katalog & Hero ([GameCard.tsx](src/components/game/GameCard.tsx), [GameHero.tsx](src/components/game/GameHero.tsx), [games-data.ts](src/lib/games-data.ts)):**
+  - Memperbarui `thumbnailUrl` seluruh game di `src/lib/games-data.ts` mengarah ke `/games/<slug>/preview.png` sesuai Bagian 4 `AGENTS.md`.
+  - Menerapkan mekanisme pemulihan URL berantai (chain fallback) di `GameCard.tsx` (`/games/<slug>/preview.png` -> `/games/games/<slug>/preview.png` -> `/<slug>/preview.png` -> webp) untuk mencegah ikon broken image browser muncul.
+  - Memperbarui kartu Pilihan Utama pada Hero Banner di `GameHero.tsx` agar menampilkan cover visual preview game secara penuh dengan dark gradient overlay estetik, menggantikan kotak inisial huruf teks murni.
+  - Menjalankan static export `npm run build` sehingga seluruh aset dan HTML di folder `out/` ter-generate sempurna.
+
 ## [3.5.0] - 2026-11-19
 ### Added & Changed (Remake Batch 1: Cyber Bird, Tekno Memory, Circuit Flow & Cover Preview Card)
 - **Remake Game Batch 1 Sesuai Standar Mutlak `game-guide.md`:**

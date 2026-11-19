@@ -78,55 +78,80 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
           {/* Kolom Kanan: 2 Kartu Bertumpuk Modern (PlayForge Hero 3D Card Stack) */}
           <div className="lg:col-span-5 relative flex items-center justify-center py-6 sm:py-8">
             {/* Kartu Belakang (Secondary Game) */}
-            <div className="absolute top-2 right-4 sm:right-8 w-56 sm:w-64 aspect-[4/5] rounded-3xl bg-gradient-to-br from-purple-800 to-pink-900 p-5 shadow-2xl opacity-70 -rotate-6 transform transition-transform pointer-events-none">
-              <div className="flex justify-between items-start">
-                <span className="text-xs font-bold uppercase tracking-wider text-white/60">
-                  {secondaryHero.category}
-                </span>
-              </div>
-              <div className="h-full flex items-center justify-center">
-                <span className="font-heading text-6xl font-black text-white/20 select-none">
-                  {getInitials(secondaryHero.title)}
-                </span>
+            <div className="absolute top-2 right-4 sm:right-8 w-56 sm:w-64 aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-br from-purple-800 to-pink-900 shadow-2xl opacity-70 -rotate-6 transform transition-transform pointer-events-none border border-white/10">
+              <img
+                src={`/games/${secondaryHero.slug}/preview.png`}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover opacity-60"
+                onError={(e) => {
+                  const el = e.target as HTMLImageElement;
+                  if (!el.src.includes('/games/games/')) {
+                    el.src = `/games/games/${secondaryHero.slug}/preview.png`;
+                  }
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 p-5 flex flex-col justify-between">
+                <div className="flex justify-between items-start">
+                  <span className="text-xs font-bold uppercase tracking-wider text-white/80">
+                    {secondaryHero.category}
+                  </span>
+                </div>
+                <div className="my-auto flex items-center justify-center">
+                  <span className="font-heading text-5xl font-black text-white/30 select-none">
+                    {getInitials(secondaryHero.title)}
+                  </span>
+                </div>
               </div>
             </div>
 
             {/* Kartu Depan Utama (Main Hero Game) */}
             <Link
               href={`/play/${mainHero.slug}`}
-              className="group relative z-10 w-64 sm:w-72 aspect-[4/5] rounded-3xl bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-400 p-6 shadow-[0_25px_60px_rgba(0,0,0,0.7)] rotate-3 transform transition-all duration-300 hover:rotate-0 hover:scale-105 border border-white/20 flex flex-col justify-between"
+              className="group relative z-10 w-64 sm:w-72 aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-400 p-6 shadow-[0_25px_60px_rgba(0,0,0,0.7)] rotate-3 transform transition-all duration-300 hover:rotate-0 hover:scale-105 border border-white/20 flex flex-col justify-between"
             >
+              {/* Cover Preview Image */}
+              <img
+                src={`/games/${mainHero.slug}/preview.png`}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-110"
+                onError={(e) => {
+                  const el = e.target as HTMLImageElement;
+                  if (!el.src.includes('/games/games/')) {
+                    el.src = `/games/games/${mainHero.slug}/preview.png`;
+                  }
+                }}
+              />
+              {/* Dark Gradient Overlay for Contrast */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/40 z-0 pointer-events-none" />
+
               {/* Top Tag & Category Badge */}
-              <div className="flex items-center justify-between">
-                <span className="rounded-full bg-black/40 border border-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
+              <div className="relative z-10 flex items-center justify-between">
+                <span className="rounded-full bg-black/60 border border-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md shadow-sm">
                   Pilihan Utama
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-white/80">
+                <span className="rounded-full bg-indigo-950/70 border border-indigo-400/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-200 backdrop-blur-md">
                   {mainHero.category}
                 </span>
               </div>
 
-              {/* Center Monogram Typography Visual */}
-              <div className="my-auto flex flex-col items-center justify-center text-center">
-                <span className="font-heading text-7xl font-black tracking-tighter text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-110">
+              {/* Center Accent Area */}
+              <div className="relative z-10 my-auto flex flex-col items-center justify-center text-center py-4">
+                <div className="h-12 w-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white font-heading font-black text-lg drop-shadow-md transition-transform duration-300 group-hover:scale-110">
                   {getInitials(mainHero.title)}
-                </span>
-                <span className="text-[11px] font-semibold text-white/80 uppercase tracking-widest mt-1">
-                  {mainHero.category}
-                </span>
+                </div>
               </div>
 
               {/* Bottom Card Footer */}
-              <div className="rounded-2xl bg-black/40 border border-white/15 p-3.5 backdrop-blur-md flex items-center justify-between gap-3">
+              <div className="relative z-10 rounded-2xl bg-black/60 border border-white/20 p-3.5 backdrop-blur-md flex items-center justify-between gap-3 shadow-lg">
                 <div className="min-w-0">
-                  <span className="text-[10px] uppercase font-bold text-cyan-200 tracking-wider block truncate">
+                  <span className="text-[10px] uppercase font-bold text-cyan-300 tracking-wider block truncate">
                     Tekno Game
                   </span>
                   <h3 className="text-sm font-bold text-white truncate">
                     {mainHero.title.split(":")[0]}
                   </h3>
                 </div>
-                <span className="h-9 w-9 shrink-0 rounded-full bg-white text-indigo-900 flex items-center justify-center shadow-md transition-transform group-hover:scale-110">
+                <span className="h-9 w-9 shrink-0 rounded-full bg-white text-indigo-950 flex items-center justify-center shadow-md transition-transform group-hover:scale-110 group-hover:bg-cyan-400">
                   <Play className="h-4 w-4 fill-current ml-0.5" />
                 </span>
               </div>

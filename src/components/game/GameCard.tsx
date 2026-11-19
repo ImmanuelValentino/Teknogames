@@ -62,7 +62,16 @@ const getPlayForgeGradient = (slug: string, category: string) => {
 };
 
 export default function GameCard({ game }: GameCardProps) {
-  const [imgError, setImgError] = React.useState(false);
+  const candidateSources = React.useMemo(() => [
+    `/games/${game.slug}/preview.png`,
+    `/games/games/${game.slug}/preview.png`,
+    `/${game.slug}/preview.png`,
+    `/images/games/${game.slug}.webp`,
+    `/games/images/games/${game.slug}.webp`,
+  ], [game.slug]);
+
+  const [srcIndex, setSrcIndex] = React.useState(0);
+  const [imgFailed, setImgFailed] = React.useState(false);
 
   // Ambil 2 huruf inisial dari judul game untuk visual Monogram PlayForge fallback
   const getInitials = (title: string) => {
@@ -72,6 +81,14 @@ export default function GameCard({ game }: GameCardProps) {
       return (parts[0][0] + parts[1][0]).toUpperCase();
     }
     return clean.slice(0, 2).toUpperCase();
+  };
+
+  const handleImageError = () => {
+    if (srcIndex < candidateSources.length - 1) {
+      setSrcIndex((prev) => prev + 1);
+    } else {
+      setImgFailed(true);
+    }
   };
 
   const gradientClass = getPlayForgeGradient(game.slug, game.category);
@@ -86,12 +103,14 @@ export default function GameCard({ game }: GameCardProps) {
       <div
         className={`relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-gradient-to-br ${gradientClass} shadow-md flex flex-col justify-between transition-transform duration-300 group-hover:scale-[1.02]`}
       >
-        {!imgError ? (
+        {!imgFailed ? (
           <img
-            src={`/games/${game.slug}/preview.png`}
-            alt={game.title}
+            src={candidateSources[srcIndex]}
+            alt=""
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-300 group-hover:scale-105"
-            onError={() => setImgError(true)}
+            onError={handleImageError}
           />
         ) : (
           <>
