@@ -13,7 +13,6 @@ import {
   Trophy,
 } from "lucide-react";
 import GameHero from "@/components/game/GameHero";
-import CategoryChips from "@/components/game/CategoryChips";
 import GameGrid from "@/components/game/GameGrid";
 import GameCard from "@/components/game/GameCard";
 import GoogleAdSlot from "@/components/ads/GoogleAdSlot";
@@ -110,13 +109,8 @@ export default function HomePage() {
         adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_TOP || ""}
       />
 
-      {/* 3. Pilihan Game: Filter Kategori & Semua Koleksi Permainan */}
+      {/* 3. Pilihan Game: Semua Koleksi Permainan dengan Dropdown Kategori */}
       <div id="katalog" className="scroll-mt-24">
-        <CategoryChips
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-        />
-
         <GameGrid
           games={displayGames}
           title={
@@ -124,6 +118,9 @@ export default function HomePage() {
               ? "Semua Koleksi Permainan"
               : `Koleksi Permainan: ${selectedCategoryLabel}`
           }
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+          categories={CATEGORIES}
         />
       </div>
 
