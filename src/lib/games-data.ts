@@ -270,6 +270,24 @@ export const INITIAL_GAMES: Game[] = [
       touch: "Tap kartu untuk mencocokkan pasangan",
     },
   },
+  // 15. Circuit Flow
+  {
+    id: "circuit-flow",
+    slug: "circuit-flow",
+    title: "Circuit Flow: Node Connect",
+    description: "Hubungkan terminal warna sirkuit neon tanpa saling menyilang jalur kabel. Selesaikan 9 level matriks sirkuit!",
+    category: "puzzle",
+    thumbnailUrl: "/games/circuit-flow/preview.png",
+    gamePath: "/games/circuit-flow/index.html",
+    playCount: 3840,
+    likesCount: 320,
+    rating: 4.9,
+    badge: "BARU",
+    controlsGuide: {
+      keyboard: ["Klik & Tarik Kursor Mouse dari terminal ke terminal"],
+      touch: "Tahan dan geser jari antar kotak terminal untuk menyambung jalur",
+    },
+  },
 ];
 
 export function getGameBySlug(slug: string): Game | undefined {

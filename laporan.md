@@ -1,3 +1,16 @@
+### [2026-11-19 23:38] - [Frontend] - Remake Batch 1 Game (Cyber Bird, Tekno Memory, Circuit Flow) & Integrasi Preview Card
+- **Kondisi Sebelum:** `cyber-bird` dan `tekno-memory` belum memiliki fitur High Score `localStorage`, tombol mute audio, dan `tekno-memory` masih menggunakan emoji; belum ada `preview.png`; `circuit-flow` belum dibuat; kartu katalog `GameCard.tsx` masih menampilkan inisial huruf, belum menampilkan cover gambar.
+- **Perubahan Sesudah:**
+  1. Melakukan remake `cyber-bird/index.html` dengan akselerasi bertahap, zero-emoji, audio toggle, dan High Score `localStorage`.
+  2. Melakukan remake `tekno-memory/index.html` dengan 12 ikon SVG teknologi (zero-emoji), timer, level scaling (2x2 s.d 4x4), dan High Score `localStorage`.
+  3. Membuat game baru `circuit-flow/index.html` (9 level connect puzzle tanpa emoji) dan mendaftarkannya ke `games-data.ts`.
+  4. Menghasilkan gambar `preview.png` resolusi 600x400 untuk ketiga game tersebut.
+  5. Memperbarui `GameCard.tsx` untuk menampilkan gambar `preview.png` penuh (`object-fit: cover`).
+  6. Memperbarui `game-log.md` di bagian paling atas.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Seluruh checklist kualitas di `game-guide.md` telah dipenuhi dan lolos kompilasi.
+- **File Terdampak:** `public/games/cyber-bird/*`, `public/games/tekno-memory/*`, `public/games/circuit-flow/*`, `src/components/game/GameCard.tsx`, `src/lib/games-data.ts`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-19 22:52] - [Fullstack] - Integrasi Resmi Google AdSense, Skrip Loader Head, dan File ads.txt
 - **Kondisi Sebelum:** Komponen iklan Google AdSense hanya beroperasi dengan placeholder lokal dan mock client ID tanpa skrip loader resmi di header serta belum memiliki file verifikasi `ads.txt`.
 - **Perubahan Sesudah:** 
@@ -8,10 +21,3 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
-
-### [2026-11-19 22:40] - [Frontend] - Integrasi Meta Tags SEO, OpenGraph, Canonical URL, dan Schema.org
-- **Kondisi Sebelum:** Header di `src/app/layout.tsx` menggunakan title dan deskripsi portal resmi standar tanpa tag OpenGraph spesifik yang diminta, canonical URL ke `https://www.teknotama.com/games/`, maupun Twitter summary card lengkap.
-- **Perubahan Sesudah:** Menambahkan seluruh meta tag SEO yang diminta pada header layout tanpa mengubah teks asli, menyelaraskan objek Next.js `metadata`, dan menambahkan Schema.org JSON-LD structured data (WebSite) pada baris baru sebagai peningkatan SEO.
-- **Masalah yang Ditemukan:** Perubahan repositori GitHub diarahkan kembali ke `https://github.com/ImmanuelValentino/Teknogames`.
-- **Penyelesaian:** Memperbarui URL remote git ke `https://github.com/ImmanuelValentino/Teknogames.git`, mensinkronkan codebase terbaru (v3.4.0), menerapkan tag meta header, dan mengkompilasi ulang build statis.
-- **File Terdampak:** `src/app/layout.tsx`, `UPDATE.md`, `laporan.md`, `out/*`

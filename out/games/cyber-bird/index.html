@@ -2,65 +2,294 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Cyber Bird - TeknoGame</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
-    html, body { width: 100%; height: 100%; overflow: hidden; background: #070b14; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; touch-action: manipulation; }
-    canvas { width: 100%; height: 100%; display: block; }
-    #hud { position: absolute; top: 16px; left: 16px; right: 16px; display: flex; justify-content: space-between; pointer-events: none; z-index: 10; }
-    .badge { background: rgba(15, 23, 42, 0.85); color: #fff; padding: 6px 14px; border-radius: 9999px; font-weight: 800; font-size: 14px; border: 1px solid rgba(0, 240, 255, 0.3); box-shadow: 0 0 12px rgba(0, 240, 255, 0.2); }
-    .badge span { color: #00f0ff; }
-    .overlay { position: absolute; inset: 0; background: rgba(7, 11, 20, 0.88); backdrop-filter: blur(6px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; color: #fff; text-align: center; padding: 20px; }
-    .title { font-size: 32px; font-weight: 900; color: #00f0ff; text-shadow: 0 0 20px rgba(0, 240, 255, 0.6); margin-bottom: 8px; }
-    .desc { font-size: 14px; color: #94a3b8; max-width: 320px; margin-bottom: 24px; line-height: 1.5; }
-    .btn { background: linear-gradient(135deg, #00f0ff, #3b82f6); color: #070b14; border: none; padding: 14px 32px; border-radius: 9999px; font-weight: 900; font-size: 16px; cursor: pointer; box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); transition: transform 0.1s; }
-    .btn:active { transform: scale(0.95); }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #060913;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      touch-action: manipulation;
+    }
+    #gameContainer {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    #hud {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .hud-left {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .badge {
+      background: rgba(11, 18, 34, 0.85);
+      color: #94a3b8;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-weight: 800;
+      font-size: 13px;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(4px);
+    }
+    .badge span {
+      color: #00f0ff;
+    }
+    .badge.best span {
+      color: #f59e0b;
+    }
+    .btn-audio {
+      pointer-events: auto;
+      background: rgba(11, 18, 34, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #00f0ff;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+      transition: transform 0.1s, border-color 0.2s;
+    }
+    .btn-audio:active {
+      transform: scale(0.92);
+    }
+    .btn-audio svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 9, 19, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      color: #fff;
+      text-align: center;
+      padding: 24px;
+    }
+    .title {
+      font-size: 34px;
+      font-weight: 900;
+      color: #00f0ff;
+      text-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .desc {
+      font-size: 14px;
+      color: #94a3b8;
+      max-width: 320px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .stats-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 16px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      min-width: 200px;
+    }
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 4px 0;
+    }
+    .stats-label {
+      color: #64748b;
+    }
+    .stats-val {
+      color: #fff;
+    }
+    .btn-action {
+      background: linear-gradient(135deg, #00f0ff, #3b82f6);
+      color: #060913;
+      border: none;
+      padding: 14px 34px;
+      border-radius: 9999px;
+      font-weight: 900;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.45);
+      letter-spacing: 0.5px;
+      transition: transform 0.1s, box-shadow 0.2s;
+    }
+    .btn-action:hover {
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.65);
+    }
+    .btn-action:active {
+      transform: scale(0.96);
+    }
   </style>
 </head>
 <body>
-  <div id="hud">
-    <div class="badge">SKOR: <span id="scoreVal">0</span></div>
-    <div class="badge">SPEED: <span id="speedVal">1.0x</span></div>
-  </div>
+  <div id="gameContainer">
+    <div id="hud">
+      <div class="hud-left">
+        <div class="badge">SKOR: <span id="scoreVal">0</span></div>
+        <div class="badge best">REKOR: <span id="highScoreVal">0</span></div>
+        <div class="badge">SPEED: <span id="speedVal">1.0x</span></div>
+      </div>
+      <button class="btn-audio" id="audioToggle" aria-label="Toggle Suara">
+        <svg id="iconSoundOn" viewBox="0 0 24 24">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+        <svg id="iconSoundOff" viewBox="0 0 24 24" style="display: none;">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+      </button>
+    </div>
 
-  <div id="startScreen" class="overlay">
-    <div class="title">CYBER BIRD</div>
-    <div class="desc">Tap layar atau tekan Spasi untuk terbang. Makin tinggi poin, kecepatan rintangan bertambah!</div>
-    <button class="btn" id="startBtn">MULAI MAIN</button>
-  </div>
+    <!-- Start Overlay -->
+    <div id="startScreen" class="overlay">
+      <div class="title">CYBER BIRD</div>
+      <div class="desc">Navigasikan drone siber melintasi pilar neon. Tekan Spasi atau ketuk layar untuk bermanuver!</div>
+      <div class="stats-card">
+        <div class="stats-row">
+          <span class="stats-label">REKOR ANDA:</span>
+          <span class="stats-val" id="startHighScore">0</span>
+        </div>
+      </div>
+      <button class="btn-action" id="startBtn">MULAI TERBANG</button>
+    </div>
 
-  <div id="gameOverScreen" class="overlay" style="display: none;">
-    <div class="title" style="color: #ef4444; text-shadow: 0 0 20px rgba(239,68,68,0.6);">GAME OVER</div>
-    <div class="desc" id="finalScoreTxt">Skor Akhir: 0</div>
-    <button class="btn" id="restartBtn">MAIN LAGI</button>
-  </div>
+    <!-- Game Over Overlay -->
+    <div id="gameOverScreen" class="overlay" style="display: none;">
+      <div class="title" style="color: #ef4444; text-shadow: 0 0 25px rgba(239,68,68,0.7);">MISI BERAKHIR</div>
+      <div class="desc">Drone siber mengalami benturan pada pilar energi.</div>
+      <div class="stats-card">
+        <div class="stats-row">
+          <span class="stats-label">Skor Misi:</span>
+          <span class="stats-val" id="finalScoreVal" style="color: #00f0ff;">0</span>
+        </div>
+        <div class="stats-row">
+          <span class="stats-label">Rekor Tertinggi:</span>
+          <span class="stats-val" id="finalHighScoreVal" style="color: #f59e0b;">0</span>
+        </div>
+      </div>
+      <button class="btn-action" id="restartBtn">TERBANG LAGI</button>
+    </div>
 
-  <canvas id="canvas"></canvas>
+    <canvas id="canvas"></canvas>
+  </div>
 
   <script>
-    // Audio Synth
-    const actx = new (window.AudioContext || window.webkitAudioContext)();
-    function playBeep(freq1, freq2, duration, type='sine') {
-      if (actx.state === 'suspended') actx.resume();
-      const osc = actx.createOscillator(), gain = actx.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq1, actx.currentTime);
-      if (freq2) osc.frequency.exponentialRampToValueAtTime(freq2, actx.currentTime + duration);
-      gain.gain.setValueAtTime(0.2, actx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + duration);
-      osc.connect(gain); gain.connect(actx.destination);
-      osc.start(); osc.stop(actx.currentTime + duration);
+    // Audio Synth Web Audio API
+    let audioCtx = null;
+    let isMuted = localStorage.getItem('teknogames_muted') === 'true';
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
     }
+
+    function playTone(f1, f2, dur, type = 'sine') {
+      if (isMuted) return;
+      initAudio();
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(f1, audioCtx.currentTime);
+        if (f2) osc.frequency.exponentialRampToValueAtTime(f2, audioCtx.currentTime + dur);
+        gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+      } catch (e) {}
+    }
+
     const Sound = {
-      flap: () => playBeep(200, 600, 0.12),
-      score: () => playBeep(700, 1200, 0.15, 'triangle'),
-      hit: () => playBeep(120, 40, 0.25, 'sawtooth')
+      jump: () => playTone(240, 520, 0.12, 'sine'),
+      score: () => playTone(650, 1100, 0.15, 'triangle'),
+      hit: () => playTone(140, 30, 0.3, 'sawtooth')
     };
 
+    // Toggle Audio UI
+    const audioBtn = document.getElementById('audioToggle');
+    const iconSoundOn = document.getElementById('iconSoundOn');
+    const iconSoundOff = document.getElementById('iconSoundOff');
+    function updateAudioUI() {
+      if (isMuted) {
+        iconSoundOn.style.display = 'none';
+        iconSoundOff.style.display = 'block';
+      } else {
+        iconSoundOn.style.display = 'block';
+        iconSoundOff.style.display = 'none';
+      }
+    }
+    audioBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isMuted = !isMuted;
+      localStorage.setItem('teknogames_muted', isMuted);
+      updateAudioUI();
+    });
+    updateAudioUI();
+
+    // High Score System
+    const HS_KEY = 'teknogames_cyber-bird_highscore';
+    let highScore = parseInt(localStorage.getItem(HS_KEY) || '0', 10);
+    document.getElementById('highScoreVal').innerText = highScore;
+    document.getElementById('startHighScore').innerText = highScore;
+
+    // Canvas & Game Logic
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    let W, H;
+    let W = 0, H = 0;
+
     function resize() {
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
@@ -70,24 +299,37 @@
 
     let isPlaying = false;
     let score = 0;
-    let baseSpeed = 2.4;
-    let bird = { x: 80, y: 0, vy: 0, size: 16 };
+    const baseSpeed = 2.6;
+    const gravity = 0.24;
+    const jumpForce = -5.6;
+    let bird = { x: 90, y: 0, vy: 0, size: 15 };
     let pipes = [];
     let pipeTimer = 0;
-    const gravity = 0.22;
-    const jumpForce = -5.4;
+    let stars = [];
+
+    // Inisialisasi latar belakang bintang kosmik
+    for (let i = 0; i < 35; i++) {
+      stars.push({
+        x: Math.random() * 2000,
+        y: Math.random() * 1000,
+        size: Math.random() * 2 + 1,
+        speed: Math.random() * 0.8 + 0.2
+      });
+    }
 
     function resetGame() {
       score = 0;
-      bird.y = H * 0.4;
+      bird.x = Math.min(100, W * 0.25);
+      bird.y = H * 0.45;
       bird.vy = 0;
       pipes = [];
       pipeTimer = 0;
-      updateUI();
+      updateHUD();
     }
 
-    function updateUI() {
+    function updateHUD() {
       document.getElementById('scoreVal').innerText = score;
+      document.getElementById('highScoreVal').innerText = highScore;
       const spd = (1 + Math.floor(score / 5) * 0.15).toFixed(1);
       document.getElementById('speedVal').innerText = spd + 'x';
     }
@@ -95,37 +337,55 @@
     function flap() {
       if (!isPlaying) return;
       bird.vy = jumpForce;
-      Sound.flap();
+      Sound.jump();
     }
 
+    // Input Handlers
     window.addEventListener('keydown', (e) => {
-      if (e.code === 'Space' || e.code === 'ArrowUp') {
+      if (e.code === 'Space' || e.code === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
         e.preventDefault();
-        if (!isPlaying && document.getElementById('startScreen').style.display !== 'none') {
-          startGame();
+        if (!isPlaying) {
+          if (document.getElementById('startScreen').style.display !== 'none' ||
+              document.getElementById('gameOverScreen').style.display !== 'none') {
+            startGame();
+          }
         } else {
           flap();
         }
       }
     });
+
     window.addEventListener('pointerdown', (e) => {
-      if (e.target.tagName !== 'BUTTON') flap();
+      if (e.target.closest('#hud') || e.target.closest('.overlay')) return;
+      if (isPlaying) {
+        flap();
+      }
     });
 
     function startGame() {
+      initAudio();
       document.getElementById('startScreen').style.display = 'none';
       document.getElementById('gameOverScreen').style.display = 'none';
       resetGame();
       isPlaying = true;
-      if (actx.state === 'suspended') actx.resume();
     }
 
     function gameOver() {
       if (!isPlaying) return;
       isPlaying = false;
       Sound.hit();
-      document.getElementById('finalScoreTxt').innerText = 'Skor Akhir: ' + score;
+
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem(HS_KEY, highScore.toString());
+      }
+
+      document.getElementById('finalScoreVal').innerText = score;
+      document.getElementById('finalHighScoreVal').innerText = highScore;
+      document.getElementById('highScoreVal').innerText = highScore;
       document.getElementById('gameOverScreen').style.display = 'flex';
+
+      // Kirim event ke portal web utama
       if (window.parent && window.parent !== window) {
         window.parent.postMessage({ type: "GAME_OVER", score: score }, "*");
       }
@@ -134,113 +394,136 @@
     document.getElementById('startBtn').onclick = startGame;
     document.getElementById('restartBtn').onclick = startGame;
 
+    // Game Loop
     function loop() {
-      ctx.fillStyle = '#070b14';
+      ctx.fillStyle = '#060913';
       ctx.fillRect(0, 0, W, H);
 
-      // Star grid
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.15)';
-      for (let i = 0; i < 20; i++) {
-        let sx = ((i * 123 + Date.now() * 0.05) % W);
-        let sy = (i * 97) % H;
-        ctx.fillRect(sx, sy, 2, 2);
+      // Render Bintang
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.25)';
+      for (const s of stars) {
+        s.x -= s.speed;
+        if (s.x < 0) s.x = W + 50;
+        ctx.fillRect(s.x, s.y % H, s.size, s.size);
       }
 
+      const curSpeed = baseSpeed + Math.floor(score / 5) * 0.35;
+
       if (isPlaying) {
-        const curSpeed = baseSpeed + Math.floor(score / 5) * 0.4;
         bird.vy += gravity;
         bird.y += bird.vy;
 
-        // Ground & ceiling collision
-        if (bird.y + bird.size >= H - 20 || bird.y - bird.size <= 0) {
+        // Cek Batas Atas dan Bawah
+        if (bird.y + bird.size >= H - 24 || bird.y - bird.size <= 0) {
           gameOver();
         }
 
-        // Spawn pipes
+        // Spawn Pilar
         pipeTimer++;
-        const spawnInterval = Math.max(75, Math.floor(120 - Math.floor(score / 5) * 6));
+        const spawnInterval = Math.max(70, Math.floor(125 - Math.floor(score / 5) * 5));
         if (pipeTimer >= spawnInterval) {
           pipeTimer = 0;
-          const gap = Math.max(130, 180 - Math.floor(score / 5) * 5);
+          const gap = Math.max(130, 185 - Math.floor(score / 5) * 4);
           const topH = Math.random() * (H - gap - 160) + 60;
           pipes.push({ x: W, top: topH, gap: gap, passed: false });
         }
 
-        // Update pipes
+        // Update Pilar & Deteksi Tabrakan
         for (let i = pipes.length - 1; i >= 0; i--) {
           const p = pipes[i];
           p.x -= curSpeed;
 
-          // Score check
-          if (!p.passed && p.x + 50 < bird.x) {
+          // Hitung Poin
+          if (!p.passed && p.x + 52 < bird.x) {
             p.passed = true;
             score++;
             Sound.score();
-            updateUI();
+            updateHUD();
           }
 
-          // Collision check
-          if (bird.x + bird.size > p.x && bird.x - bird.size < p.x + 50) {
+          // Tabrakan AABB
+          if (bird.x + bird.size > p.x && bird.x - bird.size < p.x + 52) {
             if (bird.y - bird.size < p.top || bird.y + bird.size > p.top + p.gap) {
               gameOver();
             }
           }
 
-          if (p.x < -60) pipes.splice(i, 1);
+          if (p.x < -65) pipes.splice(i, 1);
         }
       }
 
-      // Draw Pipes
+      // Gambar Pilar Energi
       for (const p of pipes) {
-        ctx.fillStyle = '#0f172a';
+        const bY = p.top + p.gap;
+
+        // Batang Pilar
+        ctx.fillStyle = '#0b1324';
         ctx.strokeStyle = '#00f0ff';
         ctx.lineWidth = 2;
-        // Top pipe
-        ctx.fillRect(p.x, 0, 50, p.top);
-        ctx.strokeRect(p.x, -2, 50, p.top + 2);
-        // Bottom pipe
-        const bY = p.top + p.gap;
-        ctx.fillRect(p.x, bY, 50, H - bY);
-        ctx.strokeRect(p.x, bY, 50, H - bY + 2);
 
-        // Neon tip
+        ctx.fillRect(p.x, 0, 52, p.top);
+        ctx.strokeRect(p.x, -2, 52, p.top + 2);
+
+        ctx.fillRect(p.x, bY, 52, H - bY);
+        ctx.strokeRect(p.x, bY, 52, H - bY + 2);
+
+        // Cap Lampu Neon di Ujung
         ctx.fillStyle = '#00f0ff';
-        ctx.fillRect(p.x - 3, p.top - 10, 56, 10);
-        ctx.fillRect(p.x - 3, bY, 56, 10);
+        ctx.shadowColor = '#00f0ff';
+        ctx.shadowBlur = 10;
+        ctx.fillRect(p.x - 3, p.top - 8, 58, 8);
+        ctx.fillRect(p.x - 3, bY, 58, 8);
+        ctx.shadowBlur = 0;
       }
 
-      // Draw Floor
-      ctx.fillStyle = '#0b1222';
-      ctx.fillRect(0, H - 20, W, 20);
-      ctx.strokeStyle = '#38bdf8';
+      // Gambar Lantai Energi
+      ctx.fillStyle = '#080d1a';
+      ctx.fillRect(0, H - 24, W, 24);
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(0, H - 20);
-      ctx.lineTo(W, H - 20);
+      ctx.moveTo(0, H - 24);
+      ctx.lineTo(W, H - 24);
       ctx.stroke();
 
-      // Draw Bird
+      // Gambar Drone Siber
       ctx.save();
       ctx.translate(bird.x, bird.y);
       const angle = Math.min(Math.PI / 4, Math.max(-Math.PI / 4, bird.vy * 0.08));
       ctx.rotate(angle);
-      // Glow
+
+      // Efek Pendar Neon
       ctx.shadowColor = '#00f0ff';
-      ctx.shadowBlur = 12;
-      // Body
+      ctx.shadowBlur = 14;
+
+      // Badan Drone
       ctx.fillStyle = '#00f0ff';
       ctx.beginPath();
-      ctx.arc(0, 0, bird.size, 0, Math.PI * 2);
+      ctx.moveTo(bird.size + 4, 0);
+      ctx.lineTo(-bird.size + 2, -bird.size * 0.85);
+      ctx.lineTo(-bird.size * 0.5, 0);
+      ctx.lineTo(-bird.size + 2, bird.size * 0.85);
+      ctx.closePath();
       ctx.fill();
-      // Eye
-      ctx.fillStyle = '#070b14';
+
+      // Inti Sensor Energi
+      ctx.fillStyle = '#060913';
+      ctx.shadowBlur = 0;
       ctx.beginPath();
-      ctx.arc(6, -4, 4, 0, Math.PI * 2);
+      ctx.arc(0, 0, 4, 0, Math.PI * 2);
       ctx.fill();
-      // Wing
-      ctx.fillStyle = '#38bdf8';
-      ctx.beginPath();
-      ctx.ellipse(-6, 2, 8, 4, -0.2, 0, Math.PI * 2);
-      ctx.fill();
+
+      // Jet Api Pendorong
+      if (isPlaying) {
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.moveTo(-bird.size * 0.5, -3);
+        ctx.lineTo(-bird.size - 6 - (Math.random() * 5), 0);
+        ctx.lineTo(-bird.size * 0.5, 3);
+        ctx.closePath();
+        ctx.fill();
+      }
+
       ctx.restore();
 
       requestAnimationFrame(loop);

@@ -8,6 +8,18 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.5.0] - 2026-11-19
+### Added & Changed (Remake Batch 1: Cyber Bird, Tekno Memory, Circuit Flow & Cover Preview Card)
+- **Remake Game Batch 1 Sesuai Standar Mutlak `game-guide.md`:**
+  - **`cyber-bird` ([index.html](public/games/cyber-bird/index.html)):** Single-file pure Canvas 2D, zero-emoji, progressive speed scaling, sistem High Score `localStorage`, tombol audio Web Audio API, dan pengiriman event `postMessage`.
+  - **`tekno-memory` ([index.html](public/games/tekno-memory/index.html)):** Single-file pure CSS Grid & SVG, zero-emoji (12 ikon sirkuit teknologi), level scaling Pou-style (2x2 s.d 4x4), countdown timer, bonus sisa waktu, dan High Score `localStorage`.
+  - **`circuit-flow` ([index.html](public/games/circuit-flow/index.html)):** Single-file pure Canvas 2D, puzzle connect node neon 9 level (4x4, 5x5, 6x6), validasi jalur kabel non-overlapping, scoring, dan High Score `localStorage`.
+- **Standarisasi Cover Preview 600x400 ([GameCard.tsx](src/components/game/GameCard.tsx)):**
+  - Membuat file `preview.png` resolusi 600x400 (< 50 KB) untuk `cyber-bird`, `tekno-memory`, dan `circuit-flow`.
+  - Memperbarui komponen `GameCard.tsx` untuk menampilkan gambar cover `preview.png` penuh (`object-fit: cover`) sesuai Bagian 4 `game-guide.md`.
+  - Mendaftarkan `circuit-flow` ke katalog metadata di `src/lib/games-data.ts`.
+  - Memperbarui riwayat rilis pada `game-log.md`.
+
 ## [3.4.2] - 2026-11-19
 ### Added (Google AdSense Official Integration & ads.txt Verification)
 - **Implementasi Skrip Loader & Konfigurasi AdSense ([layout.tsx](src/app/layout.tsx), [.env.local](.env.local)):**

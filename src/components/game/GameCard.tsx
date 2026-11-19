@@ -62,7 +62,9 @@ const getPlayForgeGradient = (slug: string, category: string) => {
 };
 
 export default function GameCard({ game }: GameCardProps) {
-  // Ambil 2 huruf inisial dari judul game untuk visual Monogram PlayForge
+  const [imgError, setImgError] = React.useState(false);
+
+  // Ambil 2 huruf inisial dari judul game untuk visual Monogram PlayForge fallback
   const getInitials = (title: string) => {
     const clean = title.split(":")[0].trim();
     const parts = clean.split(" ");
@@ -80,34 +82,45 @@ export default function GameCard({ game }: GameCardProps) {
       href={`/play/${game.slug}`}
       className="group flex flex-col overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 p-3 transition-all duration-300 hover:border-indigo-400/50 hover:bg-white/[0.06] hover:shadow-[0_12px_30px_rgba(0,0,0,0.5)]"
     >
-      {/* Visual Tile Monogram PlayForge */}
+      {/* Visual Tile Thumbnail Preview Sesuai game-guide.md */}
       <div
-        className={`relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-gradient-to-br ${gradientClass} p-3.5 shadow-md flex flex-col justify-between transition-transform duration-300 group-hover:scale-[1.02]`}
+        className={`relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-gradient-to-br ${gradientClass} shadow-md flex flex-col justify-between transition-transform duration-300 group-hover:scale-[1.02]`}
       >
-        {/* Dekorasi Garis Lengkung Halus SVG di Latar Belakang */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d="M0,50 Q25,0 50,50 T100,50" fill="none" stroke="white" strokeWidth="2" />
-            <path d="M0,80 Q50,20 100,80" fill="none" stroke="white" strokeWidth="1.5" />
-          </svg>
-        </div>
+        {!imgError ? (
+          <img
+            src={`/games/${game.slug}/preview.png`}
+            alt={game.title}
+            className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-300 group-hover:scale-105"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <>
+            {/* Dekorasi Garis Lengkung Halus SVG di Latar Belakang */}
+            <div className="absolute inset-0 opacity-20 pointer-events-none">
+              <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0,50 Q25,0 50,50 T100,50" fill="none" stroke="white" strokeWidth="2" />
+                <path d="M0,80 Q50,20 100,80" fill="none" stroke="white" strokeWidth="1.5" />
+              </svg>
+            </div>
+
+            {/* Tengah: Monogram 2 Huruf Tebal Fallback */}
+            <div className="relative z-10 my-auto flex items-center justify-center">
+              <span className="font-heading text-4xl sm:text-5xl font-black tracking-tight text-white/90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-110">
+                {initials}
+              </span>
+            </div>
+          </>
+        )}
 
         {/* Baris Atas: Kategori Badge */}
-        <div className="relative z-10 flex items-center justify-between">
-          <span className="rounded-full bg-black/30 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+        <div className="relative z-10 flex items-center justify-between p-3.5 pointer-events-none">
+          <span className="rounded-full bg-black/60 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white border border-white/10 shadow-sm">
             {getCategoryLabel(game.category)}
           </span>
         </div>
 
-        {/* Tengah: Monogram 2 Huruf Tebal */}
-        <div className="relative z-10 my-auto flex items-center justify-center">
-          <span className="font-heading text-4xl sm:text-5xl font-black tracking-tight text-white/90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-110">
-            {initials}
-          </span>
-        </div>
-
         {/* Sudut Kanan Bawah: Tombol Play Mengambang */}
-        <div className="relative z-10 flex justify-end">
+        <div className="relative z-10 flex justify-end p-3.5 pointer-events-none">
           <span className="grid h-7 w-7 place-items-center rounded-full bg-white text-slate-900 opacity-0 shadow-md backdrop-blur transition-all duration-200 group-hover:opacity-100 group-hover:scale-105">
             <Play className="h-3.5 w-3.5 fill-current ml-0.5" />
           </span>
