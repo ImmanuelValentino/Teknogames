@@ -8,6 +8,16 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.4.1] - 2026-11-19
+### Added (SEO & Social Meta Tags Integration in Layout Header)
+- **Implementasi Meta Tags SEO & OpenGraph ([layout.tsx](src/app/layout.tsx)):**
+  - Menambahkan title persis: `Game Online Gratis Tanpa Download – TeknoGame`.
+  - Menambahkan meta description, robots (`index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1`), dan link canonical `https://www.teknotama.com/games/`.
+  - Menambahkan OpenGraph meta tags (`og:type`, `og:locale`, `og:site_name`, `og:title`, `og:description`, `og:url`, `og:image`, `og:image:alt`).
+  - Menambahkan Twitter Card meta tags (`twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`).
+  - Menambahkan JSON-LD Schema.org `WebSite` structured data pada baris baru untuk meningkatkan rich snippets pencarian Google.
+  - Memverifikasi output build statis di folder `out/` agar seluruh metadata terinjeksi ke file HTML.
+
 ## [3.4.0] - 2026-11-19
 ### Redesign Total Frontend (Figma-Driven), Auto-Discovery Game, & Standardisasi Ads (1080 x 90)
 

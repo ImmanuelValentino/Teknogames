@@ -32,26 +32,31 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Tekno Game - Portal Permainan Web HTML5 Resmi PT Teknotama Prakarsa Mulia",
-    template: "%s | Tekno Game",
+    default: "Game Online Gratis Tanpa Download – TeknoGame",
+    template: "%s | TeknoGame",
   },
   description:
-    "Portal resmi permainan web HTML5 persembahan PT Teknotama Prakarsa Mulia. Mainkan petualangan, arkade, teka-teki, dan aksi gratis langsung di peramban tanpa instalasi.",
+    "Mainkan game online gratis tanpa download di TeknoGame! Nikmati game HTML5 arcade, petualangan, puzzle, balap, aksi, dan santai langsung di browser.",
   keywords: [
-    "Tekno Game",
-    "permainan web",
-    "permainan daring gratis",
-    "permainan html5 indonesia",
+    "TeknoGame",
+    "Game Online Gratis Tanpa Download",
+    "game web",
+    "game online gratis",
+    "game html5 indonesia",
     "Tekno Game Teknotama",
     "PT Teknotama Prakarsa Mulia",
-    "permainan peramban gratis",
-    "permainan tanpa instalasi",
+    "game peramban gratis",
+    "game tanpa download",
+    "arcade",
+    "puzzle",
+    "petualangan",
+    "balap",
   ],
   authors: [{ name: "PT Teknotama Prakarsa Mulia", url: "https://teknotama.com" }],
   creator: "PT Teknotama Prakarsa Mulia",
   publisher: "PT Teknotama Prakarsa Mulia",
   alternates: {
-    canonical: GAME_BASE_PATH || "/",
+    canonical: "https://www.teknotama.com/games/",
   },
   robots: {
     index: true,
@@ -72,19 +77,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "id_ID",
-    url: getGamePortalUrl(),
-    siteName: "Tekno Game",
-    title: "Tekno Game - Portal Permainan Web HTML5 Resmi PT Teknotama Prakarsa Mulia",
+    url: "https://www.teknotama.com/games/",
+    siteName: "TeknoGame",
+    title: "Game Online Gratis Tanpa Download – TeknoGame",
     description:
-      "Mainkan aneka permainan web HTML5 gratis di Tekno Game, sub-portal resmi PT Teknotama Prakarsa Mulia.",
+      "Jelajahi game HTML5 gratis: arcade, petualangan, puzzle, balap, dan aksi. Main langsung dari browser tanpa instalasi.",
     images: [
       {
-        url: getGamePortalUrl("/Teknogame_logo_only.png"),
-        width: 800,
-        height: 800,
-        alt: "Logo resmi Tekno Game",
+        url: "https://www.teknotama.com/path-gambar-og-games.jpg",
+        alt: "TeknoGame - Portal Game Online Gratis",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Game Online Gratis Tanpa Download – TeknoGame",
+    description:
+      "Mainkan game HTML5 gratis langsung di browser. Pilih arcade, puzzle, petualangan, balap, dan lainnya.",
+    images: ["https://www.teknotama.com/path-gambar-og-games.jpg"],
   },
 };
 
@@ -100,6 +110,50 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${plusJakartaSans.variable} antialiased dark`}
     >
       <head>
+        <title>Game Online Gratis Tanpa Download – TeknoGame</title>
+
+        <meta name="description" content="Mainkan game online gratis tanpa download di TeknoGame! Nikmati game HTML5 arcade, petualangan, puzzle, balap, aksi, dan santai langsung di browser." />
+
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+        <link rel="canonical" href="https://www.teknotama.com/games/" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="id_ID" />
+        <meta property="og:site_name" content="TeknoGame" />
+        <meta property="og:title" content="Game Online Gratis Tanpa Download – TeknoGame" />
+        <meta property="og:description" content="Jelajahi game HTML5 gratis: arcade, petualangan, puzzle, balap, dan aksi. Main langsung dari browser tanpa instalasi." />
+        <meta property="og:url" content="https://www.teknotama.com/games/" />
+        <meta property="og:image" content="https://www.teknotama.com/path-gambar-og-games.jpg" />
+        <meta property="og:image:alt" content="TeknoGame - Portal Game Online Gratis" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Game Online Gratis Tanpa Download – TeknoGame" />
+        <meta name="twitter:description" content="Mainkan game HTML5 gratis langsung di browser. Pilih arcade, puzzle, petualangan, balap, dan lainnya." />
+        <meta name="twitter:image" content="https://www.teknotama.com/path-gambar-og-games.jpg" />
+
+        {/* SEO Improvement Baris Baru: Schema.org JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "TeknoGame",
+              "alternateName": "Teknotama Games",
+              "url": "https://www.teknotama.com/games/",
+              "description":
+                "Mainkan game online gratis tanpa download di TeknoGame! Nikmati game HTML5 arcade, petualangan, puzzle, balap, aksi, dan santai langsung di browser.",
+              "inLanguage": "id-ID",
+              "publisher": {
+                "@type": "Organization",
+                "name": "PT Teknotama Prakarsa Mulia",
+                "url": "https://teknotama.com"
+              }
+            })
+          }}
+        />
+
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
         <link rel="preconnect" href="https://teknotama.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
