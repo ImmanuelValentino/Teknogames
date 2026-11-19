@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
-  Search,
   Dices,
   Trophy,
   Heart,
@@ -22,11 +21,7 @@ import {
 import { INITIAL_GAMES, CATEGORIES } from "@/lib/games-data";
 import { GameCategory } from "@/types/game";
 
-interface NavbarProps {
-  onOpenSearch?: () => void;
-}
-
-export default function Navbar({ onOpenSearch }: NavbarProps) {
+export default function Navbar() {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -184,18 +179,8 @@ export default function Navbar({ onOpenSearch }: NavbarProps) {
             </Link>
           </nav>
 
-          {/* Sisi Kanan: Pencarian dan Link Sponsor teknotama.com */}
+          {/* Sisi Kanan: Link Sponsor teknotama.com */}
           <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              onClick={onOpenSearch}
-              aria-label="Cari Permainan"
-              className="flex min-h-11 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 text-xs text-slate-300 transition-colors hover:border-[#255dce]/50 hover:text-white"
-            >
-              <Search className="w-3.5 h-3.5" />
-              <span className="hidden font-normal md:inline">Cari permainan...</span>
-            </button>
-
             <a
               href="https://teknotama.com"
               target="_blank"
