@@ -1,3 +1,21 @@
+### [2026-11-20 11:40] - [Games] - Remake Game Werewolf: Setup 5-15 Pemain, Pemilihan Kartu Interaktif, Siklus Malam & Siang Lengkap
+- **Kondisi Sebelum:** Game `werewolf` sebelumnya belum memiliki sistem input dinamis 5-15 pemain, belum ada interaksi pemilihan kartu tertutup (card pick), peran Hunter belum terintegrasi, belum ada perlindungan Seer/Bodyguard dengan aturan anti-spam beruntun, serta transisi giliran belum menggunakan Privacy Screen ("Oper HP").
+- **Perubahan Sesudah:**
+  1. Merombak total `public/games/werewolf/index.html` menjadi single-file responsif modern berbasis panduan spesifik pengguna:
+     - Input dinamis 5 hingga 15 pemain dengan penyimpanan nama di `localStorage` (`teknogames_werewolf_players`).
+     - Komposisi peran seimbang otomatis (*Auto-Balance*) dan kustomisasi manual: Werewolf, Villager, Seer, Bodyguard, Hunter.
+     - Interaksi pemilihan kartu (*Interactive Card Pick*) dengan animasi 3D flip card, pengungkapan peran rahasia, serta Privacy Screen transisi per giliran.
+     - Siklus malam terurut: Bodyguard (proteksi malam dengan validasi anti orang yang sama 2 malam berturut-turut), Werewolf (daftar sesama rekan & target mangsa), Seer (terawang instan: Werewolf atau Warga).
+     - Pengumuman fajar & skill tembakan pembalasan Hunter saat tereliminasi.
+     - Timer diskusi siang interaktif + sesi voting eksekusi gantung desa.
+     - Kondisi kemenangan terverifikasi otomatis (Warga menang jika Werewolf musnah, Werewolf menang jika Werewolf >= Non-Werewolf).
+     - Web Audio API synthesizer kustom (lonceng, lolongan serigala, mata seer, tembakan pemburu, palu sidang).
+     - Zero-emoji policy 100% menggunakan SVG inline kustom untuk seluruh peran, fajar/malam, dan tombol.
+  2. Pengujian dilakukan via browser instance terisolasi Chrome DevTools port 9222 oleh subagent QA (0 console error, interaksi kartu, privacy screen, dan tab ditutup kembali dengan rapi).
+  3. Dokumen `game-log.md`, `UPDATE.md`, dan `laporan.md` diperbarui.
+- **Masalah yang Ditemukan:** Tidak ada. Seluruh alur berjalan stabil dan lancar.
+- **File Terdampak:** `public/games/werewolf/index.html`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
+
 ### [2026-11-20 11:30] - [Games] - Upgrade Jalur PCB Circuit Flow & Logika Bebas Bug (Pou Connect & Backtracking)
 - **Kondisi Sebelum:** Garis jalur `circuit-flow` sebelumnya berupa pipa polos biasa, beberapa level sulit/tidak solvable (unsolvable), dan jalur tidak otomatis terpotong saat saling bertabrakan sehingga pemain mudah stuck.
 - **Perubahan Sesudah:**
@@ -19,6 +37,24 @@
   5. Menjalankan `npm run build` sehingga rute `/play/batik-flow` bersih dari export statis `out/`.
 - **Masalah yang Ditemukan:** Tidak ada.
 - **File Terdampak:** `public/games/batik-flow/*`, `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `AGENTS.md`, `game-guide.md`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
+
+### [2026-11-20 11:40] - [Games] - Remake Game Werewolf: Setup 5-15 Pemain, Pemilihan Kartu Interaktif, Siklus Malam & Siang Lengkap
+- **Kondisi Sebelum:** Game `werewolf` sebelumnya belum memiliki sistem input dinamis 5-15 pemain, belum ada interaksi pemilihan kartu tertutup (card pick), peran Hunter belum terintegrasi, belum ada perlindungan Seer/Bodyguard dengan aturan anti-spam beruntun, serta transisi giliran belum menggunakan Privacy Screen ("Oper HP").
+- **Perubahan Sesudah:**
+  1. Merombak total `public/games/werewolf/index.html` menjadi single-file responsif modern berbasis panduan spesifik pengguna:
+     - Input dinamis 5 hingga 15 pemain dengan penyimpanan nama di `localStorage` (`teknogames_werewolf_players`).
+     - Komposisi peran seimbang otomatis (*Auto-Balance*) dan kustomisasi manual: Werewolf, Villager, Seer, Bodyguard, Hunter.
+     - Interaksi pemilihan kartu (*Interactive Card Pick*) dengan animasi 3D flip card, pengungkapan peran rahasia, serta Privacy Screen transisi per giliran.
+     - Siklus malam terurut: Bodyguard (proteksi malam dengan validasi anti orang yang sama 2 malam berturut-turut), Werewolf (daftar sesama rekan & target mangsa), Seer (terawang instan: Werewolf atau Warga).
+     - Pengumuman fajar & skill tembakan pembalasan Hunter saat tereliminasi.
+     - Timer diskusi siang interaktif + sesi voting eksekusi gantung desa.
+     - Kondisi kemenangan terverifikasi otomatis (Warga menang jika Werewolf musnah, Werewolf menang jika Werewolf >= Non-Werewolf).
+     - Web Audio API synthesizer kustom (lonceng, lolongan serigala, mata seer, tembakan pemburu, palu sidang).
+     - Zero-emoji policy 100% menggunakan SVG inline kustom untuk seluruh peran, fajar/malam, dan tombol.
+  2. Pengujian dilakukan via browser instance terisolasi Chrome DevTools port 9222 oleh subagent QA (0 console error, interaksi kartu, privacy screen, dan tab ditutup kembali dengan rapi).
+  3. Dokumen `game-log.md`, `UPDATE.md`, dan `laporan.md` diperbarui.
+- **Masalah yang Ditemukan:** Tidak ada. Seluruh alur berjalan stabil dan lancar.
+- **File Terdampak:** `public/games/werewolf/index.html`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
 
 ### [2026-11-20 11:30] - [Games] - Upgrade Jalur PCB Circuit Flow & Logika Bebas Bug (Pou Connect & Backtracking)
 - **Kondisi Sebelum:** Garis jalur `circuit-flow` sebelumnya berupa pipa polos biasa, beberapa level sulit/tidak solvable (unsolvable), dan jalur tidak otomatis terpotong saat saling bertabrakan sehingga pemain mudah stuck.

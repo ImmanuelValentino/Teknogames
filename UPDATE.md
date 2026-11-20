@@ -8,6 +8,35 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.11.0] - 2026-11-20
+### Added & Changed (Remake Werewolf: 5-15 Players Setup, Interactive Tarot Card Pick & Complete Night/Day Cycle)
+- **Setup Pemain Fleksibel & Dinamis (5–15 Pemain):**
+  - Input nama dinamis untuk 5 hingga 15 pemain pada satu perangkat dengan tombol tambah/hapus pemain.
+  - Komposisi peran seimbang otomatis (*Auto-Balance*) serta opsi kustomisasi manual sebelum mulai main.
+  - Peran lengkap terintegrasi: Werewolf, Villager, Seer, Bodyguard, dan Hunter.
+  - State nama pemain tersimpan otomatis di `localStorage` (`teknogames_werewolf_players`) untuk kemudahan replay langsung.
+- **Mekanisme Pemilihan Kartu Interaktif (*Interactive Card Pick*):**
+  - Papan grid kartu tertutup (*face-down cards*) teracak dengan giliran pemain satu per satu.
+  - Efek 3D flip card saat kartu disentuh, menampilkan ilustrasi SVG per peran dan kartu ringkasan tugas.
+  - Layar Transisi Privasi Aman (*Privacy Screen* "Oper HP ke [Nama Pemain]") di setiap pergantian giliran agar peran tidak diintip pemain lain.
+- **Siklus Malam Berurutan (*Night Phase*):**
+  - **Bodyguard:** Melindungi 1 pemain dari serangan serigala dengan validasi ketat larangan melindungi orang yang sama 2 malam berturut-turut.
+  - **Werewolf:** Menampilkan daftar rekan sesama serigala dan memilih 1 target korban mangsa.
+  - **Seer:** Menerawang identitas pemain terpilih secara instan ("WEREWOLF" atau "BUKAN WEREWOLF / WARGA").
+  - Dummy screen otomatis disimulasikan jika pemilik peran telah gugur untuk menyamarkan durasi giliran.
+- **Siklus Siang, Skill Pembalasan Hunter & Sidang Voting:**
+  - Pengumuman fajar atas peristiwa malam hari (selamat karena terlindungi atau tewas beserta pengungkapan peran).
+  - **Skill Trigger Kematian Hunter:** Saat Hunter tereliminasi (diserang serigala semalam maupun digantung di siang hari), muncul kesempatan menembak 1 pemain lain untuk ikut gugur bersamanya.
+  - Timer diskusi interaktif (1 s.d. 3 menit) dilengkapi tombol *Lewati ke Voting*.
+  - Sesi voting eksekusi sidang gantung desa untuk mengeliminasi tersangka perolehan suara terbanyak.
+- **Atmosfer & UI/UX Mutlak Tanpa Emoji:**
+  - Tema *Dark Gothic Midnight Village* yang nyaman dimainkan malam hari dan responsif mobile-first.
+  - Zero-emoji policy lolos 100% menggunakan ikon SVG inline kustom untuk seluruh peran, fase bulan/matahari, status, dan tombol navigasi.
+  - Web Audio API synthesizer terintegrasi (lonceng malam, lolongan serigala, mantra penerawang, tembakan pemburu, palu sidang, terompet kemenangan).
+- **Pengujian & Verifikasi Terisolasi:**
+  - Lulus verifikasi browser otomatis via Chrome DevTools remote debugging port 9222 dengan 0 console error.
+  - Seluruh alur (Setup Pemain -> Pemilihan Kartu -> Privacy Screen) terverifikasi berjalan mulus dan tab uji ditutup rapi.
+
 ## [3.10.0] - 2026-11-20
 ### Improved & Fixed (Circuit Flow Visuals & Zero-Bug Connection Algorithm)
 - **Upgrade Visual Jalur Sirkuit Elektronik (PCB Circuit Trace):**

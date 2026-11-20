@@ -1,3 +1,18 @@
+### 2026-11-20 - Werewolf: Malam & Desa (Remake Interaktif 5-15 Pemain)
+- **Folder Game:** `public/games/werewolf`
+- **Deskripsi:** Remake penuh sistem moderator otomatis Werewolf untuk 5-15 pemain dalam 1 perangkat: input nama dinamis & auto-balance role, grid pemilihan kartu peran interaktif (3D flip card) dengan layar transisi aman (Privacy Screen), siklus malam berurutan (Bodyguard anti-spam 2 malam berturut-turut, Werewolf melihat rekan serigala, Seer terawang instan), pengumuman fajar, skill kematian tembakan balasan Hunter, timer diskusi desa (2-3 menit), serta sidang voting eksekusi siang.
+- **Fitur Utama:**
+  - [x] Gameplay HTML5 Single File (Responsive Mobile & Desktop)
+  - [x] Input Dinamis 5-15 Pemain + LocalStorage Persistence
+  - [x] Pemilihan Kartu Interaktif (3D Card Pick & Flip Animation)
+  - [x] Layar Transisi Aman (Privacy Screen Anti-Intip)
+  - [x] Siklus Malam Berurutan & Dummy Screen Simulasi
+  - [x] Skill Pembalasan Hunter Saat Gugur
+  - [x] Timer Diskusi Desa & Voting Sidang Gantung
+  - [x] Ilustrasi Vektor SVG Kustom (Zero-Emoji) & Web Audio API Synth
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - Circuit Flow: PCB Circuit Trace & Algorithm Upgrade
 - **Folder Game:** `public/games/circuit-flow`
 - **Deskripsi:** Peningkatan besar pada visual dan logika koneksi sirkuit: jalur kini mengadopsi jejak tembaga PCB (*copper trace*, *circuit core*, dan *flowing electron pulse* dinamis), algoritma interaksi jalur bebas bug berbasis standar Pou Connect & Flow Free (backtracking otomatis, penimpaan tabrakan jalur, kalkulasi cakupan grid), serta 9 level puzzle yang diverifikasi 100% solvable menggunakan solver backtracking.
