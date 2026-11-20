@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -17,14 +17,41 @@ import {
   Puzzle,
   Zap,
   Coffee,
+  Dumbbell,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { INITIAL_GAMES, CATEGORIES } from "@/lib/games-data";
 import { GameCategory } from "@/types/game";
+
+type Theme = "light" | "dark";
+const THEME_STORAGE_KEY = "teknogame-theme";
+const THEME_CHANGE_EVENT = "teknogame-theme-change";
+
+function getTheme(): Theme {
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
+
+function subscribeToTheme(onChange: () => void) {
+  function handleStorage(event: StorageEvent) {
+    if (event.key !== THEME_STORAGE_KEY && event.key !== null) return;
+    document.documentElement.dataset.theme = event.newValue === "dark" ? "dark" : "light";
+    onChange();
+  }
+
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(THEME_CHANGE_EVENT, onChange);
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(THEME_CHANGE_EVENT, onChange);
+  };
+}
 
 export default function Navbar() {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const theme = useSyncExternalStore(subscribeToTheme, getTheme, () => "light");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,20 +75,33 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   };
 
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = nextTheme;
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    } catch (error) {
+      console.error("Preferensi tema tidak dapat disimpan.", error);
+    }
+  };
+
   const getCategoryIcon = (id: GameCategory) => {
     switch (id) {
       case "arcade":
-        return <Gamepad2 className="w-4 h-4 text-[#8caeff]" />;
+        return <Gamepad2 className="w-4 h-4 text-red-700" strokeWidth={2.5} />;
       case "adventure":
-        return <Compass className="w-4 h-4 text-emerald-400" />;
+        return <Compass className="w-4 h-4 text-emerald-700" strokeWidth={2.5} />;
       case "puzzle":
-        return <Puzzle className="w-4 h-4 text-sky-400" />;
+        return <Puzzle className="w-4 h-4 text-rose-700" strokeWidth={2.5} />;
       case "action":
-        return <Zap className="w-4 h-4 text-purple-400" />;
+        return <Zap className="w-4 h-4 text-rose-700" strokeWidth={2.5} />;
       case "casual":
-        return <Coffee className="w-4 h-4 text-amber-400" />;
+        return <Coffee className="w-4 h-4 text-amber-700" strokeWidth={2.5} />;
+      case "sports":
+        return <Dumbbell className="w-4 h-4 text-yellow-700" strokeWidth={2.5} />;
       default:
-        return <Gamepad2 className="w-4 h-4 text-[#8caeff]" />;
+        return <Gamepad2 className="w-4 h-4 text-red-700" strokeWidth={2.5} />;
     }
   };
 
@@ -73,12 +113,12 @@ export default function Navbar() {
           <div className="flex items-center shrink-0">
             <Link
               href="/"
-              className="flex items-center gap-2.5 group select-none"
+              className="navbar-brand flex items-center gap-2.5 group select-none"
               title="Tekno Game"
             >
               <div className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0">
                 <Image
-                  src="/games/Teknogame_logo_only.png"
+                  src="/games/TeknoGame_logo_red.png"
                   alt="Logo Tekno Game"
                   fill
                   sizes="40px"
@@ -91,7 +131,7 @@ export default function Navbar() {
                   <span className="font-heading text-xl font-bold tracking-tight text-white sm:text-[1.35rem]">
                     Tekno
                   </span>
-                  <span className="font-heading text-xl font-bold tracking-tight text-[#8caeff] sm:text-[1.35rem]">
+                  <span className="font-heading text-xl font-bold tracking-tight text-[#ff8c9f] sm:text-[1.35rem]">
                     Game
                   </span>
                 </div>
@@ -131,7 +171,7 @@ export default function Navbar() {
                     onClick={() => setDropdownOpen(false)}
                     className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/8 transition-colors"
                   >
-                    <Gamepad2 className="w-4 h-4 text-[#8caeff]" />
+                    <Gamepad2 className="w-4 h-4 text-[#ff8c9f]" />
                     <span>Semua Permainan</span>
                   </Link>
                   <div className="h-px bg-white/8 my-1" />
@@ -165,7 +205,9 @@ export default function Navbar() {
               href="/#papan-skor"
               className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
             >
-              <Trophy className="w-4 h-4 text-amber-400" />
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
+                <Trophy className="h-4 w-4 text-amber-700" strokeWidth={2.5} />
+              </span>
               <span>Papan Skor</span>
             </Link>
 
@@ -174,13 +216,29 @@ export default function Navbar() {
               href="/#favorit"
               className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
             >
-              <Heart className="w-4 h-4 text-rose-400" />
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/25 bg-rose-400/15">
+                <Heart className="h-4 w-4 fill-current text-rose-600" strokeWidth={2.5} />
+              </span>
               <span>Favorit</span>
             </Link>
           </nav>
 
           {/* Sisi Kanan: Link Sponsor teknotama.com */}
           <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors ${
+                theme === "dark"
+                  ? "border-[#51535c] bg-[#2b2d34] text-[#f3f4f6]"
+                  : "border-[#b6a8aa] bg-[#e3d3d6] text-[#241b1d]"
+              }`}
+              aria-label={`Aktifkan mode ${theme === "dark" ? "terang" : "gelap"}`}
+              aria-pressed={theme === "dark"}
+              title={`Mode ${theme === "dark" ? "gelap" : "terang"}`}
+            >
+              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </button>
             <a
               href="https://teknotama.com"
               target="_blank"
@@ -188,7 +246,7 @@ export default function Navbar() {
               className="hidden min-h-11 items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold shadow-sm transition sm:inline-flex btn-sponsor"
             >
               <span>teknotama.com</span>
-              <ExternalLink className="w-3 h-3 text-white/80" />
+              <ExternalLink className="h-3 w-3" />
             </a>
 
             <button
@@ -205,13 +263,13 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#255dce]/10 bg-[#0a0e1a] px-4 py-4 space-y-2 shadow-xl">
+        <div className="lg:hidden border-t border-[#ce2541]/10 bg-[#1a0a0d] px-4 py-4 space-y-2 shadow-xl">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-semibold text-white hover:bg-white/8 transition-colors"
           >
-            <Gamepad2 className="w-4 h-4 text-[#8caeff]" />
+            <Gamepad2 className="w-4 h-4 text-[#ff8c9f]" />
             <span>Beranda</span>
           </Link>
 
@@ -248,7 +306,9 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen(false)}
             className="flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/8"
           >
-            <Trophy className="w-4 h-4 text-amber-400" />
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
+              <Trophy className="h-4 w-4 text-amber-700" strokeWidth={2.5} />
+            </span>
             <span>Papan Skor</span>
           </Link>
 
@@ -257,7 +317,9 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen(false)}
             className="flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/8"
           >
-            <Heart className="w-4 h-4 text-rose-400" />
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/25 bg-rose-400/15">
+              <Heart className="h-4 w-4 fill-current text-rose-600" strokeWidth={2.5} />
+            </span>
             <span>Favorit</span>
           </Link>
 
@@ -269,7 +331,7 @@ export default function Navbar() {
               className="flex min-h-11 w-full items-center justify-between rounded-full px-4 py-2.5 text-xs font-semibold shadow-md btn-sponsor"
             >
               <span>Kunjungi teknotama.com</span>
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className="h-4 w-4" />
             </a>
           </div>
         </div>

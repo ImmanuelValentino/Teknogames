@@ -1,3 +1,10 @@
+### [2026-11-20 18:02] - [Frontend & Dokumentasi] - Preferensi Tema, Papan Skor, dan Kartu Hero (Merged from main)
+- **Ringkasan:** Portal Tekno Game diperbarui dengan preferensi tema terang/gelap yang tersimpan dan sinkron antar-tab. Mode gelap menggunakan latar `#17181c`; tombol tema berupa ikon bulat di sisi tautan Teknotama.
+- **Papan Skor:** Beranda menampilkan lima skor tertinggi. Peringkat pertama mendapat kartu utama di kiri, sementara peringkat 2–5 ditumpuk di kanan dengan skor, poin, tombol mainkan ulang, dan artwork game atau fallback SVG.
+- **Kartu Hero:** Kartu pilihan kedua dapat diklik untuk naik ke lapisan atas. Hanya kartu teratas yang membuka game; kartu belakang harus dinaikkan terlebih dahulu. Efek hover kartu aktif konsisten, dan kartu kedua kini opak dengan gradasi ungu-violet.
+- **Dokumentasi:** [Design.md](Design.md) ditulis ulang agar mencatat tampilan yang benar-benar diterapkan, dan riwayat pembaruan dicatat di [UPDATE.md](UPDATE.md).
+- **Validasi:** ESLint dan `npx tsc --noEmit` berhasil untuk komponen hero.
+
 ### [2026-11-20 12:55] - [Games] - Penambahan Teks SEO Faktual Halaman Game & Peningkatan Rich Snippet
 - **Kondisi Sebelum:** Halaman game (`/play/[slug]`) hanya memiliki deskripsi singkat 1–2 kalimat, skema metadata belum menyertakan rating bintang ulasan u/ SERP Google, dan belum ada FAQ serta spesifikasi teknis untuk mengoptimalkan kata kunci organik.
 - **Perubahan Sesudah:**
@@ -105,6 +112,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Seluruh checklist kualitas di `game-guide.md` telah dipenuhi dan lolos kompilasi.
 - **File Terdampak:** `public/games/cyber-bird/*`, `public/games/tekno-memory/*`, `public/games/circuit-flow/*`, `src/components/game/GameCard.tsx`, `src/lib/games-data.ts`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
 
 ### [2026-11-19 22:52] - [Fullstack] - Integrasi Resmi Google AdSense, Skrip Loader Head, dan File ads.txt
 - **Kondisi Sebelum:** Komponen iklan Google AdSense hanya beroperasi dengan placeholder lokal dan mock client ID tanpa skrip loader resmi di header serta belum memiliki file verifikasi `ads.txt`.

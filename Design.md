@@ -1,45 +1,53 @@
 # Panduan Desain Tekno Game
 
-Dokumen ini mencatat sistem visual portal Tekno Game pada `teknotama.com/games`. Hierarki halaman mengikuti referensi: hero editorial, permainan sorotan, katalog, ringkasan skor, informasi portal, layanan mitra, lalu ajakan kemitraan. Nama, isi, dan fitur permainan tetap milik Tekno Game.
+Dokumen ini menggambarkan tampilan dan interaksi yang saat ini diterapkan pada portal Tekno Game (`teknotama.com/games`), bukan rancangan yang belum dibuat.
 
-## Identitas visual
+## Identitas visual dan tema
 
-- Latar utama: Obsidian `#0B0E17`.
-- Kedalaman dan bayangan: Midnight Navy `#021861`.
-- Aksen interaksi: Cobalt Blue `#255dce`.
-- Energi hangat dan CTA: Burgundy `#660033` dan `#8A0045`.
-- Teks: Off-white `#F1F5F9`, sekunder `#94A3B8`.
-- Judul: Space Grotesk; teks antarmuka: Plus Jakarta Sans.
-- Logo: `public/Teknogame_logo_only.png`, berdampingan dengan nama Tekno Game.
+| Elemen | Mode terang | Mode gelap |
+| --- | --- | --- |
+| Latar halaman | `#e9e4e5` | `#17181c` |
+| Panel dan kartu | `#fffafa` | `#202127` |
+| Permukaan sekunder | `#e3d3d6` | `#292a31` |
+| Garis tepi | `#b6a8aa` | `#393b43` |
+| Teks utama | `#161616` | `#f3f4f6` |
+| Teks sekunder | `#68595c` | `#a4a6ae` |
+| Aksen utama | Rose `#ce7c8a` | Rose muda `#e09aa6` |
 
-Gunakan cahaya sebagai penekanan, bukan ornamen berulang. Hindari motto, ticker, angka aktivitas langsung yang tidak bersumber, peringkat hiasan, dan lencana promosi buatan.
+- CTA sponsor `teknotama.com` diberi penekanan warna rose. Tombol tema berbentuk bulat, hanya memakai ikon bulan/matahari, dan berada di sebelah tautan sponsor.
+- Preferensi tema disimpan di `localStorage` dengan key `teknogame-theme` serta disinkronkan antar-tab. Mode terang menjadi pilihan awal saat belum ada preferensi.
+- Skor papan peringkat memakai warna kuning terang `#ffd166` agar mudah dibaca pada kartu gelap.
+- Tumpukan font yang didefinisikan di stylesheet memakai Bahnschrift/Arial Narrow untuk judul dan Georgia untuk teks isi; sejumlah label navigasi memakai font monospace.
+- Identitas merek memakai logo Tekno Game dan aksen rose, bukan palet navy/cobalt dari rancangan lama.
 
-## Susunan halaman
+## Susunan halaman saat ini
 
-1. Navigasi tetap dengan beranda, kategori, acak, papan skor, favorit, pencarian, dan tautan mitra.
-2. Hero dengan permainan pilihan, ajakan bermain, serta cover sorotan berbasis kategori dan judul permainan.
-3. Ringkasan jumlah permainan, total permainan, akses gratis, dan penyimpanan skor.
-4. Filter kategori dan katalog responsif.
-5. Rekor skor lokal.
-6. Informasi portal, empat layanan Teknotama, dan ajakan kemitraan.
-7. Footer berisi identitas, navigasi, dan informasi mitra.
+1. **Navbar tetap:** logo, beranda, dropdown kategori, Main Acak, tautan ke papan skor dan favorit, switch tema, tautan sponsor, serta menu drawer pada layar kecil.
+2. **Hero permainan:** judul “Petualangan Baru Dimulai Di Sini”, deskripsi portal, tautan katalog, dan dua kartu game yang bertumpuk.
+3. **Slot iklan horizontal:** area leaderboard berukuran 1080 × 90.
+4. **Katalog:** filter kategori dan kartu permainan responsif.
+5. **Papan Skor Saya:** maksimal lima skor lokal. Peringkat pertama ditampilkan sebagai kartu besar di kiri; peringkat 2–5 ditampilkan di kanan. Skor menggunakan warna cerah, dan artwork memakai thumbnail game bila tersedia atau ilustrasi SVG sebagai fallback.
+6. **Permainan Favorit Saya:** daftar favorit lokal atau pesan kondisi kosong.
+7. **Tentang portal:** penjelasan singkat Tekno Game sebagai portal HTML5.
+8. **Layanan mitra dan panel kemitraan:** kartu Infrastruktur Jaringan, Sistem Awan, Keamanan Data, dan Perangkat Lunak yang tertaut ke Teknotama.
+9. **Footer:** identitas portal dan tautan informasi.
 
-Kartu katalog menampilkan ilustrasi vektor, kategori, judul, deskripsi, jumlah permainan, dan tautan. Papan skor dan favorit tetap tersimpan lokal di peramban. Iklan mempertahankan slot serta kontrol yang telah tersedia.
+## Kartu hero dan katalog
 
-## Gerak dan aksesibilitas
+- Kartu utama hero memakai gradasi rose-merah. Kartu pilihan kedua memakai gradasi ungu-violet dan opacity 100%, sehingga warnanya berbeda dan tidak transparan.
+- Klik kartu yang berada di belakang menaikkannya ke lapisan teratas tanpa mengganti identitas atau isi kartu. Kartu di belakang tidak membuka game; klik berikutnya saat sudah di atas akan memainkan game. Kartu utama dapat dinaikkan kembali dengan cara yang sama.
+- Kartu yang aktif di atas mendapat efek hover rotasi dan skala, termasuk animasi monogram dan ikon play. Warna dasar kartu tidak berubah saat diklik atau di-hover.
+- Kartu katalog memakai monogram judul dan gradasi warna yang bervariasi menurut game/kategori, dengan label kategori, deskripsi, dan aksi saat hover.
 
-- Hero menampilkan cover permainan sorotan tanpa logo, canvas 3D, atau iframe. Cover mengarah ke halaman permainan agar beranda tetap ringan.
-- Hindari animasi dekoratif berulang; interaksi inti tetap jelas tanpa efek gerak.
-- Tombol penting memakai sasaran sentuh sedikitnya 44 piksel. Fokus papan ketik tetap terlihat.
-- Gerak dan cahaya tidak boleh menghalangi interaksi, navigasi, atau isi permainan.
+## Responsif, aksesibilitas, dan data
 
-## SEO dan rute
+- Navbar, hero, katalog, papan skor, favorit, dan layanan menyesuaikan ke layar kecil; menu navigasi mobile memakai drawer.
+- Tautan dan tombol interaktif tetap dapat dijangkau melalui keyboard serta menampilkan indikator fokus.
+- Skor tertinggi dan favorit disimpan lokal di browser; tidak ditampilkan sebagai angka aktivitas global.
+- Iklan tetap berada pada slot yang ditentukan dan tidak menggantikan konten utama halaman.
 
-- Bahasa dokumen dan metadata: Indonesia.
-- Jalur publik memakai `NEXT_PUBLIC_BASE_PATH`, dengan nilai bawaan `/games`.
-- Metadata kanonis, ikon, Open Graph, WebSite, VideoGame, dan BreadcrumbList mengarah ke jalur portal yang sama.
-- Rute kategori dan permainan dibuat statis; konten utamanya tersedia dalam HTML hasil render server.
+## Rute
 
-## Batas perubahan
-
-Perubahan visual tidak mengubah struktur data inti, API, penyimpanan skor/favorit, atau mesin permainan. Isi di `public/games/` tidak boleh diubah sebagai bagian dari pembaruan desain.
+- Bahasa antarmuka utama: Indonesia.
+- Jalur portal memakai `NEXT_PUBLIC_BASE_PATH`, dengan nilai bawaan `/games`.
+- Katalog, kategori, dan halaman permainan menggunakan jalur `/`, `/category/[category]`, dan `/play/[slug]` di dalam base path portal.

@@ -17,11 +17,11 @@ export default function NotFound() {
 
   return (
     <div className="min-h-[55vh] flex flex-col items-center justify-center text-center px-4 py-16">
-      <div className="w-20 h-20 rounded-3xl bg-[#021861] border border-[#255dce]/60 text-[#8caeff] flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(37,93,206,0.4)] mb-6">
-        <Compass className="w-10 h-10 text-[#8caeff]" />
+      <div className="w-20 h-20 rounded-3xl bg-[#610212] border border-[#ce2541]/60 text-[#ff8c9f] flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(206, 37, 65,0.4)] mb-6">
+        <Compass className="w-10 h-10 text-[#ff8c9f]" />
       </div>
 
-      <span className="text-[#8caeff] text-xs font-black tracking-widest uppercase mb-2">
+      <span className="text-[#ff8c9f] text-xs font-black tracking-widest uppercase mb-2">
         Kesalahan 404 • Halaman Tidak Ditemukan
       </span>
 
@@ -31,7 +31,7 @@ export default function NotFound() {
 
       <p className="text-slate-300 text-sm max-w-md leading-relaxed mb-8">
         Halaman yang Anda tuju tidak ditemukan atau telah dipindahkan. Portal Tekno Game tersedia di subdirektori{" "}
-        <code className="text-[#8caeff] bg-[#021861]/50 px-2 py-0.5 rounded border border-[#255dce]/40 font-mono">
+        <code className="text-[#ff8c9f] bg-[#610212]/50 px-2 py-0.5 rounded border border-[#ce2541]/40 font-mono">
           /games
         </code>
         . Silakan kembali ke beranda melalui tombol di bawah:
@@ -53,9 +53,9 @@ export default function NotFound() {
               window.location.href = getGamePortalPath();
             }
           }}
-          className="min-h-11 rounded-full px-5 bg-[#021861] hover:bg-[#255dce]/30 text-slate-200 border border-[#255dce]/50 font-bold text-sm flex items-center gap-2 transition-all cursor-pointer"
+          className="min-h-11 rounded-full px-5 bg-[#610212] hover:bg-[#ce2541]/30 text-slate-200 border border-[#ce2541]/50 font-bold text-sm flex items-center gap-2 transition-all cursor-pointer"
         >
-          <RefreshCw className="w-4 h-4 text-[#8caeff]" />
+          <RefreshCw className="w-4 h-4 text-[#ff8c9f]" />
           <span>Kembali ke Tekno Game</span>
         </button>
       </div>

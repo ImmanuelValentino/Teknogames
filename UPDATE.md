@@ -4,9 +4,25 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 * **MAJOR (`X.0.0`):** Perubahan besar pada arsitektur sistem, desain/redesign total, struktur URL/SEO, atau breaking changes.
 * **MINOR (`0.X.0`):** Penambahan fitur baru, halaman baru, atau pembaruan fungsionalitas yang backward-compatible.
-* **PATCH (`0.0.X`):** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
-
+* **PATCH (`0.0.X`):
 ---
+** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
+
+## [3.5.0] - 2026-11-20
+### Added & Changed (Preferensi Tema, Papan Skor Top 5, dan Kartu Hero Interaktif)
+- **Preferensi Tema ([Navbar.tsx](src/components/layout/Navbar.tsx), [layout.tsx](src/app/layout.tsx), [globals.css](src/app/globals.css)):**
+  - Menyediakan mode terang dan gelap yang tersimpan di `localStorage` dengan key `teknogame-theme`, serta disinkronkan antar-tab.
+  - Menambahkan tombol ikon berbentuk bulat di samping tautan `teknotama.com`; latar mode gelap menggunakan `#17181c`.
+- **Papan Skor Beranda ([page.tsx](src/app/page.tsx)):**
+  - Menampilkan maksimal lima skor tertinggi: peringkat pertama sebagai kartu besar, peringkat 2–5 sebagai kartu bertumpuk di sampingnya.
+  - Menampilkan skor dengan warna terang, label poin, tombol mainkan ulang, serta gambar game atau ilustrasi SVG sebagai fallback.
+- **Kartu Game Hero ([GameHero.tsx](src/components/game/GameHero.tsx)):**
+  - Kartu pilihan kedua dapat dinaikkan ke lapisan teratas dengan klik; kartu di lapisan bawah hanya mengubah susunan dan tidak langsung membuka game.
+  - Kartu teratas dapat dimainkan dan menggunakan efek hover rotasi/skala. Kartu kedua memakai gradasi ungu-violet opak untuk membedakannya dari kartu utama.
+  - Warna berubah
+  - Sidebar dibuat sticky
+- **Dokumentasi:** Menulis ulang [Design.md](Design.md) agar sesuai dengan struktur halaman, token warna, komponen, dan interaksi yang saat ini diterapkan; memperbarui [laporan.md](laporan.md).
+- **Validasi:** ESLint dan `npx tsc --noEmit` berhasil untuk perubahan komponen hero.
 
 ## [3.13.0] - 2026-11-20
 ### Added & Improved (Game Page SEO Content & Rich Snippet Enhancement)

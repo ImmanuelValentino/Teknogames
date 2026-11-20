@@ -14,35 +14,35 @@ interface GameCardProps {
 const getPlayForgeGradient = (slug: string, category: string) => {
   switch (slug) {
     case "nusantara-runner":
-      return "from-sky-500 via-blue-600 to-indigo-600";
+      return "from-rose-500 via-red-600 to-rose-600";
     case "becak-drift":
       return "from-orange-500 via-rose-500 to-red-600";
     case "candi-stacker":
-      return "from-emerald-400 via-teal-500 to-cyan-600";
+      return "from-emerald-400 via-rose-500 to-rose-600";
     case "kapal-feri":
-      return "from-blue-500 via-indigo-600 to-violet-700";
+      return "from-red-500 via-rose-600 to-violet-700";
     case "packing-master":
       return "from-amber-400 via-orange-500 to-rose-500";
     case "layangan-sanur":
-      return "from-cyan-400 via-sky-500 to-blue-600";
+      return "from-rose-400 via-rose-500 to-red-600";
     case "kopi-klotok":
       return "from-amber-500 via-amber-600 to-orange-700";
     case "lembah-bromo":
-      return "from-teal-400 via-emerald-500 to-green-600";
+      return "from-rose-400 via-emerald-500 to-green-600";
     case "pasar-terapung":
       return "from-rose-500 via-pink-600 to-purple-600";
     case "werewolf":
-      return "from-indigo-600 via-purple-700 to-pink-800";
+      return "from-rose-600 via-purple-700 to-pink-800";
     case "cyber-bird":
       return "from-fuchsia-500 via-pink-600 to-rose-600";
     case "tekno-memory":
-      return "from-blue-600 via-indigo-700 to-purple-800";
+      return "from-red-600 via-rose-700 to-purple-800";
     default:
       switch (category) {
         case "arcade":
-          return "from-sky-500 to-indigo-600";
+          return "from-rose-500 to-rose-600";
         case "adventure":
-          return "from-emerald-400 to-teal-600";
+          return "from-emerald-400 to-rose-600";
         case "puzzle":
           return "from-purple-500 to-pink-600";
         case "action":
@@ -52,7 +52,7 @@ const getPlayForgeGradient = (slug: string, category: string) => {
         case "sports":
           return "from-green-500 to-emerald-600";
         default:
-          return "from-indigo-500 to-purple-600";
+          return "from-rose-500 to-purple-600";
       }
   }
 };
@@ -93,7 +93,7 @@ export default function GameCard({ game }: GameCardProps) {
   return (
     <Link
       href={`/play/${game.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 p-3 transition-all duration-300 hover:border-indigo-400/50 hover:bg-white/[0.06] hover:shadow-[0_12px_30px_rgba(0,0,0,0.5)]"
+      className="group flex flex-col overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 p-3 transition-all duration-300 hover:border-rose-400/50 hover:bg-white/[0.06] hover:shadow-[0_12px_30px_rgba(0,0,0,0.5)]"
     >
       {/* Visual Tile Thumbnail Preview Sesuai game-guide.md */}
       <div
@@ -145,7 +145,7 @@ export default function GameCard({ game }: GameCardProps) {
       {/* Info Teks di Bawah Kartu */}
       <div className="mt-3 flex flex-1 flex-col justify-between px-1">
         <div>
-          <h4 className="line-clamp-1 font-heading text-sm font-bold text-white transition-colors group-hover:text-indigo-300">
+          <h4 className="line-clamp-1 font-heading text-sm font-bold text-white transition-colors group-hover:text-rose-300">
             {game.title}
           </h4>
           <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-slate-400">

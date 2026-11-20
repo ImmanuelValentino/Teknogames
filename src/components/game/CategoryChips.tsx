@@ -9,7 +9,7 @@ import {
   Puzzle,
   Zap,
   Coffee,
-  Trophy,
+  Dumbbell,
 } from "lucide-react";
 
 interface CategoryChipsProps {
@@ -34,7 +34,7 @@ export default function CategoryChips({
       case "casual":
         return <Coffee className="w-3.5 h-3.5" />;
       case "sports":
-        return <Trophy className="w-3.5 h-3.5" />;
+        return <Dumbbell className="w-3.5 h-3.5" />;
       default:
         return <Gamepad2 className="w-3.5 h-3.5" />;
     }

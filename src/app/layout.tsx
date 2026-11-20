@@ -26,7 +26,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#0B0E17",
+  themeColor: "#170b0d",
 };
 
 export const metadata: Metadata = {
@@ -70,9 +70,9 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: [{ url: `${GAME_BASE_PATH}/Teknogame_logo_only.png`, type: "image/png" }],
-    shortcut: `${GAME_BASE_PATH}/Teknogame_logo_only.png`,
-    apple: `${GAME_BASE_PATH}/Teknogame_logo_only.png`,
+    icon: [{ url: `${GAME_BASE_PATH}/TeknoGame_logo_red.png`, type: "image/png" }],
+    shortcut: `${GAME_BASE_PATH}/TeknoGame_logo_red.png`,
+    apple: `${GAME_BASE_PATH}/TeknoGame_logo_red.png`,
   },
   openGraph: {
     type: "website",
@@ -110,6 +110,16 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${plusJakartaSans.variable} antialiased dark`}
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try {
+              document.documentElement.dataset.theme =
+                localStorage.getItem("teknogame-theme") === "dark" ? "dark" : "light";
+            } catch {
+              document.documentElement.dataset.theme = "light";
+            }`,
+          }}
+        />
         <title>Game Online Gratis Tanpa Download – TeknoGame</title>
 
         <meta name="description" content="Mainkan game online gratis tanpa download di TeknoGame! Nikmati game HTML5 arcade, petualangan, puzzle, balap, aksi, dan santai langsung di browser." />
@@ -166,7 +176,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body className="min-h-full text-[#F8FAFC]" suppressHydrationWarning>
+      <body className="min-h-full text-[#fcf8f9]" suppressHydrationWarning>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

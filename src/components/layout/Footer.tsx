@@ -3,20 +3,29 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ExternalLink } from "lucide-react";
-import { CATEGORIES } from "@/lib/games-data";
+import { CATEGORIES, INITIAL_GAMES } from "@/lib/games-data";
 
 export default function Footer() {
+  const router = useRouter();
+
+  const handleRandomPlay = () => {
+    if (!INITIAL_GAMES.length) return;
+    const randomGame = INITIAL_GAMES[Math.floor(Math.random() * INITIAL_GAMES.length)];
+    router.push(`/play/${randomGame.slug}`);
+  };
+
   return (
-    <footer className="mt-16 border-t border-white/10 bg-[#080d18]/80 pt-12 pb-24 text-xs text-slate-300 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-white/10">
+    <footer className="mt-2 pt-4 pb-8 text-xs">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-6 border-b border-[#b6a8aa] pb-6 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.85fr_0.85fr_1.2fr]">
           {/* Kolom 1: Identitas */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <Link href="/" className="inline-flex items-center gap-2.5 group select-none">
               <div className="relative w-10 h-10 shrink-0">
                 <Image
-                  src="/games/Teknogame_logo_only.png"
+                  src="/games/TeknoGame_logo_red.png"
                   alt="Logo Tekno Game"
                   fill
                   sizes="40px"
@@ -27,7 +36,7 @@ export default function Footer() {
                 <span className="font-heading text-lg font-bold text-white">
                   Tekno
                 </span>
-                <span className="font-heading text-lg font-bold text-[#8caeff]">
+                <span className="font-heading text-lg font-bold text-[#ff8c9f]">
                   Game
                 </span>
               </div>
@@ -42,11 +51,16 @@ export default function Footer() {
             <h4 className="text-white text-xs font-semibold uppercase tracking-wider mb-3">
               Kategori
             </h4>
-            <ul className="space-y-2">
-              {CATEGORIES.slice(0, 5).map((cat) => (
+            <ul className="space-y-1.5">
+              <li>
+                <Link href="/#katalog" className="hover:text-white transition-colors">
+                  Semua Permainan
+                </Link>
+              </li>
+              {CATEGORIES.filter((cat) => cat.id !== "all").map((cat) => (
                 <li key={cat.id}>
                   <Link
-                    href={cat.id === "all" ? "/" : `/category/${cat.id}`}
+                    href={`/category/${cat.id}`}
                     className="hover:text-white transition-colors"
                   >
                     <span>{cat.label}</span>
@@ -61,40 +75,43 @@ export default function Footer() {
             <h4 className="text-white text-xs font-semibold uppercase tracking-wider mb-3">
               Navigasi
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-1.5">
               <li>
                 <Link href="/" className="hover:text-white transition-colors">
                   Beranda
                 </Link>
               </li>
               <li>
-                <Link href="/" className="hover:text-white transition-colors">
-                  Katalog Permainan
+                <button
+                  type="button"
+                  onClick={handleRandomPlay}
+                  className="border-0 bg-transparent p-0 text-left text-[#843441] transition-colors hover:text-[#642832]"
+                >
+                  Main Acak
+                </button>
+              </li>
+              <li>
+                <Link href="/#papan-skor" className="hover:text-white transition-colors">
+                  Papan Skor
                 </Link>
               </li>
               <li>
-                <a
-                  href="https://teknotama.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors flex items-center gap-1"
-                >
-                  <span>Situs utama Teknotama</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
+                <Link href="/#favorit" className="hover:text-white transition-colors">
+                  Favorit
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Kolom 4: Mitra */}
-          <div className="space-y-2">
-            <h4 className="text-white text-xs font-semibold uppercase tracking-wider mb-2">
+          <div className="space-y-1.5">
+            <h4 className="text-white text-xs font-semibold uppercase tracking-wider">
               Partner Teknologi Resmi
             </h4>
             <p className="text-slate-300 text-xs leading-relaxed">
               Didukung oleh <strong className="text-white font-semibold">PT Teknotama Prakarsa Mulia</strong>, penyedia solusi infrastruktur teknologi informasi, sistem awan, keamanan data, dan pengembangan perangkat lunak khusus untuk mendukung bisnis Anda.
             </p>
-            <div className="pt-2">
+            <div className="pt-1">
               <a
                 href="https://teknotama.com"
                 target="_blank"
@@ -109,14 +126,14 @@ export default function Footer() {
         </div>
 
         {/* Baris Bawah */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-400 text-[11px]">
+        <div className="flex flex-col items-center justify-between gap-2 pt-4 text-slate-400 text-[11px] sm:flex-row">
           <p>© 2026 Tekno Game. Seluruh hak cipta dilindungi undang-undang.</p>
           <div className="flex items-center gap-4">
             <a
               href="https://teknotama.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-[#8caeff] hover:text-white transition-colors"
+              className="flex items-center gap-1 text-[#ff8c9f] hover:text-white transition-colors"
             >
               <span>PT Teknotama Prakarsa Mulia</span>
               <ExternalLink className="w-3 h-3" />
