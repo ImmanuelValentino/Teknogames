@@ -58,3 +58,11 @@ Setiap kali game selesai dibuat, diperbarui, atau dihapus, agent **WAJIB** mempe
   - [x] Visual Asset (.webp) & Preview Thumbnail (preview.png)
 - **Status Akhir:** READY / TESTING / WIP
 - **Dibuat oleh:** AI Agent
+```
+
+---
+
+## 7. Aturan Pengujian Browser (Isolasi Instance Chrome Baru)
+Saat melakukan pengujian browser atau automated testing menggunakan Chrome / DevTools:
+- **Instance Terisolasi:** Agent **WAJIB** membuka atau menggunakan instance Google Chrome **BARU** yang terisolasi (misalnya dengan flag `--remote-debugging-port=9222 --user-data-dir=...` pada direktori profil sementara) atau mode headless.
+- **Dilarang Mengganggu Browser Pengguna:** **DILARANG KERAS** mengontrol, membuka tab baru, me-reload, atau menutup jendela browser Chrome utama yang sedang aktif digunakan oleh pengguna agar aktivitas kerja pengguna tidak terganggu sama sekali.

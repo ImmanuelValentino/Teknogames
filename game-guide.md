@@ -84,3 +84,10 @@ Agent **DILARANG** menyatakan pembuatan atau pembaruan game selesai sebelum memv
 ### D. Dokumentasi & Git Workflow
 - [ ] **Update `game-log.md`:** Entri game baru/perubahan sudah ditambahkan di bagian paling atas `game-log.md`.
 - [ ] **Sinkronisasi `AGENTS.md`:** Jika perubahan juga menyentuh konfigurasi/katalog frontend atau backend web utama, `UPDATE.md` dan `laporan.md` ikut diperbarui serta lolos verifikasi `npm run build`.
+
+---
+
+## 8. Aturan Pengujian Browser (Isolasi Instance Chrome Baru)
+Saat melakukan pengujian browser atau automated testing menggunakan Chrome / DevTools:
+- **Instance Terisolasi:** Agent **WAJIB** membuka atau menggunakan instance Google Chrome **BARU** yang terisolasi (misalnya dengan profil sementara `--user-data-dir=...` dan port terpisah) atau mode headless.
+- **Dilarang Mengganggu Browser Pengguna:** **DILARANG KERAS** mengontrol, membuka tab baru, me-reload, atau menutup jendela browser Chrome utama yang sedang aktif digunakan oleh pengguna agar aktivitas kerja pengguna tidak terganggu sama sekali.
