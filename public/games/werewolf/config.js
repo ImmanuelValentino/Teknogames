@@ -6,9 +6,9 @@
 (function() {
   'use strict';
 
-  // Default placeholder credentials
-  const DEFAULT_SUPABASE_URL = '';
-  const DEFAULT_SUPABASE_ANON_KEY = '';
+  // Default credentials
+  const DEFAULT_SUPABASE_URL = 'https://vblubapxyalrimirwcdi.supabase.co';
+  const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_GKrh1MtY42a25ziu_2i7UQ_x_BE5z-b';
 
   const STORAGE_KEY_URL = 'teknogames_supabase_url';
   const STORAGE_KEY_ANON = 'teknogames_supabase_anon_key';
