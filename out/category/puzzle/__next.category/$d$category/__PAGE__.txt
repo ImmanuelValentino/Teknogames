@@ -1,122 +1,74 @@
 1:"$Sreact.fragment"
 2:"static/chunks/348-c6a61c8c29f80752.js"
-<<<<<<< HEAD
-3:"static/chunks/484-8e54ee416efae961.js"
-4:"static/chunks/117-76820ce2a3b0925b.js"
-5:"static/chunks/app/layout-112a246f77f3ee1d.js"
-6:I[806,["348","$2","484","$3","117","$4","177","$5"],"default"]
-=======
-3:"static/chunks/84-81d795192b0996bf.js"
-4:"static/chunks/117-b9986b5c8f8bbb34.js"
-5:"static/chunks/app/layout-4ec283991f496bfa.js"
-6:I[806,["348","$2","84","$3","117","$4","177","$5"],"default"]
->>>>>>> origin/main
+3:"static/chunks/282-5024e365086d8b56.js"
+4:"static/chunks/117-08b80085440c4710.js"
+5:"static/chunks/app/layout-8ea590936838ce9a.js"
+6:I[5747,["348","$2","282","$3","117","$4","177","$5"],"default"]
 7:I[7121,[],""]
 8:I[4581,[],""]
-9:"static/chunks/app/not-found-a0b5d151afa93beb.js"
+9:"static/chunks/app/not-found-c3ed78bde0369b79.js"
 a:I[5589,["348","$2","345","$9"],"default"]
-<<<<<<< HEAD
-13:"static/chunks/app/category/%5Bcategory%5D/page-ed565931dbad3e0b.js"
-14:I[8500,["348","$2","117","$4","956","$13"],""]
-15:I[209,["348","$2","117","$4","956","$13"],"default"]
-=======
->>>>>>> origin/main
 1b:"ViewportBoundary"
 1c:I[484,[],"$1b"]
 1d:"MetadataBoundary"
 1e:I[484,[],"$1d"]
 1f:"$Sreact.suspense"
-<<<<<<< HEAD
-:HL["/games/_next/static/css/e820c3780ed09799.css","style"]
-=======
-:HL["/games/_next/static/css/98a73e5e2160c6f8.css","style"]
->>>>>>> origin/main
+:HL["/games/_next/static/css/b2afee3be411421c.css","style"]
+:HL["/games/_next/static/css/5c98e49bd4d7c64f.css","style"]
 c:X
 f:X
 f:C
 12:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[["$","div",null,{"className":"pt-6 space-y-6","children":[["$","nav",null,{"aria-label":"Jejak navigasi","className":"flex items-center gap-2 text-xs font-medium text-slate-300","children":["$L13","$L14","$L15"]}],"$L16","$L17","$L18"]}],null,"$L19"]}],"p":"$@1a","v":null,"s":"$c"}}]]
 10:[["children",{"s":{"n":"category","t":"d","k":"puzzle","s":[]},"h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L7",null,{"parallelRouterKey":"children","template":["$","$L8",null,{}]}]]}],"p":"$@11","v":"$f","s":"$c"},"c":"$Q12"}]]
 d:[["children",{"s":"category","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L7",null,{"parallelRouterKey":"children","template":["$","$L8",null,{}]}]]}],"p":"$@e","v":"$f","s":"$c"},"c":"$Q10"}]]
-<<<<<<< HEAD
-0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/games/_next/static/css/e820c3780ed09799.css","precedence":"next"}]],["$","html",null,{"lang":"id","suppressHydrationWarning":true,"className":"__variable_8dde1a __variable_4b29c8 antialiased dark","children":[["$","head",null,{"children":[["$","title",null,{"children":"Game Online Gratis Tanpa Download – TeknoGame"}],["$","meta",null,{"name":"description","content":"Mainkan game online gratis tanpa download di TeknoGame! Nikmati game HTML5 arcade, petualangan, puzzle, balap, aksi, dan santai langsung di browser."}],["$","meta",null,{"name":"robots","content":"index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}],["$","link",null,{"rel":"canonical","href":"https://www.teknotama.com/games/"}],["$","meta",null,{"property":"og:type","content":"website"}],["$","meta",null,{"property":"og:locale","content":"id_ID"}],["$","meta",null,{"property":"og:site_name","content":"TeknoGame"}],["$","meta",null,{"property":"og:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}],["$","meta",null,{"property":"og:description","content":"Jelajahi game HTML5 gratis: arcade, petualangan, puzzle, balap, dan aksi. Main langsung dari browser tanpa instalasi."}],["$","meta",null,{"property":"og:url","content":"https://www.teknotama.com/games/"}],["$","meta",null,{"property":"og:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}],["$","meta",null,{"property":"og:image:alt","content":"TeknoGame - Portal Game Online Gratis"}],["$","meta",null,{"name":"twitter:card","content":"summary_large_image"}],["$","meta",null,{"name":"twitter:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}],["$","meta",null,{"name":"twitter:description","content":"Mainkan game HTML5 gratis langsung di browser. Pilih arcade, puzzle, petualangan, balap, dan lainnya."}],["$","meta",null,{"name":"twitter:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}],["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"WebSite\",\"name\":\"TeknoGame\",\"alternateName\":\"Teknotama Games\",\"url\":\"https://www.teknotama.com/games/\",\"description\":\"Mainkan game online gratis tanpa download di TeknoGame! Nikmati game HTML5 arcade, petualangan, puzzle, balap, aksi, dan santai langsung di browser.\",\"inLanguage\":\"id-ID\",\"publisher\":{\"@type\":\"Organization\",\"name\":\"PT Teknotama Prakarsa Mulia\",\"url\":\"https://teknotama.com\"}}"}}],["$","link",null,{"rel":"preconnect","href":"https://pagead2.googlesyndication.com"}],["$","link",null,{"rel":"preconnect","href":"https://teknotama.com"}],["$","link",null,{"rel":"dns-prefetch","href":"https://pagead2.googlesyndication.com"}],["$","link",null,{"rel":"dns-prefetch","href":"https://teknotama.com"}],["$","script",null,{"async":true,"src":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3146007647541379","crossOrigin":"anonymous"}]]}],["$","body",null,{"className":"min-h-full text-[#F8FAFC]","suppressHydrationWarning":true,"children":["$","$L6",null,{"children":["$","$L7",null,{"parallelRouterKey":"children","template":["$","$L8",null,{}],"notFound":[["$","$La",null,{}],[]]}]}]}]]}]]}],"p":"$@b","v":null,"s":"$c"},"c":"$Qd"},"h":{"r":["$","$1","h",{"children":[null,["$","$L1c",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=5"}],["$","meta","2",{"name":"theme-color","content":"#0B0E17"}]]}],["$","$L1e",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$1f",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Permainan Kategori Teka-teki | TeknoGame"}],["$","meta","1",{"name":"description","content":"Mainkan aneka permainan kategori Teka-teki secara gratis di portal resmi Tekno Game oleh PT Teknotama Prakarsa Mulia."}],["$","link","2",{"rel":"author","href":"https://teknotama.com"}],["$","meta","3",{"name":"author","content":"PT Teknotama Prakarsa Mulia"}],["$","meta","4",{"name":"keywords","content":"TeknoGame,Game Online Gratis Tanpa Download,game web,game online gratis,game html5 indonesia,Tekno Game Teknotama,PT Teknotama Prakarsa Mulia,game peramban gratis,game tanpa download,arcade,puzzle,petualangan,balap"}],"$L20","$L21","$L22","$L23","$L24","$L25","$L26","$L27","$L28","$L29","$L2a","$L2b","$L2c","$L2d","$L2e","$L2f","$L30","$L31","$L32","$L33","$L34"]}]}],null]}],null]}],"p":"$@35","v":null,"s":"$c"}},"a":"$@36","u":"$@37","b":"o51hJO5RYsxsiTdkYsIMD"}
-38:I[573,["348","$2","117","$4","956","$13"],"default"]
-39:I[8977,["348","$2","117","$4","956","$13"],"default"]
-3a:I[484,[],"OutletBoundary"]
-3c:I[6869,[],"IconMark"]
-16:["$","div",null,{"className":"rounded-2xl card-natural p-6 sm:p-8 flex items-center justify-between","children":["$","div",null,{"className":"space-y-1.5","children":[["$","div",null,{"className":"w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-2","children":["$","$L15",null,{"icon":{"name":"puzzle","size":24,"node":[["path",{"d":"M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z","key":"w46dr5"}]]},"className":"w-6 h-6 text-sky-200"}]}],["$","h1",null,{"className":"font-heading text-xl sm:text-2xl font-bold tracking-tight text-white","children":["Kategori: ","Teka-teki"]}],["$","p",null,{"className":"text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl","children":["Jelajahi beragam permainan web kategori ","teka-teki"," secara gratis langsung di peramban."]}]]}]}]
-17:["$","$L38",null,{"slotType":"leaderboard-1080x90","adSlot":""}]
-18:["$","$L39",null,{"games":[{"id":"packing-master","slug":"packing-master","title":"Packing Master: Koper Rapi","description":"Tata perlengkapan traveling ke dalam koper bagasi dengan ruang terbatas sebelum jadwal terbang tiba!","category":"puzzle","thumbnailUrl":"/games/packing-master/preview.png","gamePath":"/games/packing-master/index.html","playCount":12100,"likesCount":1120,"rating":4.9,"badge":"POPULAR","featured":true,"controlsGuide":{"keyboard":["Klik & Drag : Pindahkan Barang","R / Dobel Klik : Putar Barang"],"touch":"Tahan dan geser barang ke dalam koper"}},{"id":"circuit-flow","slug":"circuit-flow","title":"Circuit Flow: Node Connect","description":"Hubungkan terminal warna sirkuit neon tanpa saling menyilang jalur kabel. Selesaikan 9 level matriks sirkuit!","category":"puzzle","thumbnailUrl":"/games/circuit-flow/preview.png","gamePath":"/games/circuit-flow/index.html","playCount":3840,"likesCount":320,"rating":4.9,"badge":"BARU","controlsGuide":{"keyboard":["Klik & Tarik Kursor Mouse dari terminal ke terminal"],"touch":"Tahan dan geser jari antar kotak terminal untuk menyambung jalur"}}],"title":"Permainan Teka-teki"}]
-19:["$","$L3a",null,{"children":["$","$1f",null,{"name":"Next.MetadataOutlet","children":"$@3b"}]}]
-20:["$","meta","5",{"name":"creator","content":"PT Teknotama Prakarsa Mulia"}]
-21:["$","meta","6",{"name":"publisher","content":"PT Teknotama Prakarsa Mulia"}]
-22:["$","meta","7",{"name":"robots","content":"index, follow"}]
-23:["$","meta","8",{"name":"googlebot","content":"index, follow, max-image-preview:large"}]
-24:["$","link","9",{"rel":"canonical","href":"https://teknotama.com/games/category/puzzle"}]
-25:["$","meta","10",{"property":"og:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}]
-26:["$","meta","11",{"property":"og:description","content":"Jelajahi game HTML5 gratis: arcade, petualangan, puzzle, balap, dan aksi. Main langsung dari browser tanpa instalasi."}]
-27:["$","meta","12",{"property":"og:url","content":"https://www.teknotama.com/games/"}]
-28:["$","meta","13",{"property":"og:site_name","content":"TeknoGame"}]
-29:["$","meta","14",{"property":"og:locale","content":"id_ID"}]
-2a:["$","meta","15",{"property":"og:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}]
-2b:["$","meta","16",{"property":"og:image:alt","content":"TeknoGame - Portal Game Online Gratis"}]
-2c:["$","meta","17",{"property":"og:type","content":"website"}]
-2d:["$","meta","18",{"name":"twitter:card","content":"summary_large_image"}]
-2e:["$","meta","19",{"name":"twitter:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}]
-2f:["$","meta","20",{"name":"twitter:description","content":"Mainkan game HTML5 gratis langsung di browser. Pilih arcade, puzzle, petualangan, balap, dan lainnya."}]
-30:["$","meta","21",{"name":"twitter:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}]
-31:["$","link","22",{"rel":"shortcut icon","href":"/games/Teknogame_logo_only.png"}]
-32:["$","link","23",{"rel":"icon","href":"/games/Teknogame_logo_only.png","type":"image/png"}]
-33:["$","link","24",{"rel":"apple-touch-icon","href":"/games/Teknogame_logo_only.png"}]
-34:["$","$L3c","25",{}]
-=======
-0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/games/_next/static/css/98a73e5e2160c6f8.css","precedence":"next"}]],["$","html",null,{"lang":"id","suppressHydrationWarning":true,"className":"__variable_8dde1a __variable_4b29c8 antialiased dark","children":[["$","head",null,{"children":[["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try {\n              document.documentElement.dataset.theme =\n                localStorage.getItem(\"teknogame-theme\") === \"dark\" ? \"dark\" : \"light\";\n            } catch {\n              document.documentElement.dataset.theme = \"light\";\n            }"}}],["$","title",null,{"children":"Game Online Gratis Tanpa Download – TeknoGame"}],["$","meta",null,{"name":"description","content":"Mainkan game online gratis tanpa download di TeknoGame! Nikmati game HTML5 arcade, petualangan, puzzle, balap, aksi, dan santai langsung di browser."}],["$","meta",null,{"name":"robots","content":"index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}],["$","link",null,{"rel":"canonical","href":"https://www.teknotama.com/games/"}],["$","meta",null,{"property":"og:type","content":"website"}],["$","meta",null,{"property":"og:locale","content":"id_ID"}],["$","meta",null,{"property":"og:site_name","content":"TeknoGame"}],["$","meta",null,{"property":"og:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}],["$","meta",null,{"property":"og:description","content":"Jelajahi game HTML5 gratis: arcade, petualangan, puzzle, balap, dan aksi. Main langsung dari browser tanpa instalasi."}],["$","meta",null,{"property":"og:url","content":"https://www.teknotama.com/games/"}],["$","meta",null,{"property":"og:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}],["$","meta",null,{"property":"og:image:alt","content":"TeknoGame - Portal Game Online Gratis"}],["$","meta",null,{"name":"twitter:card","content":"summary_large_image"}],["$","meta",null,{"name":"twitter:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}],["$","meta",null,{"name":"twitter:description","content":"Mainkan game HTML5 gratis langsung di browser. Pilih arcade, puzzle, petualangan, balap, dan lainnya."}],["$","meta",null,{"name":"twitter:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}],["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"WebSite\",\"name\":\"TeknoGame\",\"alternateName\":\"Teknotama Games\",\"url\":\"https://www.teknotama.com/games/\",\"description\":\"Mainkan game online gratis tanpa download di TeknoGame! Nikmati game HTML5 arcade, petualangan, puzzle, balap, aksi, dan santai langsung di browser.\",\"inLanguage\":\"id-ID\",\"publisher\":{\"@type\":\"Organization\",\"name\":\"PT Teknotama Prakarsa Mulia\",\"url\":\"https://teknotama.com\"}}"}}],["$","link",null,{"rel":"preconnect","href":"https://pagead2.googlesyndication.com"}],["$","link",null,{"rel":"preconnect","href":"https://teknotama.com"}],["$","link",null,{"rel":"dns-prefetch","href":"https://pagead2.googlesyndication.com"}],["$","link",null,{"rel":"dns-prefetch","href":"https://teknotama.com"}],["$","script",null,{"async":true,"src":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3146007647541379","crossOrigin":"anonymous"}]]}],["$","body",null,{"className":"min-h-full text-[#fcf8f9]","suppressHydrationWarning":true,"children":["$","$L6",null,{"children":["$","$L7",null,{"parallelRouterKey":"children","template":["$","$L8",null,{}],"notFound":[["$","$La",null,{}],[]]}]}]}]]}]]}],"p":"$@b","v":null,"s":"$c"},"c":"$Qd"},"h":{"r":["$","$1","h",{"children":[null,["$","$L1c",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=5"}],["$","meta","2",{"name":"theme-color","content":"#170b0d"}]]}],["$","$L1e",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$1f",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Permainan Kategori Teka-teki | TeknoGame"}],["$","meta","1",{"name":"description","content":"Mainkan aneka permainan kategori Teka-teki secara gratis di portal resmi Tekno Game oleh PT Teknotama Prakarsa Mulia."}],"$L20","$L21","$L22","$L23","$L24","$L25","$L26","$L27","$L28","$L29","$L2a","$L2b","$L2c","$L2d","$L2e","$L2f","$L30","$L31","$L32","$L33","$L34","$L35","$L36","$L37"]}]}],null]}],null]}],"p":"$@38","v":null,"s":"$c"}},"a":"$@39","u":"$@3a","b":"Fp2BkRSzn7GxT8ask11L7"}
-3b:"static/chunks/977-b7f1397f21bb3c6b.js"
-3c:"static/chunks/app/category/%5Bcategory%5D/page-9155192bf3819b9d.js"
-3d:I[8500,["348","$2","117","$4","977","$3b","956","$3c"],""]
-3e:I[209,["348","$2","117","$4","977","$3b","956","$3c"],"default"]
-3f:I[573,["348","$2","117","$4","977","$3b","956","$3c"],"default"]
-40:I[8977,["348","$2","117","$4","977","$3b","956","$3c"],"default"]
-41:I[484,[],"OutletBoundary"]
-43:I[6869,[],"IconMark"]
-13:["$","$L3d",null,{"href":"/","className":"inline-flex items-center gap-1 hover:text-white transition-colors","children":[["$","$L3e",null,{"icon":{"name":"arrow-left","size":24,"node":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]]},"className":"w-3.5 h-3.5"}],["$","span",null,{"children":"Semua Permainan"}]]}]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/games/_next/static/css/b2afee3be411421c.css","precedence":"next"}],["$","link","1",{"rel":"stylesheet","href":"/games/_next/static/css/5c98e49bd4d7c64f.css","precedence":"next"}]],["$","html",null,{"lang":"id","suppressHydrationWarning":true,"className":"__variable_8dde1a __variable_4b29c8 antialiased dark","children":[["$","head",null,{"children":[["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try {\n              document.documentElement.dataset.theme =\n                localStorage.getItem(\"teknogame-theme\") === \"dark\" ? \"dark\" : \"light\";\n            } catch {\n              document.documentElement.dataset.theme = \"light\";\n            }"}}],["$","title",null,{"children":"Game Online Gratis Tanpa Download – TeknoGame"}],["$","meta",null,{"name":"description","content":"Mainkan game online gratis tanpa download di TeknoGame! Nikmati game HTML5 arcade, petualangan, puzzle, balap, aksi, dan santai langsung di browser."}],["$","meta",null,{"name":"robots","content":"index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}],["$","link",null,{"rel":"canonical","href":"https://www.teknotama.com/games/"}],["$","meta",null,{"property":"og:type","content":"website"}],["$","meta",null,{"property":"og:locale","content":"id_ID"}],["$","meta",null,{"property":"og:site_name","content":"TeknoGame"}],["$","meta",null,{"property":"og:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}],["$","meta",null,{"property":"og:description","content":"Jelajahi game HTML5 gratis: arcade, petualangan, puzzle, balap, dan aksi. Main langsung dari browser tanpa instalasi."}],["$","meta",null,{"property":"og:url","content":"https://www.teknotama.com/games/"}],["$","meta",null,{"property":"og:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}],["$","meta",null,{"property":"og:image:alt","content":"TeknoGame - Portal Game Online Gratis"}],["$","meta",null,{"name":"twitter:card","content":"summary_large_image"}],["$","meta",null,{"name":"twitter:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}],["$","meta",null,{"name":"twitter:description","content":"Mainkan game HTML5 gratis langsung di browser. Pilih arcade, puzzle, petualangan, balap, dan lainnya."}],["$","meta",null,{"name":"twitter:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}],["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"WebSite\",\"name\":\"TeknoGame\",\"alternateName\":\"Teknotama Games\",\"url\":\"https://www.teknotama.com/games/\",\"description\":\"Mainkan game online gratis tanpa download di TeknoGame! Nikmati game HTML5 arcade, petualangan, puzzle, balap, aksi, dan santai langsung di browser.\",\"inLanguage\":\"id-ID\",\"publisher\":{\"@type\":\"Organization\",\"name\":\"PT Teknotama Prakarsa Mulia\",\"url\":\"https://teknotama.com\"}}"}}],["$","link",null,{"rel":"preconnect","href":"https://pagead2.googlesyndication.com"}],["$","link",null,{"rel":"preconnect","href":"https://teknotama.com"}],["$","link",null,{"rel":"dns-prefetch","href":"https://pagead2.googlesyndication.com"}],["$","link",null,{"rel":"dns-prefetch","href":"https://teknotama.com"}],["$","script",null,{"async":true,"src":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3146007647541379","crossOrigin":"anonymous"}]]}],["$","body",null,{"className":"min-h-full text-[#fcf8f9]","suppressHydrationWarning":true,"children":["$","$L6",null,{"children":["$","$L7",null,{"parallelRouterKey":"children","template":["$","$L8",null,{}],"notFound":[["$","$La",null,{}],[]]}]}]}]]}]]}],"p":"$@b","v":null,"s":"$c"},"c":"$Qd"},"h":{"r":["$","$1","h",{"children":[null,["$","$L1c",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=5"}],["$","meta","2",{"name":"theme-color","content":"#170b0d"}]]}],["$","$L1e",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$1f",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Permainan Kategori Teka-teki | TeknoGame"}],"$L20","$L21","$L22","$L23","$L24","$L25","$L26","$L27","$L28","$L29","$L2a","$L2b","$L2c","$L2d","$L2e","$L2f","$L30","$L31","$L32","$L33","$L34","$L35","$L36","$L37","$L38"]}]}],null]}],null]}],"p":"$@39","v":null,"s":"$c"}},"a":"$@3a","u":"$@3b","b":"qiL3QMEcuNWZKdCWEsizR"}
+3c:"static/chunks/977-948040f38d74bf97.js"
+3d:"static/chunks/app/category/%5Bcategory%5D/page-612c6633f8d543e8.js"
+3e:I[8500,["348","$2","117","$4","977","$3c","956","$3d"],""]
+3f:I[209,["348","$2","117","$4","977","$3c","956","$3d"],"default"]
+40:I[573,["348","$2","117","$4","977","$3c","956","$3d"],"default"]
+41:I[8977,["348","$2","117","$4","977","$3c","956","$3d"],"default"]
+42:I[484,[],"OutletBoundary"]
+44:I[6869,[],"IconMark"]
+13:["$","$L3e",null,{"href":"/","className":"inline-flex items-center gap-1 hover:text-white transition-colors","children":[["$","$L3f",null,{"icon":{"name":"arrow-left","size":24,"node":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]]},"className":"w-3.5 h-3.5"}],["$","span",null,{"children":"Semua Permainan"}]]}]
 14:["$","span",null,{"children":"/"}]
 15:["$","span",null,{"className":"text-white font-semibold capitalize","children":"Teka-teki"}]
-16:["$","div",null,{"className":"rounded-2xl card-natural p-6 sm:p-8 flex items-center justify-between","children":["$","div",null,{"className":"space-y-1.5","children":[["$","div",null,{"className":"flex items-center gap-3","children":[["$","div",null,{"className":"w-10 h-10 rounded-xl border border-[#ce7c8a] bg-[#e09aa6] flex items-center justify-center shrink-0 shadow-sm","children":["$","$L3e",null,{"icon":{"name":"puzzle","size":24,"node":[["path",{"d":"M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z","key":"w46dr5"}]]},"className":"w-6 h-6 text-rose-700","strokeWidth":2.5}]}],["$","h1",null,{"className":"font-heading text-xl sm:text-2xl font-bold tracking-tight text-white","children":["Kategori: ","Teka-teki"]}]]}],["$","p",null,{"className":"text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl","children":["Jelajahi beragam permainan web kategori ","teka-teki"," secara gratis langsung di peramban."]}]]}]}]
-17:["$","$L3f",null,{"slotType":"leaderboard-1080x90","adSlot":""}]
-18:["$","$L40",null,{"games":[{"id":"packing-master","slug":"packing-master","title":"Packing Master: Koper Rapi","description":"Tata perlengkapan traveling ke dalam koper bagasi dengan ruang terbatas sebelum jadwal terbang tiba!","category":"puzzle","thumbnailUrl":"/images/games/packing-master.webp","gamePath":"/games/packing-master/index.html","playCount":12100,"likesCount":1120,"rating":4.9,"badge":"POPULAR","featured":true,"controlsGuide":{"keyboard":["Klik & Drag : Pindahkan Barang","R / Dobel Klik : Putar Barang"],"touch":"Tahan dan geser barang ke dalam koper"}},{"id":"batik-flow","slug":"batik-flow","title":"Batik Flow: Sambung Canting","description":"Putar potongan ukiran lilin malam panas agar tersambung dari canting tembaga menuju mahkota batik nusantara!","category":"puzzle","thumbnailUrl":"/images/games/batik-flow.webp","gamePath":"/games/batik-flow/index.html","playCount":6420,"likesCount":540,"rating":4.7,"badge":"BARU","controlsGuide":{"keyboard":["Klik Ubin : Putar 90 Derajat"],"touch":"Tap ubin kain untuk memutar arah jalur"}},{"id":"kamus-kelana","slug":"kamus-kelana","title":"Kamus Kelana: Kata Tersembunyi","description":"Hubungkan huruf pada roda kompas untuk mengungkap nama-nama destinasi wisata nusantara tersembunyi!","category":"puzzle","thumbnailUrl":"/images/games/kamus-kelana.webp","gamePath":"/games/kamus-kelana/index.html","playCount":6120,"likesCount":510,"rating":4.7,"badge":"BARU","controlsGuide":{"keyboard":["Klik & Drag Huruf : Sambung Kata"],"touch":"Tarik garis antar huruf menggunakan jari"}}],"title":"Permainan Teka-teki"}]
-19:["$","$L41",null,{"children":["$","$1f",null,{"name":"Next.MetadataOutlet","children":"$@42"}]}]
-20:["$","link","2",{"rel":"author","href":"https://teknotama.com"}]
-21:["$","meta","3",{"name":"author","content":"PT Teknotama Prakarsa Mulia"}]
-22:["$","meta","4",{"name":"keywords","content":"TeknoGame,Game Online Gratis Tanpa Download,game web,game online gratis,game html5 indonesia,Tekno Game Teknotama,PT Teknotama Prakarsa Mulia,game peramban gratis,game tanpa download,arcade,puzzle,petualangan,balap"}]
-23:["$","meta","5",{"name":"creator","content":"PT Teknotama Prakarsa Mulia"}]
-24:["$","meta","6",{"name":"publisher","content":"PT Teknotama Prakarsa Mulia"}]
-25:["$","meta","7",{"name":"robots","content":"index, follow"}]
-26:["$","meta","8",{"name":"googlebot","content":"index, follow, max-image-preview:large"}]
-27:["$","link","9",{"rel":"canonical","href":"https://teknotama.com/games/category/puzzle"}]
-28:["$","meta","10",{"property":"og:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}]
-29:["$","meta","11",{"property":"og:description","content":"Jelajahi game HTML5 gratis: arcade, petualangan, puzzle, balap, dan aksi. Main langsung dari browser tanpa instalasi."}]
-2a:["$","meta","12",{"property":"og:url","content":"https://www.teknotama.com/games/"}]
-2b:["$","meta","13",{"property":"og:site_name","content":"TeknoGame"}]
-2c:["$","meta","14",{"property":"og:locale","content":"id_ID"}]
-2d:["$","meta","15",{"property":"og:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}]
-2e:["$","meta","16",{"property":"og:image:alt","content":"TeknoGame - Portal Game Online Gratis"}]
-2f:["$","meta","17",{"property":"og:type","content":"website"}]
-30:["$","meta","18",{"name":"twitter:card","content":"summary_large_image"}]
-31:["$","meta","19",{"name":"twitter:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}]
-32:["$","meta","20",{"name":"twitter:description","content":"Mainkan game HTML5 gratis langsung di browser. Pilih arcade, puzzle, petualangan, balap, dan lainnya."}]
-33:["$","meta","21",{"name":"twitter:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}]
-34:["$","link","22",{"rel":"shortcut icon","href":"/games/TeknoGame_logo_red.png"}]
-35:["$","link","23",{"rel":"icon","href":"/games/TeknoGame_logo_red.png","type":"image/png"}]
-36:["$","link","24",{"rel":"apple-touch-icon","href":"/games/TeknoGame_logo_red.png"}]
-37:["$","$L43","25",{}]
->>>>>>> origin/main
+16:["$","div",null,{"className":"rounded-2xl card-natural p-6 sm:p-8 flex items-center justify-between","children":["$","div",null,{"className":"space-y-1.5","children":[["$","div",null,{"className":"flex items-center gap-3","children":[["$","div",null,{"className":"w-10 h-10 rounded-xl border border-[#ce7c8a] bg-[#e09aa6] flex items-center justify-center shrink-0 shadow-sm","children":["$","$L3f",null,{"icon":{"name":"puzzle","size":24,"node":[["path",{"d":"M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z","key":"w46dr5"}]]},"className":"w-6 h-6 text-rose-700","strokeWidth":2.5}]}],["$","h1",null,{"className":"font-heading text-xl sm:text-2xl font-bold tracking-tight text-white","children":["Kategori: ","Teka-teki"]}]]}],["$","p",null,{"className":"text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl","children":["Jelajahi beragam permainan web kategori ","teka-teki"," secara gratis langsung di peramban."]}]]}]}]
+17:["$","$L40",null,{"slotType":"leaderboard-1080x90","adSlot":""}]
+18:["$","$L41",null,{"games":[{"id":"packing-master","slug":"packing-master","title":"Packing Master: Koper Rapi","description":"Tata perlengkapan traveling ke dalam koper bagasi dengan ruang terbatas sebelum jadwal terbang tiba!","category":"puzzle","thumbnailUrl":"/games/packing-master/preview.png","gamePath":"/games/packing-master/index.html","playCount":12100,"likesCount":1120,"rating":4.9,"badge":"POPULAR","featured":true,"controlsGuide":{"keyboard":["Klik & Drag : Pindahkan Barang","R / Dobel Klik : Putar Barang"],"touch":"Tahan dan geser barang ke dalam koper"}},{"id":"circuit-flow","slug":"circuit-flow","title":"Circuit Flow: Node Connect","description":"Hubungkan terminal warna sirkuit neon tanpa saling menyilang jalur kabel. Selesaikan 9 level matriks sirkuit!","category":"puzzle","thumbnailUrl":"/games/circuit-flow/preview.png","gamePath":"/games/circuit-flow/index.html","playCount":3840,"likesCount":320,"rating":4.9,"badge":"BARU","controlsGuide":{"keyboard":["Klik & Tarik Kursor Mouse dari terminal ke terminal"],"touch":"Tahan dan geser jari antar kotak terminal untuk menyambung jalur"}}],"title":"Permainan Teka-teki"}]
+19:["$","$L42",null,{"children":["$","$1f",null,{"name":"Next.MetadataOutlet","children":"$@43"}]}]
+20:["$","meta","1",{"name":"description","content":"Mainkan aneka permainan kategori Teka-teki secara gratis di portal resmi Tekno Game oleh PT Teknotama Prakarsa Mulia."}]
+21:["$","link","2",{"rel":"author","href":"https://teknotama.com"}]
+22:["$","meta","3",{"name":"author","content":"PT Teknotama Prakarsa Mulia"}]
+23:["$","meta","4",{"name":"keywords","content":"TeknoGame,Game Online Gratis Tanpa Download,game web,game online gratis,game html5 indonesia,Tekno Game Teknotama,PT Teknotama Prakarsa Mulia,game peramban gratis,game tanpa download,arcade,puzzle,petualangan,balap"}]
+24:["$","meta","5",{"name":"creator","content":"PT Teknotama Prakarsa Mulia"}]
+25:["$","meta","6",{"name":"publisher","content":"PT Teknotama Prakarsa Mulia"}]
+26:["$","meta","7",{"name":"robots","content":"index, follow"}]
+27:["$","meta","8",{"name":"googlebot","content":"index, follow, max-image-preview:large"}]
+28:["$","link","9",{"rel":"canonical","href":"https://teknotama.com/games/category/puzzle"}]
+29:["$","meta","10",{"property":"og:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}]
+2a:["$","meta","11",{"property":"og:description","content":"Jelajahi game HTML5 gratis: arcade, petualangan, puzzle, balap, dan aksi. Main langsung dari browser tanpa instalasi."}]
+2b:["$","meta","12",{"property":"og:url","content":"https://www.teknotama.com/games/"}]
+2c:["$","meta","13",{"property":"og:site_name","content":"TeknoGame"}]
+2d:["$","meta","14",{"property":"og:locale","content":"id_ID"}]
+2e:["$","meta","15",{"property":"og:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}]
+2f:["$","meta","16",{"property":"og:image:alt","content":"TeknoGame - Portal Game Online Gratis"}]
+30:["$","meta","17",{"property":"og:type","content":"website"}]
+31:["$","meta","18",{"name":"twitter:card","content":"summary_large_image"}]
+32:["$","meta","19",{"name":"twitter:title","content":"Game Online Gratis Tanpa Download – TeknoGame"}]
+33:["$","meta","20",{"name":"twitter:description","content":"Mainkan game HTML5 gratis langsung di browser. Pilih arcade, puzzle, petualangan, balap, dan lainnya."}]
+34:["$","meta","21",{"name":"twitter:image","content":"https://www.teknotama.com/path-gambar-og-games.jpg"}]
+35:["$","link","22",{"rel":"shortcut icon","href":"/games/TeknoGame_logo_red.png"}]
+36:["$","link","23",{"rel":"icon","href":"/games/TeknoGame_logo_red.png","type":"image/png"}]
+37:["$","link","24",{"rel":"apple-touch-icon","href":"/games/TeknoGame_logo_red.png"}]
+38:["$","$L44","25",{}]
 c:300
-42:null
-3a:true
+43:null
+3b:true
 c:C
-39:0
+3a:0
 11:"$undefined"
 e:"$undefined"
 b:"$undefined"
-38:"$undefined"
+39:"$undefined"
 1a:"$undefined"

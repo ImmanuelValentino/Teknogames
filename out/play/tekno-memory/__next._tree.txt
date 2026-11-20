@@ -1,13 +1,6 @@
-<<<<<<< HEAD
-:HL["/games/_next/static/css/e820c3780ed09799.css","style"]
+:HL["/games/_next/static/css/b2afee3be411421c.css","style"]
+:HL["/games/_next/static/css/5c98e49bd4d7c64f.css","style"]
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"d","k":"tekno-memory","s":[]},"h":96,"c":"$Q3"}]]
 1:[["children",{"s":"play","h":96,"c":"$Q2"}]]
-0:{"b":"o51hJO5RYsxsiTdkYsIMD","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
-=======
-:HL["/games/_next/static/css/98a73e5e2160c6f8.css","style"]
-3:[["children",{"s":"__PAGE__","h":160}]]
-2:[["children",{"s":{"n":"slug","t":"d","k":"tekno-memory","s":[]},"h":96,"c":"$Q3"}]]
-1:[["children",{"s":"play","h":96,"c":"$Q2"}]]
-0:{"b":"Fp2BkRSzn7GxT8ask11L7","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
->>>>>>> origin/main
+0:{"b":"qiL3QMEcuNWZKdCWEsizR","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

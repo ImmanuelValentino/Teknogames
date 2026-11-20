@@ -212,10 +212,6 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                 </span>
               </div>
             </Link>
-                  <Play className="h-4 w-4 fill-current ml-0.5" />
-                </span>
-              </div>
-            </Link>
           </div>
         </div>
       </div>
