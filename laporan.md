@@ -1,3 +1,15 @@
+### [2026-11-20 10:55] - [Games] - Remake Game Batch 2 (Nusantara Runner, Kapal Feri, Packing Master, Becak Drift) & Quality Testing
+- **Kondisi Sebelum:** 4 game Batch 2 (`nusantara-runner`, `kapal-feri`, `packing-master`, `becak-drift`) masih memuat banyak karakter emoji (melanggar zero-emoji policy), belum memiliki Web Audio API synthesizer dengan tombol mute, belum memiliki kunci `localStorage` konsisten (`teknogames_<slug>_highscore`), dan belum mengirimkan event `postMessage` saat Game Over.
+- **Perubahan Sesudah:**
+  1. `nusantara-runner/index.html`: Di-remake menggunakan Canvas 2D murni, 3 transisi biome visual dinamis, mekanik lompat & meluncur merunduk (keyboard & touch), koin tiket kapal, sound synthesis, High Score `localStorage`, dan `postMessage`.
+  2. `kapal-feri/index.html`: Di-remake dengan navigasi selat top-down inersia air realistis, progress bar pelayaran Merak-Bakauheni, pelampung penyelamatan, sound synthesis klakson feri, High Score `localStorage`, dan `postMessage`.
+  3. `packing-master/index.html`: Di-remake dengan 4 level petak grid koper (3x4 s.d 5x5), rotasi item 90°, 7 item traveling berbasis vektor SVG bersih zero-emoji, sound synthesis, High Score `localStorage`, dan `postMessage`.
+  4. `becak-drift/index.html`: Di-remake dengan drifting aspal Malioboro, rintangan andong, pengganda drift multiplier (x2-x4), item teh poci, sound synthesis bel becak, High Score `localStorage`, dan `postMessage`.
+  5. Seluruh game diuji secara otomatis melalui script quality testing: lolos verifikasi sintaks JS, zero-emoji, dual-input, dan HTTP status 200 OK di semua rute lokal.
+  6. Static export `npm run build` sukses 100% dan histori dicatat di `game-log.md` serta `UPDATE.md`.
+- **Masalah yang Ditemukan:** Tidak ada. Seluruh poin checklist kualitas di Bagian 7 `game-guide.md` telah terpenuhi dan diverifikasi.
+- **File Terdampak:** `public/games/nusantara-runner/index.html`, `public/games/kapal-feri/index.html`, `public/games/packing-master/index.html`, `public/games/becak-drift/index.html`, `out/*`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-19 23:55] - [Frontend] - Perbaikan Broken Image Preview & Generasi Cover 600x400 Seluruh 15 Permainan
 - **Kondisi Sebelum:** Gambar cover permainan di halaman utama `/games` tampak broken/rusak karena data `thumbnailUrl` di `games-data.ts` mengarah ke folder `/images/games/...webp` yang tidak ada fisiknya, 12 game belum memiliki file `preview.png`, dan kartu Hero bagian atas hanya menampilkan kotak inisial huruf teks murni ("NR").
 - **Perubahan Sesudah:**

@@ -8,6 +8,19 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.6.0] - 2026-11-20
+### Added & Changed (Remake Batch 2: Nusantara Runner, Kapal Feri, Packing Master, Becak Drift)
+- **Remake 4 Permainan Batch 2 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**
+  - **`nusantara-runner` ([index.html](public/games/nusantara-runner/index.html)):** Single-file pure Canvas 2D, zero-emoji, 3 transisi biome visual (Malioboro, Bromo, Kuta), kontrol lompat & meluncur merunduk (keyboard & tombol virtual sentuh), progressive speed scaling, Web Audio API synthesizer, High Score `localStorage` (`teknogames_nusantara-runner_highscore`), dan `postMessage`.
+  - **`kapal-feri` ([index.html](public/games/kapal-feri/index.html)):** Navigasi laut top-down inersia air realistis, rute Selat Sunda 4200 unit dengan progress bar, rintangan karang tajam, koleksi pelampung darurat, dermaga sandar Pelabuhan Bakauheni, Web Audio API klakson feri foghorn, High Score `localStorage` (`teknogames_kapal-feri_highscore`), dan `postMessage`.
+  - **`packing-master` ([index.html](public/games/packing-master/index.html)):** Inventory polyomino grid puzzle 4 level (3x4 s.d 5x5), sistem rotasi item 90 derajat (`R` / tombol Putar), countdown timer dengan bonus waktu, item digambar dengan ikon vektor SVG bersih (kemeja, kamera, botol, kacamata, sepatu, topi, laptop) tanpa emoji, Web Audio API synthesizer, High Score `localStorage` (`teknogames_packing-master_highscore`), dan `postMessage`.
+  - **`becak-drift` ([index.html](public/games/becak-drift/index.html)):** Top-down arc racing & drifting di aspal Malioboro, rintangan andong & pot bunga, mekanik drift tajam dengan bekas ban (skid marks) dan pengganda kombo drift (x2 s.d x4), item teh poci penambah poin, Web Audio API lonceng becak dan decitan drift, High Score `localStorage` (`teknogames_becak-drift_highscore`), dan `postMessage`.
+- **Quality Audit & Verification:**
+  - Seluruh 4 game lolos verifikasi AST/syntax node tanpa error console/syntax.
+  - Zero-emoji policy terverifikasi 100% menggunakan regex Unicode pictographic.
+  - Seluruh rute lokal (`/games/games/<slug>/index.html` dan `/games/play/<slug>`) terverifikasi 200 OK.
+  - Static export `npm run build` sukses 100% mendistribusikan seluruh file ke folder `out/`.
+
 ## [3.5.1] - 2026-11-19
 ### Fixed & Improved (Catalog Thumbnail Previews for All 15 Games & Hero Card Cover)
 - **Generasi Preview Gambar 600x400 untuk Seluruh 15 Game ([scripts/generate-all-previews.js](scripts/generate-all-previews.js)):**
