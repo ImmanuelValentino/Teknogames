@@ -1,5 +1,0 @@
-:HL["/games/_next/static/css/850b83c3ef3657c2.css","style"]
-3:[["children",{"s":"__PAGE__","h":160}]]
-2:[["children",{"s":{"n":"slug","t":"d","k":"kamus-kelana","s":[]},"h":96,"c":"$Q3"}]]
-1:[["children",{"s":"play","h":96,"c":"$Q2"}]]
-0:{"b":"JMF9EkEaz1f30edo-aSrH","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

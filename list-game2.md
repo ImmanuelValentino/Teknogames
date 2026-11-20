@@ -31,7 +31,6 @@ Untuk memastikan game dapat dimuat dalam waktu kurang dari 0.5 detik bahkan pada
 | 5 | **Kopi Klotok: Barista Rhythm** | Casual / Rhythm & Timing | DOM HTML5 / Canvas | 0 File (100% Code) | ~16 KB | 1-2 Hari |
 | 6 | **Lembah Bromo: Hang Glider** | Adventure / Flight Physics | Sinusoidal Heightmap Canvas | 0 File (100% Code) | ~24 KB | 2-3 Hari |
 | 7 | **Pasar Terapung: Fruit Catch** | Arcade / Falling Catcher | Unicode Emoji + Canvas 2D | 0 File (100% Code) | ~15 KB | 1 Hari |
-| 8 | **Kamus Kelana: Kata Tersembunyi**| Puzzle / Word Connect | Pure HTML/CSS + JS Matrix | 0 File (100% Code) | ~25 KB | 1-2 Hari |
 
 
 
@@ -218,31 +217,6 @@ Untuk memastikan game dapat dimuat dalam waktu kurang dari 0.5 detik bahkan pada
 
 ---
 
-### 8. Kamus Kelana: Kata Tersembunyi
-* **Kategori Portal:** `puzzle`
-* **Slug URL:** `/play/kamus-kelana`
-* **Target Gameplay:** Word connect & spatial vocabulary puzzle bertema destinasi dan bahasa daerah nusantara.
-* **Core Loop:**
-  * Pemain disuguhkan roda lingkaran berisi 4 hingga 6 huruf acak (misal: `K`, `U`, `T`, `A`, `B`, `L`, `I`).
-  * Pemain menarik garis menghubungkan huruf-huruf tersebut untuk membentuk kata-kata traveling nusantara tersembunyi pada kotak teka-teki silang di atasnya (contoh: `KUTA`, `BALI`, `BUKIT`, dll).
-  * Terdapat penjelasan ringkas budaya di setiap kata yang berhasil ditebak (misal: *"KUTA: Pantai legendaris di Badung, Bali"*).
-* **Daftar Kebutuhan Aset Agar Game Running:**
-  * **Aset Gambar / Visual (0 File - 100% CSS & Canvas UI):**
-    * *Roda Huruf:* Lingkaran interaktif dengan tombol-tombol huruf bulat modern bergaya flat UI (`#ffffff` dengan bayangan `box-shadow` halus di atas background gradasi `#0f172a`).
-    * *Garis Penghubung:* Garis canvas dinamis mengikuti posisi sentuhan jari/kursor mouse warna merah Travelista (`#e53935`).
-    * *Kotak Kata Silang:* Kotak-kotak minimalis transparan yang terisi huruf animasi flip saat berhasil menebak.
-  * **Aset Data (0 File Eksternal):**
-    * Dictionary kata disimpan langsung di dalam array JavaScript internal file `index.html` (50+ level ringan, ukuran data `< 10 KB`).
-  * **Aset Audio (0 File MP3 - Web Audio Synth):**
-    * *Sentuh Huruf:* Nada marimba lembut berurutan naik nada setiap huruf terhubung (Do-Re-Mi-Fa-Sol via sine wave).
-    * *Kata Berhasil Tertebak:* Kord harpa sukses (arpeggio C Major: 523Hz, 659Hz, 784Hz, 1046Hz).
-    * *Kata Salah / Reset:* Getaran getar bass pendek (80Hz square wave).
-  * **Aset UI & Font:**
-    * Modal popup edukasi destinasi Travelista setiap level terselesaikan dengan tautan membaca artikel panduan terkait.
-* **Sinergi Travelista:** Edukasi bahasa daerah dan destinasi nusantara yang sangat berpotensi viral dibagikan ke media sosial pembaca.
-
----
-
 ## 4. Spesifikasi Teknis Integrasi ke Arsitektur `game.travelista.id`
 
 Setiap game di atas harus mematuhi standar arsitektur direktori dan runtime yang telah dibangun pada proyek ini:
@@ -265,9 +239,7 @@ game/
         │   └── index.html
         ├── lembah-bromo/
         │   └── index.html
-        ├── pasar-terapung/
-        │   └── index.html
-        └── kamus-kelana/
+        └── pasar-terapung/
             └── index.html
 ```
 

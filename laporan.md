@@ -1,3 +1,14 @@
+### [2026-11-20 12:40] - [Games] - Penghapusan Total Game Kamus Kelana (Teka-Teki Kata Tersembunyi) & Pembersihan Seluruh Konsep Idenya
+- **Kondisi Sebelum:** Game `kamus-kelana` (teka-teki kata tersembunyi nusantara) masih terpasang di folder `public/games/kamus-kelana/`, terdaftar pada data game portal `src/lib/games-data.ts`, dan terdokumentasi dalam dokumen konsep ide `list-game2.md`.
+- **Perubahan Sesudah:**
+  1. Menghapus folder `public/games/kamus-kelana/` dan seluruh aset gambarnya.
+  2. Menghapus registrasi metadata game `kamus-kelana` dari `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, dan generator preview `scripts/generate-all-previews.js`.
+  3. Menghapus seluruh spesifikasi ide game dari dokumen `list-game2.md` (tabel ringkasan, bab konsep, dan struktur berkas).
+  4. Mencatat histori penghapusan pada `game-log.md` dan `UPDATE.md` (versi [3.12.0]).
+  5. Menjalankan `npm run build` untuk membersihkan rute statis `/play/kamus-kelana` dari folder `out/`.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **File Terdampak:** `public/games/kamus-kelana/*`, `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `list-game2.md`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
+
 ### [2026-11-20 11:40] - [Games] - Remake Game Werewolf: Setup 5-15 Pemain, Pemilihan Kartu Interaktif, Siklus Malam & Siang Lengkap
 - **Kondisi Sebelum:** Game `werewolf` sebelumnya belum memiliki sistem input dinamis 5-15 pemain, belum ada interaksi pemilihan kartu tertutup (card pick), peran Hunter belum terintegrasi, belum ada perlindungan Seer/Bodyguard dengan aturan anti-spam beruntun, serta transisi giliran belum menggunakan Privacy Screen ("Oper HP").
 - **Perubahan Sesudah:**
@@ -37,6 +48,17 @@
   5. Menjalankan `npm run build` sehingga rute `/play/batik-flow` bersih dari export statis `out/`.
 - **Masalah yang Ditemukan:** Tidak ada.
 - **File Terdampak:** `public/games/batik-flow/*`, `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `AGENTS.md`, `game-guide.md`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
+
+### [2026-11-20 12:40] - [Games] - Penghapusan Total Game Kamus Kelana (Teka-Teki Kata Tersembunyi) & Pembersihan Seluruh Konsep Idenya
+- **Kondisi Sebelum:** Game `kamus-kelana` (teka-teki kata tersembunyi nusantara) masih terpasang di folder `public/games/kamus-kelana/`, terdaftar pada data game portal `src/lib/games-data.ts`, dan terdokumentasi dalam dokumen konsep ide `list-game2.md`.
+- **Perubahan Sesudah:**
+  1. Menghapus folder `public/games/kamus-kelana/` dan seluruh aset gambarnya.
+  2. Menghapus registrasi metadata game `kamus-kelana` dari `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, dan generator preview `scripts/generate-all-previews.js`.
+  3. Menghapus seluruh spesifikasi ide game dari dokumen `list-game2.md` (tabel ringkasan, bab konsep, dan struktur berkas).
+  4. Mencatat histori penghapusan pada `game-log.md` dan `UPDATE.md` (versi [3.12.0]).
+  5. Menjalankan `npm run build` untuk membersihkan rute statis `/play/kamus-kelana` dari folder `out/`.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **File Terdampak:** `public/games/kamus-kelana/*`, `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `list-game2.md`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
 
 ### [2026-11-20 11:40] - [Games] - Remake Game Werewolf: Setup 5-15 Pemain, Pemilihan Kartu Interaktif, Siklus Malam & Siang Lengkap
 - **Kondisi Sebelum:** Game `werewolf` sebelumnya belum memiliki sistem input dinamis 5-15 pemain, belum ada interaksi pemilihan kartu tertutup (card pick), peran Hunter belum terintegrasi, belum ada perlindungan Seer/Bodyguard dengan aturan anti-spam beruntun, serta transisi giliran belum menggunakan Privacy Screen ("Oper HP").

@@ -180,24 +180,6 @@ export const INITIAL_GAMES: Game[] = [
       touch: "Geser jari di layar untuk memandu perahu jukung",
     },
   },
-  // 11. Kamus Kelana (New from list-game2.md)
-  {
-    id: "kamus-kelana",
-    slug: "kamus-kelana",
-    title: "Kamus Kelana: Kata Tersembunyi",
-    description: "Hubungkan huruf pada roda kompas untuk mengungkap nama-nama destinasi wisata nusantara tersembunyi!",
-    category: "puzzle",
-    thumbnailUrl: "/games/kamus-kelana/preview.png",
-    gamePath: "/games/kamus-kelana/index.html",
-    playCount: 6120,
-    likesCount: 510,
-    rating: 4.7,
-    badge: "BARU",
-    controlsGuide: {
-      keyboard: ["Klik & Drag Huruf : Sambung Kata"],
-      touch: "Tarik garis antar huruf menggunakan jari",
-    },
-  },
   // 12. Werewolf (Malam & Desa)
   {
     id: "werewolf",

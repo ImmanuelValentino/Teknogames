@@ -8,6 +8,18 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.12.0] - 2026-11-20
+### Removed (Permanent Deletion of Kamus Kelana & Ideas)
+- **Penghapusan Total Game Kamus Kelana:**
+  - Menghapus folder `public/games/kamus-kelana/` beserta seluruh file kode HTML dan aset gambar preview.
+  - Menghapus registrasi metadata game `kamus-kelana` dari `src/lib/games-data.ts`.
+  - Menghapus konfigurasi styling kartu dari `src/components/game/GameCard.tsx`.
+  - Menghapus definisi preview dari `scripts/generate-all-previews.js`.
+- **Pembersihan Konsep Ide:**
+  - Menghapus seluruh spesifikasi ide game "8. Kamus Kelana: Kata Tersembunyi" dari dokumen referensi ide `list-game2.md` (tabel matriks, rincian konsep, dan struktur pohon direktori).
+- **Sinkronisasi Katalog & Static Build:**
+  - Build statis diekspor ulang via `npm run build` sehingga rute `/play/kamus-kelana` bersih dari folder output `out/`.
+
 ## [3.11.0] - 2026-11-20
 ### Added & Changed (Remake Werewolf: 5-15 Players Setup, Interactive Tarot Card Pick & Complete Night/Day Cycle)
 - **Setup Pemain Fleksibel & Dinamis (5–15 Pemain):**

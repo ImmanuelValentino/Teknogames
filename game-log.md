@@ -1,3 +1,15 @@
+### 2026-11-20 - [DELETED] Kamus Kelana: Kata Tersembunyi (Dihapus Permanen)
+- **Folder Game:** `public/games/kamus-kelana` (DIHAPUS)
+- **Deskripsi:** Game teka-teki kata tersembunyi nusantara beserta seluruh konsep idenya telah dihapus secara permanen dari direktori game, katalog website utama, dan dokumen konsep ide (`list-game2.md`) atas instruksi pengguna.
+- **Fitur Utama:**
+  - [x] Penghapusan direktori `public/games/kamus-kelana/` dan aset preview
+  - [x] Penghapusan registrasi game dari `src/lib/games-data.ts`
+  - [x] Penghapusan styling gradient kartu dari `src/components/game/GameCard.tsx`
+  - [x] Penghapusan konfigurasi generator preview dari `scripts/generate-all-previews.js`
+  - [x] Pembersihan seluruh konsep & ide game dari dokumen `list-game2.md`
+- **Status Akhir:** REMOVED
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - Werewolf: Malam & Desa (Remake Interaktif 5-15 Pemain)
 - **Folder Game:** `public/games/werewolf`
 - **Deskripsi:** Remake penuh sistem moderator otomatis Werewolf untuk 5-15 pemain dalam 1 perangkat: input nama dinamis & auto-balance role, grid pemilihan kartu peran interaktif (3D flip card) dengan layar transisi aman (Privacy Screen), siklus malam berurutan (Bodyguard anti-spam 2 malam berturut-turut, Werewolf melihat rekan serigala, Seer terawang instan), pengumuman fajar, skill kematian tembakan balasan Hunter, timer diskusi desa (2-3 menit), serta sidang voting eksekusi siang.

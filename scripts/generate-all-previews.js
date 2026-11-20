@@ -263,27 +263,6 @@ const GAMES_CONFIG = [
     `
   },
   {
-    slug: 'kamus-kelana',
-    category: 'TEKA-TEKI',
-    title: 'KAMUS KELANA',
-    subtitle: 'KATA TERSEMBUNYI NUSANTARA',
-    bg1: '#110b24', bg2: '#27174f',
-    primary: '#8b5cf6', secondary: '#a855f7',
-    iconSvg: `
-      <!-- Letter Tiles -->
-      <g transform="translate(190, 130)">
-        <rect x="0" y="0" width="45" height="50" rx="8" fill="#5b21b6" stroke="#8b5cf6" stroke-width="2" />
-        <text x="22" y="34" fill="#ffffff" font-family="sans-serif" font-size="24" font-weight="900" text-anchor="middle">K</text>
-        <rect x="55" y="0" width="45" height="50" rx="8" fill="#5b21b6" stroke="#8b5cf6" stroke-width="2" />
-        <text x="77" y="34" fill="#ffffff" font-family="sans-serif" font-size="24" font-weight="900" text-anchor="middle">A</text>
-        <rect x="110" y="0" width="45" height="50" rx="8" fill="#5b21b6" stroke="#8b5cf6" stroke-width="2" />
-        <text x="132" y="34" fill="#ffffff" font-family="sans-serif" font-size="24" font-weight="900" text-anchor="middle">T</text>
-        <rect x="165" y="0" width="45" height="50" rx="8" fill="#5b21b6" stroke="#8b5cf6" stroke-width="2" />
-        <text x="187" y="34" fill="#ffffff" font-family="sans-serif" font-size="24" font-weight="900" text-anchor="middle">A</text>
-      </g>
-    `
-  },
-  {
     slug: 'werewolf',
     category: 'STRATEGI',
     title: 'WEREWOLF',

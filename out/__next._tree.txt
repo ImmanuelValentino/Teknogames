@@ -1,3 +1,3 @@
-:HL["/games/_next/static/css/850b83c3ef3657c2.css","style"]
+:HL["/games/_next/static/css/47122362e2db89d5.css","style"]
 1:[["children",{"s":"__PAGE__","h":160}]]
-0:{"b":"B3v-yud808G_lrrTLzvbz","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"89UXAYVHYvwIfERmvXK6f","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

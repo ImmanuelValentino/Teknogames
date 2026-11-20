@@ -31,8 +31,6 @@ const getPlayForgeGradient = (slug: string, category: string) => {
       return "from-teal-400 via-emerald-500 to-green-600";
     case "pasar-terapung":
       return "from-rose-500 via-pink-600 to-purple-600";
-    case "kamus-kelana":
-      return "from-violet-500 via-purple-600 to-indigo-700";
     case "werewolf":
       return "from-indigo-600 via-purple-700 to-pink-800";
     case "cyber-bird":
