@@ -3,146 +3,297 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" href="data:,">
   <title>Packing Master: Koper Rapi - TeknoGame</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
-    body, html {
+    html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #0f172a;
+      background: #090e1a;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      touch-action: manipulation;
+      color: #fff;
+    }
+    #game-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      touch-action: manipulation;
+      padding: 16px;
     }
-    .header { text-align: center; margin-bottom: 12px; }
-    .title { font-size: 20px; font-weight: 900; color: #fff; }
-    .desc { font-size: 12px; color: #94a3b8; margin-top: 2px; }
-    .game-board {
+    #ui-top {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
       display: flex;
-      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: auto;
+      z-index: 20;
+    }
+    .hud-left {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: rgba(15, 23, 42, 0.9);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-weight: 800;
+      font-size: 13px;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge span { color: #00f0ff; }
+    .badge-icon {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: #00f0ff;
+      stroke-width: 2;
+    }
+
+    .audio-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.1s;
+    }
+    .audio-btn:active { transform: scale(0.92); }
+    .audio-btn svg { width: 18px; height: 18px; stroke: #00f0ff; stroke-width: 2; fill: none; }
+
+    /* Main Play Area */
+    .play-area {
+      display: flex;
+      gap: 20px;
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
-      max-width: 95%;
+      margin-top: 40px;
+      max-width: 600px;
+      width: 100%;
     }
-    
-    /* Suitcase Container */
-    .suitcase {
-      width: 260px;
-      height: 300px;
-      background: #1e293b;
-      border: 5px solid #0284c7;
-      border-radius: 24px;
-      box-shadow: 0 16px 36px rgba(0,0,0,0.5), inset 0 2px 6px rgba(255,255,255,0.08);
-      padding: 12px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(4, 1fr);
-      gap: 8px;
+
+    /* Suitcase Board */
+    .suitcase-wrap {
+      background: #111c33;
+      border: 4px solid #00f0ff;
+      border-radius: 20px;
+      padding: 14px;
       position: relative;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.6), 0 0 20px rgba(0,240,255,0.15);
     }
-    .handle {
+    .suitcase-handle {
       position: absolute;
-      top: -16px;
+      top: -14px;
       left: 50%;
       transform: translateX(-50%);
-      width: 76px;
-      height: 16px;
-      border: 4px solid #0284c7;
+      width: 64px;
+      height: 14px;
+      border: 3.5px solid #00f0ff;
       border-bottom: none;
       border-radius: 8px 8px 0 0;
     }
-    .slot {
-      background: rgba(15, 23, 42, 0.6);
+    .grid-board {
+      display: grid;
+      gap: 6px;
+      background: rgba(9, 14, 26, 0.8);
+      padding: 6px;
       border-radius: 12px;
-      border: 2px dashed rgba(255,255,255,0.2);
+    }
+    .grid-cell {
+      width: 46px;
+      height: 46px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
-      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      position: relative;
     }
-    .slot.drag-over, .slot.highlight {
+    .grid-cell.highlight {
       background: rgba(0, 240, 255, 0.25);
       border-color: #00f0ff;
       border-style: solid;
     }
-    
-    /* Item Palette */
-    .palette {
+    .grid-cell.occupied {
+      border-style: solid;
+    }
+
+    /* Palette Area */
+    .palette-box {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 20px;
+      padding: 16px;
+      backdrop-filter: blur(8px);
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      background: rgba(15, 23, 42, 0.85);
-      padding: 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(0, 240, 255, 0.25);
-      backdrop-filter: blur(8px);
+      gap: 12px;
+      min-width: 170px;
+    }
+    .palette-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .palette-title {
       font-size: 11px;
       font-weight: 800;
       color: #00f0ff;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
-    .items-container {
+    .rotate-btn {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid #00f0ff;
+      color: #00f0ff;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s, transform 0.08s;
+    }
+    .rotate-btn:active { transform: scale(0.92); background: rgba(0, 240, 255, 0.3); }
+    .rotate-btn svg { width: 12px; height: 12px; stroke: #00f0ff; stroke-width: 2.5; fill: none; }
+
+    .items-list {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      gap: 10px;
     }
-    
-    .item {
-      width: 62px;
-      height: 62px;
-      background: #1e293b;
-      border: 2px solid #334155;
-      border-radius: 14px;
+    .item-card {
+      background: #16223b;
+      border: 2px solid #233556;
+      border-radius: 12px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 4px;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
-      font-size: 24px;
-      touch-action: manipulation;
+      transition: all 0.15s;
     }
-    .item:hover { transform: scale(1.05); }
-    .item.selected {
+    .item-card:hover { transform: translateY(-2px); border-color: rgba(0, 240, 255, 0.4); }
+    .item-card.selected {
       border-color: #00f0ff;
-      background: #0f2744;
-      transform: scale(1.1);
-      box-shadow: 0 0 16px rgba(0, 240, 255, 0.6);
-      animation: pulse 1s infinite alternate;
+      background: #0f3057;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.5);
+      transform: scale(1.05);
     }
-    @keyframes pulse {
-      from { transform: scale(1.05); }
-      to { transform: scale(1.12); }
+    .item-card.placed {
+      opacity: 0.3;
+      pointer-events: none;
+      filter: grayscale(1);
     }
-    .item-label { font-size: 9px; font-weight: 700; color: #cbd5e1; margin-top: 1px; }
+    .item-card svg {
+      width: 28px;
+      height: 28px;
+      stroke: #38bdf8;
+      stroke-width: 2;
+      fill: none;
+    }
+    .item-name {
+      font-size: 9px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
 
-    /* Modal */
-    #win-modal {
+    /* Modal Screens */
+    .modal {
       position: absolute;
       inset: 0;
-      background: rgba(15, 23, 42, 0.94);
-      backdrop-filter: blur(10px);
-      display: none;
+      background: rgba(9, 14, 26, 0.95);
+      backdrop-filter: blur(12px);
+      display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      pointer-events: auto;
       text-align: center;
       padding: 24px;
       z-index: 50;
     }
+    .modal-box {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 30px;
+      border-radius: 24px;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+    }
+    .modal-icon-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .modal-icon-badge svg {
+      width: 30px;
+      height: 30px;
+      stroke: #00f0ff;
+      stroke-width: 2;
+      fill: none;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .stat-row span:last-child { color: #00f0ff; }
     .btn {
-      background: linear-gradient(135deg, #10b981, #059669);
+      background: linear-gradient(135deg, #0284c7, #0369a1);
       color: #fff;
       border: none;
       padding: 13px 32px;
@@ -150,217 +301,555 @@
       font-weight: 900;
       font-size: 15px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform 0.15s, box-shadow 0.15s;
       margin-top: 16px;
-      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.4);
     }
     .btn:active { transform: scale(0.96); }
-    .hint-mobile {
+    .control-hint {
+      margin-top: 14px;
       font-size: 11px;
-      color: #38bdf8;
-      text-align: center;
-      margin-top: 8px;
-      font-weight: 600;
+      color: #64748b;
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1 class="title">Packing Master: Koper Rapi</h1>
-    <p class="desc">Tata perlengkapan traveling ke dalam koper bagasi!</p>
-    <p class="hint-mobile">📱 Tap barang untuk memilih, lalu tap kotak kosong di koper</p>
-  </div>
+  <div id="game-container">
+    <div id="ui-top">
+      <div class="hud-left">
+        <div class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Skor: <span id="hud-score">0</span>
+        </div>
+        <div class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Waktu: <span id="hud-time">60s</span>
+        </div>
+        <div class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Level: <span id="hud-level">1/4</span>
+        </div>
+      </div>
 
-  <div class="game-board">
-    <!-- Suitcase -->
-    <div class="suitcase">
-      <div class="handle"></div>
-      <div class="slot" data-index="0"></div>
-      <div class="slot" data-index="1"></div>
-      <div class="slot" data-index="2"></div>
-      <div class="slot" data-index="3"></div>
-      <div class="slot" data-index="4"></div>
-      <div class="slot" data-index="5"></div>
-      <div class="slot" data-index="6"></div>
-      <div class="slot" data-index="7"></div>
-      <div class="slot" data-index="8"></div>
-      <div class="slot" data-index="9"></div>
-      <div class="slot" data-index="10"></div>
-      <div class="slot" data-index="11"></div>
+      <button class="audio-btn" id="audio-toggle" title="Toggle Suara">
+        <svg id="audio-icon-on" viewBox="0 0 24 24">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        </svg>
+        <svg id="audio-icon-off" viewBox="0 0 24 24" style="display: none;">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <line x1="23" y1="9" x2="17" y2="15"/>
+          <line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+      </button>
     </div>
 
-    <!-- Items Palette -->
-    <div class="palette">
-      <div class="palette-title">Barang Bawaan:</div>
-      <div class="items-container" id="palette-items">
-        <div class="item" draggable="true" id="item-camera">📷<span class="item-label">Kamera</span></div>
-        <div class="item" draggable="true" id="item-shoes">🥾<span class="item-label">Sepatu</span></div>
-        <div class="item" draggable="true" id="item-pass">📕<span class="item-label">Paspor</span></div>
-        <div class="item" draggable="true" id="item-thermos">🧉<span class="item-label">Termos</span></div>
-        <div class="item" draggable="true" id="item-sunglass">🕶️<span class="item-label">Kacamata</span></div>
-        <div class="item" draggable="true" id="item-jacket">🧥<span class="item-label">Jaket</span></div>
+    <!-- Play Area -->
+    <div class="play-area">
+      <!-- Suitcase -->
+      <div class="suitcase-wrap">
+        <div class="suitcase-handle"></div>
+        <div class="grid-board" id="grid-board"></div>
+      </div>
+
+      <!-- Palette -->
+      <div class="palette-box">
+        <div class="palette-header">
+          <span class="palette-title">BARANG BAWAAN</span>
+          <button class="rotate-btn" id="btn-rotate">
+            <svg viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            PUTAR (R)
+          </button>
+        </div>
+        <div class="items-list" id="items-list"></div>
+      </div>
+    </div>
+
+    <!-- Start Modal -->
+    <div class="modal" id="start-modal">
+      <div class="modal-box">
+        <div class="modal-icon-badge">
+          <svg viewBox="0 0 24 24">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          </svg>
+        </div>
+        <h1 class="title">Packing Master</h1>
+        <p class="subtitle">Tata rapi seluruh barang bawaan traveling ke dalam koper bagasi sebelum penerbangan tiba!</p>
+        <div class="stat-row">
+          <span>Rekor Terbaik</span>
+          <span id="start-high">0 pts</span>
+        </div>
+        <button class="btn" id="start-btn">Mulai Mengepak</button>
+        <div class="control-hint">
+          Pilih item dari palet, tekan <b>R / TOMBOL PUTAR</b> untuk rotasi, klik petak koper untuk menaruh.
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over / Victory Modal -->
+    <div class="modal" id="result-modal" style="display: none;">
+      <div class="modal-box">
+        <div class="modal-icon-badge" id="result-badge">
+          <svg id="result-icon-pass" viewBox="0 0 24 24" style="stroke: #00f0ff;">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <svg id="result-icon-fail" viewBox="0 0 24 24" style="stroke: #ef4444; display: none;">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="15" y1="9" x2="9" y2="15"/>
+            <line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
+        </div>
+        <h2 class="title" id="result-title">Koper Rapi Sempurna!</h2>
+        <p class="subtitle" id="result-desc">Seluruh bagasi traveling berhasil tertata rapi.</p>
+        <div class="stat-row">
+          <span>Skor Akhir</span>
+          <span id="final-score">0 pts</span>
+        </div>
+        <div class="stat-row">
+          <span>Rekor Terbaik</span>
+          <span id="final-high">0 pts</span>
+        </div>
+        <button class="btn" id="restart-btn">Main Lagi</button>
       </div>
     </div>
   </div>
 
-  <!-- Win Modal -->
-  <div id="win-modal">
-    <div style="font-size: 54px; margin-bottom: 8px;">🧳✨</div>
-    <h2 style="font-size: 24px; font-weight: 900; color: #4ade80;">Koper Siap Berangkat!</h2>
-    <p style="font-size: 13px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 4px;">
-      Semua perlengkapan tersusun rapi tanpa ada yang tertinggal.
-    </p>
-    <div style="font-size: 26px; font-weight: 900; color: #f59e0b; margin-top: 12px;">9.500 pts</div>
-    <button class="btn" id="replay-btn" type="button">Packing Lagi 🔄</button>
-  </div>
-
   <script>
-    const items = document.querySelectorAll('.item');
-    const slots = document.querySelectorAll('.slot');
-    const winModal = document.getElementById('win-modal');
-    const replayBtn = document.getElementById('replay-btn');
-    const palette = document.getElementById('palette-items');
-
-    // Audio SFX
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    let audioCtx = null;
-    function initAudio() {
-      if (!audioCtx) audioCtx = new AudioContext();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-    }
-    function playBeep(freq, type, duration) {
-      initAudio();
-      try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+    // --- AUDIO SYSTEM ---
+    class SoundEffects {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playPop() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(660, now + 0.08);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-      } catch(e){}
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.09);
+      }
+      playRotate() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(320, now + 0.06);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.07);
+      }
+      playPlace() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587, now);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.13);
+      }
+      playError() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(130, now);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.19);
+      }
+      playWin() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523, 659, 784, 1046].forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(f, now + i * 0.08);
+          gain.gain.setValueAtTime(0.16, now + i * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.25);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.08);
+          osc.stop(now + i * 0.08 + 0.28);
+        });
+      }
+      toggle() {
+        this.enabled = !this.enabled;
+        return this.enabled;
+      }
     }
 
-    let selectedItem = null;
-    let draggedItem = null;
+    const sound = new SoundEffects();
 
-    function selectItem(item) {
-      initAudio();
-      playBeep(420, 'sine', 0.08);
+    // --- DOM REFERENCES ---
+    const gridBoard = document.getElementById('grid-board');
+    const itemsList = document.getElementById('items-list');
+    const hudScore = document.getElementById('hud-score');
+    const hudTime = document.getElementById('hud-time');
+    const hudLevel = document.getElementById('hud-level');
+    const btnRotate = document.getElementById('btn-rotate');
+    const startModal = document.getElementById('start-modal');
+    const resultModal = document.getElementById('result-modal');
+    const startBtn = document.getElementById('start-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const startHigh = document.getElementById('start-high');
+    const finalScore = document.getElementById('final-score');
+    const finalHigh = document.getElementById('final-high');
+    const resultTitle = document.getElementById('result-title');
+    const resultDesc = document.getElementById('result-desc');
+    const resultIconPass = document.getElementById('result-icon-pass');
+    const resultIconFail = document.getElementById('result-icon-fail');
+    const audioToggle = document.getElementById('audio-toggle');
+    const audioIconOn = document.getElementById('audio-icon-on');
+    const audioIconOff = document.getElementById('audio-icon-off');
 
-      if (selectedItem === item) {
-        selectedItem.classList.remove('selected');
-        selectedItem = null;
-        slots.forEach(s => s.classList.remove('highlight'));
+    // --- GAME DATA & STAGES ---
+    const STORAGE_KEY = 'teknogames_packing-master_highscore';
+    let highScore = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+    startHigh.innerText = highScore + ' pts';
+
+    // SVG Item definitions (Zero-Emoji)
+    const ITEMS_DEF = {
+      baju: { name: 'Kemeja', w: 2, h: 1, color: '#3b82f6', svg: '<svg viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>' },
+      kamera: { name: 'Kamera', w: 1, h: 1, color: '#f59e0b', svg: '<svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>' },
+      botol: { name: 'Tumbler', w: 1, h: 1, color: '#10b981', svg: '<svg viewBox="0 0 24 24"><path d="M7 2h10v3H7zm1 3v2h8V5zm0 2 1 15h6l1-15z"/></svg>' },
+      kacamata: { name: 'Kacamata', w: 1, h: 1, color: '#ec4899', svg: '<svg viewBox="0 0 24 24"><circle cx="6" cy="14" r="4"/><circle cx="18" cy="14" r="4"/><path d="M10 14h4M4 14l2-8M20 14l-2-8"/></svg>' },
+      sepatu: { name: 'Sepatu', w: 2, h: 1, color: '#8b5cf6', svg: '<svg viewBox="0 0 24 24"><path d="M2 18h20v2H2zm19-4c-2 0-3-1-4-3l-3-4-4 2v5H2v2h19z"/></svg>' },
+      topi: { name: 'Topi', w: 2, h: 1, color: '#06b6d4', svg: '<svg viewBox="0 0 24 24"><path d="M2 18h20M4 18a8 8 0 0 1 16 0"/></svg>' },
+      laptop: { name: 'Laptop', w: 2, h: 2, color: '#6366f1', svg: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="11" rx="2"/><path d="M2 18h20v2H2z"/></svg>' }
+    };
+
+    const STAGES = [
+      { cols: 3, rows: 4, time: 50, items: ['baju', 'kamera', 'botol', 'kacamata', 'sepatu'] },
+      { cols: 4, rows: 4, time: 55, items: ['baju', 'sepatu', 'topi', 'kamera', 'botol', 'kacamata'] },
+      { cols: 4, rows: 5, time: 60, items: ['laptop', 'baju', 'sepatu', 'topi', 'kamera', 'botol'] },
+      { cols: 5, rows: 5, time: 65, items: ['laptop', 'baju', 'sepatu', 'topi', 'kamera', 'botol', 'kacamata'] }
+    ];
+
+    let currentStageIndex = 0;
+    let score = 0;
+    let timeLeft = 0;
+    let timerInterval = null;
+    let grid = []; // 2D array of grid cells: null or itemId
+    let stageItems = [];
+    let selectedItem = null; // { id, defKey, w, h, placed }
+
+    // Audio toggle
+    audioToggle.addEventListener('click', () => {
+      const active = sound.toggle();
+      audioIconOn.style.display = active ? 'block' : 'none';
+      audioIconOff.style.display = active ? 'none' : 'block';
+    });
+
+    // Rotate button & Keyboard 'R'
+    function rotateSelectedItem() {
+      if (!selectedItem) return;
+      const temp = selectedItem.w;
+      selectedItem.w = selectedItem.h;
+      selectedItem.h = temp;
+      sound.playRotate();
+      renderItemsPalette();
+    }
+    btnRotate.addEventListener('click', rotateSelectedItem);
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'KeyR' || e.code === 'Space') {
+        e.preventDefault();
+        rotateSelectedItem();
+      }
+    });
+
+    startBtn.addEventListener('click', () => startGame());
+    restartBtn.addEventListener('click', () => startGame());
+
+    // --- GAME CONTROL ---
+    function startGame() {
+      sound.init();
+      currentStageIndex = 0;
+      score = 0;
+      hudScore.innerText = '0';
+      startModal.style.display = 'none';
+      resultModal.style.display = 'none';
+      loadStage(0);
+    }
+
+    function loadStage(idx) {
+      currentStageIndex = idx;
+      const stage = STAGES[idx];
+      hudLevel.innerText = (idx + 1) + '/' + STAGES.length;
+      timeLeft = stage.time;
+      hudTime.innerText = timeLeft + 's';
+
+      // Setup 2D grid matrix
+      grid = [];
+      for (let r = 0; r < stage.rows; r++) {
+        grid.push(new Array(stage.cols).fill(null));
+      }
+
+      // Prepare items
+      stageItems = stage.items.map((key, i) => {
+        const def = ITEMS_DEF[key];
+        return {
+          id: 'item_' + i,
+          defKey: key,
+          name: def.name,
+          color: def.color,
+          svg: def.svg,
+          w: def.w,
+          h: def.h,
+          placed: false
+        };
+      });
+
+      selectedItem = stageItems[0];
+
+      renderGridBoard();
+      renderItemsPalette();
+
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        hudTime.innerText = timeLeft + 's';
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          finishGame(false, 'Waktu habis sebelum koper selesai tertata.');
+        }
+      }, 1000);
+    }
+
+    function renderGridBoard() {
+      const stage = STAGES[currentStageIndex];
+      gridBoard.style.gridTemplateColumns = `repeat(${stage.cols}, 46px)`;
+      gridBoard.style.gridTemplateRows = `repeat(${stage.rows}, 46px)`;
+      gridBoard.innerHTML = '';
+
+      for (let r = 0; r < stage.rows; r++) {
+        for (let c = 0; c < stage.cols; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          cell.dataset.r = r;
+          cell.dataset.c = c;
+
+          const occupantId = grid[r][c];
+          if (occupantId) {
+            cell.classList.add('occupied');
+            const item = stageItems.find(it => it.id === occupantId);
+            if (item) {
+              cell.style.backgroundColor = item.color + '44';
+              cell.style.borderColor = item.color;
+            }
+          }
+
+          // Hover highlight
+          cell.addEventListener('mouseenter', () => highlightPlacement(r, c, true));
+          cell.addEventListener('mouseleave', () => highlightPlacement(r, c, false));
+
+          // Click placement or removal
+          cell.addEventListener('click', () => handleCellClick(r, c));
+
+          gridBoard.appendChild(cell);
+        }
+      }
+    }
+
+    function highlightPlacement(startR, startC, isHover) {
+      if (!selectedItem || selectedItem.placed) return;
+      const stage = STAGES[currentStageIndex];
+      for (let dr = 0; dr < selectedItem.h; dr++) {
+        for (let dc = 0; dc < selectedItem.w; dc++) {
+          const r = startR + dr;
+          const c = startC + dc;
+          if (r < stage.rows && c < stage.cols) {
+            const idx = r * stage.cols + c;
+            const cell = gridBoard.children[idx];
+            if (cell) {
+              if (isHover) cell.classList.add('highlight');
+              else cell.classList.remove('highlight');
+            }
+          }
+        }
+      }
+    }
+
+    function handleCellClick(r, c) {
+      const occupantId = grid[r][c];
+      if (occupantId) {
+        // Remove item back to palette
+        removeItemFromBoard(occupantId);
+        sound.playPop();
         return;
       }
 
-      if (selectedItem) {
-        selectedItem.classList.remove('selected');
-      }
+      if (!selectedItem || selectedItem.placed) return;
 
+      // Try place selected item
+      if (canPlace(selectedItem, r, c)) {
+        placeItem(selectedItem, r, c);
+        sound.playPlace();
+        checkStageCompletion();
+      } else {
+        sound.playError();
+      }
+    }
+
+    function canPlace(item, r, c) {
+      const stage = STAGES[currentStageIndex];
+      if (r + item.h > stage.rows || c + item.w > stage.cols) return false;
+      for (let dr = 0; dr < item.h; dr++) {
+        for (let dc = 0; dc < item.w; dc++) {
+          if (grid[r + dr][c + dc] !== null) return false;
+        }
+      }
+      return true;
+    }
+
+    function placeItem(item, r, c) {
+      for (let dr = 0; dr < item.h; dr++) {
+        for (let dc = 0; dc < item.w; dc++) {
+          grid[r + dr][c + dc] = item.id;
+        }
+      }
+      item.placed = true;
+      // Auto select next unplaced item
+      selectedItem = stageItems.find(it => !it.placed) || null;
+      renderGridBoard();
+      renderItemsPalette();
+    }
+
+    function removeItemFromBoard(itemId) {
+      const stage = STAGES[currentStageIndex];
+      for (let r = 0; r < stage.rows; r++) {
+        for (let c = 0; c < stage.cols; c++) {
+          if (grid[r][c] === itemId) {
+            grid[r][c] = null;
+          }
+        }
+      }
+      const item = stageItems.find(it => it.id === itemId);
+      if (item) item.placed = false;
       selectedItem = item;
-      selectedItem.classList.add('selected');
+      renderGridBoard();
+      renderItemsPalette();
+    }
 
-      // Highlight empty slots
-      slots.forEach(s => {
-        if (s.children.length === 0) s.classList.add('highlight');
+    function renderItemsPalette() {
+      itemsList.innerHTML = '';
+      stageItems.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        if (selectedItem && selectedItem.id === item.id) card.classList.add('selected');
+        if (item.placed) card.classList.add('placed');
+
+        card.innerHTML = `
+          ${item.svg}
+          <span class="item-name">${item.name} (${item.w}x${item.h})</span>
+        `;
+
+        card.addEventListener('click', () => {
+          if (item.placed) return;
+          selectedItem = item;
+          sound.playPop();
+          renderItemsPalette();
+        });
+
+        itemsList.appendChild(card);
       });
     }
 
-    function placeItemInSlot(slot) {
-      if (!selectedItem) return;
-      if (slot.children.length === 0) {
-        slot.appendChild(selectedItem);
-        playBeep(640, 'sine', 0.1);
-        selectedItem.classList.remove('selected');
-        selectedItem = null;
-        slots.forEach(s => s.classList.remove('highlight'));
-        checkWin();
+    function checkStageCompletion() {
+      const allPlaced = stageItems.every(it => it.placed);
+      if (allPlaced) {
+        sound.playWin();
+        const stageBonus = 200 + timeLeft * 10;
+        score += stageBonus;
+        hudScore.innerText = score.toString();
+
+        if (currentStageIndex + 1 < STAGES.length) {
+          setTimeout(() => loadStage(currentStageIndex + 1), 600);
+        } else {
+          clearInterval(timerInterval);
+          finishGame(true, 'Luar biasa! Seluruh 4 level koper bagasi tertata sempurna.');
+        }
       }
     }
 
-    // Attach Click / Tap handlers for mobile & desktop
-    items.forEach(item => {
-      item.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // If item is already inside a slot, clicking it returns it to palette
-        if (item.parentElement !== palette) {
-          palette.appendChild(item);
-          playBeep(320, 'sine', 0.08);
-          if (selectedItem === item) {
-            selectedItem.classList.remove('selected');
-            selectedItem = null;
-            slots.forEach(s => s.classList.remove('highlight'));
-          }
-          return;
-        }
-        selectItem(item);
-      });
+    function finishGame(success, msg) {
+      if (timerInterval) clearInterval(timerInterval);
+      const finalScoreVal = score;
 
-      // Desktop HTML5 drag fallback
-      item.addEventListener('dragstart', (e) => {
-        draggedItem = item;
-        setTimeout(() => item.style.opacity = '0.5', 0);
-      });
-      item.addEventListener('dragend', () => {
-        if (draggedItem) draggedItem.style.opacity = '1';
-        draggedItem = null;
-      });
-    });
-
-    slots.forEach(slot => {
-      slot.addEventListener('click', () => {
-        placeItemInSlot(slot);
-      });
-
-      slot.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        slot.classList.add('drag-over');
-      });
-      slot.addEventListener('dragleave', () => {
-        slot.classList.remove('drag-over');
-      });
-      slot.addEventListener('drop', (e) => {
-        e.preventDefault();
-        slot.classList.remove('drag-over');
-        if (slot.children.length === 0 && draggedItem) {
-          slot.appendChild(draggedItem);
-          playBeep(640, 'sine', 0.1);
-          checkWin();
-        }
-      });
-    });
-
-    function checkWin() {
-      if (palette.children.length === 0) {
-        setTimeout(() => {
-          playBeep(780, 'sine', 0.35);
-          winModal.style.display = 'flex';
-
-          if (window.parent) {
-            window.parent.postMessage({
-              type: 'GAME_OVER',
-              gameId: 'packing-master',
-              score: 9500
-            }, '*');
-          }
-        }, 300);
+      if (success) {
+        sound.playWin();
+        resultTitle.innerText = 'Koper Rapi Sempurna!';
+        resultTitle.style.color = '#00f0ff';
+        resultIconPass.style.display = 'block';
+        resultIconFail.style.display = 'none';
+        resultDesc.innerText = msg;
+      } else {
+        sound.playError();
+        resultTitle.innerText = 'Waktu Habis!';
+        resultTitle.style.color = '#ef4444';
+        resultIconPass.style.display = 'none';
+        resultIconFail.style.display = 'block';
+        resultDesc.innerText = msg;
       }
-    }
 
-    replayBtn.addEventListener('click', () => {
-      winModal.style.display = 'none';
-      items.forEach(item => {
-        item.classList.remove('selected');
-        palette.appendChild(item);
-      });
-      slots.forEach(s => s.classList.remove('highlight'));
-      selectedItem = null;
-    });
+      if (finalScoreVal > highScore) {
+        highScore = finalScoreVal;
+        localStorage.setItem(STORAGE_KEY, highScore.toString());
+      }
+
+      if (window.parent) {
+        window.parent.postMessage({ type: 'GAME_OVER', score: finalScoreVal }, '*');
+      }
+
+      finalScore.innerText = finalScoreVal + ' pts';
+      finalHigh.innerText = highScore + ' pts';
+      resultModal.style.display = 'flex';
+    }
   </script>
 </body>
 </html>

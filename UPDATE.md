@@ -8,6 +8,26 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.14.0] - 2026-11-20
+### Added & Improved (Werewolf Online Multiplayer Supabase & Modular Multi-File Architecture)
+- **Mode Online Multiplayer Berbasis Supabase Realtime ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js)):**
+  - Pembuatan room dengan **Kode 6 Digit Acak Temporary** untuk mempermudah pemain mabar lintas HP/perangkat.
+  - Lobi realtime dengan sinkronisasi daftar pemain (5-15 pemain), badge Host, dan pengaturan peran auto-balance / custom.
+  - Pemilihan kartu serentak di HP masing-masing dengan mekanisme **Single Pick Lock** (1 kartu hanya bisa diambil 1 pemain) dan tombol **Pilih Acak (Random)**.
+  - Siklus malam realtime dengan urutan peran terarah (Bodyguard, Werewolf, Seer), aturan target tunggal (*Single-Target Rule*), dan dummy delay saat peran sudah gugur agar tidak terbaca.
+  - Siklus siang realtime dengan pengumuman fajar, trigger balas dendam Pemburu (Hunter), serta sistem voting sidang rahasia.
+  - **Auto-Cleanup & Garbage Collection:** Pembersihan room otomatis saat Game Over (`status: finished`) dan pembersihan room kedaluwarsa (> 2 jam).
+- **Mode Offline Pass-and-Play 1 HP ([public/games/werewolf/offline-engine.js](public/games/werewolf/offline-engine.js)):**
+  - Mempertahankan alur offline bergiliran 1 HP dengan input nama 5-15 pemain, auto-balance role, grid kartu 3D flip, Privacy Screen transisi giliran, siklus malam, dan sidang voting.
+- **Arsitektur Modular Multi-File ([public/games/werewolf/](public/games/werewolf/)):**
+  - Memisahkan kode menjadi `index.html`, `styles.css`, `app.js`, `offline-engine.js`, `online-supabase.js`, `svg-icons.js`, dan `config.js`.
+  - Desain atmosferik **Dark Gothic Bloody Color** yang responsif pada mobile (360x800) dan desktop.
+  - 100% Zero-Emoji Policy menggunakan ilustrasi vektor SVG inline kustom.
+- **Skema Database & Migrasi SQL ([supabase-werewolf-schema.sql](supabase-werewolf-schema.sql)):**
+  - Membuat DDL tabel `werewolf_rooms` lengkap dengan kolom `room_code`, `status`, `game_state` JSONB, index performa, konfigurasi RLS publik/anonim, dan publikasi Realtime.
+- **Konfigurasi Lingkungan ([.env.example](.env.example), [.env.local](.env.local)):**
+  - Menambahkan placeholder `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
 ## [3.5.0] - 2026-11-20
 ### Added & Changed (Preferensi Tema, Papan Skor Top 5, dan Kartu Hero Interaktif)
 - **Preferensi Tema ([Navbar.tsx](src/components/layout/Navbar.tsx), [layout.tsx](src/app/layout.tsx), [globals.css](src/app/globals.css)):**
@@ -23,6 +43,146 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Sidebar dibuat sticky
 - **Dokumentasi:** Menulis ulang [Design.md](Design.md) agar sesuai dengan struktur halaman, token warna, komponen, dan interaksi yang saat ini diterapkan; memperbarui [laporan.md](laporan.md).
 - **Validasi:** ESLint dan `npx tsc --noEmit` berhasil untuk perubahan komponen hero.
+
+## [3.13.0] - 2026-11-20
+### Added & Improved (Game Page SEO Content & Rich Snippet Enhancement)
+- **Penambahan Konten Teks Faktual & Terstruktur pada Halaman Game (`/play/[slug]`):**
+  - Menambahkan bagian **Fitur Utama Permainan** (akses instan browser, penyimpanan rekor lokal, audio sintetis hemat kuota, dukungan lintas perangkat).
+  - Menambahkan bagian **Tips Singkat Bermain** (fokus timing/ritme, mode layar penuh, kontrol audio).
+  - Menambahkan tabel **Informasi & Spesifikasi Teknis** (pengembang, kategori, lisensi gratis, platform HTML5, kompatibilitas, ukuran unduh 0 MB).
+  - Menambahkan bagian **Pertanyaan yang Sering Diajukan (FAQ)** dengan jawaban lugas dan non-imajinatif.
+- **Peningkatan Technical SEO & Rich Snippets:**
+  - Menambahkan skema terstruktur `FAQPage` JSON-LD agar tanya-jawab muncul langsung di cuplikan pencarian Google SERP.
+  - Memperbarui skema `VideoGame` dengan data `aggregateRating` (rating bintang Google) dan `offers` (label Gratis).
+  - Memperbaiki gambar Open Graph dan Twitter Card agar menggunakan thumbnail preview masing-masing game secara spesifik.
+  - Memperbaiki canonical URL menjadi URL absolut penuh.
+
+## [3.12.0] - 2026-11-20
+### Removed (Permanent Deletion of Kamus Kelana & Ideas)
+- **Penghapusan Total Game Kamus Kelana:**
+  - Menghapus folder `public/games/kamus-kelana/` beserta seluruh file kode HTML dan aset gambar preview.
+  - Menghapus registrasi metadata game `kamus-kelana` dari `src/lib/games-data.ts`.
+  - Menghapus konfigurasi styling kartu dari `src/components/game/GameCard.tsx`.
+  - Menghapus definisi preview dari `scripts/generate-all-previews.js`.
+- **Pembersihan Konsep Ide:**
+  - Menghapus seluruh spesifikasi ide game "8. Kamus Kelana: Kata Tersembunyi" dari dokumen referensi ide `list-game2.md` (tabel matriks, rincian konsep, dan struktur pohon direktori).
+- **Sinkronisasi Katalog & Static Build:**
+  - Build statis diekspor ulang via `npm run build` sehingga rute `/play/kamus-kelana` bersih dari folder output `out/`.
+
+## [3.11.0] - 2026-11-20
+### Added & Changed (Remake Werewolf: 5-15 Players Setup, Interactive Tarot Card Pick & Complete Night/Day Cycle)
+- **Setup Pemain Fleksibel & Dinamis (5–15 Pemain):**
+  - Input nama dinamis untuk 5 hingga 15 pemain pada satu perangkat dengan tombol tambah/hapus pemain.
+  - Komposisi peran seimbang otomatis (*Auto-Balance*) serta opsi kustomisasi manual sebelum mulai main.
+  - Peran lengkap terintegrasi: Werewolf, Villager, Seer, Bodyguard, dan Hunter.
+  - State nama pemain tersimpan otomatis di `localStorage` (`teknogames_werewolf_players`) untuk kemudahan replay langsung.
+- **Mekanisme Pemilihan Kartu Interaktif (*Interactive Card Pick*):**
+  - Papan grid kartu tertutup (*face-down cards*) teracak dengan giliran pemain satu per satu.
+  - Efek 3D flip card saat kartu disentuh, menampilkan ilustrasi SVG per peran dan kartu ringkasan tugas.
+  - Layar Transisi Privasi Aman (*Privacy Screen* "Oper HP ke [Nama Pemain]") di setiap pergantian giliran agar peran tidak diintip pemain lain.
+- **Siklus Malam Berurutan (*Night Phase*):**
+  - **Bodyguard:** Melindungi 1 pemain dari serangan serigala dengan validasi ketat larangan melindungi orang yang sama 2 malam berturut-turut.
+  - **Werewolf:** Menampilkan daftar rekan sesama serigala dan memilih 1 target korban mangsa.
+  - **Seer:** Menerawang identitas pemain terpilih secara instan ("WEREWOLF" atau "BUKAN WEREWOLF / WARGA").
+  - Dummy screen otomatis disimulasikan jika pemilik peran telah gugur untuk menyamarkan durasi giliran.
+- **Siklus Siang, Skill Pembalasan Hunter & Sidang Voting:**
+  - Pengumuman fajar atas peristiwa malam hari (selamat karena terlindungi atau tewas beserta pengungkapan peran).
+  - **Skill Trigger Kematian Hunter:** Saat Hunter tereliminasi (diserang serigala semalam maupun digantung di siang hari), muncul kesempatan menembak 1 pemain lain untuk ikut gugur bersamanya.
+  - Timer diskusi interaktif (1 s.d. 3 menit) dilengkapi tombol *Lewati ke Voting*.
+  - Sesi voting eksekusi sidang gantung desa untuk mengeliminasi tersangka perolehan suara terbanyak.
+- **Atmosfer & UI/UX Mutlak Tanpa Emoji:**
+  - Tema *Dark Gothic Midnight Village* yang nyaman dimainkan malam hari dan responsif mobile-first.
+  - Zero-emoji policy lolos 100% menggunakan ikon SVG inline kustom untuk seluruh peran, fase bulan/matahari, status, dan tombol navigasi.
+  - Web Audio API synthesizer terintegrasi (lonceng malam, lolongan serigala, mantra penerawang, tembakan pemburu, palu sidang, terompet kemenangan).
+- **Pengujian & Verifikasi Terisolasi:**
+  - Lulus verifikasi browser otomatis via Chrome DevTools remote debugging port 9222 dengan 0 console error.
+  - Seluruh alur (Setup Pemain -> Pemilihan Kartu -> Privacy Screen) terverifikasi berjalan mulus dan tab uji ditutup rapi.
+
+## [3.10.0] - 2026-11-20
+### Improved & Fixed (Circuit Flow Visuals & Zero-Bug Connection Algorithm)
+- **Upgrade Visual Jalur Sirkuit Elektronik (PCB Circuit Trace):**
+  - Mengubah tampilan garis menjadi jejak tembaga sirkuit PCB (*copper trace track* dengan garis inti neon *circuit core*).
+  - Menambahkan animasi aliran pulsa partikel elektron (*flowing electrons pulse*) yang mengalir dinamis di sepanjang jalur aktif.
+  - Mempercantik simpul terminal menjadi PCB via solder pad dengan detil crosshair dan glow interaktif saat terhubung.
+- **Logika Koneksi Bebas Bug (Standar Pou Connect & Backtracking):**
+  - Menerapkan penanganan pemotongan jalur tabrakan (*path overwrite resolution*) sesuai referensi Pou Connect / Flow Free tanpa menyebabkan kebuntuan (*deadlock*).
+  - Menerapkan fitur *smooth backtracking* (memendekkan jalur secara otomatis saat jari/kursor digerakkan mundur).
+  - Memperbaiki seluruh 9 level sirkuit sehingga terverifikasi 100% solvable menggunakan solver backtracking algoritma Numberlink.
+  - Menambahkan indikator kelistrikan / persentase cakupan papan (*Board Coverage Percentage*) dengan bonus skor 100% full grid.
+
+## [3.9.0] - 2026-11-20
+### Removed & Added (Permanent Deletion of Batik Flow & Blacklist Rule)
+- **Penghapusan Total Game Batik Flow:**
+  - Menghapus direktori `public/games/batik-flow/` beserta seluruh file kode dan aset preview di `public/batik-flow/` dan `public/images/games/batik-flow.*`.
+  - Menghapus registrasi metadata game `batik-flow` dari `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, dan generator preview.
+- **Penetapan Aturan Larangan Mutlak (Blacklist):**
+  - Menambahkan klausul permanen pada `AGENTS.md` (Bagian 8) dan `game-guide.md` (Bagian 9) yang **MELARANG KERAS** pembuatan, modifikasi, perancangan, atau pemulihan kembali game dengan nama mengandung "batik" maupun konsep serupa (puzzle alur lilin malam/canting/pipa bertema batik) untuk masa mendatang.
+- **Sinkronisasi Katalog & Static Build:**
+  - Mengekspor ulang build statis `npm run build` sehingga rute `/play/batik-flow` dan kartu terkait dihapus dari direktori output `out/`.
+
+## [3.8.0] - 2026-11-20
+### Added & Changed (Remake Batch 4: Lembah Bromo, Pasar Terapung, Kamus Kelana, Werewolf)
+- **Remake 4 Permainan Batch 4 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**
+  - **`lembah-bromo` ([index.html](public/games/lembah-bromo/index.html)):** Single-file Canvas 2D slope momentum hang glider (Tiny Wings style), visual sunrise kaldera Gunung Bromo & Gunung Batok, fisika luncuran lereng pasir dinamis (tahan tukik di downslope, lepas di upslope untuk lompatan tinggi), pengumpulan kristal embun belerang di udara, badai kabut pasir kawah yang mengejar dari belakang, Web Audio API synthesizer, High Score `localStorage` (`teknogames_lembah-bromo_highscore`), dan `postMessage`.
+  - **`pasar-terapung` ([index.html](public/games/pasar-terapung/index.html)):** Arcade river boat fruit catch di Sungai Martapura Lok Baintan Banjarmasin, kemudi perahu jukung tradisional dengan keranjang rotan (panah kiri/kanan, A/D, paddle layar), komoditas buah lokal (Pisang, Durian, Rambutan, Belimbing), rintangan kayu hanyut & batu sungai, sistem 3 hati nyawa SVG, kombo bertingkat (x1 s.d x4), Web Audio API synthesizer, High Score `localStorage` (`teknogames_pasar-terapung_highscore`), dan `postMessage`.
+  - **`kamus-kelana` ([index.html](public/games/kamus-kelana/index.html)):** Word connect compass puzzle jelajah 5 destinasi nusantara (Bali, Bromo, Toba, Komodo, Raja Ampat), roda kompas huruf melingkar dengan drag neon line cyan bercahaya, kotak teka-teki silang interaktif, tombol acak (shuffle) dan petunjuk (hint), Web Audio API synthesizer tone nada bertingkat & success arpeggio, High Score `localStorage` (`teknogames_kamus-kelana_highscore`), dan `postMessage`.
+  - **`werewolf` ([index.html](public/games/werewolf/index.html)):** Permainan deduksi sosial misteri malam desa nusantara dengan dua mode: Mode Detektif Solo menganalisis alibi logika kebohongan serigala dan Mode Pass & Play pesta (Werewolf, Seer, Bodyguard, Villager) dengan pemilihan malam hari dan sidang eliminasi siang, Web Audio API synthesizer (lonceng tengah malam, lolongan malam hari, palu sidang), High Score `localStorage` (`teknogames_werewolf_highscore`), dan `postMessage`.
+- **Quality Verification & Browser Testing:**
+  - Zero-emoji policy lolos audit 100% menggunakan regex Unicode property `/\p{Extended_Pictographic}/gu`.
+  - Seluruh tombol interaksi (Start, Audio Toggle, On-screen controls, Retry) responsif di mobile & desktop.
+  - Lolos pengujian browser terisolasi via Chrome DevTools remote debugging port 9222 (0 console error).
+  - Rute permainan merespons status HTTP 200 OK di dev server localhost.
+  - Berhasil diekspor via `npm run build` ke direktori statis `out/`.
+
+## [3.7.0] - 2026-11-20
+### Added & Changed (Remake Batch 3: Candi Stacker, Batik Flow, Layangan Sanur, Kopi Klotok)
+- **Remake 4 Permainan Batch 3 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**
+  - **`candi-stacker` ([index.html](public/games/candi-stacker/index.html)):** Single-file Canvas 2D, penyusunan balok batu andesit bertingkat candi Borobudur, pemotongan presisi balok overhang berlebih, bonus sempurna (*Perfect Placement*), scrolling kamera vertikal halus, Web Audio API synthesizer, High Score `localStorage` (`teknogames_candi-stacker_highscore`), dan `postMessage`.
+  - **`batik-flow` ([index.html](public/games/batik-flow/index.html)):** Pipe connection puzzle 16 ubin membatik nusantara (Parang Rusak, Kawung, Mega Mendung), validasi BFS aliran lilin malam cair dari canting tembaga ke mahkota batik, Web Audio API synthesizer, High Score `localStorage` (`teknogames_batik-flow_highscore`), dan `postMessage`.
+  - **`layangan-sanur` ([index.html](public/games/layangan-sanur/index.html)):** Aksi adu layangan bebean Bali di langit Pantai Sanur, manajemen tensi benang (tarik menukik vs ulur), pemotongan benang layangan musuh, Web Audio API synthesizer, High Score `localStorage` (`teknogames_layangan-sanur_highscore`), dan `postMessage`.
+  - **`kopi-klotok` ([index.html](public/games/kopi-klotok/index.html)):** 3-lane rhythm game seduhan warung kopi klotok Jogja, ketukan presisi tetesan air & biji kopi sangrai menuju cangkir tanah liat, kombo bertingkat (Perfect, Good, Miss), 3 nyawa seduhan, Web Audio API synthesizer, High Score `localStorage` (`teknogames_kopi-klotok_highscore`), dan `postMessage`.
+- **Quality Verification & Browser Testing:**
+  - Zero-emoji policy lolos audit 100% menggunakan regex Unicode pictographic.
+  - Lolos pengujian browser terisolasi via Chrome DevTools remote debugging tanpa runtime error console.
+  - Rute permainan merespons status HTTP 200 OK di localhost.
+  - Berhasil diekspor via `npm run build` ke direktori statis `out/`.
+
+## [3.6.0] - 2026-11-20
+### Added & Changed (Remake Batch 2: Nusantara Runner, Kapal Feri, Packing Master, Becak Drift)
+- **Remake 4 Permainan Batch 2 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**
+  - **`nusantara-runner` ([index.html](public/games/nusantara-runner/index.html)):** Single-file pure Canvas 2D, zero-emoji, 3 transisi biome visual (Malioboro, Bromo, Kuta), kontrol lompat & meluncur merunduk (keyboard & tombol virtual sentuh), progressive speed scaling, Web Audio API synthesizer, High Score `localStorage` (`teknogames_nusantara-runner_highscore`), dan `postMessage`.
+  - **`kapal-feri` ([index.html](public/games/kapal-feri/index.html)):** Navigasi laut top-down inersia air realistis, rute Selat Sunda 4200 unit dengan progress bar, rintangan karang tajam, koleksi pelampung darurat, dermaga sandar Pelabuhan Bakauheni, Web Audio API klakson feri foghorn, High Score `localStorage` (`teknogames_kapal-feri_highscore`), dan `postMessage`.
+  - **`packing-master` ([index.html](public/games/packing-master/index.html)):** Inventory polyomino grid puzzle 4 level (3x4 s.d 5x5), sistem rotasi item 90 derajat (`R` / tombol Putar), countdown timer dengan bonus waktu, item digambar dengan ikon vektor SVG bersih (kemeja, kamera, botol, kacamata, sepatu, topi, laptop) tanpa emoji, Web Audio API synthesizer, High Score `localStorage` (`teknogames_packing-master_highscore`), dan `postMessage`.
+  - **`becak-drift` ([index.html](public/games/becak-drift/index.html)):** Top-down arc racing & drifting di aspal Malioboro, rintangan andong & pot bunga, mekanik drift tajam dengan bekas ban (skid marks) dan pengganda kombo drift (x2 s.d x4), item teh poci penambah poin, Web Audio API lonceng becak dan decitan drift, High Score `localStorage` (`teknogames_becak-drift_highscore`), dan `postMessage`.
+- **Quality Audit & Verification:**
+  - Seluruh 4 game lolos verifikasi AST/syntax node tanpa error console/syntax.
+  - Zero-emoji policy terverifikasi 100% menggunakan regex Unicode pictographic.
+  - Seluruh rute lokal (`/games/games/<slug>/index.html` dan `/games/play/<slug>`) terverifikasi 200 OK.
+  - Static export `npm run build` sukses 100% mendistribusikan seluruh file ke folder `out/`.
+
+## [3.5.1] - 2026-11-19
+### Fixed & Improved (Catalog Thumbnail Previews for All 15 Games & Hero Card Cover)
+- **Generasi Preview Gambar 600x400 untuk Seluruh 15 Game ([scripts/generate-all-previews.js](scripts/generate-all-previews.js)):**
+  - Membuat aset `preview.png` (600x400px, aspect ratio 3:2, ukuran < 50 KB, clean typography, zero emoji) menggunakan Sharp SVG renderer untuk seluruh 15 game.
+  - Mendistribusikan file preview ke rute `public/games/<slug>/preview.png` dan fallback ganda `public/<slug>/preview.png`.
+  - Mengonversi dan menyalin aset ke format webp dan png di `public/images/games/<slug>.webp` serta `public/games/images/games/<slug>.webp` untuk kompatibilitas penuh.
+- **Pembaruan Komponen Katalog & Hero ([GameCard.tsx](src/components/game/GameCard.tsx), [GameHero.tsx](src/components/game/GameHero.tsx), [games-data.ts](src/lib/games-data.ts)):**
+  - Memperbarui `thumbnailUrl` seluruh game di `src/lib/games-data.ts` mengarah ke `/games/<slug>/preview.png` sesuai Bagian 4 `AGENTS.md`.
+  - Menerapkan mekanisme pemulihan URL berantai (chain fallback) di `GameCard.tsx` (`/games/<slug>/preview.png` -> `/games/games/<slug>/preview.png` -> `/<slug>/preview.png` -> webp) untuk mencegah ikon broken image browser muncul.
+  - Memperbarui kartu Pilihan Utama pada Hero Banner di `GameHero.tsx` agar menampilkan cover visual preview game secara penuh dengan dark gradient overlay estetik, menggantikan kotak inisial huruf teks murni.
+  - Menjalankan static export `npm run build` sehingga seluruh aset dan HTML di folder `out/` ter-generate sempurna.
+
+## [3.5.0] - 2026-11-19
+### Added & Changed (Remake Batch 1: Cyber Bird, Tekno Memory, Circuit Flow & Cover Preview Card)
+- **Remake Game Batch 1 Sesuai Standar Mutlak `game-guide.md`:**
+  - **`cyber-bird` ([index.html](public/games/cyber-bird/index.html)):** Single-file pure Canvas 2D, zero-emoji, progressive speed scaling, sistem High Score `localStorage`, tombol audio Web Audio API, dan pengiriman event `postMessage`.
+  - **`tekno-memory` ([index.html](public/games/tekno-memory/index.html)):** Single-file pure CSS Grid & SVG, zero-emoji (12 ikon sirkuit teknologi), level scaling Pou-style (2x2 s.d 4x4), countdown timer, bonus sisa waktu, dan High Score `localStorage`.
+  - **`circuit-flow` ([index.html](public/games/circuit-flow/index.html)):** Single-file pure Canvas 2D, puzzle connect node neon 9 level (4x4, 5x5, 6x6), validasi jalur kabel non-overlapping, scoring, dan High Score `localStorage`.
+- **Standarisasi Cover Preview 600x400 ([GameCard.tsx](src/components/game/GameCard.tsx)):**
+  - Membuat file `preview.png` resolusi 600x400 (< 50 KB) untuk `cyber-bird`, `tekno-memory`, dan `circuit-flow`.
+  - Memperbarui komponen `GameCard.tsx` untuk menampilkan gambar cover `preview.png` penuh (`object-fit: cover`) sesuai Bagian 4 `game-guide.md`.
+  - Mendaftarkan `circuit-flow` ke katalog metadata di `src/lib/games-data.ts`.
+  - Memperbarui riwayat rilis pada `game-log.md`.
 
 ## [3.4.2] - 2026-11-19
 ### Added (Google AdSense Official Integration & ads.txt Verification)

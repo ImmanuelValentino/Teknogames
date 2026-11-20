@@ -2,42 +2,159 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Pasar Terapung: Fruit Catch - Travelista Games</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" href="data:,">
+  <title>Pasar Terapung: Fruit Catch - TeknoGame</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
-    html, body { width: 100%; height: 100%; overflow: hidden; background: #0f766e; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; touch-action: none; }
-    canvas { width: 100%; height: 100%; display: block; touch-action: none; }
-    #ui { position: absolute; inset: 0; pointer-events: none; }
-    .hud { position: absolute; top: 15px; left: 15px; display: flex; gap: 10px; pointer-events: auto; z-index: 20; }
-    .badge { background: rgba(15, 23, 42, 0.85); color: #fff; padding: 6px 14px; border-radius: 9999px; font-weight: 800; font-size: 13px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-    .badge span { color: #f59e0b; }
-    .lives { position: absolute; top: 15px; right: 15px; font-size: 18px; pointer-events: auto; z-index: 20; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #042f2e;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      touch-action: none;
+    }
+    #game-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #064e3b;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+    .hud {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 20;
+    }
+    .hud-left {
+      display: flex;
+      gap: 10px;
+      pointer-events: auto;
+    }
+    .hud-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+    }
+    .badge {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 9999px;
+      padding: 6px 14px;
+      color: #f8fafc;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge .val {
+      color: #00f0ff;
+      font-weight: 800;
+    }
+    .badge .val.combo {
+      color: #f59e0b;
+    }
+    .lives-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-radius: 9999px;
+      padding: 6px 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+    }
+    .heart-icon {
+      width: 18px;
+      height: 18px;
+      fill: #ef4444;
+      transition: transform 0.2s, opacity 0.2s, fill 0.2s;
+    }
+    .heart-icon.lost {
+      fill: rgba(255, 255, 255, 0.15);
+      opacity: 0.4;
+      transform: scale(0.85);
+    }
+    .btn-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: #00f0ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      transition: transform 0.15s, background 0.15s;
+    }
+    .btn-icon:hover {
+      background: rgba(0, 240, 255, 0.2);
+      transform: scale(1.06);
+    }
+    .btn-icon:active {
+      transform: scale(0.94);
+    }
+    .btn-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
 
-    /* Onscreen Mobile Paddle Buttons */
+    /* Onscreen Mobile Controls */
     .mobile-controls {
       position: absolute;
-      bottom: 20px;
+      bottom: 24px;
       left: 0;
       right: 0;
       display: flex;
       justify-content: space-between;
-      padding: 0 20px;
-      pointer-events: auto;
+      padding: 0 24px;
+      pointer-events: none;
       z-index: 25;
     }
     .paddle-btn {
+      pointer-events: auto;
       width: 110px;
-      height: 58px;
+      height: 60px;
       background: rgba(15, 23, 42, 0.85);
       border: 2px solid rgba(0, 240, 255, 0.4);
-      border-radius: 18px;
-      color: #fff;
+      border-radius: 20px;
+      color: #ffffff;
       font-size: 15px;
-      font-weight: 900;
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 6px;
       cursor: pointer;
       backdrop-filter: blur(8px);
       box-shadow: 0 6px 20px rgba(0,0,0,0.4);
@@ -45,323 +162,910 @@
       transition: transform 0.08s, background 0.08s;
     }
     .paddle-btn:active, .paddle-btn.active {
-      transform: scale(0.92);
+      transform: scale(0.93);
       background: rgba(0, 240, 255, 0.3);
       border-color: #00f0ff;
     }
+    .paddle-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
 
-    .modal { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(8px); display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: auto; color: #fff; text-align: center; padding: 20px; z-index: 50; }
-    .btn { background: #0d9488; color: #fff; border: none; padding: 12px 28px; border-radius: 12px; font-weight: 800; font-size: 15px; cursor: pointer; transition: all 0.2s; margin-top: 16px; box-shadow: 0 8px 20px rgba(13, 148, 136, 0.4); }
-    .btn:hover { background: #0f766e; transform: translateY(-2px); }
-    .title { font-size: 26px; font-weight: 900; margin-bottom: 6px; }
-    .subtitle { font-size: 13px; color: #94a3b8; max-width: 320px; line-height: 1.4; }
+    /* Modals & Overlays */
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 47, 46, 0.9);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 20px;
+      transition: opacity 0.25s ease;
+    }
+    .modal-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .modal-card {
+      background: linear-gradient(180deg, #134e4a 0%, #042f2e 100%);
+      border: 1px solid rgba(45, 212, 191, 0.35);
+      border-radius: 20px;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    }
+    .modal-card h1 {
+      font-size: 26px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #2dd4bf, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .modal-card p {
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .info-box {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      text-align: left;
+      font-size: 13px;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+    .info-box ul {
+      padding-left: 20px;
+      margin-top: 4px;
+    }
+    .score-summary {
+      display: flex;
+      justify-content: space-around;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 12px;
+      padding: 14px 10px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(45, 212, 191, 0.25);
+    }
+    .score-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .score-col .label {
+      font-size: 12px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .score-col .num {
+      font-size: 24px;
+      font-weight: 900;
+      color: #2dd4bf;
+    }
+    .score-col .num.gold {
+      color: #f59e0b;
+    }
+    .btn-main {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #0d9488, #2dd4bf);
+      color: #042f2e;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(45, 212, 191, 0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(45, 212, 191, 0.5);
+    }
+    .btn-main:active {
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
-  <canvas id="canvas"></canvas>
-  <div id="ui">
-    <div class="hud">
-      <div class="badge">Buah Terkumpul: <span id="fruit-val">0</span> 🧺</div>
-      <div class="badge">Skor: <span id="score-val">0</span> pts</div>
-    </div>
-    <div class="lives" id="lives-val">❤️❤️❤️</div>
+  <div id="game-container">
+    <canvas id="game-canvas"></canvas>
 
-    <!-- Onscreen Paddle Controls for Mobile -->
+    <!-- HUD -->
+    <div class="hud">
+      <div class="hud-left">
+        <div class="badge">
+          <span>SKOR:</span>
+          <span class="val" id="hud-score">0</span>
+        </div>
+        <div class="badge">
+          <span>KOMBO:</span>
+          <span class="val combo" id="hud-combo">x1</span>
+        </div>
+      </div>
+      <div class="hud-right">
+        <div class="lives-container" id="lives-display">
+          <svg class="heart-icon" id="heart-1" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <svg class="heart-icon" id="heart-2" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <svg class="heart-icon" id="heart-3" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+        <div class="badge">
+          <span>REKOR:</span>
+          <span class="val" id="hud-best">0</span>
+        </div>
+        <button class="btn-icon" id="btn-audio" aria-label="Toggle Suara">
+          <svg id="icon-vol-on" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+          <svg id="icon-vol-off" viewBox="0 0 24 24" style="display: none;">
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27l4.73 4.73H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Paddle Controls -->
     <div class="mobile-controls">
-      <div class="paddle-btn" id="btn-left">◀ KAYUH</div>
-      <div class="paddle-btn" id="btn-right">KAYUH ▶</div>
+      <button class="paddle-btn" id="btn-left">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        <span>Kiri</span>
+      </button>
+      <button class="paddle-btn" id="btn-right">
+        <span>Kanan</span>
+        <svg viewBox="0 0 24 24">
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+        </svg>
+      </button>
     </div>
 
     <!-- Start Modal -->
-    <div class="modal" id="start-modal">
-      <div style="font-size: 48px; margin-bottom: 8px;">🛶🍌</div>
-      <h1 class="title">Pasar Terapung: Fruit Catch</h1>
-      <p class="subtitle">Geser perahu jukung di Sungai Martapura Banjarmasin! Tangkap buah-buahan segar nusantara & hindari batu sungai!</p>
-      <div style="margin-top: 14px; font-size: 11px; color: #cbd5e1; background: rgba(255,255,255,0.08); padding: 6px 14px; border-radius: 8px;">
-        <b>GESER JARI / GERAKKAN MOUSE / PANAH KIRI-KANAN</b> untuk mengemudi perahu
+    <div class="modal-overlay" id="modal-start">
+      <div class="modal-card">
+        <h1>Pasar Terapung</h1>
+        <p>Kemudikan perahu jukung di Sungai Martapura dan tangkap hasil bumi segar!</p>
+        <div class="info-box">
+          <strong>CARA BERMAIN:</strong>
+          <ul>
+            <li>Gunakan <strong>Panah Kiri / Kanan</strong> atau tombol layar untuk menggeser perahu.</li>
+            <li>Tangkap buah-buahan segar (Pisang, Durian, Rambutan, Belimbing).</li>
+            <li><strong>Hindari</strong> kayu hanyut dan batu sungai agar perahu tidak rusak!</li>
+            <li>Pertahankan kombo tangkapan untuk skor berlipat ganda.</li>
+          </ul>
+        </div>
+        <button class="btn-main" id="btn-play">Mulai Berniaga</button>
       </div>
-      <button class="btn" id="start-btn">Kayuh Perahu</button>
     </div>
 
-    <!-- Over Modal -->
-    <div class="modal" id="over-modal" style="display: none;">
-      <div style="font-size: 48px; margin-bottom: 8px;">🧺💥</div>
-      <h2 class="title" style="color: #ef4444;">Perahu Jukung Karam!</h2>
-      <p class="subtitle">Nyawa perahu habis terkena rintangan sungai.</p>
-      <div style="font-size: 24px; font-weight: 900; color: #f59e0b; margin-top: 10px;" id="final-score">0 pts</div>
-      <button class="btn" id="restart-btn">Mendayung Lagi</button>
+    <!-- Game Over Modal -->
+    <div class="modal-overlay hidden" id="modal-gameover">
+      <div class="modal-card">
+        <h1>Perahu Sandar</h1>
+        <p id="gameover-desc">Perahu jukung mengalami kerusakan akibat benturan rintangan sungai.</p>
+        <div class="score-summary">
+          <div class="score-col">
+            <span class="label">Total Tangkapan</span>
+            <span class="num" id="final-catches">0</span>
+          </div>
+          <div class="score-col">
+            <span class="label">Skor Akhir</span>
+            <span class="num" id="final-score">0</span>
+          </div>
+          <div class="score-col">
+            <span class="label">Rekor</span>
+            <span class="num gold" id="final-best">0</span>
+          </div>
+        </div>
+        <button class="btn-main" id="btn-restart">Mendayung Lagi</button>
+      </div>
     </div>
   </div>
 
   <script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const fruitVal = document.getElementById('fruit-val');
-    const scoreVal = document.getElementById('score-val');
-    const livesVal = document.getElementById('lives-val');
-    const startModal = document.getElementById('start-modal');
-    const overModal = document.getElementById('over-modal');
-    const finalScore = document.getElementById('final-score');
-    const startBtn = document.getElementById('start-btn');
-    const restartBtn = document.getElementById('restart-btn');
-    const btnLeft = document.getElementById('btn-left');
-    const btnRight = document.getElementById('btn-right');
+    (function() {
+      // Audio Synth
+      const HIGH_SCORE_KEY = 'teknogames_pasar-terapung_highscore';
+      let bestScore = parseInt(localStorage.getItem(HIGH_SCORE_KEY) || '0', 10);
+      let audioCtx = null;
+      let soundEnabled = true;
 
-    let width, height;
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    // Web Audio Synthesizer
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    let actx = null;
-    function initAudio() {
-      if (!actx) actx = new AudioCtx();
-      if (actx.state === 'suspended') actx.resume();
-    }
-    function playPop() {
-      initAudio();
-      try {
-        const osc = actx.createOscillator(), gain = actx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(420, actx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(840, actx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.25, actx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + 0.08);
-        osc.connect(gain); gain.connect(actx.destination);
-        osc.start(); osc.stop(actx.currentTime + 0.08);
-      } catch(e){}
-    }
-    function playHit() {
-      initAudio();
-      try {
-        const osc = actx.createOscillator(), gain = actx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(120, actx.currentTime);
-        osc.frequency.linearRampToValueAtTime(30, actx.currentTime + 0.15);
-        gain.gain.setValueAtTime(0.3, actx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + 0.15);
-        osc.connect(gain); gain.connect(actx.destination);
-        osc.start(); osc.stop(actx.currentTime + 0.15);
-      } catch(e){}
-    }
-
-    let isPlaying = false;
-    let boat = { x: width / 2, y: height - 100, w: 90, h: 28 };
-    let items = [];
-    let waves = [];
-    let score = 0;
-    let fruitsCount = 0;
-    let lives = 3;
-
-    for (let i = 0; i < 25; i++) {
-      waves.push({ x: Math.random() * width, y: Math.random() * height, w: 20 + Math.random() * 30 });
-    }
-
-    function init() {
-      startModal.style.display = 'none';
-      overModal.style.display = 'none';
-      score = 0;
-      fruitsCount = 0;
-      lives = 3;
-      boat.x = width / 2;
-      boat.y = height - 100;
-      items = [];
-      updateHUD();
-      isPlaying = true;
-    }
-
-    function updateHUD() {
-      fruitVal.innerText = fruitsCount;
-      scoreVal.innerText = score.toLocaleString('id-ID');
-      livesVal.innerText = '❤️'.repeat(Math.max(0, lives));
-    }
-
-    function gameOver() {
-      if (!isPlaying) return;
-      isPlaying = false;
-      playHit();
-      finalScore.innerText = score.toLocaleString('id-ID') + ' pts';
-      overModal.style.display = 'flex';
-
-      if (window.parent) {
-        window.parent.postMessage({
-          type: 'GAME_OVER',
-          gameId: 'pasar-terapung',
-          score: score
-        }, '*');
+      function initAudio() {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            audioCtx = new AudioContextClass();
+          }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
       }
-    }
 
-    // Controls: Touch / Buttons / Mouse / Keyboard
-    let keys = {};
-    let paddleLeft = false;
-    let paddleRight = false;
+      function playSound(type) {
+        if (!soundEnabled || !audioCtx) return;
+        try {
+          const now = audioCtx.currentTime;
+          if (type === 'catch') {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(420, now);
+            osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
+            gain.gain.setValueAtTime(0.18, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.12);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.12);
+          } else if (type === 'hit') {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(150, now);
+            osc.frequency.linearRampToValueAtTime(60, now + 0.18);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.18);
+          } else if (type === 'combo') {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(600, now);
+            osc.frequency.setValueAtTime(900, now + 0.08);
+            osc.frequency.setValueAtTime(1200, now + 0.16);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.24);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.24);
+          } else if (type === 'gameover') {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(320, now);
+            osc.frequency.linearRampToValueAtTime(110, now + 0.45);
+            gain.gain.setValueAtTime(0.22, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.45);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.45);
+          }
+        } catch (e) {}
+      }
 
-    window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
-    window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+      // DOM Elements
+      const canvas = document.getElementById('game-canvas');
+      const ctx = canvas.getContext('2d');
+      const hudScore = document.getElementById('hud-score');
+      const hudCombo = document.getElementById('hud-combo');
+      const hudBest = document.getElementById('hud-best');
+      const btnAudio = document.getElementById('btn-audio');
+      const iconVolOn = document.getElementById('icon-vol-on');
+      const iconVolOff = document.getElementById('icon-vol-off');
+      const btnLeft = document.getElementById('btn-left');
+      const btnRight = document.getElementById('btn-right');
+      const modalStart = document.getElementById('modal-start');
+      const modalGameover = document.getElementById('modal-gameover');
+      const btnPlay = document.getElementById('btn-play');
+      const btnRestart = document.getElementById('btn-restart');
+      const finalCatches = document.getElementById('final-catches');
+      const finalScore = document.getElementById('final-score');
+      const finalBest = document.getElementById('final-best');
+      const hearts = [
+        document.getElementById('heart-1'),
+        document.getElementById('heart-2'),
+        document.getElementById('heart-3')
+      ];
 
-    function setupPaddle(btn, setFlag) {
-      const start = (e) => {
-        e.preventDefault();
+      hudBest.textContent = bestScore;
+
+      // Game Variables
+      let gameActive = false;
+      let score = 0;
+      let combo = 1;
+      let comboCount = 0;
+      let totalCatches = 0;
+      let lives = 3;
+      let lastTime = 0;
+      let spawnTimer = 0;
+      let spawnInterval = 1000;
+
+      // Player Boat State
+      const boat = {
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 38,
+        speed: 8.5,
+        targetX: 0,
+        vx: 0,
+        tilt: 0
+      };
+
+      // Control Inputs
+      const keys = { left: false, right: false };
+
+      // Falling items (fruits & hazards)
+      let items = [];
+      let ripples = [];
+      let splashes = [];
+
+      const ITEM_TYPES = [
+        { type: 'fruit', name: 'Pisang', color: '#facc15', pts: 10, radius: 14, shape: 'banana' },
+        { type: 'fruit', name: 'Rambutan', color: '#ef4444', pts: 15, radius: 13, shape: 'circle' },
+        { type: 'fruit', name: 'Jeruk', color: '#f97316', pts: 20, radius: 15, shape: 'circle' },
+        { type: 'fruit', name: 'Durian', color: '#84cc16', pts: 30, radius: 17, shape: 'spiky' },
+        { type: 'fruit', name: 'Belimbing', color: '#eab308', pts: 25, radius: 15, shape: 'star' },
+        { type: 'hazard', name: 'Kayu Hanyut', color: '#78350f', pts: 0, radius: 16, shape: 'log' },
+        { type: 'hazard', name: 'Batu Tajam', color: '#64748b', pts: 0, radius: 14, shape: 'rock' }
+      ];
+
+      // Resize
+      function resizeCanvas() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        boat.y = canvas.height - 110;
+        if (!gameActive) {
+          boat.x = canvas.width / 2;
+          boat.targetX = boat.x;
+        }
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      // Audio Toggle
+      btnAudio.addEventListener('click', (e) => {
         e.stopPropagation();
         initAudio();
-        setFlag(true);
-        btn.classList.add('active');
-      };
-      const stop = (e) => {
-        e.preventDefault();
-        setFlag(false);
-        btn.classList.remove('active');
-      };
-      btn.addEventListener('pointerdown', start);
-      btn.addEventListener('pointerup', stop);
-      btn.addEventListener('pointerleave', stop);
-      btn.addEventListener('pointercancel', stop);
-    }
-    setupPaddle(btnLeft, v => paddleLeft = v);
-    setupPaddle(btnRight, v => paddleRight = v);
-
-    // Direct Canvas Touch / Drag
-    function moveBoatToTouch(e) {
-      if (!isPlaying) return;
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      boat.x = Math.max(boat.w / 2, Math.min(width - boat.w / 2, clientX));
-    }
-    canvas.addEventListener('pointerdown', moveBoatToTouch);
-    canvas.addEventListener('pointermove', moveBoatToTouch);
-    canvas.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      moveBoatToTouch(e);
-    }, { passive: false });
-    canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      moveBoatToTouch(e);
-    }, { passive: false });
-
-    startBtn.addEventListener('click', () => { initAudio(); init(); });
-    restartBtn.addEventListener('click', () => { initAudio(); init(); });
-
-    let spawnTimer = 0;
-    const fruitIcons = ['🍌', '🥭', '🥥', '🍉', '🍍'];
-
-    function loop() {
-      ctx.clearRect(0, 0, width, height);
-
-      // Martapura River Greenish Teal
-      const river = ctx.createLinearGradient(0, 0, 0, height);
-      river.addColorStop(0, '#0f766e');
-      river.addColorStop(1, '#115e59');
-      ctx.fillStyle = river;
-      ctx.fillRect(0, 0, width, height);
-
-      // River Water Ripples
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
-      ctx.lineWidth = 2;
-      waves.forEach(w => {
-        w.x += 0.8;
-        if (w.x > width) w.x = -w.w;
-        ctx.beginPath();
-        ctx.arc(w.x, w.y, w.w, 0, Math.PI);
-        ctx.stroke();
+        soundEnabled = !soundEnabled;
+        if (soundEnabled) {
+          iconVolOn.style.display = 'block';
+          iconVolOff.style.display = 'none';
+        } else {
+          iconVolOn.style.display = 'none';
+          iconVolOff.style.display = 'block';
+        }
       });
 
-      if (isPlaying) {
-        if (keys['a'] || keys['arrowleft'] || paddleLeft) boat.x = Math.max(boat.w/2, boat.x - 7.5);
-        if (keys['d'] || keys['arrowright'] || paddleRight) boat.x = Math.min(width - boat.w/2, boat.x + 7.5);
+      // Controls Binding
+      window.addEventListener('keydown', (e) => {
+        if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
+          keys.left = true;
+          initAudio();
+        } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
+          keys.right = true;
+          initAudio();
+        }
+      });
 
-        // Spawn falling fruit & obstacles
-        spawnTimer++;
-        if (spawnTimer > 40) {
-          spawnTimer = 0;
-          const isRock = Math.random() < 0.25;
-          items.push({
-            x: 40 + Math.random() * (width - 80),
-            y: -30,
-            vy: 4 + Math.min(fruitsCount * 0.05, 5),
-            isRock: isRock,
-            icon: isRock ? '🪨' : fruitIcons[Math.floor(Math.random() * fruitIcons.length)],
-            pts: isRock ? 0 : 200
+      window.addEventListener('keyup', (e) => {
+        if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = false;
+        else if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = false;
+      });
+
+      function bindPaddle(el, dir) {
+        el.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          initAudio();
+          if (dir === 'left') keys.left = true;
+          if (dir === 'right') keys.right = true;
+          el.classList.add('active');
+        });
+        const release = (e) => {
+          e.preventDefault();
+          if (dir === 'left') keys.left = false;
+          if (dir === 'right') keys.right = false;
+          el.classList.remove('active');
+        };
+        el.addEventListener('pointerup', release);
+        el.addEventListener('pointercancel', release);
+      }
+      bindPaddle(btnLeft, 'left');
+      bindPaddle(btnRight, 'right');
+
+      // Direct Canvas Drag / Touch
+      let isTouchingCanvas = false;
+      canvas.addEventListener('pointerdown', (e) => {
+        initAudio();
+        isTouchingCanvas = true;
+        const rect = canvas.getBoundingClientRect();
+        boat.targetX = e.clientX - rect.left;
+      });
+      canvas.addEventListener('pointermove', (e) => {
+        if (isTouchingCanvas) {
+          const rect = canvas.getBoundingClientRect();
+          boat.targetX = e.clientX - rect.left;
+        }
+      });
+      window.addEventListener('pointerup', () => { isTouchingCanvas = false; });
+      window.addEventListener('pointercancel', () => { isTouchingCanvas = false; });
+
+      // Start & Restart
+      btnPlay.addEventListener('click', () => {
+        initAudio();
+        modalStart.classList.add('hidden');
+        resetGame();
+      });
+
+      btnRestart.addEventListener('click', () => {
+        initAudio();
+        modalGameover.classList.add('hidden');
+        resetGame();
+      });
+
+      function resetGame() {
+        score = 0;
+        combo = 1;
+        comboCount = 0;
+        totalCatches = 0;
+        lives = 3;
+        items = [];
+        ripples = [];
+        splashes = [];
+        boat.x = canvas.width / 2;
+        boat.targetX = boat.x;
+        boat.y = canvas.height - 110;
+        spawnTimer = 0;
+        spawnInterval = 950;
+        gameActive = true;
+        lastTime = performance.now();
+        updateLivesUI();
+        updateHUD();
+      }
+
+      function updateLivesUI() {
+        for (let i = 0; i < 3; i++) {
+          if (i < lives) {
+            hearts[i].classList.remove('lost');
+          } else {
+            hearts[i].classList.add('lost');
+          }
+        }
+      }
+
+      function updateHUD() {
+        hudScore.textContent = Math.floor(score);
+        hudCombo.textContent = 'x' + combo;
+        hudBest.textContent = Math.floor(bestScore);
+      }
+
+      function spawnItem() {
+        const x = 40 + Math.random() * (canvas.width - 80);
+        // Difficulty scaling
+        const hazardChance = Math.min(0.18 + (score / 2500) * 0.15, 0.42);
+        let selected;
+        if (Math.random() < hazardChance) {
+          // Spawn hazard
+          const hazards = ITEM_TYPES.filter(t => t.type === 'hazard');
+          selected = hazards[Math.floor(Math.random() * hazards.length)];
+        } else {
+          // Spawn fruit
+          const fruits = ITEM_TYPES.filter(t => t.type === 'fruit');
+          selected = fruits[Math.floor(Math.random() * fruits.length)];
+        }
+
+        const baseVy = 2.8 + Math.min(score * 0.002, 3.5);
+        items.push({
+          x: x,
+          y: -30,
+          vy: baseVy + (Math.random() - 0.5) * 0.6,
+          rotation: 0,
+          vRot: (Math.random() - 0.5) * 0.06,
+          wobble: Math.random() * Math.PI * 2,
+          ...selected
+        });
+      }
+
+      function triggerGameOver() {
+        if (!gameActive) return;
+        gameActive = false;
+        playSound('gameover');
+
+        const finalS = Math.floor(score);
+        if (finalS > bestScore) {
+          bestScore = finalS;
+          localStorage.setItem(HIGH_SCORE_KEY, bestScore.toString());
+        }
+
+        finalCatches.textContent = totalCatches;
+        finalScore.textContent = finalS;
+        finalBest.textContent = bestScore;
+
+        modalGameover.classList.remove('hidden');
+
+        try {
+          if (window.parent) {
+            window.parent.postMessage({
+              type: 'teknogames_game_over',
+              game: 'pasar-terapung',
+              score: finalS,
+              highScore: bestScore
+            }, '*');
+          }
+        } catch (e) {}
+      }
+
+      // Physics & Updates
+      function update(dt) {
+        if (!gameActive) return;
+
+        // Boat horizontal movement
+        if (keys.left) {
+          boat.x -= boat.speed;
+          boat.tilt = -0.08;
+        } else if (keys.right) {
+          boat.x += boat.speed;
+          boat.tilt = 0.08;
+        } else if (isTouchingCanvas) {
+          const diff = boat.targetX - boat.x;
+          boat.x += diff * 0.18;
+          boat.tilt = Math.max(-0.1, Math.min(0.1, diff * 0.003));
+        } else {
+          boat.tilt *= 0.85;
+        }
+
+        // Clamp boat in canvas
+        const halfW = boat.width / 2;
+        if (boat.x < halfW + 10) boat.x = halfW + 10;
+        if (boat.x > canvas.width - halfW - 10) boat.x = canvas.width - halfW - 10;
+
+        // Water ripples
+        if (Math.random() < 0.12) {
+          ripples.push({
+            x: boat.x + (Math.random() - 0.5) * 40,
+            y: boat.y + 16,
+            radius: 4,
+            maxRadius: 28 + Math.random() * 15,
+            alpha: 0.6
           });
+        }
+
+        // Spawn timer
+        spawnTimer += dt * 1000;
+        if (spawnTimer >= spawnInterval) {
+          spawnTimer = 0;
+          spawnItem();
+          spawnInterval = Math.max(500, 950 - Math.floor(score / 150) * 35);
         }
 
         // Update items
         for (let i = items.length - 1; i >= 0; i--) {
           const item = items[i];
           item.y += item.vy;
+          item.rotation += item.vRot;
+          item.wobble += 0.04;
 
-          // Catch collision
-          if (
-            item.y > boat.y - 20 &&
-            item.y < boat.y + 20 &&
-            item.x > boat.x - boat.w / 2 - 10 &&
-            item.x < boat.x + boat.w / 2 + 10
-          ) {
-            if (item.isRock) {
-              lives--;
-              playHit();
+          // Collision check with boat catch area
+          const catchX1 = boat.x - halfW;
+          const catchX2 = boat.x + halfW;
+          const catchY = boat.y - 8;
+
+          if (item.y >= catchY - 10 && item.y <= catchY + 22) {
+            if (item.x >= catchX1 && item.x <= catchX2) {
+              // Hit / Catch
+              if (item.type === 'fruit') {
+                totalCatches++;
+                comboCount++;
+                if (comboCount % 5 === 0 && combo < 4) {
+                  combo++;
+                  playSound('combo');
+                } else {
+                  playSound('catch');
+                }
+                score += item.pts * combo;
+                // Add splash
+                splashes.push({ x: item.x, y: boat.y, color: '#38bdf8', count: 8, life: 1.0 });
+              } else {
+                // Hit hazard
+                lives--;
+                combo = 1;
+                comboCount = 0;
+                playSound('hit');
+                updateLivesUI();
+                splashes.push({ x: item.x, y: boat.y, color: '#ef4444', count: 14, life: 1.0 });
+
+                if (lives <= 0) {
+                  triggerGameOver();
+                  return;
+                }
+              }
+              items.splice(i, 1);
               updateHUD();
-              if (lives <= 0) gameOver();
-            } else {
-              fruitsCount++;
-              score += item.pts;
-              playPop();
+              continue;
+            }
+          }
+
+          // Offscreen bottom
+          if (item.y > canvas.height + 40) {
+            if (item.type === 'fruit') {
+              // Missed a fruit resets combo
+              combo = 1;
+              comboCount = 0;
               updateHUD();
             }
             items.splice(i, 1);
-            continue;
           }
+        }
 
-          if (item.y > height + 40) items.splice(i, 1);
+        // Update ripples
+        for (let i = ripples.length - 1; i >= 0; i--) {
+          const rip = ripples[i];
+          rip.radius += 0.55;
+          rip.alpha -= 0.015;
+          if (rip.alpha <= 0) ripples.splice(i, 1);
+        }
+
+        // Update splashes
+        for (let i = splashes.length - 1; i >= 0; i--) {
+          const s = splashes[i];
+          s.life -= 0.04;
+          if (s.life <= 0) splashes.splice(i, 1);
+        }
+
+        // Periodic score postMessage
+        if (Math.random() < 0.04 && window.parent) {
+          try {
+            window.parent.postMessage({
+              type: 'teknogames_score_update',
+              game: 'pasar-terapung',
+              score: Math.floor(score)
+            }, '*');
+          } catch (e) {}
         }
       }
 
-      // Draw Falling Items (Emoji Native Rendering)
-      ctx.font = '28px sans-serif';
-      items.forEach(item => {
-        ctx.fillText(item.icon, item.x - 14, item.y);
-      });
+      // Drawing
+      function drawRiver() {
+        const w = canvas.width;
+        const h = canvas.height;
 
-      // Draw Traditional Jukung Boat (Perahu Jukung)
-      ctx.save();
-      ctx.translate(boat.x, boat.y);
+        // River water gradient
+        const riverGrad = ctx.createLinearGradient(0, 0, 0, h);
+        riverGrad.addColorStop(0, '#064e3b');
+        riverGrad.addColorStop(0.5, '#042f2e');
+        riverGrad.addColorStop(1, '#022c22');
+        ctx.fillStyle = riverGrad;
+        ctx.fillRect(0, 0, w, h);
 
-      // Wooden Hull (Trapesium ramping)
-      ctx.fillStyle = '#854d0e';
-      ctx.beginPath();
-      ctx.moveTo(-boat.w / 2 - 8, -4);
-      ctx.lineTo(boat.w / 2 + 8, -4);
-      ctx.lineTo(boat.w / 2 - 10, boat.h);
-      ctx.lineTo(-boat.w / 2 + 10, boat.h);
-      ctx.closePath();
-      ctx.fill();
+        // Water currents & reflective waves
+        const time = performance.now() * 0.002;
+        ctx.strokeStyle = 'rgba(45, 212, 191, 0.12)';
+        ctx.lineWidth = 2;
 
-      // Boat Rim / Papan
-      ctx.fillStyle = '#a16207';
-      ctx.fillRect(-boat.w / 2 - 10, -6, boat.w + 20, 6);
+        for (let y = 30; y < h; y += 45) {
+          ctx.beginPath();
+          const waveShift = Math.sin(time + y * 0.02) * 20;
+          ctx.moveTo(0, y);
+          for (let x = 0; x <= w; x += 30) {
+            const dy = Math.sin((x + waveShift) * 0.03 + y * 0.05) * 6;
+            ctx.lineTo(x, y + dy);
+          }
+          ctx.stroke();
+        }
 
-      // Boatman Caping Hat
-      ctx.fillStyle = '#facc15';
-      ctx.beginPath();
-      ctx.moveTo(0, -18);
-      ctx.lineTo(16, -6);
-      ctx.lineTo(-16, -6);
-      ctx.closePath();
-      ctx.fill();
+        // River banks (side wooden walkways / bamboo stalks)
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(0, 0, 14, h);
+        ctx.fillRect(w - 14, 0, 14, h);
 
-      // Fruit Basket inside Boat
-      ctx.font = '16px sans-serif';
-      ctx.fillText('🧺', -10, 8);
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 1;
+        for (let y = 0; y < h; y += 30) {
+          ctx.beginPath();
+          ctx.moveTo(0, y); ctx.lineTo(14, y);
+          ctx.moveTo(w - 14, y); ctx.lineTo(w, y);
+          ctx.stroke();
+        }
 
-      ctx.restore();
+        // Ripples
+        for (let i = 0; i < ripples.length; i++) {
+          const r = ripples[i];
+          ctx.strokeStyle = `rgba(45, 212, 191, ${r.alpha})`;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.ellipse(r.x, r.y, r.radius, r.radius * 0.45, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
 
-      requestAnimationFrame(loop);
-    }
-    loop();
+      function drawItems() {
+        for (let i = 0; i < items.length; i++) {
+          const it = items[i];
+          ctx.save();
+          ctx.translate(it.x, it.y);
+          ctx.rotate(it.rotation);
+
+          // Draw shape based on item
+          if (it.shape === 'banana') {
+            ctx.fillStyle = it.color;
+            ctx.beginPath();
+            ctx.arc(0, 0, it.radius, 0.2, Math.PI * 0.85);
+            ctx.lineWidth = 7;
+            ctx.strokeStyle = it.color;
+            ctx.stroke();
+            // stem
+            ctx.fillStyle = '#854d0e';
+            ctx.fillRect(it.radius * 0.6, -2, 4, 4);
+          } else if (it.shape === 'spiky') { // Durian
+            ctx.fillStyle = it.color;
+            ctx.beginPath();
+            ctx.arc(0, 0, it.radius, 0, Math.PI * 2);
+            ctx.fill();
+            // Spikes
+            ctx.strokeStyle = '#4d7c0f';
+            ctx.lineWidth = 3;
+            for (let a = 0; a < Math.PI * 2; a += 0.7) {
+              const sx = Math.cos(a) * (it.radius + 4);
+              const sy = Math.sin(a) * (it.radius + 4);
+              ctx.beginPath();
+              ctx.moveTo(Math.cos(a) * it.radius, Math.sin(a) * it.radius);
+              ctx.lineTo(sx, sy);
+              ctx.stroke();
+            }
+          } else if (it.shape === 'star') { // Belimbing
+            ctx.fillStyle = it.color;
+            ctx.beginPath();
+            for (let p = 0; p < 5; p++) {
+              const a = (p * Math.PI * 2) / 5 - Math.PI / 2;
+              const r1 = it.radius;
+              const r2 = it.radius * 0.45;
+              ctx.lineTo(Math.cos(a) * r1, Math.sin(a) * r1);
+              ctx.lineTo(Math.cos(a + 0.628) * r2, Math.sin(a + 0.628) * r2);
+            }
+            ctx.closePath();
+            ctx.fill();
+          } else if (it.shape === 'log') { // Kayu Hanyut
+            ctx.fillStyle = it.color;
+            ctx.strokeStyle = '#451a03';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(-it.radius * 1.5, -it.radius * 0.6, it.radius * 3, it.radius * 1.2, 5);
+            ctx.fill();
+            ctx.stroke();
+            // Wood rings
+            ctx.fillStyle = '#b45309';
+            ctx.beginPath();
+            ctx.arc(-it.radius * 1.1, 0, 3, 0, Math.PI * 2);
+            ctx.fill();
+          } else if (it.shape === 'rock') { // Batu Tajam
+            ctx.fillStyle = it.color;
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(-it.radius, it.radius * 0.7);
+            ctx.lineTo(-it.radius * 0.5, -it.radius);
+            ctx.lineTo(it.radius * 0.7, -it.radius * 0.8);
+            ctx.lineTo(it.radius, it.radius * 0.6);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+          } else {
+            // General circle (Rambutan / Jeruk)
+            ctx.fillStyle = it.color;
+            ctx.beginPath();
+            ctx.arc(0, 0, it.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(-it.radius * 0.3, -it.radius * 0.3, it.radius * 0.25, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.restore();
+        }
+
+        // Splashes
+        for (let i = 0; i < splashes.length; i++) {
+          const s = splashes[i];
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = s.life;
+          for (let k = 0; k < s.count; k++) {
+            const angle = (k / s.count) * Math.PI * 2;
+            const dist = (1 - s.life) * 28;
+            ctx.beginPath();
+            ctx.arc(s.x + Math.cos(angle) * dist, s.y + Math.sin(angle) * dist, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        ctx.globalAlpha = 1.0;
+      }
+
+      function drawBoat() {
+        ctx.save();
+        ctx.translate(boat.x, boat.y);
+        ctx.rotate(boat.tilt);
+
+        const w = boat.width;
+        const h = boat.height;
+
+        // Shadow on water
+        ctx.fillStyle = 'rgba(2, 44, 34, 0.55)';
+        ctx.beginPath();
+        ctx.ellipse(0, 16, w * 0.55, 12, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Traditional Jukung Wooden Hull
+        ctx.beginPath();
+        ctx.moveTo(-w * 0.5, 0);
+        ctx.quadraticCurveTo(-w * 0.35, h * 0.85, 0, h * 0.85);
+        ctx.quadraticCurveTo(w * 0.35, h * 0.85, w * 0.5, 0);
+        ctx.quadraticCurveTo(w * 0.3, -h * 0.25, 0, -h * 0.25);
+        ctx.quadraticCurveTo(-w * 0.3, -h * 0.25, -w * 0.5, 0);
+        ctx.closePath();
+
+        const hullGrad = ctx.createLinearGradient(0, -h * 0.25, 0, h * 0.85);
+        hullGrad.addColorStop(0, '#92400e');
+        hullGrad.addColorStop(0.5, '#78350f');
+        hullGrad.addColorStop(1, '#451a03');
+        ctx.fillStyle = hullGrad;
+        ctx.fill();
+
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // Rattan Basket / Fruit Basket in center
+        ctx.fillStyle = '#b45309';
+        ctx.beginPath();
+        ctx.roundRect(-w * 0.26, -h * 0.15, w * 0.52, h * 0.6, 6);
+        ctx.fill();
+
+        ctx.strokeStyle = '#fef3c7';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Boat Prow Tips (Hiasan ujung perahu jukung)
+        ctx.fillStyle = '#0d9488';
+        ctx.beginPath();
+        ctx.arc(-w * 0.48, 0, 5, 0, Math.PI * 2);
+        ctx.arc(w * 0.48, 0, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      function gameLoop(time) {
+        const dt = (time - lastTime) / 1000;
+        lastTime = time;
+
+        update(dt);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawRiver();
+        drawItems();
+        drawBoat();
+
+        requestAnimationFrame(gameLoop);
+      }
+
+      requestAnimationFrame(gameLoop);
+    })();
   </script>
 </body>
 </html>
-

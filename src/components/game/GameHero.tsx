@@ -79,6 +79,7 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
           {/* Kolom Kanan: 2 Kartu Bertumpuk Modern (PlayForge Hero 3D Card Stack) */}
           <div className="lg:col-span-5 relative flex items-center justify-center py-6 sm:py-8">
             {/* Kartu Belakang (Secondary Game) */}
+            {/* Kartu Belakang (Secondary Game) */}
             <Link
               href={`/play/${secondaryHero.slug}`}
               onClick={(event) => {
@@ -87,9 +88,24 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                   setSecondaryOnTop(true);
                 }
               }}
-              className={`group absolute top-2 right-4 sm:right-8 flex w-56 sm:w-64 aspect-[4/5] -rotate-6 flex-col justify-between rounded-3xl border border-white/20 bg-gradient-to-br from-purple-500 via-purple-700 to-violet-700 p-5 shadow-2xl opacity-100 transition-transform ${secondaryOnTop ? "z-20 hover:rotate-0 hover:scale-105" : ""}`}
+              className={`group absolute top-2 right-4 sm:right-8 flex w-56 sm:w-64 aspect-[4/5] -rotate-6 flex-col justify-between rounded-3xl border border-white/20 bg-gradient-to-br from-purple-500 via-purple-700 to-violet-700 p-5 shadow-2xl opacity-100 transition-all overflow-hidden ${
+                secondaryOnTop ? "z-20 hover:rotate-0 hover:scale-105" : ""
+              }`}
             >
-              <div className="flex items-center justify-between gap-2">
+              <img
+                src={`/games/${secondaryHero.slug}/preview.png`}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
+                onError={(e) => {
+                  const el = e.target as HTMLImageElement;
+                  if (!el.src.includes('/games/games/')) {
+                    el.src = `/games/games/${secondaryHero.slug}/preview.png`;
+                  }
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 z-0 pointer-events-none" />
+
+              <div className="relative z-10 flex items-center justify-between gap-2">
                 <span className="rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
                   Pilihan Kedua
                 </span>
@@ -97,15 +113,19 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                   {secondaryHero.category}
                 </span>
               </div>
-              <div className="my-auto flex flex-col items-center justify-center text-center">
-                <span className={`font-heading text-6xl font-black tracking-tighter text-white/90 ${secondaryOnTop ? "transition-transform duration-300 group-hover:scale-110" : ""}`}>
+              <div className="relative z-10 my-auto flex flex-col items-center justify-center text-center">
+                <span
+                  className={`font-heading text-6xl font-black tracking-tighter text-white/90 drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)] ${
+                    secondaryOnTop ? "transition-transform duration-300 group-hover:scale-110" : ""
+                  }`}
+                >
                   {getInitials(secondaryHero.title)}
                 </span>
                 <span className="mt-1 text-[11px] font-semibold uppercase tracking-widest text-white/80">
                   {secondaryHero.category}
                 </span>
               </div>
-              <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/15 bg-black/40 p-3.5 backdrop-blur-md">
+              <div className="relative z-10 flex items-center justify-between gap-3 rounded-2xl border border-white/15 bg-black/40 p-3.5 backdrop-blur-md">
                 <div className="min-w-0">
                   <span className="block truncate text-[10px] font-bold uppercase tracking-wider text-rose-200">
                     Tekno Game
@@ -114,7 +134,11 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                     {secondaryHero.title.split(":")[0]}
                   </h3>
                 </div>
-                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-rose-900 shadow-md ${secondaryOnTop ? "transition-transform group-hover:scale-110" : ""}`}>
+                <span
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-rose-900 shadow-md ${
+                    secondaryOnTop ? "transition-transform group-hover:scale-110" : ""
+                  }`}
+                >
                   <Play className="ml-0.5 h-4 w-4 fill-current" />
                 </span>
               </div>
@@ -129,30 +153,48 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                   setSecondaryOnTop(false);
                 }
               }}
-              className={`group relative z-10 w-64 sm:w-72 aspect-[4/5] rounded-3xl bg-gradient-to-br from-rose-500 via-red-600 to-rose-400 p-6 shadow-[0_25px_60px_rgba(0,0,0,0.7)] rotate-3 transform transition-all duration-300 ${secondaryOnTop ? "" : "hover:rotate-0 hover:scale-105"} border border-white/20 flex flex-col justify-between`}
+              className={`group relative z-10 w-64 sm:w-72 aspect-[4/5] rounded-3xl bg-gradient-to-br from-rose-500 via-red-600 to-rose-400 p-6 shadow-[0_25px_60px_rgba(0,0,0,0.7)] rotate-3 transform transition-all duration-300 overflow-hidden ${
+                secondaryOnTop ? "" : "hover:rotate-0 hover:scale-105"
+              } border border-white/20 flex flex-col justify-between`}
             >
+              {/* Cover Preview Image */}
+              <img
+                src={`/games/${mainHero.slug}/preview.png`}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-110"
+                onError={(e) => {
+                  const el = e.target as HTMLImageElement;
+                  if (!el.src.includes('/games/games/')) {
+                    el.src = `/games/games/${mainHero.slug}/preview.png`;
+                  }
+                }}
+              />
+              {/* Dark Gradient Overlay for Contrast */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/40 z-0 pointer-events-none" />
+
               {/* Top Tag & Category Badge */}
-              <div className="flex items-center justify-between">
-                <span className="rounded-full bg-black/40 border border-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
+              <div className="relative z-10 flex items-center justify-between">
+                <span className="rounded-full bg-black/60 border border-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md shadow-sm">
                   Pilihan Utama
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-white/80">
+                <span className="rounded-full bg-rose-950/70 border border-rose-400/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-rose-200 backdrop-blur-md">
                   {mainHero.category}
                 </span>
               </div>
 
               {/* Center Monogram Typography Visual */}
-              <div className="my-auto flex flex-col items-center justify-center text-center">
-                <span className={`font-heading text-7xl font-black tracking-tighter text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)] ${secondaryOnTop ? "" : "transition-transform duration-300 group-hover:scale-110"}`}>
+              <div className="relative z-10 my-auto flex flex-col items-center justify-center text-center">
+                <span
+                  className={`font-heading text-7xl font-black tracking-tighter text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)] ${
+                    secondaryOnTop ? "" : "transition-transform duration-300 group-hover:scale-110"
+                  }`}
+                >
                   {getInitials(mainHero.title)}
-                </span>
-                <span className="text-[11px] font-semibold text-white/80 uppercase tracking-widest mt-1">
-                  {mainHero.category}
                 </span>
               </div>
 
               {/* Bottom Card Footer */}
-              <div className="rounded-2xl bg-black/40 border border-white/15 p-3.5 backdrop-blur-md flex items-center justify-between gap-3">
+              <div className="relative z-10 rounded-2xl bg-black/60 border border-white/20 p-3.5 backdrop-blur-md flex items-center justify-between gap-3 shadow-lg">
                 <div className="min-w-0">
                   <span className="text-[10px] uppercase font-bold text-rose-200 tracking-wider block truncate">
                     Tekno Game
@@ -161,7 +203,11 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                     {mainHero.title.split(":")[0]}
                   </h3>
                 </div>
-                <span className={`h-9 w-9 shrink-0 rounded-full bg-white text-rose-900 flex items-center justify-center shadow-md ${secondaryOnTop ? "" : "transition-transform group-hover:scale-110"}`}>
+                <span
+                  className={`h-9 w-9 shrink-0 rounded-full bg-white text-rose-900 flex items-center justify-center shadow-md ${
+                    secondaryOnTop ? "" : "transition-transform group-hover:scale-110"
+                  }`}
+                >
                   <Play className="h-4 w-4 fill-current ml-0.5" />
                 </span>
               </div>

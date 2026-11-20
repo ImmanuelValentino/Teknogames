@@ -84,3 +84,15 @@ Agent **DILARANG** menyatakan pembuatan atau pembaruan game selesai sebelum memv
 ### D. Dokumentasi & Git Workflow
 - [ ] **Update `game-log.md`:** Entri game baru/perubahan sudah ditambahkan di bagian paling atas `game-log.md`.
 - [ ] **Sinkronisasi `AGENTS.md`:** Jika perubahan juga menyentuh konfigurasi/katalog frontend atau backend web utama, `UPDATE.md` dan `laporan.md` ikut diperbarui serta lolos verifikasi `npm run build`.
+
+---
+
+## 8. Aturan Pengujian Browser (Isolasi Instance Chrome Baru)
+Saat melakukan pengujian browser atau automated testing menggunakan Chrome / DevTools:
+- **Instance Terisolasi:** Agent **WAJIB** membuka atau menggunakan instance Google Chrome **BARU** yang terisolasi (misalnya dengan profil sementara `--user-data-dir=...` dan port terpisah) atau mode headless.
+- **Dilarang Mengganggu Browser Pengguna:** **DILARANG KERAS** mengontrol, membuka tab baru, me-reload, atau menutup jendela browser Chrome utama yang sedang aktif digunakan oleh pengguna agar aktivitas kerja pengguna tidak terganggu sama sekali.
+
+---
+
+## 9. Larangan Khusus & Konten Terlarang (Blacklist Game)
+- **Larangan Game Bertema Batik / Konsep Serupa (MUTLAK):** DILARANG KERAS membuat, memodifikasi, merancang, menyarankan, atau memulihkan kembali game dengan nama mengandung "batik" (contoh: `batik-flow`, `batik-canting`, dll.) maupun konsep serupa (puzzle sambung alur lilin malam/canting batik atau mekanisme serupa bertema batik). Game ini telah dihapus permanen atas instruksi mutlak pengguna dan tidak boleh dibuat kembali dalam bentuk apa pun.
