@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
 import { Game } from "@/types/game";
 import { GameCategory } from "@/types/game";
@@ -29,14 +29,57 @@ export default function GameGrid({
   categories = [],
 }: GameGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
+  const categoryMenuId = useId();
+  const categoryMenuRef = useRef<HTMLDivElement>(null);
+  const categoryTriggerRef = useRef<HTMLButtonElement>(null);
+  const categoryOptionRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const isEmpty = !games || games.length === 0;
   const matchingGameIds = new Set(
     searchGames(searchQuery).map((game) => game.id)
   );
   const filteredGames = games.filter((game) => matchingGameIds.has(game.id));
+  const selectedCategoryIndex = categories.findIndex(
+    (category) => category.id === selectedCategory
+  );
+  const selectedCategoryLabel =
+    categories[selectedCategoryIndex]?.label ?? categories[0]?.label ?? "";
+
+  useEffect(() => {
+    if (!categoryMenuOpen) return;
+
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        categoryMenuRef.current &&
+        !categoryMenuRef.current.contains(event.target as Node)
+      ) {
+        setCategoryMenuOpen(false);
+      }
+    }
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setCategoryMenuOpen(false);
+        categoryTriggerRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [categoryMenuOpen]);
+
+  const focusCategoryOption = (index: number) => {
+    if (categories.length === 0) return;
+    const wrappedIndex = (index + categories.length) % categories.length;
+    categoryOptionRefs.current[wrappedIndex]?.focus();
+  };
 
   return (
-    <section id="catalog" className="mb-14 scroll-mt-28">
+    <section id="catalog" className="mb-4 scroll-mt-28">
       {/* Section Header dengan Dropdown Kategori */}
       <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
@@ -47,7 +90,7 @@ export default function GameGrid({
         {/* Pencarian dan dropdown filter kategori */}
         {categories.length > 0 && onSelectCategory && (
           <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-            <label className="relative flex min-h-11 min-w-0 items-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-3 text-sm text-slate-300 transition-colors focus-within:border-[#255dce]/60 sm:w-64">
+            <label className="relative flex min-h-11 min-w-0 items-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-3 text-sm text-slate-300 transition-colors focus-within:border-[#ce2541]/60 sm:w-64">
               <Search className="h-4 w-4 shrink-0 text-slate-400" aria-hidden="true" />
               <input
                 type="search"
@@ -59,45 +102,89 @@ export default function GameGrid({
               />
             </label>
 
-            <div className="relative shrink-0">
-              <select
-                value={selectedCategory}
-                onChange={(e) => onSelectCategory(e.target.value as GameCategory)}
-                className="
-                appearance-none
-                min-h-11
-                rounded-xl
-                border border-white/15
-                bg-white/[0.04]
-                pl-4 pr-10
-                py-2.5
-                text-sm
-                font-medium
-                text-slate-200
-                cursor-pointer
-                hover:border-[#255dce]/50
-                hover:text-white
-                focus:outline-none
-                focus:border-[#255dce]/60
-                transition-colors
-                w-full sm:w-auto
-              "
+            <div ref={categoryMenuRef} className="relative w-full shrink-0 sm:w-auto">
+              <button
+                ref={categoryTriggerRef}
+                type="button"
+                onClick={() => setCategoryMenuOpen((open) => !open)}
+                onKeyDown={(event) => {
+                  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                    event.preventDefault();
+                    setCategoryMenuOpen(true);
+                    requestAnimationFrame(() => {
+                      focusCategoryOption(
+                        selectedCategoryIndex >= 0 ? selectedCategoryIndex : 0
+                      );
+                    });
+                  }
+                }}
+                className="catalog-category-trigger flex min-h-11 w-full items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors sm:w-52"
                 aria-label="Filter berdasarkan kategori"
+                aria-haspopup="menu"
+                aria-expanded={categoryMenuOpen}
+                aria-controls={categoryMenuId}
               >
-                {categories.map((cat) => (
-                  <option
-                    key={cat.id}
-                    value={cat.id}
-                    className="bg-[#0a1628] text-slate-200"
-                  >
-                    {cat.label}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown
-                className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                aria-hidden="true"
-              />
+                <span>{selectedCategoryLabel}</span>
+                <ChevronDown
+                  className={`h-4 w-4 shrink-0 text-slate-500 transition-transform duration-200 ${
+                    categoryMenuOpen ? "rotate-180" : ""
+                  }`}
+                  aria-hidden="true"
+                />
+              </button>
+
+              {categoryMenuOpen && (
+                <div
+                  id={categoryMenuId}
+                  role="menu"
+                  aria-label="Kategori permainan"
+                  className="glass-modal absolute right-0 top-full z-30 mt-1.5 max-h-64 w-full overflow-y-auto rounded-2xl border p-1.5 shadow-2xl sm:w-52"
+                >
+                  {categories.map((category, index) => (
+                    <React.Fragment key={category.id}>
+                      {index === 1 && <div className="my-1 h-px bg-[#b6a8aa]" />}
+                      <button
+                        ref={(element) => {
+                          categoryOptionRefs.current[index] = element;
+                        }}
+                        type="button"
+                        role="menuitemradio"
+                        aria-checked={category.id === selectedCategory}
+                        tabIndex={category.id === selectedCategory ? 0 : -1}
+                        onClick={() => {
+                          onSelectCategory(category.id);
+                          setCategoryMenuOpen(false);
+                        }}
+                        onKeyDown={(event) => {
+                          if (event.key === "ArrowDown") {
+                            event.preventDefault();
+                            focusCategoryOption(index + 1);
+                          } else if (event.key === "ArrowUp") {
+                            event.preventDefault();
+                            focusCategoryOption(index - 1);
+                          } else if (event.key === "Home") {
+                            event.preventDefault();
+                            focusCategoryOption(0);
+                          } else if (event.key === "End") {
+                            event.preventDefault();
+                            focusCategoryOption(categories.length - 1);
+                          } else if (event.key === "Escape") {
+                            setCategoryMenuOpen(false);
+                            categoryTriggerRef.current?.focus();
+                          }
+                        }}
+                        className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-xs transition-colors ${
+                          category.id === selectedCategory
+                            ? "font-semibold"
+                            : "font-medium"
+                        }`}
+                      >
+                        {category.label}
+                      </button>
+                    </React.Fragment>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}

@@ -59,7 +59,7 @@ export async function generateMetadata({
       type: "video.other",
       images: [
         {
-          url: getGamePortalUrl("/Teknogame_logo_only.png"),
+          url: getGamePortalUrl("/TeknoGame_logo_red.png"),
           width: 800,
           height: 800,
           alt: game.title,
@@ -177,7 +177,7 @@ export default async function PlayPage({ params }: PlayPageProps) {
           <div className="rounded-2xl card-natural p-6 space-y-4 text-slate-300">
             <div>
               <h3 className="font-heading text-base font-bold text-white flex items-center gap-2">
-                <Info className="w-4 h-4 text-[#8caeff]" />
+                <Info className="w-4 h-4 text-[#ff8c9f]" />
                 <span>Tentang {game.title}</span>
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
@@ -222,11 +222,11 @@ export default async function PlayPage({ params }: PlayPageProps) {
         </div>
 
         {/* Sidebar Kanan: Companion Ad & Sponsor Card */}
-        <div className="xl:col-span-1 space-y-6 flex flex-col items-center xl:items-start">
+        <div className="xl:col-span-1 flex flex-col items-center space-y-6 self-start xl:sticky xl:top-20 xl:items-start">
           <AdCompanion />
 
           <div className="w-[300px] rounded-2xl card-natural p-5 space-y-2.5">
-            <span className="text-[10px] uppercase font-semibold text-[#8caeff] tracking-wider">
+            <span className="text-[10px] uppercase font-semibold text-[#ff8c9f] tracking-wider">
               Sponsor Resmi
             </span>
             <h4 className="font-heading text-sm font-bold text-white leading-snug">

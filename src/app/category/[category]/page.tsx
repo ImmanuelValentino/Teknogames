@@ -6,7 +6,7 @@ import { getGamesByCategory, CATEGORIES } from "@/lib/games-data";
 import { getGamePortalPath } from "@/lib/site";
 import GameGrid from "@/components/game/GameGrid";
 import GoogleAdSlot from "@/components/ads/GoogleAdSlot";
-import { ArrowLeft, Gamepad2, Compass, Puzzle, Zap, Coffee, Trophy } from "lucide-react";
+import { ArrowLeft, Gamepad2, Compass, Puzzle, Zap, Coffee, Dumbbell } from "lucide-react";
 import { GameCategory } from "@/types/game";
 
 interface CategoryPageProps {
@@ -63,19 +63,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const getCategoryHeroIcon = (id: GameCategory) => {
     switch (id) {
       case "arcade":
-        return <Gamepad2 className="w-6 h-6 text-[#8caeff]" />;
+        return <Gamepad2 className="w-6 h-6 text-red-700" strokeWidth={2.5} />;
       case "adventure":
-        return <Compass className="w-6 h-6 text-emerald-200" />;
+        return <Compass className="w-6 h-6 text-emerald-700" strokeWidth={2.5} />;
       case "puzzle":
-        return <Puzzle className="w-6 h-6 text-sky-200" />;
+        return <Puzzle className="w-6 h-6 text-rose-700" strokeWidth={2.5} />;
       case "action":
-        return <Zap className="w-6 h-6 text-rose-200" />;
+        return <Zap className="w-6 h-6 text-rose-700" strokeWidth={2.5} />;
       case "casual":
-        return <Coffee className="w-6 h-6 text-amber-200" />;
+        return <Coffee className="w-6 h-6 text-amber-700" strokeWidth={2.5} />;
       case "sports":
-        return <Trophy className="w-6 h-6 text-yellow-200" />;
+        return <Dumbbell className="w-6 h-6 text-yellow-700" strokeWidth={2.5} />;
       default:
-        return <Gamepad2 className="w-6 h-6 text-blue-200" />;
+        return <Gamepad2 className="w-6 h-6 text-red-700" strokeWidth={2.5} />;
     }
   };
 
@@ -102,12 +102,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {/* Header Banner Kategori */}
       <div className="rounded-2xl card-natural p-6 sm:p-8 flex items-center justify-between">
         <div className="space-y-1.5">
-          <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-2">
-            {getCategoryHeroIcon(validCat.id)}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl border border-[#ce7c8a] bg-[#e09aa6] flex items-center justify-center shrink-0 shadow-sm">
+              {getCategoryHeroIcon(validCat.id)}
+            </div>
+            <h1 className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-white">
+              Kategori: {validCat.label}
+            </h1>
           </div>
-          <h1 className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-white">
-            Kategori: {validCat.label}
-          </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl">
             Jelajahi beragam permainan web kategori {validCat.label.toLowerCase()} secara gratis langsung di peramban.
           </p>
@@ -123,9 +125,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {/* Grid Katalog atau Tampilan Kondisi Kosong (Empty State) untuk Olahraga / Kategori Kosong */}
       {games.length === 0 ? (
         <div className="card-natural rounded-2xl p-10 sm:p-16 text-center my-8">
-          <div className="w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center mx-auto mb-4 text-amber-300">
-            <Trophy className="w-8 h-8" />
-          </div>
           <h3 className="font-heading text-lg sm:text-xl font-bold text-white mb-2">
             Belum Ada Permainan di Kategori {validCat.label}
           </h3>

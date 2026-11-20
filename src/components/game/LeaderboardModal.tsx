@@ -37,6 +37,7 @@ export default function LeaderboardModal({ isOpen, onClose }: LeaderboardModalPr
 
   const totalPlayed = scoreEntries.length;
   const bestScore = scoreEntries.length > 0 ? scoreEntries[0].score : 0;
+  const topEntries = scoreEntries.slice(0, 5);
 
   const handleClear = () => {
     if (window.confirm("Hapus seluruh catatan skor pribadi di peramban ini?")) {
@@ -47,10 +48,10 @@ export default function LeaderboardModal({ isOpen, onClose }: LeaderboardModalPr
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-      <div className="w-full max-w-lg glass-modal-clean rounded-2xl overflow-hidden flex flex-col text-white shadow-2xl">
+      <div className="w-full max-w-3xl glass-modal-clean rounded-2xl overflow-hidden flex flex-col text-white shadow-2xl">
         <div className="p-4 flex items-center justify-between border-b border-white/10 bg-black/20">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-white/10 text-amber-300 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-white/10 text-[#9a7a3d] flex items-center justify-center shrink-0">
               <Trophy className="w-5 h-5" />
             </div>
             <div>
@@ -79,13 +80,13 @@ export default function LeaderboardModal({ isOpen, onClose }: LeaderboardModalPr
           </div>
           <div className="bg-white/[0.04] py-2 px-3 rounded-xl border border-white/5">
             <span className="text-[10px] text-slate-400 uppercase font-medium block">Skor Tertinggi</span>
-            <span className="text-sm font-bold text-amber-300">
+            <span className="text-sm font-bold text-[#876a32]">
               {bestScore.toLocaleString("id-ID")} Poin
             </span>
           </div>
         </div>
 
-        <div className="p-4 max-h-[380px] overflow-y-auto space-y-2">
+        <div className="p-4 max-h-[min(60vh,520px)] overflow-y-auto">
           {scoreEntries.length === 0 ? (
             <div className="py-10 text-center space-y-2">
               <div className="w-12 h-12 rounded-xl bg-white/10 text-slate-300 flex items-center justify-center mx-auto">
@@ -99,44 +100,91 @@ export default function LeaderboardModal({ isOpen, onClose }: LeaderboardModalPr
               </p>
             </div>
           ) : (
-            scoreEntries.map((entry, index) => (
-              <div
-                key={entry.gameId}
-                className="flex items-center justify-between p-3 rounded-xl bg-white/[0.04] border border-white/5 hover:bg-white/[0.08] transition-colors"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="w-6 h-6 rounded-md bg-white/10 text-xs font-bold flex items-center justify-center shrink-0">
-                    {index + 1}
-                  </span>
-                  <div className="min-w-0">
-                    <h4 className="text-xs sm:text-sm font-semibold text-white truncate">
-                      {entry.title}
-                    </h4>
-                    <span className="text-[10px] text-slate-400 capitalize block">
-                      {entry.category}
+            <div
+              className={`grid grid-cols-1 gap-3 ${
+                topEntries.length > 1
+                  ? "md:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] md:items-stretch"
+                  : ""
+              }`}
+            >
+              <article className="flex min-h-56 flex-col justify-between rounded-2xl border border-[#d8c99e] bg-[#f5edda] p-5 sm:p-6 md:aspect-square md:min-h-0">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#876a32]">
+                      Peringkat 1
                     </span>
+                    <h4 className="mt-2 text-lg font-bold text-[#241b1d] sm:text-2xl">
+                      {topEntries[0].title}
+                    </h4>
+                    <span className="mt-1 block text-xs text-slate-600">
+                      {topEntries[0].category}
+                    </span>
+                  </div>
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#eadfbe] text-[#876a32]">
+                    <Trophy className="h-5 w-5" />
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 shrink-0">
-                  <div className="text-right">
-                    <span className="text-xs sm:text-sm font-bold text-amber-300 block">
-                      {entry.score.toLocaleString("id-ID")}
+                <div className="mt-6 flex items-end justify-between gap-3">
+                  <div>
+                    <span className="block text-3xl font-bold tracking-tight text-[#765b2c] sm:text-4xl">
+                      {topEntries[0].score.toLocaleString("id-ID")}
                     </span>
-                    <span className="text-[9px] text-slate-400 block">Poin</span>
+                    <span className="mt-1 block text-xs text-slate-600">Poin</span>
                   </div>
-
                   <Link
-                    href={`/play/${entry.slug}`}
+                    href={`/play/${topEntries[0].slug}`}
                     onClick={onClose}
                     className="flex min-h-11 min-w-11 items-center justify-center rounded-lg btn-primary-clean text-white"
                     title="Mainkan lagi"
                   >
-                    <Play className="w-3.5 h-3.5 fill-current" />
+                    <Play className="h-4 w-4 fill-current" />
                   </Link>
                 </div>
-              </div>
-            ))
+              </article>
+
+              {topEntries.length > 1 && (
+                <div className="grid grid-cols-1 gap-2 md:h-full md:grid-rows-4">
+                  {topEntries.slice(1).map((entry, index) => (
+                    <div
+                      key={entry.gameId}
+                      className="flex min-w-0 items-center justify-between gap-3 rounded-xl border border-white/5 bg-white/[0.04] p-3 transition-colors hover:bg-white/[0.08] md:h-full"
+                    >
+                      <div className="flex min-w-0 items-center gap-3">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#eee5d2] text-xs font-bold text-[#765b2c]">
+                          {index + 2}
+                        </span>
+                        <div className="min-w-0">
+                          <h4 className="truncate text-xs font-semibold text-white sm:text-sm">
+                            {entry.title}
+                          </h4>
+                          <span className="block text-[10px] text-slate-400">
+                            {entry.category}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex shrink-0 items-center gap-3">
+                        <div className="text-right">
+                          <span className="block text-xs font-bold text-[#876a32] sm:text-sm">
+                            {entry.score.toLocaleString("id-ID")}
+                          </span>
+                          <span className="block text-[9px] text-slate-400">Poin</span>
+                        </div>
+                        <Link
+                          href={`/play/${entry.slug}`}
+                          onClick={onClose}
+                          className="flex min-h-11 min-w-11 items-center justify-center rounded-lg btn-primary-clean text-white"
+                          title="Mainkan lagi"
+                        >
+                          <Play className="h-3.5 w-3.5 fill-current" />
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
 

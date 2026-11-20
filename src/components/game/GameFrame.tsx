@@ -143,28 +143,30 @@ export default function GameFrame({ game, onOpenLeaderboard }: GameFrameProps) {
 
         {/* Overlay Skor Selesai */}
         {lastScore !== null && (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 glass-modal-clean rounded-2xl p-4 shadow-xl text-white flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-white/10 text-amber-300 flex items-center justify-center shrink-0">
-              <Trophy className="w-5 h-5" />
+          <div className="absolute top-4 left-1/2 z-30 flex w-[calc(100%-1.5rem)] max-w-md -translate-x-1/2 flex-wrap items-center gap-3 rounded-2xl glass-modal-clean p-3 text-[#241b1d] shadow-xl sm:flex-nowrap sm:gap-4 sm:p-4">
+            <div className="flex min-w-0 flex-1 items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#f0e5c7] text-[#765b2c]">
+                <Trophy className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <span className="block text-xs text-[#68595c]">Permainan selesai! Skor:</span>
+                <span className="whitespace-nowrap text-lg font-bold text-[#765b2c]">
+                  {lastScore.toLocaleString("id-ID")} Poin
+                </span>
+              </div>
             </div>
-            <div>
-              <span className="text-xs text-white/70 block">Permainan selesai! Skor:</span>
-              <span className="text-lg font-bold text-amber-300">
-                {lastScore.toLocaleString("id-ID")} Poin
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
+            <div className="ml-auto flex shrink-0 items-center gap-2">
               <button
                 type="button"
                 onClick={() => onOpenLeaderboard?.()}
-                className="min-h-11 px-3 btn-primary-clean text-xs font-semibold rounded-lg shadow-sm cursor-pointer"
+                className="min-h-11 whitespace-nowrap rounded-lg px-3 btn-primary-clean text-xs font-semibold shadow-sm cursor-pointer"
               >
                 Lihat Rekor
               </button>
               <button
                 type="button"
                 onClick={() => setLastScore(null)}
-                className="p-1.5 text-white/60 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                className="flex min-h-11 min-w-11 items-center justify-center rounded-lg text-[#68595c] transition-colors hover:bg-black/5 hover:text-[#241b1d] cursor-pointer"
                 aria-label="Tutup"
               >
                 <X className="w-4 h-4" />
@@ -178,7 +180,7 @@ export default function GameFrame({ game, onOpenLeaderboard }: GameFrameProps) {
       <div className="rounded-2xl card-natural p-3 sm:p-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0 text-white">
-            <Gamepad2 className="w-5 h-5 text-[#8caeff]" />
+            <Gamepad2 className="w-5 h-5 text-[#ff8c9f]" />
           </div>
           <div className="min-w-0">
             <h1 className="font-heading text-sm sm:text-base font-semibold text-white leading-tight truncate">
