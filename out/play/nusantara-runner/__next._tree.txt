@@ -1,5 +1,5 @@
-:HL["/games/_next/static/css/47122362e2db89d5.css","style"]
+:HL["/games/_next/static/css/e820c3780ed09799.css","style"]
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"d","k":"nusantara-runner","s":[]},"h":96,"c":"$Q3"}]]
 1:[["children",{"s":"play","h":96,"c":"$Q2"}]]
-0:{"b":"89UXAYVHYvwIfERmvXK6f","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"o51hJO5RYsxsiTdkYsIMD","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

@@ -8,6 +8,19 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.13.0] - 2026-11-20
+### Added & Improved (Game Page SEO Content & Rich Snippet Enhancement)
+- **Penambahan Konten Teks Faktual & Terstruktur pada Halaman Game (`/play/[slug]`):**
+  - Menambahkan bagian **Fitur Utama Permainan** (akses instan browser, penyimpanan rekor lokal, audio sintetis hemat kuota, dukungan lintas perangkat).
+  - Menambahkan bagian **Tips Singkat Bermain** (fokus timing/ritme, mode layar penuh, kontrol audio).
+  - Menambahkan tabel **Informasi & Spesifikasi Teknis** (pengembang, kategori, lisensi gratis, platform HTML5, kompatibilitas, ukuran unduh 0 MB).
+  - Menambahkan bagian **Pertanyaan yang Sering Diajukan (FAQ)** dengan jawaban lugas dan non-imajinatif.
+- **Peningkatan Technical SEO & Rich Snippets:**
+  - Menambahkan skema terstruktur `FAQPage` JSON-LD agar tanya-jawab muncul langsung di cuplikan pencarian Google SERP.
+  - Memperbarui skema `VideoGame` dengan data `aggregateRating` (rating bintang Google) dan `offers` (label Gratis).
+  - Memperbaiki gambar Open Graph dan Twitter Card agar menggunakan thumbnail preview masing-masing game secara spesifik.
+  - Memperbaiki canonical URL menjadi URL absolut penuh.
+
 ## [3.12.0] - 2026-11-20
 ### Removed (Permanent Deletion of Kamus Kelana & Ideas)
 - **Penghapusan Total Game Kamus Kelana:**

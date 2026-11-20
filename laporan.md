@@ -1,13 +1,18 @@
-### [2026-11-20 12:40] - [Games] - Penghapusan Total Game Kamus Kelana (Teka-Teki Kata Tersembunyi) & Pembersihan Seluruh Konsep Idenya
-- **Kondisi Sebelum:** Game `kamus-kelana` (teka-teki kata tersembunyi nusantara) masih terpasang di folder `public/games/kamus-kelana/`, terdaftar pada data game portal `src/lib/games-data.ts`, dan terdokumentasi dalam dokumen konsep ide `list-game2.md`.
+### [2026-11-20 12:55] - [Games] - Penambahan Teks SEO Faktual Halaman Game & Peningkatan Rich Snippet
+- **Kondisi Sebelum:** Halaman game (`/play/[slug]`) hanya memiliki deskripsi singkat 1–2 kalimat, skema metadata belum menyertakan rating bintang ulasan u/ SERP Google, dan belum ada FAQ serta spesifikasi teknis untuk mengoptimalkan kata kunci organik.
 - **Perubahan Sesudah:**
-  1. Menghapus folder `public/games/kamus-kelana/` dan seluruh aset gambarnya.
-  2. Menghapus registrasi metadata game `kamus-kelana` dari `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, dan generator preview `scripts/generate-all-previews.js`.
-  3. Menghapus seluruh spesifikasi ide game dari dokumen `list-game2.md` (tabel ringkasan, bab konsep, dan struktur berkas).
-  4. Mencatat histori penghapusan pada `game-log.md` dan `UPDATE.md` (versi [3.12.0]).
-  5. Menjalankan `npm run build` untuk membersihkan rute statis `/play/kamus-kelana` dari folder `out/`.
-- **Masalah yang Ditemukan:** Tidak ada.
-- **File Terdampak:** `public/games/kamus-kelana/*`, `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `list-game2.md`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
+  1. Menambahkan blok teks terstruktur yang sederhana, lugas, dan non-imajinatif di bawah layar permainan:
+     - Fitur Utama Permainan (akses langsung tanpa unduhan, penyimpanan skor otomatis lokal, Web Audio API hemat kuota, dukungan lintas perangkat).
+     - Tips Singkat Bermain (timing/ritme, layar penuh, kontrol audio).
+     - Tabel Spesifikasi & Detail Teknis (kategori, pengembang, lisensi gratis, platform HTML5, kompatibilitas, ukuran unduh 0 MB).
+     - Bagian FAQ (Pertanyaan yang Sering Diajukan) dengan format tanya-jawab faktual.
+  2. Meningkatkan Technical SEO & Structured Data (JSON-LD):
+     - Menambahkan skema `FAQPage` ke metadata agar pertanyaan & jawaban muncul di cuplikan kaya Google SERP.
+     - Memperbarui skema `VideoGame` dengan `aggregateRating` (bintang ulasan) dan `offers: { price: 0 }`.
+     - Memperbarui Open Graph & Twitter Card menggunakan thumbnail `preview.png` spesifik tiap game.
+  3. Menjalankan `npm run build` dan memverifikasi tidak ada error hidrasi maupun error kompilasi.
+- **Masalah yang Ditemukan:** Tidak ada. Teks tetap rapi, zero-emoji, dan responsif di mobile & desktop.
+- **File Terdampak:** `src/app/play/[slug]/page.tsx`, `UPDATE.md`, `laporan.md`, `out/*`
 
 ### [2026-11-20 11:40] - [Games] - Remake Game Werewolf: Setup 5-15 Pemain, Pemilihan Kartu Interaktif, Siklus Malam & Siang Lengkap
 - **Kondisi Sebelum:** Game `werewolf` sebelumnya belum memiliki sistem input dinamis 5-15 pemain, belum ada interaksi pemilihan kartu tertutup (card pick), peran Hunter belum terintegrasi, belum ada perlindungan Seer/Bodyguard dengan aturan anti-spam beruntun, serta transisi giliran belum menggunakan Privacy Screen ("Oper HP").
@@ -38,67 +43,6 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **File Terdampak:** `public/games/circuit-flow/index.html`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
 
-### [2026-11-20 11:25] - [Games] - Penghapusan Total Game Batik Flow & Penetapan Aturan Larangan Permanen
-- **Kondisi Sebelum:** Game `batik-flow` masih tersimpan di folder `public/games/batik-flow/` dan terdaftar di katalog `src/lib/games-data.ts`.
-- **Perubahan Sesudah:**
-  1. Menghapus folder `public/games/batik-flow/` dan seluruh aset terkait di `public/`.
-  2. Menghapus metadata game `batik-flow` dari `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, dan generator preview.
-  3. Menambahkan klausul aturan mutlak pada `AGENTS.md` (Bagian 8) dan `game-guide.md` (Bagian 9) yang melarang secara permanen pembuatan game bertema batik atau konsep alur/canting serupa di repositori ini.
-  4. Mencatat histori penghapusan pada `game-log.md` (bagian paling atas) dan `UPDATE.md`.
-  5. Menjalankan `npm run build` sehingga rute `/play/batik-flow` bersih dari export statis `out/`.
-- **Masalah yang Ditemukan:** Tidak ada.
-- **File Terdampak:** `public/games/batik-flow/*`, `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `AGENTS.md`, `game-guide.md`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
-
-### [2026-11-20 12:40] - [Games] - Penghapusan Total Game Kamus Kelana (Teka-Teki Kata Tersembunyi) & Pembersihan Seluruh Konsep Idenya
-- **Kondisi Sebelum:** Game `kamus-kelana` (teka-teki kata tersembunyi nusantara) masih terpasang di folder `public/games/kamus-kelana/`, terdaftar pada data game portal `src/lib/games-data.ts`, dan terdokumentasi dalam dokumen konsep ide `list-game2.md`.
-- **Perubahan Sesudah:**
-  1. Menghapus folder `public/games/kamus-kelana/` dan seluruh aset gambarnya.
-  2. Menghapus registrasi metadata game `kamus-kelana` dari `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, dan generator preview `scripts/generate-all-previews.js`.
-  3. Menghapus seluruh spesifikasi ide game dari dokumen `list-game2.md` (tabel ringkasan, bab konsep, dan struktur berkas).
-  4. Mencatat histori penghapusan pada `game-log.md` dan `UPDATE.md` (versi [3.12.0]).
-  5. Menjalankan `npm run build` untuk membersihkan rute statis `/play/kamus-kelana` dari folder `out/`.
-- **Masalah yang Ditemukan:** Tidak ada.
-- **File Terdampak:** `public/games/kamus-kelana/*`, `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `list-game2.md`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
-
-### [2026-11-20 11:40] - [Games] - Remake Game Werewolf: Setup 5-15 Pemain, Pemilihan Kartu Interaktif, Siklus Malam & Siang Lengkap
-- **Kondisi Sebelum:** Game `werewolf` sebelumnya belum memiliki sistem input dinamis 5-15 pemain, belum ada interaksi pemilihan kartu tertutup (card pick), peran Hunter belum terintegrasi, belum ada perlindungan Seer/Bodyguard dengan aturan anti-spam beruntun, serta transisi giliran belum menggunakan Privacy Screen ("Oper HP").
-- **Perubahan Sesudah:**
-  1. Merombak total `public/games/werewolf/index.html` menjadi single-file responsif modern berbasis panduan spesifik pengguna:
-     - Input dinamis 5 hingga 15 pemain dengan penyimpanan nama di `localStorage` (`teknogames_werewolf_players`).
-     - Komposisi peran seimbang otomatis (*Auto-Balance*) dan kustomisasi manual: Werewolf, Villager, Seer, Bodyguard, Hunter.
-     - Interaksi pemilihan kartu (*Interactive Card Pick*) dengan animasi 3D flip card, pengungkapan peran rahasia, serta Privacy Screen transisi per giliran.
-     - Siklus malam terurut: Bodyguard (proteksi malam dengan validasi anti orang yang sama 2 malam berturut-turut), Werewolf (daftar sesama rekan & target mangsa), Seer (terawang instan: Werewolf atau Warga).
-     - Pengumuman fajar & skill tembakan pembalasan Hunter saat tereliminasi.
-     - Timer diskusi siang interaktif + sesi voting eksekusi gantung desa.
-     - Kondisi kemenangan terverifikasi otomatis (Warga menang jika Werewolf musnah, Werewolf menang jika Werewolf >= Non-Werewolf).
-     - Web Audio API synthesizer kustom (lonceng, lolongan serigala, mata seer, tembakan pemburu, palu sidang).
-     - Zero-emoji policy 100% menggunakan SVG inline kustom untuk seluruh peran, fajar/malam, dan tombol.
-  2. Pengujian dilakukan via browser instance terisolasi Chrome DevTools port 9222 oleh subagent QA (0 console error, interaksi kartu, privacy screen, dan tab ditutup kembali dengan rapi).
-  3. Dokumen `game-log.md`, `UPDATE.md`, dan `laporan.md` diperbarui.
-- **Masalah yang Ditemukan:** Tidak ada. Seluruh alur berjalan stabil dan lancar.
-- **File Terdampak:** `public/games/werewolf/index.html`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
-
-### [2026-11-20 11:30] - [Games] - Upgrade Jalur PCB Circuit Flow & Logika Bebas Bug (Pou Connect & Backtracking)
-- **Kondisi Sebelum:** Garis jalur `circuit-flow` sebelumnya berupa pipa polos biasa, beberapa level sulit/tidak solvable (unsolvable), dan jalur tidak otomatis terpotong saat saling bertabrakan sehingga pemain mudah stuck.
-- **Perubahan Sesudah:**
-  1. Merombak visual jalur menjadi jejak tembaga PCB autentik (*PCB copper trace* berlapis dengan garis inti neon dan pulsa arus elektron animasi).
-  2. Mengimplementasikan algoritma interaksi jalur bebas bug: *smooth backtracking*, pemotongan otomatis jalur tabrakan (*path overwrite resolution*), pencegahan menembus terminal warna lain, dan kalkulasi cakupan papan (*grid coverage*).
-  3. Memvalidasi seluruh 9 level menggunakan solver algoritma backtracking sehingga 100% solvable tanpa kebuntuan.
-  4. Pengujian langsung dilakukan pada Chrome DevTools remote debugging terisolasi (0 error).
-  5. Menjalankan `npm run build` dan mencatat histori pada `game-log.md` serta `UPDATE.md`.
-- **Masalah yang Ditemukan:** Tidak ada.
-- **File Terdampak:** `public/games/circuit-flow/index.html`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
-
-### [2026-11-20 11:25] - [Games] - Penghapusan Total Game Batik Flow & Penetapan Aturan Larangan Permanen
-- **Kondisi Sebelum:** Game `batik-flow` masih tersimpan di folder `public/games/batik-flow/` dan terdaftar di katalog `src/lib/games-data.ts`.
-- **Perubahan Sesudah:**
-  1. Menghapus folder `public/games/batik-flow/` dan seluruh aset terkait di `public/`.
-  2. Menghapus metadata game `batik-flow` dari `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, dan generator preview.
-  3. Menambahkan klausul aturan mutlak pada `AGENTS.md` (Bagian 8) dan `game-guide.md` (Bagian 9) yang melarang secara permanen pembuatan game bertema batik atau konsep alur/canting serupa di repositori ini.
-  4. Mencatat histori penghapusan pada `game-log.md` (bagian paling atas) dan `UPDATE.md`.
-  5. Menjalankan `npm run build` sehingga rute `/play/batik-flow` bersih dari export statis `out/`.
-- **Masalah yang Ditemukan:** Tidak ada.
-- **File Terdampak:** `public/games/batik-flow/*`, `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `AGENTS.md`, `game-guide.md`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
 
 ### [2026-11-20 11:20] - [Games] - Remake Game Batch 4 (Lembah Bromo, Pasar Terapung, Kamus Kelana, Werewolf) & Pengujian Browser Terisolasi
 - **Kondisi Sebelum:** 4 game Batch 4 (`lembah-bromo`, `pasar-terapung`, `kamus-kelana`, `werewolf`) masih menggunakan total lebih dari 70 karakter emoji, belum memiliki Web Audio API synthesizer dengan tombol audio toggle yang seragam, belum memiliki kunci `localStorage` terstandarisasi (`teknogames_<slug>_highscore`), dan belum mengirimkan event `postMessage` saat Game Over.
