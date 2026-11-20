@@ -1,3 +1,19 @@
+### 2026-11-20 - Werewolf: Online Multiplayer Supabase & Modular Architecture Upgrade
+- **Folder Game:** `public/games/werewolf`
+- **Deskripsi:** Pembaruan besar game Werewolf dengan menambahkan fitur Mode Online Multiplayer berbasis Supabase Realtime dengan sistem Room Kode 6 Digit Temporary, sambil mempertahankan Mode Offline (Pass-and-Play 1 HP) secara penuh. Arsitektur game dipecah menjadi multi-file modular (`index.html`, `styles.css`, `app.js`, `offline-engine.js`, `online-supabase.js`, `svg-icons.js`, `config.js`) dengan tema visual Dark Gothic Bloody Color, pemilihan kartu acak/terkunci (Single Pick Lock), siklus malam single-target, voting rahasia, auto-cleanup room, dan skema migrasi database SQL `supabase-werewolf-schema.sql`.
+- **Fitur Utama:**
+  - [x] Mode Online Multiplayer (Room Kode 6 Digit Temporary via Supabase Realtime)
+  - [x] Mode Offline (Pass-and-Play 1 HP) Lengkap
+  - [x] Arsitektur Modular Multi-File Terpisah & Bersih Bebas Bug
+  - [x] Kunci 1 Pilihan (Single Pick Lock) & Tombol Pilih Acak (Random)
+  - [x] Sinkronisasi Siklus Malam & Siang (Single-Target Rule: Bodyguard, Werewolf, Seer, Hunter)
+  - [x] Skema SQL Lengkap (`supabase-werewolf-schema.sql`) dengan RLS & Publikasi Realtime
+  - [x] Pembersihan Room Otomatis (Auto-Delete saat Game Over & Garbage Collection > 2 jam)
+  - [x] Tema Dark Gothic Bloody Color Responsif (Mobile 360x800 & Desktop)
+  - [x] Zero-Emoji Policy 100% Menggunakan Ikon SVG Vektor Kustom
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - [DELETED] Kamus Kelana: Kata Tersembunyi (Dihapus Permanen)
 - **Folder Game:** `public/games/kamus-kelana` (DIHAPUS)
 - **Deskripsi:** Game teka-teki kata tersembunyi nusantara beserta seluruh konsep idenya telah dihapus secara permanen dari direktori game, katalog website utama, dan dokumen konsep ide (`list-game2.md`) atas instruksi pengguna.

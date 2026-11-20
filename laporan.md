@@ -1,3 +1,29 @@
+### [2026-11-20 18:45] - [Games] - Integrasi Fitur Werewolf Online Multiplayer Supabase (Room 6 Digit) & Arsitektur Modular
+- **Kondisi Sebelum:** Game Werewolf hanya dapat dimainkan secara offline di 1 HP (*Pass-and-Play*) dengan kode monolitik di dalam satu file `index.html`. Belum ada mode online mabar antar-perangkat, belum ada koneksi ke Supabase Realtime, dan belum ada skema database room temporary.
+- **Perubahan Sesudah:**
+  1. Menambahkan **Mode Online Multiplayer** berbasis Supabase Realtime:
+     - Sistem Lobi dengan **Room Kode 6 Digit Temporary** (`werewolf_rooms`).
+     - Alur Host: Input nama, generate kode 6 digit acak & unik, lobi sinkronisasi daftar pemain (5-15 pemain), badge Host, pengaturan peran seimbang otomatis (*Auto-Balance*) atau kustom, dan tombol Mulai Permainan.
+     - Alur Pemain: Bergabung dengan memasukkan 6 digit kode room dan nama pemain.
+     - Pemilihan Kartu Realtime: Grid kartu tertutup tampil serentak di HP masing-masing pemain, sistem **Single Pick Lock** (1 kartu hanya bisa diambil 1 pemain untuk mencegah race condition), dan tombol **Pilih Acak (Random)**.
+     - Siklus Malam Realtime: Tampilan malam serentak, layar tunggu bagi peran tidur, batasan target tunggal (*Single-Target Rule*) untuk Bodyguard (anti proteksi orang sama 2 malam berturut-turut), Werewolf (melihat rekan sesama serigala dan memilih 1 mangsa), dan Seer (terawang instan). Dummy delay otomatis jika role telah gugur.
+     - Siklus Siang & Voting Realtime: Pengumuman fajar, trigger tembakan pembalasan Pemburu (Hunter), serta sistem voting rahasia 1 suara per pemain.
+     - Pembersihan Otomatis (*Auto-Cleanup*): Room otomatis di-DELETE saat Game Over (`status: finished`) dan garbage collection room kedaluwarsa (> 2 jam) saat pembuatan room baru.
+  2. Mempertahankan **Mode Offline Pass-and-Play 1 HP** secara penuh di menu utama.
+  3. Memisahkan arsitektur game menjadi **Modular Multi-File**:
+     - `index.html`: Entry point tampilan game.
+     - `styles.css`: Tema visual Dark Gothic Bloody Color, responsif mobile (360x800) dan desktop.
+     - `config.js`: Manajemen konfigurasi Supabase (URL & Anon Key) aman.
+     - `svg-icons.js`: Koleksi ikon vektor SVG kustom (100% Zero-Emoji).
+     - `audio.js`: Synthesizer Web Audio API murni.
+     - `offline-engine.js`: Logika permainan offline Pass-and-Play.
+     - `online-supabase.js`: Mesin Realtime multiplayer Supabase.
+     - `app.js`: Koordinator navigasi layar, modal konfigurasi, dan UI controller.
+  4. Menyediakan skema migrasi SQL `supabase-werewolf-schema.sql` (tabel `werewolf_rooms`, index performa, konfigurasi RLS anonim, dan publikasi Realtime).
+  5. Memperbarui `.env.example` dan `.env.local` dengan variabel `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- **Masalah yang Ditemukan:** Tidak ada. Zero-emoji policy terjaga 100%.
+- **File Terdampak:** `public/games/werewolf/*`, `supabase-werewolf-schema.sql`, `.env.example`, `.env.local`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-20 18:02] - [Frontend & Dokumentasi] - Preferensi Tema, Papan Skor, dan Kartu Hero (Merged from main)
 - **Ringkasan:** Portal Tekno Game diperbarui dengan preferensi tema terang/gelap yang tersimpan dan sinkron antar-tab. Mode gelap menggunakan latar `#17181c`; tombol tema berupa ikon bulat di sisi tautan Teknotama.
 - **Papan Skor:** Beranda menampilkan lima skor tertinggi. Peringkat pertama mendapat kartu utama di kiri, sementara peringkat 2–5 ditumpuk di kanan dengan skor, poin, tombol mainkan ulang, dan artwork game atau fallback SVG.

@@ -5,1703 +5,461 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <link rel="icon" href="data:,">
   <title>Werewolf: Malam & Desa - TeknoGame</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    :root {
-      --bg: #060913;
-      --card-bg: #0d1627;
-      --card-border: rgba(0, 240, 255, 0.22);
-      --text: #f1f5f9;
-      --text-muted: #94a3b8;
-      --cyan: #00f0ff;
-      --gold: #f59e0b;
-      --red: #ef4444;
-      --purple: #8b5cf6;
-      --emerald: #10b981;
-    }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow-x: hidden;
-      background: var(--bg);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--text);
-    }
-    #gameApp {
-      position: relative;
-      width: 100%;
-      min-height: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 16px 14px 28px;
-      background: radial-gradient(circle at 50% 10%, #152238 0%, #060913 70%);
-    }
-
-    /* Top HUD */
-    .hud {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      z-index: 10;
-    }
-    .badge {
-      background: rgba(13, 22, 39, 0.88);
-      color: var(--text-muted);
-      padding: 5px 12px;
-      border-radius: 9999px;
-      font-weight: 800;
-      font-size: 12px;
-      border: 1px solid var(--card-border);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .badge .val {
-      color: var(--cyan);
-      font-weight: 800;
-    }
-    .btn-audio {
-      background: rgba(13, 22, 39, 0.88);
-      border: 1px solid var(--card-border);
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--cyan);
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      transition: transform 0.1s;
-    }
-    .btn-audio:active {
-      transform: scale(0.92);
-    }
-    .btn-audio svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
-
-    /* Screen Base */
-    .screen {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      animation: fadeIn 0.25s ease;
-    }
-    .screen.hidden {
-      display: none;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Hero / Title */
-    .hero {
-      text-align: center;
-      margin-bottom: 16px;
-    }
-    .hero svg.moon-icon {
-      width: 48px;
-      height: 48px;
-      fill: var(--cyan);
-      filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.5));
-      margin-bottom: 6px;
-    }
-    .hero h1 {
-      font-size: 24px;
-      font-weight: 900;
-      background: linear-gradient(90deg, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 0.5px;
-    }
-    .hero p {
-      color: var(--text-muted);
-      font-size: 13px;
-      margin-top: 4px;
-    }
-
-    /* Panel Card */
-    .panel {
-      width: 100%;
-      background: rgba(13, 22, 39, 0.9);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 18px 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      margin-bottom: 14px;
-      backdrop-filter: blur(8px);
-    }
-    .panel-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--cyan);
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* Player Input Rows */
-    .player-inputs {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 240px;
-      overflow-y: auto;
-      padding-right: 4px;
-      margin-bottom: 14px;
-    }
-    .player-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .player-idx {
-      width: 24px;
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--text-muted);
-      text-align: center;
-    }
-    .input-name {
-      flex: 1;
-      background: #080f1d;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      padding: 8px 12px;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 600;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-    .input-name:focus {
-      border-color: var(--cyan);
-    }
-    .btn-del-row {
-      width: 32px;
-      height: 32px;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      border-radius: 8px;
-      color: var(--red);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .btn-del-row svg {
-      width: 14px;
-      height: 14px;
-      fill: currentColor;
-    }
-
-    /* Role Configuration Counters */
-    .role-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-    .role-counter-card {
-      background: #080f1d;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-    .role-header-info {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .role-header-info svg {
-      width: 18px;
-      height: 18px;
-    }
-    .role-name {
-      font-size: 12px;
-      font-weight: 800;
-    }
-    .counter-ctrl {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 2px;
-    }
-    .btn-cnt {
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 900;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .cnt-val {
-      font-size: 14px;
-      font-weight: 900;
-      color: var(--cyan);
-      min-width: 16px;
-      text-align: center;
-    }
-
-    /* Buttons */
-    .btn-primary {
-      width: 100%;
-      padding: 13px 18px;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #0284c7, var(--cyan));
-      color: #041324;
-      font-size: 15px;
-      font-weight: 800;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 18px rgba(0, 240, 255, 0.35);
-      transition: transform 0.1s, box-shadow 0.15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .btn-primary:active {
-      transform: scale(0.97);
-    }
-    .btn-secondary {
-      width: 100%;
-      padding: 11px 16px;
-      border-radius: 10px;
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--text-muted);
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: background 0.15s;
-    }
-    .btn-secondary:hover {
-      background: rgba(51, 65, 85, 0.9);
-      color: #fff;
-    }
-
-    /* Interactive Card Pick Grid */
-    .card-deck-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
-      gap: 10px;
-      width: 100%;
-      margin: 16px 0;
-      perspective: 1000px;
-    }
-    .tarot-card {
-      width: 100%;
-      aspect-ratio: 2 / 3;
-      position: relative;
-      cursor: pointer;
-      transform-style: preserve-3d;
-      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .tarot-card.flipped {
-      transform: rotateY(180deg);
-    }
-    .tarot-card.taken {
-      opacity: 0.15;
-      pointer-events: none;
-      filter: grayscale(1);
-    }
-    .card-face {
-      position: absolute;
-      inset: 0;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      backface-visibility: hidden;
-      padding: 8px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
-    }
-    .card-back {
-      background: linear-gradient(145deg, #162238, #0a1122);
-      border: 2px solid rgba(0, 240, 255, 0.3);
-      color: var(--cyan);
-    }
-    .card-back svg {
-      width: 28px;
-      height: 28px;
-      fill: currentColor;
-    }
-    .card-front {
-      background: linear-gradient(145deg, #1e1b4b, #0f172a);
-      border: 2px solid var(--purple);
-      color: #ffffff;
-      transform: rotateY(180deg);
-      text-align: center;
-    }
-    .card-front.role-werewolf {
-      background: linear-gradient(145deg, #450a0a, #1f0404);
-      border-color: var(--red);
-    }
-    .card-front.role-seer {
-      background: linear-gradient(145deg, #1e1b4b, #0c1228);
-      border-color: var(--purple);
-    }
-    .card-front.role-bodyguard {
-      background: linear-gradient(145deg, #064e3b, #022c22);
-      border-color: var(--emerald);
-    }
-    .card-front.role-hunter {
-      background: linear-gradient(145deg, #78350f, #3b1703);
-      border-color: var(--gold);
-    }
-    .card-front svg {
-      width: 28px;
-      height: 28px;
-      margin-bottom: 4px;
-    }
-    .card-front .role-lbl {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-
-    /* Role Reveal Modal Box */
-    .reveal-box {
-      background: rgba(13, 22, 39, 0.95);
-      border: 2px solid var(--cyan);
-      border-radius: 18px;
-      padding: 24px 20px;
-      text-align: center;
-      box-shadow: 0 10px 40px rgba(0, 240, 255, 0.35);
-      margin: 16px 0;
-      width: 100%;
-    }
-    .reveal-icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 10px;
-    }
-    .reveal-role {
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-    }
-    .reveal-desc {
-      font-size: 13px;
-      color: #cbd5e1;
-      line-height: 1.5;
-      margin-bottom: 18px;
-    }
-
-    /* Privacy Screen (Oper HP) */
-    .privacy-card {
-      background: rgba(13, 22, 39, 0.95);
-      border: 2px dashed rgba(255, 255, 255, 0.25);
-      border-radius: 18px;
-      padding: 32px 20px;
-      text-align: center;
-      width: 100%;
-      margin: auto 0;
-    }
-    .privacy-icon {
-      width: 52px;
-      height: 52px;
-      fill: var(--gold);
-      margin-bottom: 12px;
-    }
-    .privacy-title {
-      font-size: 20px;
-      font-weight: 900;
-      margin-bottom: 8px;
-    }
-    .privacy-sub {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.5;
-      margin-bottom: 24px;
-    }
-
-    /* Player Status & Target Selection List */
-    .player-select-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 10px;
-      width: 100%;
-      margin: 14px 0;
-    }
-    .player-select-card {
-      background: #080f1d;
-      border: 1.5px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px;
-      padding: 12px 10px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s;
-    }
-    .player-select-card:hover {
-      border-color: var(--cyan);
-      background: rgba(0, 240, 255, 0.1);
-      transform: translateY(-2px);
-    }
-    .player-select-card.selected {
-      border-color: var(--red);
-      background: rgba(239, 68, 68, 0.25);
-      box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
-    }
-    .player-select-card.disabled {
-      opacity: 0.35;
-      pointer-events: none;
-      filter: grayscale(1);
-    }
-    .player-select-card.dead {
-      opacity: 0.25;
-      pointer-events: none;
-      border-color: transparent;
-      text-decoration: line-through;
-    }
-    .p-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #162238;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-    .p-avatar svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--text-muted);
-    }
-    .p-name {
-      font-size: 13px;
-      font-weight: 700;
-    }
-    .p-tag {
-      font-size: 11px;
-      color: var(--cyan);
-      font-weight: 600;
-    }
-
-    /* Day Discussion Timer */
-    .timer-circle {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      border: 4px solid var(--gold);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 12px auto;
-      box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
-    }
-    .timer-sec {
-      font-size: 28px;
-      font-weight: 900;
-      color: #ffffff;
-    }
-    .timer-sub {
-      font-size: 11px;
-      color: var(--gold);
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Supabase JS SDK (Pengecualian khusus CDN untuk SDK Supabase) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <div id="gameApp">
     <!-- Top HUD -->
-    <div class="hud">
-      <div class="badge">
-        <span>STATUS:</span>
-        <span class="val" id="hudStatus">SETUP PEMAIN</span>
+    <header class="hud">
+      <div class="hud-left">
+        <div class="hud-badge">
+          <span>STATUS:</span>
+          <span id="hudStatusText" class="highlight">MENU UTAMA</span>
+        </div>
       </div>
-      <div class="badge">
-        <span>PEMAIN HIDUP:</span>
-        <span class="val" id="hudAliveCount">-</span>
+      <div class="hud-right">
+        <button id="btnOpenSettings" class="btn-icon-hud" title="Pengaturan Supabase">
+          <span data-icon="settings"></span>
+        </button>
+        <button id="btnAudioToggle" class="btn-icon-hud" title="Audio">
+          <span data-icon="audioOn"></span>
+        </button>
       </div>
-      <button class="btn-audio" id="btnAudioToggle" aria-label="Toggle Suara">
-        <svg id="iconVolOn" viewBox="0 0 24 24">
-          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-        </svg>
-        <svg id="iconVolOff" viewBox="0 0 24 24" style="display: none;">
-          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27l4.73 4.73H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-        </svg>
-      </button>
-    </div>
+    </header>
 
-    <!-- ==========================================
-         SCREEN 1: SETUP PEMAIN & ROLE CONFIG
-         ========================================== -->
-    <div class="screen" id="screenSetup">
+    <!-- SCREEN 1: MENU UTAMA -->
+    <main id="screenMainMenu" class="screen">
       <div class="hero">
-        <svg class="moon-icon" viewBox="0 0 24 24">
-          <path d="M12.3 2a10 10 0 0 0-.19 20 10 10 0 0 0 8.7-5.06 1 1 0 0 0-.8-1.44 8 8 0 0 1-7.7-10.7 1 1 0 0 0-1.1-1.3A9.85 9.85 0 0 0 12.3 2z"/>
-        </svg>
-        <h1>Werewolf Desa</h1>
-        <p>Atur nama 5 hingga 15 pemain dalam 1 perangkat</p>
+        <div class="hero-icon" data-icon="werewolf"></div>
+        <h1>WEREWOLF</h1>
+        <p>Malam & Desa — Permainan Deduksi Sosial Misteri</p>
       </div>
 
       <div class="panel">
-        <div class="panel-title">
-          <span>DAFTAR PEMAIN (<span id="playerCountLabel">5</span>/15)</span>
-          <button class="btn-secondary" id="btnAddPlayer" style="width:auto;margin:0;padding:4px 10px;">+ Tambah</button>
-        </div>
-        <div class="player-inputs" id="playerInputsContainer"></div>
-      </div>
+        <div class="panel-title">Pilih Mode Permainan</div>
+        <div class="mode-card-grid">
+          <!-- Mode Online -->
+          <div id="btnChooseOnlineMode" class="mode-card">
+            <div class="mode-card-icon" data-icon="users"></div>
+            <div class="mode-card-content">
+              <h3>Main Online (Multi-Perangkat)</h3>
+              <p>Mabar bersama teman menggunakan kode room 6 digit via Supabase Realtime di HP masing-masing.</p>
+            </div>
+          </div>
 
-      <div class="panel">
-        <div class="panel-title">
-          <span>KOMPOSISI PERAN</span>
-          <button class="btn-secondary" id="btnAutoBalance" style="width:auto;margin:0;padding:4px 10px;">Auto Seimbang</button>
-        </div>
-        <div class="role-grid" id="roleGridContainer"></div>
-        <div id="roleValidationMsg" style="font-size:12px;color:var(--gold);text-align:center;"></div>
-      </div>
-
-      <button class="btn-primary" id="btnStartDistribution">Acak & Mulai Pilih Kartu</button>
-    </div>
-
-    <!-- ==========================================
-         SCREEN 2: INTERACTIVE CARD PICK
-         ========================================== -->
-    <div class="screen hidden" id="screenCardPick">
-      <div class="hero">
-        <svg class="moon-icon" viewBox="0 0 24 24">
-          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/>
-        </svg>
-        <h1 id="pickPlayerPrompt">Giliran Pemain 1</h1>
-        <p>Pilih salah satu kartu tertutup untuk melihat peran rahasiamu</p>
-      </div>
-
-      <div class="card-deck-grid" id="cardDeckGrid"></div>
-
-      <div id="pickRevealContainer" class="hidden" style="width:100%;">
-        <div class="reveal-box" id="revealBox">
-          <div class="reveal-icon" id="revealIcon"></div>
-          <div class="reveal-role" id="revealRoleName">Role Name</div>
-          <div class="reveal-desc" id="revealRoleDesc">Role Description</div>
-          <button class="btn-primary" id="btnDismissCard">Paham & Tutup Kartu</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==========================================
-         SCREEN 3: PRIVACY TRANSITION (OPER HP)
-         ========================================== -->
-    <div class="screen hidden" id="screenPrivacy">
-      <div class="privacy-card">
-        <svg class="privacy-icon" viewBox="0 0 24 24">
-          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
-        </svg>
-        <div class="privacy-title" id="privacyTargetTitle">Oper HP ke Pemain 2</div>
-        <div class="privacy-sub" id="privacyTargetDesc">Pastikan pemain lain tidak mengintip layar perangkat ini.</div>
-        <button class="btn-primary" id="btnPrivacyConfirm">Saya Pemainnya - Lanjutkan</button>
-      </div>
-    </div>
-
-    <!-- ==========================================
-         SCREEN 4: NIGHT PHASE ACTIONS
-         ========================================== -->
-    <div class="screen hidden" id="screenNight">
-      <div class="hero">
-        <svg class="moon-icon" viewBox="0 0 24 24">
-          <path d="M12.3 2a10 10 0 0 0-.19 20 10 10 0 0 0 8.7-5.06 1 1 0 0 0-.8-1.44 8 8 0 0 1-7.7-10.7 1 1 0 0 0-1.1-1.3A9.85 9.85 0 0 0 12.3 2z"/>
-        </svg>
-        <h1 id="nightRoleTitle">Giliran Bodyguard</h1>
-        <p id="nightRoleDesc">Pilih 1 pemain hidup untuk dilindungi malam ini</p>
-      </div>
-
-      <div class="panel" id="nightTeammatesBox" style="display:none;">
-        <div class="panel-title" style="color:var(--red);">REKAN SERIGALA ANDA:</div>
-        <div id="nightTeammatesList" style="font-size:14px;color:#fff;font-weight:700;"></div>
-      </div>
-
-      <div class="player-select-list" id="nightTargetList"></div>
-
-      <div id="seerInspectionResult" class="reveal-box hidden" style="margin:10px 0;padding:16px;">
-        <div style="font-size:13px;color:var(--text-muted);">HASIL TERAWANGAN:</div>
-        <div id="seerResultText" style="font-size:20px;font-weight:900;color:var(--cyan);margin-top:4px;">WEREWOLF</div>
-      </div>
-
-      <button class="btn-primary" id="btnNightConfirm">Konfirmasi Aksi Malam</button>
-    </div>
-
-    <!-- ==========================================
-         SCREEN 5: DAY PHASE (PENGUMUMAN & VOTING)
-         ========================================== -->
-    <div class="screen hidden" id="screenDay">
-      <div class="hero">
-        <svg class="moon-icon" style="fill:var(--gold);filter:drop-shadow(0 0 12px rgba(245,158,11,0.5));" viewBox="0 0 24 24">
-          <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/>
-        </svg>
-        <h1 id="dayHeaderTitle">Pagi Hari di Desa</h1>
-        <p id="dayHeaderDesc">Malam telah usai, matahari kembali terbit.</p>
-      </div>
-
-      <div class="panel" id="dayAnnouncementPanel">
-        <div class="panel-title">KABAR SEMALAM:</div>
-        <div id="dayNewsText" style="font-size:14px;color:#cbd5e1;line-height:1.6;"></div>
-      </div>
-
-      <!-- Hunter Revenge Trigger (if hunter died) -->
-      <div class="panel hidden" id="hunterRevengePanel" style="border-color:var(--gold);">
-        <div class="panel-title" style="color:var(--gold);">TEMBAKAN TERAKHIR PEMBURU!</div>
-        <p style="font-size:13px;color:#cbd5e1;margin-bottom:10px;">
-          <strong id="hunterDiedName">Hunter</strong> telah gugur! Pilih 1 pemain untuk ditembak mati bersamanya:
-        </p>
-        <div class="player-select-list" id="hunterTargetList"></div>
-        <button class="btn-primary" id="btnHunterShoot" style="background:linear-gradient(90deg, #d97706, #f59e0b);">Lepaskan Tembakan</button>
-      </div>
-
-      <!-- Discussion Timer Section -->
-      <div class="panel" id="discussionTimerPanel">
-        <div class="panel-title">
-          <span>WAKTU DISKUSI WARGA</span>
-          <div style="display:flex;gap:4px;">
-            <button class="btn-secondary" id="btnTimerSet2" style="width:auto;margin:0;padding:2px 8px;">2 Min</button>
-            <button class="btn-secondary" id="btnTimerSet3" style="width:auto;margin:0;padding:2px 8px;">3 Min</button>
+          <!-- Mode Offline -->
+          <div id="btnChooseOfflineMode" class="mode-card">
+            <div class="mode-card-icon" data-icon="moon"></div>
+            <div class="mode-card-content">
+              <h3>Main Offline (Pass-and-Play 1 HP)</h3>
+              <p>Main bersama 5 hingga 15 pemain secara bergantian menggunakan satu perangkat aman.</p>
+            </div>
           </div>
         </div>
-        <div class="timer-circle">
-          <div class="timer-sec" id="timerDisplay">02:00</div>
-          <div class="timer-sub" id="timerStatusLabel">DISKUSI</div>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:10px;">
-          <button class="btn-secondary" id="btnTimerToggle" style="margin:0;">Jeda / Lanjut</button>
-          <button class="btn-primary" id="btnSkipToVote" style="margin:0;">Lanjut ke Voting</button>
-        </div>
       </div>
+    </main>
 
-      <!-- Voting Section -->
-      <div class="panel hidden" id="dayVotingPanel">
-        <div class="panel-title" style="color:var(--red);">SIDANG EKSEKUSI DESA</div>
-        <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Pilih satu warga yang paling dicurigai untuk digantung hari ini:</p>
-        <div class="player-select-list" id="dayVotingList"></div>
-        <button class="btn-primary" id="btnConfirmVote" style="background:linear-gradient(90deg, #b91c1c, #ef4444);">Eksekusi Tersangka</button>
-      </div>
-    </div>
-
-    <!-- ==========================================
-         SCREEN 6: GAME OVER / WIN MODAL
-         ========================================== -->
-    <div class="screen hidden" id="screenGameOver">
+    <!-- SCREEN 2: ONLINE AUTH / LOBBY SELECTION -->
+    <section id="screenOnlineAuth" class="screen hidden">
       <div class="hero">
-        <svg class="moon-icon" id="winIcon" viewBox="0 0 24 24">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-        <h1 id="winTitle">Warga Menang!</h1>
-        <p id="winDesc">Seluruh serigala telah berhasil disingkirkan dari desa.</p>
+        <div class="hero-icon" data-icon="users"></div>
+        <h1>LOBI MULTIPLAYER</h1>
+        <p>Hubungkan permainan antar perangkat via Room Kode 6 Digit</p>
       </div>
 
       <div class="panel">
-        <div class="panel-title">REKAPITULASI PEMAIN & PERAN:</div>
-        <div id="finalPlayersRoster" style="font-size:13px;display:flex;flex-direction:column;gap:6px;"></div>
+        <div class="panel-title">Buat Room Baru (Host)</div>
+        <input type="text" id="inputHostName" class="input-text-dark" placeholder="Nama Host..." maxlength="15">
+        <button id="btnCreateRoomSubmit" class="btn-primary">
+          <span data-icon="crown"></span>
+          <span>Buat Room Baru</span>
+        </button>
       </div>
 
-      <button class="btn-primary" id="btnPlayAgain">Main Ronde Baru</button>
+      <div class="panel">
+        <div class="panel-title">Gabung Room yang Sudah Ada</div>
+        <input type="text" id="inputJoinPlayerName" class="input-text-dark" placeholder="Nama Pemain..." maxlength="15">
+        <input type="text" id="inputJoinRoomCode" class="input-text-dark input-code-center" placeholder="6 DIGIT KODE" maxlength="6">
+        <button id="btnJoinRoomSubmit" class="btn-secondary">
+          <span>Gabung ke Room</span>
+        </button>
+      </div>
+
+      <button id="btnBackFromOnlineAuth" class="btn-secondary" style="margin-top:auto;">
+        <span data-icon="arrowLeft"></span>
+        <span>Kembali ke Menu Utama</span>
+      </button>
+    </section>
+
+    <!-- SCREEN 3: ONLINE LOBBY ROOM -->
+    <section id="screenOnlineLobby" class="screen hidden">
+      <div class="room-code-display-wrap">
+        <div class="room-code-label">Kode Room Pemain (6 Digit)</div>
+        <div id="onlineRoomCodeDisplay" class="room-code-number">------</div>
+        <button id="btnCopyRoomCode" class="btn-copy-code">
+          <span data-icon="copy"></span>
+          <span>Salin Kode</span>
+        </button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">
+          <span>Daftar Pemain</span>
+          <span id="onlinePlayerCountBadge" class="hud-badge">0 / 15 Pemain</span>
+        </div>
+        <div id="onlineLobbyRosterList" class="roster-list">
+          <!-- Roster rendered dynamically -->
+        </div>
+
+        <!-- Host Role Config Controls -->
+        <div id="onlineHostRoleControls" class="hidden" style="margin-top:14px; border-top:1px solid var(--border-subtle); padding-top:12px;">
+          <div style="font-size:12px; font-weight:800; color:var(--rose-light); margin-bottom:8px; display:flex; justify-content:space-between;">
+            <span>KONFIGURASI PERAN (HOST):</span>
+            <span id="onlineRoleTotalSum" style="font-weight:900;">0 / 0</span>
+          </div>
+          
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--role-wolf); font-weight:700;">Werewolf</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button id="btnOnlineRoleMinus_werewolf" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
+                <span id="onlineRoleCount_werewolf" style="font-weight:800; min-width:16px; text-align:center;">1</span>
+                <button id="btnOnlineRolePlus_werewolf" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--role-villager); font-weight:700;">Warga Biasa</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button id="btnOnlineRoleMinus_villager" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
+                <span id="onlineRoleCount_villager" style="font-weight:800; min-width:16px; text-align:center;">2</span>
+                <button id="btnOnlineRolePlus_villager" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--role-seer); font-weight:700;">Penerawang (Seer)</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button id="btnOnlineRoleMinus_seer" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
+                <span id="onlineRoleCount_seer" style="font-weight:800; min-width:16px; text-align:center;">1</span>
+                <button id="btnOnlineRolePlus_seer" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--role-guard); font-weight:700;">Pelindung (Bodyguard)</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button id="btnOnlineRoleMinus_bodyguard" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
+                <span id="onlineRoleCount_bodyguard" style="font-weight:800; min-width:16px; text-align:center;">1</span>
+                <button id="btnOnlineRolePlus_bodyguard" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--role-hunter); font-weight:700;">Pemburu (Hunter)</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button id="btnOnlineRoleMinus_hunter" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
+                <span id="onlineRoleCount_hunter" style="font-weight:800; min-width:16px; text-align:center;">0</span>
+                <button id="btnOnlineRolePlus_hunter" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Guest Role Summary -->
+        <div id="onlineGuestRoleSummary" class="hidden" style="margin-top:14px; border-top:1px solid var(--border-subtle); padding-top:12px;"></div>
+      </div>
+
+      <div style="width:100%; display:flex; flex-direction:column; gap:10px; margin-top:auto;">
+        <button id="btnStartOnlineGame" class="btn-primary hidden">
+          <span data-icon="moon"></span>
+          <span>Mulai Permainan</span>
+        </button>
+        <button id="btnLeaveOnlineRoom" class="btn-secondary btn-danger">
+          <span>Keluar dari Room</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: OFFLINE SETUP (1 HP) -->
+    <section id="screenOfflineSetup" class="screen hidden">
+      <div class="panel">
+        <div class="panel-title">
+          <span>Daftar Pemain (5–15)</span>
+          <span id="offlinePlayerCountLabel" class="hud-badge">5 Pemain</span>
+        </div>
+        <div id="offlinePlayerList" class="roster-list">
+          <!-- Rendered dynamically -->
+        </div>
+        <button id="btnAddOfflinePlayer" class="btn-secondary" style="margin-top:4px;">
+          <span>+ Tambah Pemain</span>
+        </button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">
+          <span>Konfigurasi Peran</span>
+          <span id="offlineRoleTotalSum" style="font-weight:900;">5 / 5</span>
+        </div>
+        
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:var(--role-wolf); font-weight:700;">Werewolf</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button id="btnOfflineRoleMinus_werewolf" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
+              <span id="offlineRoleCount_werewolf" style="font-weight:800; min-width:16px; text-align:center;">1</span>
+              <button id="btnOfflineRolePlus_werewolf" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:var(--role-villager); font-weight:700;">Warga Biasa</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button id="btnOfflineRoleMinus_villager" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
+              <span id="offlineRoleCount_villager" style="font-weight:800; min-width:16px; text-align:center;">2</span>
+              <button id="btnOfflineRolePlus_villager" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:var(--role-seer); font-weight:700;">Penerawang (Seer)</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button id="btnOfflineRoleMinus_seer" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
+              <span id="offlineRoleCount_seer" style="font-weight:800; min-width:16px; text-align:center;">1</span>
+              <button id="btnOfflineRolePlus_seer" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:var(--role-guard); font-weight:700;">Pelindung (Bodyguard)</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button id="btnOfflineRoleMinus_bodyguard" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
+              <span id="offlineRoleCount_bodyguard" style="font-weight:800; min-width:16px; text-align:center;">1</span>
+              <button id="btnOfflineRolePlus_bodyguard" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:var(--role-hunter); font-weight:700;">Pemburu (Hunter)</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button id="btnOfflineRoleMinus_hunter" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
+              <span id="offlineRoleCount_hunter" style="font-weight:800; min-width:16px; text-align:center;">0</span>
+              <button id="btnOfflineRolePlus_hunter" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:100%; display:flex; flex-direction:column; gap:10px; margin-top:auto;">
+        <button id="btnStartOfflineGame" class="btn-primary">
+          <span data-icon="moon"></span>
+          <span>Bagi Kartu & Mulai Game</span>
+        </button>
+        <button id="btnBackFromOfflineSetup" class="btn-secondary">
+          <span data-icon="arrowLeft"></span>
+          <span>Kembali</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 5: PEMILIHAN KARTU (CARD PICK GRID) -->
+    <section id="screenCardPick" class="screen hidden">
+      <div class="card-pick-container">
+        <h2 id="cardPickHeaderTitle" style="font-size:18px; font-weight:800; color:#fff; text-align:center;">Pilih 1 Kartu Rahasiamu</h2>
+        <p id="cardPickHeaderDesc" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:4px;">
+          Pilih tepat 1 kartu tertutup di bawah ini atau tekan tombol Pilih Acak.
+        </p>
+
+        <div id="cardPickGrid" class="cards-grid">
+          <!-- Cards rendered dynamically -->
+        </div>
+
+        <button id="btnCardPickRandom" class="btn-secondary" style="margin-bottom:14px;">
+          <span data-icon="shuffle"></span>
+          <span>Pilih Acak (Random)</span>
+        </button>
+
+        <!-- Role Reveal Detail Panel -->
+        <div id="cardPickRoleReveal" class="panel hidden" style="text-align:center;">
+          <div id="revealRoleIcon" style="width:48px; height:48px; margin:0 auto 8px;"></div>
+          <h3 id="revealRoleTitle" style="font-size:18px; font-weight:900;">Role</h3>
+          <p id="revealRoleDesc" style="font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.4;">Deskripsi tugas peran</p>
+        </div>
+
+        <div id="cardPickActionBtns" class="hidden" style="width:100%; margin-top:10px;">
+          <button id="btnConfirmCardPick" class="btn-primary">
+            <span>Paham & Tutup Kartu</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 6: PRIVACY TRANSITION SCREEN -->
+    <section id="screenPrivacy" class="screen hidden" style="justify-content:center; text-align:center; padding:40px 16px;">
+      <div style="width:64px; height:64px; color:var(--blood-glow); margin:0 auto 16px;" data-icon="moon"></div>
+      <h2 id="privacyScreenTitle" style="font-size:22px; font-weight:900; color:#fff; margin-bottom:8px;">Layar Transisi Aman</h2>
+      <p id="privacyScreenDesc" style="font-size:14px; color:var(--text-muted); line-height:1.5; max-width:400px; margin:0 auto 28px;">
+        Pastikan hanya pemain yang bersangkutan yang melihat layar ini sebelum menekan tombol buka.
+      </p>
+      <button id="btnPrivacyConfirm" class="btn-primary" style="max-width:320px; margin:0 auto;">
+        <span>Saya Siap, Buka Layar</span>
+      </button>
+    </section>
+
+    <!-- SCREEN 7: SIKLUS MALAM (NIGHT ACTION) -->
+    <section id="screenNightAction" class="screen hidden">
+      <!-- Layar Tunggu (Jika bukan gilirannya) -->
+      <div id="nightWaitingBox" class="waiting-box hidden">
+        <div class="waiting-pulse-icon" data-icon="moon"></div>
+        <h2 style="font-size:20px; font-weight:900; color:#fff; margin-bottom:8px;">Malam Telah Tiba</h2>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+          Seluruh warga desa tertidur lelap... Menunggu peran yang berhak beraksi dalam kegelapan.
+        </p>
+      </div>
+
+      <!-- Kotak Aksi Aktif -->
+      <div id="nightActiveActionBox" style="width:100%;">
+        <div class="panel">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <div id="nightRoleIcon" style="width:36px; height:36px;"></div>
+            <div>
+              <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Giliran Beraksi:</div>
+              <h3 id="nightRoleTitle" style="font-size:17px; font-weight:900;">Nama Peran</h3>
+            </div>
+          </div>
+
+          <p id="nightActionPrompt" style="font-size:13px; color:var(--rose-light); margin-bottom:10px; font-weight:600;">
+            Pilih 1 sasaran tindakanmu:
+          </p>
+
+          <div id="nightTeammateInfo" class="hidden" style="font-size:12px; color:var(--role-wolf); padding:8px 10px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); border-radius:8px; margin-bottom:10px;"></div>
+
+          <div id="seerResultBox" class="hidden" style="font-size:13px; text-align:center; padding:12px; background:rgba(192,132,252,0.15); border:1px solid rgba(192,132,252,0.35); border-radius:10px; margin-bottom:12px;"></div>
+
+          <div id="nightTargetList" class="target-list">
+            <!-- Target cards dynamically rendered -->
+          </div>
+
+          <button id="btnConfirmNightAction" class="btn-primary" style="margin-top:12px;">
+            <span>Kunci Aksi Malam Ini</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 8: SIKLUS SIANG (DAY ANNOUNCEMENT & DISCUSSION) -->
+    <section id="screenDayAnnouncement" class="screen hidden">
+      <div class="hero">
+        <div class="hero-icon" data-icon="sun" style="color:#f59e0b;"></div>
+        <h1 style="background:linear-gradient(135deg, #fff 20%, #f59e0b 70%, #d97706 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">FAJAR MENYINGSING</h1>
+        <p>Matahari terbit mengungkap peristiwa yang terjadi tadi malam</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Pengumuman Desa</div>
+        <p id="dayNewsText" style="font-size:14px; line-height:1.5; color:#fff;">
+          Memuat kabar malam...
+        </p>
+
+        <!-- Hunter Revenge Panel -->
+        <div id="dayHunterRevengePanel" class="hidden" style="margin-top:14px; border-top:1px solid var(--border-subtle); padding-top:12px;">
+          <div style="font-size:13px; font-weight:800; color:var(--role-hunter); margin-bottom:6px;">
+            PEMBURU (<span id="hunterRevengeName"></span>) GUGUR!
+          </div>
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">
+            Sebelum menghembuskan napas terakhir, Pemburu wajib memilih 1 sasaran tembak pembalasan:
+          </p>
+          <div id="hunterTargetList" class="target-list"></div>
+          <button id="btnHunterConfirmShoot" class="btn-primary" style="background:linear-gradient(135deg, #059669 0%, #047857 100%);">
+            <span>Lepaskan Tembakan Terakhir</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Timer Diskusi -->
+      <div class="panel">
+        <div class="panel-title">Waktu Diskusi Terbuka</div>
+        <div class="timer-container">
+          <div id="discussionTimerDigits" class="timer-digits">02:00</div>
+          <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">Diskusikan siapa yang mencurigakan sebelum voting!</p>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <button id="btnSkipDiscussion" class="btn-secondary" style="flex:1;">
+            <span>Lewati Diskusi</span>
+          </button>
+          <button id="btnProceedToVoting" class="btn-primary" style="flex:1;">
+            <span>Lanjut ke Voting</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 9: VOTING SIANG (DAY VOTING) -->
+    <section id="screenDayVoting" class="screen hidden">
+      <div class="hero">
+        <div class="hero-icon" data-icon="skull"></div>
+        <h1>SIDANG EKSEKUSI DESA</h1>
+        <p>Pilih 1 tersangka yang dicurigai sebagai Werewolf untuk digantung</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Pilih Warga untuk Digantung</div>
+        <div id="votingTargetList" class="target-list">
+          <!-- Target list rendered dynamically -->
+        </div>
+
+        <button id="btnConfirmExecution" class="btn-primary" style="margin-top:12px;">
+          <span>Eksekusi Pilihan Sidang</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 10: GAME OVER -->
+    <section id="screenGameOver" class="screen hidden">
+      <div class="hero">
+        <div class="hero-icon" data-icon="werewolf"></div>
+        <h1 id="gameOverTitle">PERMAINAN SELESAI</h1>
+        <p id="gameOverDesc">Ringkasan hasil akhir permainan</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Daftar Peran Seluruh Pemain</div>
+        <div id="gameOverRoster" class="roster-list">
+          <!-- Final roster rendered dynamically -->
+        </div>
+      </div>
+
+      <button id="btnRestartGame" class="btn-primary" style="margin-top:auto;">
+        <span>Kembali ke Menu Utama</span>
+      </button>
+    </section>
+
+    <!-- MODAL: PENGATURAN KONEKSI SUPABASE -->
+    <div id="supabaseConfigModal" class="modal-backdrop hidden">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Konfigurasi Supabase</h3>
+          <button id="btnCloseConfigModal" class="modal-close-btn" title="Tutup">
+            <span data-icon="cross"></span>
+          </button>
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.4;">
+          Masukkan kredensial Project Supabase Anda untuk mengaktifkan sinkronisasi Realtime kode room 6 digit.
+        </p>
+
+        <label style="font-size:11px; font-weight:700; color:var(--rose-light); display:block; margin-bottom:4px;">SUPABASE URL:</label>
+        <input type="text" id="inputSupabaseUrl" class="input-text-dark" placeholder="https://xyz.supabase.co">
+
+        <label style="font-size:11px; font-weight:700; color:var(--rose-light); display:block; margin-bottom:4px;">SUPABASE ANON KEY:</label>
+        <input type="password" id="inputSupabaseAnonKey" class="input-text-dark" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+
+        <button id="btnSaveSupabaseConfig" class="btn-primary" style="margin-top:8px;">
+          <span>Simpan & Terapkan</span>
+        </button>
+      </div>
     </div>
   </div>
 
-  <script>
-    (function() {
-      // Audio Synthesizer (Web Audio API)
-      let audioCtx = null;
-      let soundEnabled = true;
-
-      function initAudio() {
-        if (!audioCtx) {
-          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-          if (AudioContextClass) {
-            audioCtx = new AudioContextClass();
-          }
-        }
-        if (audioCtx && audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
-      }
-
-      function playSound(type) {
-        if (!soundEnabled || !audioCtx) return;
-        try {
-          const now = audioCtx.currentTime;
-          if (type === 'bell') {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(220, now);
-            osc.frequency.exponentialRampToValueAtTime(110, now + 1.2);
-            gain.gain.setValueAtTime(0.25, now);
-            gain.gain.linearRampToValueAtTime(0.001, now + 1.2);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 1.2);
-          } else if (type === 'howl') {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(160, now);
-            osc.frequency.linearRampToValueAtTime(320, now + 0.4);
-            osc.frequency.linearRampToValueAtTime(180, now + 1.1);
-            gain.gain.setValueAtTime(0.18, now);
-            gain.gain.linearRampToValueAtTime(0.001, now + 1.1);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 1.1);
-          } else if (type === 'seer') {
-            [440, 554, 659, 880].forEach((f, idx) => {
-              const osc = audioCtx.createOscillator();
-              const gain = audioCtx.createGain();
-              osc.type = 'sine';
-              osc.frequency.setValueAtTime(f, now + idx * 0.08);
-              gain.gain.setValueAtTime(0.14, now + idx * 0.08);
-              gain.gain.linearRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
-              osc.connect(gain);
-              gain.connect(audioCtx.destination);
-              osc.start(now + idx * 0.08);
-              osc.stop(now + idx * 0.08 + 0.25);
-            });
-          } else if (type === 'gunshot') {
-            // Gunshot noise burst
-            const bufferSize = audioCtx.sampleRate * 0.25;
-            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-            const data = buffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) {
-              data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.05));
-            }
-            const noise = audioCtx.createBufferSource();
-            noise.buffer = buffer;
-            const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(0.35, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-            noise.connect(gain);
-            gain.connect(audioCtx.destination);
-            noise.start(now);
-          } else if (type === 'gavel') {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(130, now);
-            gain.gain.setValueAtTime(0.3, now);
-            gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 0.18);
-          } else if (type === 'victory') {
-            [261.6, 329.6, 392, 523.25].forEach((f, idx) => {
-              const osc = audioCtx.createOscillator();
-              const gain = audioCtx.createGain();
-              osc.type = 'triangle';
-              osc.frequency.setValueAtTime(f, now + idx * 0.09);
-              gain.gain.setValueAtTime(0.18, now + idx * 0.09);
-              gain.gain.linearRampToValueAtTime(0.001, now + idx * 0.09 + 0.35);
-              osc.connect(gain);
-              gain.connect(audioCtx.destination);
-              osc.start(now + idx * 0.09);
-              osc.stop(now + idx * 0.09 + 0.35);
-            });
-          }
-        } catch (e) {}
-      }
-
-      // Audio Toggle
-      const btnAudioToggle = document.getElementById('btnAudioToggle');
-      const iconVolOn = document.getElementById('iconVolOn');
-      const iconVolOff = document.getElementById('iconVolOff');
-      btnAudioToggle.addEventListener('click', () => {
-        initAudio();
-        soundEnabled = !soundEnabled;
-        iconVolOn.style.display = soundEnabled ? 'block' : 'none';
-        iconVolOff.style.display = soundEnabled ? 'none' : 'block';
-      });
-
-      // Role Definitions & Inline SVG Icons
-      const ROLE_DEFS = {
-        werewolf: {
-          name: 'Werewolf',
-          team: 'werewolf',
-          color: 'var(--red)',
-          desc: 'Setiap malam bangun bersama serigala lain untuk memilih satu korban mangsa. Menang jika jumlah serigala menyamai atau melebihi sisa warga.',
-          iconSvg: `<svg viewBox="0 0 24 24" fill="var(--red)"><path d="M12 2C6.48 2 2 6.48 2 12c0 3.84 2.16 7.18 5.34 8.87.27-.47.66-1.12 1.09-2.01C7.55 17.65 7 15.93 7 14c0-2.8 2.2-5 5-5s5 2.2 5 5c0 1.93-.55 3.65-1.43 4.86.43.89.82 1.54 1.09 2.01C19.84 19.18 22 15.84 22 12c0-5.52-4.48-10-10-10zm-3 8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm6 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-3 8c-1.38 0-2.5-.9-2.5-2h5c0 1.1-1.12 2-2.5 2z"/></svg>`
-        },
-        seer: {
-          name: 'Seer (Penerawang)',
-          team: 'villager',
-          color: 'var(--purple)',
-          desc: 'Setiap malam dapat memilih 1 pemain untuk diterawang apakah ia Werewolf atau Warga. Bantu warga menggantung serigala di siang hari.',
-          iconSvg: `<svg viewBox="0 0 24 24" fill="var(--purple)"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>`
-        },
-        bodyguard: {
-          name: 'Bodyguard (Pelindung)',
-          team: 'villager',
-          color: 'var(--emerald)',
-          desc: 'Setiap malam dapat melindungi 1 orang dari terkaman serigala. Aturan: DILARANG melindungi pemain yang sama 2 malam berturut-turut.',
-          iconSvg: `<svg viewBox="0 0 24 24" fill="var(--emerald)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>`
-        },
-        hunter: {
-          name: 'Hunter (Pemburu)',
-          team: 'villager',
-          color: 'var(--gold)',
-          desc: 'Jika tereliminasi (diserang serigala semalam atau dieksekusi siang), Pemburu berhak melepaskan 1 tembakan terakhir untuk membunuh 1 pemain lain.',
-          iconSvg: `<svg viewBox="0 0 24 24" fill="var(--gold)"><path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.26-6.26c-.78-.78-2.05-.78-2.83 0L4.41 5.16c-.78.78-.78 2.05 0 2.83L10 14.25l-1.42 5.31c-.22.8.26 1.63 1.06 1.84.13.04.26.05.39.05.67 0 1.28-.43 1.45-1.11l1.79-6.68 6.68-1.79c.8-.22 1.28-1.05 1.06-1.85z"/></svg>`
-        },
-        villager: {
-          name: 'Villager (Warga)',
-          team: 'villager',
-          color: 'var(--cyan)',
-          desc: 'Warga desa biasa. Tidak memiliki aksi malam, namun kekuatanmu ada pada diskusi, intuisi, dan hak suara voting di siang hari.',
-          iconSvg: `<svg viewBox="0 0 24 24" fill="var(--cyan)"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`
-        }
-      };
-
-      // State Management
-      const STORAGE_PLAYERS = 'teknogames_werewolf_players';
-      let players = []; // Array of { id, name, role, alive, protectedLastNight }
-      let roleCounts = {
-        werewolf: 1,
-        seer: 1,
-        bodyguard: 1,
-        hunter: 1,
-        villager: 1
-      };
-
-      // Game Cycle Runtime State
-      let shuffledCards = []; // Array of role keys
-      let currentPickIndex = 0;
-      let nightStep = 0; // 0: BG, 1: Wolf, 2: Seer
-      let nightDecisions = {
-        protectedId: null,
-        wolfTargetId: null,
-        seerTargetId: null
-      };
-      let previousProtectedId = null;
-      let dayEliminated = null;
-      let hunterDiedPending = null;
-      let discussionTimer = null;
-      let discussionSeconds = 120;
-      let timerRunning = false;
-
-      // DOM Elements
-      const hudStatus = document.getElementById('hudStatus');
-      const hudAliveCount = document.getElementById('hudAliveCount');
-      const screenSetup = document.getElementById('screenSetup');
-      const screenCardPick = document.getElementById('screenCardPick');
-      const screenPrivacy = document.getElementById('screenPrivacy');
-      const screenNight = document.getElementById('screenNight');
-      const screenDay = document.getElementById('screenDay');
-      const screenGameOver = document.getElementById('screenGameOver');
-
-      function switchScreen(activeScreen) {
-        [screenSetup, screenCardPick, screenPrivacy, screenNight, screenDay, screenGameOver].forEach(s => s.classList.add('hidden'));
-        activeScreen.classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      function updateAliveCountHUD() {
-        const alive = players.filter(p => p.alive).length;
-        hudAliveCount.textContent = `${alive}/${players.length}`;
-      }
-
-      // ==========================================
-      // 1. SETUP PEMAIN & AUTO BALANCE
-      // ==========================================
-      const playerInputsContainer = document.getElementById('playerInputsContainer');
-      const playerCountLabel = document.getElementById('playerCountLabel');
-      const roleGridContainer = document.getElementById('roleGridContainer');
-      const roleValidationMsg = document.getElementById('roleValidationMsg');
-
-      function loadDefaultPlayers() {
-        try {
-          const saved = JSON.parse(localStorage.getItem(STORAGE_PLAYERS));
-          if (Array.isArray(saved) && saved.length >= 5 && saved.length <= 15) {
-            return saved;
-          }
-        } catch (e) {}
-        return ['Arya', 'Bima', 'Citra', 'Dewi', 'Eko'];
-      }
-
-      let currentNameList = loadDefaultPlayers();
-
-      function renderPlayerInputs() {
-        playerInputsContainer.innerHTML = '';
-        playerCountLabel.textContent = currentNameList.length;
-
-        currentNameList.forEach((name, idx) => {
-          const row = document.createElement('div');
-          row.className = 'player-row';
-          row.innerHTML = `
-            <div class="player-idx">${idx + 1}</div>
-            <input type="text" class="input-name" value="${name}" maxlength="16" placeholder="Nama Pemain">
-            ${currentNameList.length > 5 ? `<button class="btn-del-row" data-idx="${idx}"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>` : ''}
-          `;
-
-          const input = row.querySelector('.input-name');
-          input.addEventListener('change', (e) => {
-            currentNameList[idx] = e.target.value.trim() || `Pemain ${idx + 1}`;
-            savePlayers();
-          });
-
-          const delBtn = row.querySelector('.btn-del-row');
-          if (delBtn) {
-            delBtn.addEventListener('click', () => {
-              currentNameList.splice(idx, 1);
-              autoBalanceRoles();
-              renderPlayerInputs();
-              savePlayers();
-            });
-          }
-
-          playerInputsContainer.appendChild(row);
-        });
-
-        autoBalanceRoles();
-        renderRoleCounters();
-      }
-
-      document.getElementById('btnAddPlayer').addEventListener('click', () => {
-        if (currentNameList.length < 15) {
-          currentNameList.push(`Pemain ${currentNameList.length + 1}`);
-          autoBalanceRoles();
-          renderPlayerInputs();
-          savePlayers();
-        } else {
-          alert('Maksimal 15 pemain dalam 1 perangkat.');
-        }
-      });
-
-      function savePlayers() {
-        try {
-          localStorage.setItem(STORAGE_PLAYERS, JSON.stringify(currentNameList));
-        } catch (e) {}
-      }
-
-      function autoBalanceRoles() {
-        const total = currentNameList.length;
-        let wolfCount = 1;
-        if (total >= 7 && total <= 10) wolfCount = 2;
-        if (total >= 11) wolfCount = 3;
-
-        roleCounts.werewolf = wolfCount;
-        roleCounts.seer = 1;
-        roleCounts.bodyguard = 1;
-        roleCounts.hunter = total >= 6 ? 1 : 0;
-        roleCounts.villager = total - (roleCounts.werewolf + roleCounts.seer + roleCounts.bodyguard + roleCounts.hunter);
-        renderRoleCounters();
-      }
-
-      document.getElementById('btnAutoBalance').addEventListener('click', () => {
-        autoBalanceRoles();
-      });
-
-      function renderRoleCounters() {
-        roleGridContainer.innerHTML = '';
-        const totalAssigned = Object.values(roleCounts).reduce((a, b) => a + b, 0);
-        const totalPlayers = currentNameList.length;
-
-        Object.keys(roleCounts).forEach(roleKey => {
-          const r = ROLE_DEFS[roleKey];
-          const card = document.createElement('div');
-          card.className = 'role-counter-card';
-          card.innerHTML = `
-            <div class="role-header-info">
-              ${r.iconSvg}
-              <span class="role-name" style="color:${r.color};">${r.name.split(' ')[0]}</span>
-            </div>
-            <div class="counter-ctrl">
-              <button class="btn-cnt" data-role="${roleKey}" data-dir="-1">-</button>
-              <span class="cnt-val" id="cnt-${roleKey}">${roleCounts[roleKey]}</span>
-              <button class="btn-cnt" data-role="${roleKey}" data-dir="1">+</button>
-            </div>
-          `;
-
-          card.querySelectorAll('.btn-cnt').forEach(btn => {
-            btn.addEventListener('click', () => {
-              const delta = parseInt(btn.dataset.dir, 10);
-              const rk = btn.dataset.role;
-              if (roleCounts[rk] + delta >= 0) {
-                roleCounts[rk] += delta;
-                renderRoleCounters();
-              }
-            });
-          });
-
-          roleGridContainer.appendChild(card);
-        });
-
-        if (totalAssigned === totalPlayers) {
-          roleValidationMsg.style.color = 'var(--emerald)';
-          roleValidationMsg.textContent = `Total Kartu: ${totalAssigned} / ${totalPlayers} Pemain (Pas!)`;
-        } else {
-          roleValidationMsg.style.color = 'var(--red)';
-          roleValidationMsg.textContent = `Total Kartu: ${totalAssigned} / ${totalPlayers} Pemain (Harus Pas!)`;
-        }
-      }
-
-      // Mulai Acak Kartu
-      document.getElementById('btnStartDistribution').addEventListener('click', () => {
-        initAudio();
-        const totalAssigned = Object.values(roleCounts).reduce((a, b) => a + b, 0);
-        const totalPlayers = currentNameList.length;
-
-        if (totalAssigned !== totalPlayers) {
-          alert(`Jumlah kartu (${totalAssigned}) tidak sama dengan jumlah pemain (${totalPlayers}). Sesuaikan kartu terlebih dahulu!`);
-          return;
-        }
-
-        // Susun kartu lalu acak
-        shuffledCards = [];
-        Object.entries(roleCounts).forEach(([rk, count]) => {
-          for (let i = 0; i < count; i++) {
-            shuffledCards.push(rk);
-          }
-        });
-
-        for (let i = shuffledCards.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffledCards[i], shuffledCards[j]] = [shuffledCards[j], shuffledCards[i]];
-        }
-
-        // Siapkan objek pemain
-        players = currentNameList.map((name, i) => ({
-          id: i,
-          name: name,
-          role: null,
-          alive: true,
-          protectedLastNight: false
-        }));
-
-        currentPickIndex = 0;
-        hudStatus.textContent = 'PILIH KARTU';
-        updateAliveCountHUD();
-        startCardPickTurn();
-      });
-
-      // ==========================================
-      // 2. MEKANIK PEMILIHAN KARTU ROLE (INTERAKTIF)
-      // ==========================================
-      const pickPlayerPrompt = document.getElementById('pickPlayerPrompt');
-      const cardDeckGrid = document.getElementById('cardDeckGrid');
-      const pickRevealContainer = document.getElementById('pickRevealContainer');
-      const revealBox = document.getElementById('revealBox');
-      const revealIcon = document.getElementById('revealIcon');
-      const revealRoleName = document.getElementById('revealRoleName');
-      const revealRoleDesc = document.getElementById('revealRoleDesc');
-      const btnDismissCard = document.getElementById('btnDismissCard');
-
-      function startCardPickTurn() {
-        const p = players[currentPickIndex];
-        pickPlayerPrompt.textContent = `Giliran: ${p.name}`;
-        pickRevealContainer.classList.add('hidden');
-
-        cardDeckGrid.innerHTML = '';
-        shuffledCards.forEach((roleKey, idx) => {
-          const cardEl = document.createElement('div');
-          cardEl.className = 'tarot-card';
-          cardEl.dataset.idx = idx;
-
-          const isAlreadyTaken = players.some(pl => pl.cardIndex === idx);
-          if (isAlreadyTaken) {
-            cardEl.classList.add('taken');
-          }
-
-          cardEl.innerHTML = `
-            <div class="card-face card-back">
-              <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l-8-4 8-4 8 4-8 4zm0 2l-10-5v6l10 5 10-5v-6l-10 5z"/></svg>
-            </div>
-            <div class="card-face card-front role-${roleKey}">
-              ${ROLE_DEFS[roleKey].iconSvg}
-              <div class="role-lbl">${ROLE_DEFS[roleKey].name.split(' ')[0]}</div>
-            </div>
-          `;
-
-          if (!isAlreadyTaken) {
-            cardEl.addEventListener('click', () => {
-              onCardSelected(idx, cardEl);
-            });
-          }
-
-          cardDeckGrid.appendChild(cardEl);
-        });
-
-        switchScreen(screenCardPick);
-      }
-
-      function onCardSelected(cardIdx, cardEl) {
-        initAudio();
-        const roleKey = shuffledCards[cardIdx];
-        const p = players[currentPickIndex];
-        p.role = roleKey;
-        p.cardIndex = cardIdx;
-
-        cardEl.classList.add('flipped');
-        playSound('bell');
-
-        // Tampilkan Reveal Box
-        setTimeout(() => {
-          const r = ROLE_DEFS[roleKey];
-          revealIcon.innerHTML = r.iconSvg;
-          revealRoleName.textContent = r.name;
-          revealRoleName.style.color = r.color;
-          revealRoleDesc.textContent = r.desc;
-          pickRevealContainer.classList.remove('hidden');
-        }, 300);
-      }
-
-      btnDismissCard.addEventListener('click', () => {
-        initAudio();
-        currentPickIndex++;
-
-        if (currentPickIndex < players.length) {
-          // Oper ke pemain berikutnya via Privacy Screen
-          showPrivacyScreen(
-            `Oper HP ke ${players[currentPickIndex].name}`,
-            `Pastikan pemain lain tidak melihat layar saat kartu dibuka.`,
-            () => {
-              startCardPickTurn();
-            }
-          );
-        } else {
-          // Semua pemain telah memilih kartu -> Masuk ke Fase Malam 1
-          showPrivacyScreen(
-            'Semua Kartu Terbagi!',
-            'Desa mulai gelap gulita. Seluruh warga dipersilakan menutup mata.',
-            () => {
-              startNightCycle();
-            }
-          );
-        }
-      });
-
-      // ==========================================
-      // 3. PRIVACY SCREEN TRANSITION
-      // ==========================================
-      const privacyTargetTitle = document.getElementById('privacyTargetTitle');
-      const privacyTargetDesc = document.getElementById('privacyTargetDesc');
-      const btnPrivacyConfirm = document.getElementById('btnPrivacyConfirm');
-      let onPrivacyConfirmedCallback = null;
-
-      function showPrivacyScreen(title, desc, callback) {
-        privacyTargetTitle.textContent = title;
-        privacyTargetDesc.textContent = desc;
-        onPrivacyConfirmedCallback = callback;
-        switchScreen(screenPrivacy);
-      }
-
-      btnPrivacyConfirm.addEventListener('click', () => {
-        initAudio();
-        if (onPrivacyConfirmedCallback) {
-          onPrivacyConfirmedCallback();
-        }
-      });
-
-      // ==========================================
-      // 4. SIKLUS MALAM (NIGHT PHASE)
-      // ==========================================
-      const nightRoleTitle = document.getElementById('nightRoleTitle');
-      const nightRoleDesc = document.getElementById('nightRoleDesc');
-      const nightTeammatesBox = document.getElementById('nightTeammatesBox');
-      const nightTeammatesList = document.getElementById('nightTeammatesList');
-      const nightTargetList = document.getElementById('nightTargetList');
-      const seerInspectionResult = document.getElementById('seerInspectionResult');
-      const seerResultText = document.getElementById('seerResultText');
-      const btnNightConfirm = document.getElementById('btnNightConfirm');
-
-      let selectedNightTargetId = null;
-
-      function startNightCycle() {
-        hudStatus.textContent = 'FASE MALAM';
-        updateAliveCountHUD();
-        playSound('howl');
-
-        nightDecisions = {
-          protectedId: null,
-          wolfTargetId: null,
-          seerTargetId: null
-        };
-
-        // Urutan Malam:
-        // 1: Bodyguard
-        // 2: Werewolf
-        // 3: Seer
-        runNightStep(1);
-      }
-
-      function runNightStep(step) {
-        nightStep = step;
-        selectedNightTargetId = null;
-        seerInspectionResult.classList.add('hidden');
-        nightTeammatesBox.style.display = 'none';
-
-        if (step === 1) {
-          // BODYGUARD
-          const bgAlive = players.some(p => p.role === 'bodyguard' && p.alive);
-          showPrivacyScreen(
-            'Giliran Bodyguard',
-            'Oper HP ke Bodyguard (atau tahan moderator jika peran sudah gugur).',
-            () => {
-              switchScreen(screenNight);
-              nightRoleTitle.textContent = 'Giliran Bodyguard';
-              nightRoleTitle.style.color = 'var(--emerald)';
-              nightRoleDesc.textContent = 'Pilih 1 pemain hidup untuk dilindungi (tidak boleh sama 2 malam berturut-turut):';
-
-              renderNightTargets((p) => {
-                // Rule: tidak boleh lindungi orang yang sama 2 malam berturut-turut
-                return p.id === previousProtectedId;
-              });
-            }
-          );
-        } else if (step === 2) {
-          // WEREWOLF
-          showPrivacyScreen(
-            'Giliran Werewolf',
-            'Oper HP ke kawanan Werewolf secara rahasia.',
-            () => {
-              switchScreen(screenNight);
-              nightRoleTitle.textContent = 'Giliran Werewolf';
-              nightRoleTitle.style.color = 'var(--red)';
-              nightRoleDesc.textContent = 'Pilih 1 target mangsa yang akan diserang malam ini:';
-
-              // Tampilkan rekan sesama serigala
-              const wolves = players.filter(p => p.role === 'werewolf');
-              nightTeammatesBox.style.display = 'block';
-              nightTeammatesList.textContent = wolves.map(w => `${w.name} ${w.alive ? '(Hidup)' : '(Gugur)'}`).join(', ');
-
-              renderNightTargets((p) => {
-                // Jangan serang sesama serigala hidup
-                return p.role === 'werewolf';
-              });
-            }
-          );
-        } else if (step === 3) {
-          // SEER
-          showPrivacyScreen(
-            'Giliran Seer (Penerawang)',
-            'Oper HP ke Seer secara rahasia.',
-            () => {
-              switchScreen(screenNight);
-              nightRoleTitle.textContent = 'Giliran Seer';
-              nightRoleTitle.style.color = 'var(--purple)';
-              nightRoleDesc.textContent = 'Pilih 1 pemain untuk diterawang identitas aslinya:';
-
-              renderNightTargets((p) => {
-                return false; // Bebas terawang siapa saja yang hidup
-              });
-            }
-          );
-        }
-      }
-
-      function renderNightTargets(disableConditionFn) {
-        nightTargetList.innerHTML = '';
-        players.forEach(p => {
-          if (!p.alive) return;
-
-          const card = document.createElement('div');
-          const isDisabled = disableConditionFn(p);
-          card.className = `player-select-card ${isDisabled ? 'disabled' : ''}`;
-          card.dataset.id = p.id;
-
-          card.innerHTML = `
-            <div class="p-avatar">
-              <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-            </div>
-            <div class="p-name">${p.name}</div>
-            <div class="p-tag">${isDisabled ? 'Tidak Tersedia' : 'Pilih Target'}</div>
-          `;
-
-          if (!isDisabled) {
-            card.addEventListener('click', () => {
-              initAudio();
-              nightTargetList.querySelectorAll('.player-select-card').forEach(c => c.classList.remove('selected'));
-              card.classList.add('selected');
-              selectedNightTargetId = p.id;
-
-              // Jika Seer, langsung intip
-              if (nightStep === 3) {
-                const target = players.find(pl => pl.id === p.id);
-                playSound('seer');
-                seerInspectionResult.classList.remove('hidden');
-                if (target.role === 'werewolf') {
-                  seerResultText.textContent = 'WEREWOLF (SERIGALA)!';
-                  seerResultText.style.color = 'var(--red)';
-                } else {
-                  seerResultText.textContent = 'BUKAN WEREWOLF (WARGA BAIK)';
-                  seerResultText.style.color = 'var(--emerald)';
-                }
-              }
-            });
-          }
-
-          nightTargetList.appendChild(card);
-        });
-      }
-
-      btnNightConfirm.addEventListener('click', () => {
-        initAudio();
-        if (selectedNightTargetId === null) {
-          alert('Pilih salah satu pemain terlebih dahulu!');
-          return;
-        }
-
-        if (nightStep === 1) {
-          nightDecisions.protectedId = selectedNightTargetId;
-          runNightStep(2);
-        } else if (nightStep === 2) {
-          nightDecisions.wolfTargetId = selectedNightTargetId;
-          runNightStep(3);
-        } else if (nightStep === 3) {
-          nightDecisions.seerTargetId = selectedNightTargetId;
-
-          // Selesai Semua Fase Malam -> Oper ke Pagi Hari
-          showPrivacyScreen(
-            'Fajar Telah Menyingsing',
-            'Seluruh warga dipersilakan membuka mata dan berkumpul di balai desa.',
-            () => {
-              processNightResolutions();
-            }
-          );
-        }
-      });
-
-      // Proses Kematian Malam
-      function processNightResolutions() {
-        previousProtectedId = nightDecisions.protectedId;
-        const target = players.find(p => p.id === nightDecisions.wolfTargetId);
-        let victim = null;
-
-        if (target && target.alive) {
-          if (nightDecisions.protectedId === target.id) {
-            // Dilindungi Bodyguard!
-            victim = null;
-          } else {
-            // Gugur!
-            target.alive = false;
-            victim = target;
-          }
-        }
-
-        startDayPhase(victim);
-      }
-
-      // ==========================================
-      // 5. SIKLUS SIANG (PENGUMUMAN, TIMER, VOTING)
-      // ==========================================
-      const dayNewsText = document.getElementById('dayNewsText');
-      const hunterRevengePanel = document.getElementById('hunterRevengePanel');
-      const hunterDiedName = document.getElementById('hunterDiedName');
-      const hunterTargetList = document.getElementById('hunterTargetList');
-      const btnHunterShoot = document.getElementById('btnHunterShoot');
-      const timerDisplay = document.getElementById('timerDisplay');
-      const timerStatusLabel = document.getElementById('timerStatusLabel');
-      const btnTimerToggle = document.getElementById('btnTimerToggle');
-      const btnSkipToVote = document.getElementById('btnSkipToVote');
-      const dayVotingPanel = document.getElementById('dayVotingPanel');
-      const dayVotingList = document.getElementById('dayVotingList');
-      const btnConfirmVote = document.getElementById('btnConfirmVote');
-
-      let selectedVoteTargetId = null;
-      let selectedHunterShotId = null;
-
-      function startDayPhase(nightVictim) {
-        hudStatus.textContent = 'FASE SIANG';
-        updateAliveCountHUD();
-        playSound('bell');
-
-        switchScreen(screenDay);
-        dayVotingPanel.classList.add('hidden');
-        hunterRevengePanel.classList.add('hidden');
-
-        if (nightVictim) {
-          dayNewsText.innerHTML = `
-            Kabar duka menyelimuti desa! <strong style="color:var(--red);">${nightVictim.name}</strong> ditemukan tewas semalam diserang Werewolf.<br>
-            Perannya adalah <strong style="color:${ROLE_DEFS[nightVictim.role].color};">[${ROLE_DEFS[nightVictim.role].name}]</strong>.
-          `;
-
-          // Cek apakah korban adalah Hunter
-          if (nightVictim.role === 'hunter') {
-            triggerHunterRevenge(nightVictim);
-            return;
-          }
-        } else {
-          dayNewsText.innerHTML = `
-            <strong style="color:var(--emerald);">Malam yang damai!</strong> Tidak ada korban jiwa semalam berkat kesigapan penjaga desa.
-          `;
-        }
-
-        if (checkWinCondition()) return;
-
-        // Mulai timer diskusi
-        startDiscussionTimer(120);
-      }
-
-      function triggerHunterRevenge(hunterPlayer) {
-        hunterDiedPending = hunterPlayer;
-        hunterDiedName.textContent = hunterPlayer.name;
-        hunterRevengePanel.classList.remove('hidden');
-        selectedHunterShotId = null;
-
-        hunterTargetList.innerHTML = '';
-        players.forEach(p => {
-          if (!p.alive) return;
-          const card = document.createElement('div');
-          card.className = 'player-select-card';
-          card.innerHTML = `
-            <div class="p-avatar"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
-            <div class="p-name">${p.name}</div>
-            <div class="p-tag">Tembak</div>
-          `;
-          card.addEventListener('click', () => {
-            initAudio();
-            hunterTargetList.querySelectorAll('.player-select-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            selectedHunterShotId = p.id;
-          });
-          hunterTargetList.appendChild(card);
-        });
-      }
-
-      btnHunterShoot.addEventListener('click', () => {
-        initAudio();
-        if (selectedHunterShotId === null) {
-          alert('Pemburu harus memilih 1 sasaran tembak!');
-          return;
-        }
-
-        const shotVictim = players.find(p => p.id === selectedHunterShotId);
-        shotVictim.alive = false;
-        playSound('gunshot');
-        updateAliveCountHUD();
-
-        alert(`DOR! ${hunterDiedPending.name} melepaskan tembakan terakhir ke ${shotVictim.name}! ${shotVictim.name} tewas dan perannya adalah [${ROLE_DEFS[shotVictim.role].name}].`);
-        hunterRevengePanel.classList.add('hidden');
-
-        if (checkWinCondition()) return;
-
-        startDiscussionTimer(120);
-      });
-
-      // Timer Kontrol
-      function startDiscussionTimer(sec) {
-        clearInterval(discussionTimer);
-        discussionSeconds = sec;
-        timerRunning = true;
-        updateTimerDisplay();
-
-        discussionTimer = setInterval(() => {
-          if (timerRunning) {
-            discussionSeconds--;
-            updateTimerDisplay();
-            if (discussionSeconds <= 0) {
-              clearInterval(discussionTimer);
-              playSound('gavel');
-              showVotingSection();
-            }
-          }
-        }, 1000);
-      }
-
-      function updateTimerDisplay() {
-        const m = Math.floor(discussionSeconds / 60).toString().padStart(2, '0');
-        const s = (discussionSeconds % 60).toString().padStart(2, '0');
-        timerDisplay.textContent = `${m}:${s}`;
-      }
-
-      btnTimerToggle.addEventListener('click', () => {
-        timerRunning = !timerRunning;
-        timerStatusLabel.textContent = timerRunning ? 'DISKUSI' : 'PAUSED';
-      });
-
-      document.getElementById('btnTimerSet2').addEventListener('click', () => startDiscussionTimer(120));
-      document.getElementById('btnTimerSet3').addEventListener('click', () => startDiscussionTimer(180));
-
-      btnSkipToVote.addEventListener('click', () => {
-        clearInterval(discussionTimer);
-        playSound('gavel');
-        showVotingSection();
-      });
-
-      // Voting Section
-      function showVotingSection() {
-        document.getElementById('discussionTimerPanel').classList.add('hidden');
-        dayVotingPanel.classList.remove('hidden');
-        selectedVoteTargetId = null;
-
-        dayVotingList.innerHTML = '';
-        players.forEach(p => {
-          if (!p.alive) return;
-          const card = document.createElement('div');
-          card.className = 'player-select-card';
-          card.innerHTML = `
-            <div class="p-avatar"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
-            <div class="p-name">${p.name}</div>
-            <div class="p-tag">Gantung</div>
-          `;
-          card.addEventListener('click', () => {
-            initAudio();
-            dayVotingList.querySelectorAll('.player-select-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            selectedVoteTargetId = p.id;
-          });
-          dayVotingList.appendChild(card);
-        });
-      }
-
-      btnConfirmVote.addEventListener('click', () => {
-        initAudio();
-        if (selectedVoteTargetId === null) {
-          alert('Pilih salah satu warga untuk dieksekusi!');
-          return;
-        }
-
-        const executed = players.find(p => p.id === selectedVoteTargetId);
-        executed.alive = false;
-        playSound('gavel');
-        updateAliveCountHUD();
-
-        alert(`Sidang desa memutuskan: ${executed.name} dieksekusi gantung! Perannya adalah [${ROLE_DEFS[executed.role].name}].`);
-
-        // Jika yang dieksekusi adalah Hunter
-        if (executed.role === 'hunter') {
-          triggerHunterRevenge(executed);
-          dayVotingPanel.classList.add('hidden');
-          return;
-        }
-
-        if (checkWinCondition()) return;
-
-        // Kembali ke malam hari
-        showPrivacyScreen(
-          'Malam Tiba Kembali',
-          'Sidang telah usai. Kegelapan kembali menyelimuti desa.',
-          () => {
-            startNightCycle();
-          }
-        );
-      });
-
-      // ==========================================
-      // 6. WIN CONDITION CHECK & GAME OVER
-      // ==========================================
-      const winTitle = document.getElementById('winTitle');
-      const winDesc = document.getElementById('winDesc');
-      const winIcon = document.getElementById('winIcon');
-      const finalPlayersRoster = document.getElementById('finalPlayersRoster');
-
-      function checkWinCondition() {
-        const wolvesAlive = players.filter(p => p.role === 'werewolf' && p.alive).length;
-        const nonWolvesAlive = players.filter(p => p.role !== 'werewolf' && p.alive).length;
-
-        if (wolvesAlive === 0) {
-          // Warga Menang
-          triggerGameEnd('villager');
-          return true;
-        } else if (wolvesAlive >= nonWolvesAlive) {
-          // Serigala Menang
-          triggerGameEnd('werewolf');
-          return true;
-        }
-        return false;
-      }
-
-      function triggerGameEnd(winningTeam) {
-        clearInterval(discussionTimer);
-        switchScreen(screenGameOver);
-        playSound('victory');
-
-        if (winningTeam === 'villager') {
-          winTitle.textContent = 'Warga Desa Menang!';
-          winTitle.style.color = 'var(--cyan)';
-          winDesc.textContent = 'Seluruh serigala telah tereliminasi! Desa kini aman dan tenteram.';
-          winIcon.style.fill = 'var(--cyan)';
-        } else {
-          winTitle.textContent = 'Werewolf Menang!';
-          winTitle.style.color = 'var(--red)';
-          winDesc.textContent = 'Jumlah serigala telah menguasai desa! Warga tidak lagi berdaya.';
-          winIcon.style.fill = 'var(--red)';
-        }
-
-        // Tampilkan rekapitulasi peran seluruh pemain
-        finalPlayersRoster.innerHTML = '';
-        players.forEach(p => {
-          const row = document.createElement('div');
-          row.style.display = 'flex';
-          row.style.justifyContent = 'space-between';
-          row.style.padding = '4px 0';
-          row.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
-          row.innerHTML = `
-            <span>${p.name} (${p.alive ? 'Hidup' : 'Gugur'})</span>
-            <strong style="color:${ROLE_DEFS[p.role].color};">${ROLE_DEFS[p.role].name}</strong>
-          `;
-          finalPlayersRoster.appendChild(row);
-        });
-
-        // Simpan high score / win count di localStorage
-        const HS_KEY = 'teknogames_werewolf_highscore';
-        let wins = parseInt(localStorage.getItem(HS_KEY) || '0', 10) + 1;
-        localStorage.setItem(HS_KEY, wins.toString());
-
-        try {
-          if (window.parent) {
-            window.parent.postMessage({
-              type: 'teknogames_game_over',
-              game: 'werewolf',
-              score: wins,
-              highScore: wins
-            }, '*');
-          }
-        } catch (e) {}
-      }
-
-      document.getElementById('btnPlayAgain').addEventListener('click', () => {
-        initAudio();
-        switchScreen(screenSetup);
-        renderPlayerInputs();
-      });
-
-      // Init Pertama Kali
-      renderPlayerInputs();
-    })();
-  </script>
+  <!-- Scripts Modular -->
+  <script src="svg-icons.js"></script>
+  <script src="config.js"></script>
+  <script src="audio.js"></script>
+  <script src="offline-engine.js"></script>
+  <script src="online-supabase.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

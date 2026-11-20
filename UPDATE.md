@@ -8,6 +8,26 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.14.0] - 2026-11-20
+### Added & Improved (Werewolf Online Multiplayer Supabase & Modular Multi-File Architecture)
+- **Mode Online Multiplayer Berbasis Supabase Realtime ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js)):**
+  - Pembuatan room dengan **Kode 6 Digit Acak Temporary** untuk mempermudah pemain mabar lintas HP/perangkat.
+  - Lobi realtime dengan sinkronisasi daftar pemain (5-15 pemain), badge Host, dan pengaturan peran auto-balance / custom.
+  - Pemilihan kartu serentak di HP masing-masing dengan mekanisme **Single Pick Lock** (1 kartu hanya bisa diambil 1 pemain) dan tombol **Pilih Acak (Random)**.
+  - Siklus malam realtime dengan urutan peran terarah (Bodyguard, Werewolf, Seer), aturan target tunggal (*Single-Target Rule*), dan dummy delay saat peran sudah gugur agar tidak terbaca.
+  - Siklus siang realtime dengan pengumuman fajar, trigger balas dendam Pemburu (Hunter), serta sistem voting sidang rahasia.
+  - **Auto-Cleanup & Garbage Collection:** Pembersihan room otomatis saat Game Over (`status: finished`) dan pembersihan room kedaluwarsa (> 2 jam).
+- **Mode Offline Pass-and-Play 1 HP ([public/games/werewolf/offline-engine.js](public/games/werewolf/offline-engine.js)):**
+  - Mempertahankan alur offline bergiliran 1 HP dengan input nama 5-15 pemain, auto-balance role, grid kartu 3D flip, Privacy Screen transisi giliran, siklus malam, dan sidang voting.
+- **Arsitektur Modular Multi-File ([public/games/werewolf/](public/games/werewolf/)):**
+  - Memisahkan kode menjadi `index.html`, `styles.css`, `app.js`, `offline-engine.js`, `online-supabase.js`, `svg-icons.js`, dan `config.js`.
+  - Desain atmosferik **Dark Gothic Bloody Color** yang responsif pada mobile (360x800) dan desktop.
+  - 100% Zero-Emoji Policy menggunakan ilustrasi vektor SVG inline kustom.
+- **Skema Database & Migrasi SQL ([supabase-werewolf-schema.sql](supabase-werewolf-schema.sql)):**
+  - Membuat DDL tabel `werewolf_rooms` lengkap dengan kolom `room_code`, `status`, `game_state` JSONB, index performa, konfigurasi RLS publik/anonim, dan publikasi Realtime.
+- **Konfigurasi Lingkungan ([.env.example](.env.example), [.env.local](.env.local)):**
+  - Menambahkan placeholder `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
 ## [3.5.0] - 2026-11-20
 ### Added & Changed (Preferensi Tema, Papan Skor Top 5, dan Kartu Hero Interaktif)
 - **Preferensi Tema ([Navbar.tsx](src/components/layout/Navbar.tsx), [layout.tsx](src/app/layout.tsx), [globals.css](src/app/globals.css)):**
