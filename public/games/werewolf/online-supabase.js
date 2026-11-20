@@ -105,7 +105,7 @@
   async function createRoom(hostName) {
     const client = initClient();
     if (!client) {
-      window.WerewolfApp.showConfigModal(true);
+      alert('Tidak dapat terhubung ke server Supabase. Pastikan koneksi internet aktif.');
       return;
     }
 
@@ -195,7 +195,7 @@
   async function joinRoom(playerName, roomCode) {
     const client = initClient();
     if (!client) {
-      window.WerewolfApp.showConfigModal(true);
+      alert('Tidak dapat terhubung ke server Supabase. Pastikan koneksi internet aktif.');
       return;
     }
 

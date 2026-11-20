@@ -23,22 +23,14 @@
   }
 
   function getSupabaseConfig() {
-    // 1. Cek parameter URL
+    // 1. Cek parameter URL jika ada
     const urlFromParam = getUrlParam('supabase_url');
     const keyFromParam = getUrlParam('supabase_key');
     if (urlFromParam && keyFromParam) {
-      saveSupabaseConfig(urlFromParam, keyFromParam);
       return { url: urlFromParam, anonKey: keyFromParam };
     }
 
-    // 2. Cek localStorage
-    const storedUrl = localStorage.getItem(STORAGE_KEY_URL);
-    const storedKey = localStorage.getItem(STORAGE_KEY_ANON);
-    if (storedUrl && storedKey) {
-      return { url: storedUrl.trim(), anonKey: storedKey.trim() };
-    }
-
-    // 3. Cek window environment (jika diinjeksi oleh parent frame / Next.js)
+    // 2. Cek window environment (dari .env / Next.js)
     if (window.NEXT_PUBLIC_SUPABASE_URL && window.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       return {
         url: window.NEXT_PUBLIC_SUPABASE_URL,
@@ -46,7 +38,7 @@
       };
     }
 
-    // 4. Fallback default
+    // 3. Gunakan kredensial default dari environment
     return {
       url: DEFAULT_SUPABASE_URL,
       anonKey: DEFAULT_SUPABASE_ANON_KEY

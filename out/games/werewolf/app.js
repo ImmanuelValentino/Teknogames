@@ -40,20 +40,6 @@
     };
   }
 
-  // Modal Dialog Konfigurasi Supabase
-  function showConfigModal(show = true) {
-    const modal = document.getElementById('supabaseConfigModal');
-    if (!modal) return;
-    if (show) {
-      modal.classList.remove('hidden');
-      const cfg = window.WerewolfConfig.getSupabaseConfig();
-      document.getElementById('inputSupabaseUrl').value = cfg.url || '';
-      document.getElementById('inputSupabaseAnonKey').value = cfg.anonKey || '';
-    } else {
-      modal.classList.add('hidden');
-    }
-  }
-
   function initApp() {
     // Inisialisasi Audio UI
     window.WerewolfAudio.updateUI();
@@ -61,39 +47,6 @@
     if (btnAudio) {
       btnAudio.onclick = () => {
         window.WerewolfAudio.toggleMute();
-      };
-    }
-
-    // Tombol Pengaturan Supabase di HUD
-    const btnSettings = document.getElementById('btnOpenSettings');
-    if (btnSettings) {
-      btnSettings.onclick = () => {
-        window.WerewolfAudio.play('click');
-        showConfigModal(true);
-      };
-    }
-
-    const btnCloseSettings = document.getElementById('btnCloseConfigModal');
-    if (btnCloseSettings) {
-      btnCloseSettings.onclick = () => {
-        window.WerewolfAudio.play('click');
-        showConfigModal(false);
-      };
-    }
-
-    const btnSaveConfig = document.getElementById('btnSaveSupabaseConfig');
-    if (btnSaveConfig) {
-      btnSaveConfig.onclick = () => {
-        const url = document.getElementById('inputSupabaseUrl').value.trim();
-        const key = document.getElementById('inputSupabaseAnonKey').value.trim();
-        if (!url || !key) {
-          alert('URL dan Anon Key Supabase tidak boleh kosong!');
-          return;
-        }
-        window.WerewolfConfig.saveSupabaseConfig(url, key);
-        window.WerewolfAudio.play('click');
-        alert('Koneksi Supabase berhasil disimpan!');
-        showConfigModal(false);
       };
     }
 
@@ -238,8 +191,7 @@
     init: initApp,
     switchScreen,
     setHudStatus,
-    showPrivacyScreen,
-    showConfigModal
+    showPrivacyScreen
   };
 
   // Jalankan saat DOM siap

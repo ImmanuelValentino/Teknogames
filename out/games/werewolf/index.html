@@ -20,9 +20,6 @@
         </div>
       </div>
       <div class="hud-right">
-        <button id="btnOpenSettings" class="btn-icon-hud" title="Pengaturan Supabase">
-          <span data-icon="settings"></span>
-        </button>
         <button id="btnAudioToggle" class="btn-icon-hud" title="Audio">
           <span data-icon="audioOn"></span>
         </button>
@@ -428,30 +425,6 @@
       </button>
     </section>
 
-    <!-- MODAL: PENGATURAN KONEKSI SUPABASE -->
-    <div id="supabaseConfigModal" class="modal-backdrop hidden">
-      <div class="modal-dialog">
-        <div class="modal-header">
-          <h3 class="modal-title">Konfigurasi Supabase</h3>
-          <button id="btnCloseConfigModal" class="modal-close-btn" title="Tutup">
-            <span data-icon="cross"></span>
-          </button>
-        </div>
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.4;">
-          Masukkan kredensial Project Supabase Anda untuk mengaktifkan sinkronisasi Realtime kode room 6 digit.
-        </p>
-
-        <label style="font-size:11px; font-weight:700; color:var(--rose-light); display:block; margin-bottom:4px;">SUPABASE URL:</label>
-        <input type="text" id="inputSupabaseUrl" class="input-text-dark" placeholder="https://xyz.supabase.co">
-
-        <label style="font-size:11px; font-weight:700; color:var(--rose-light); display:block; margin-bottom:4px;">SUPABASE ANON KEY:</label>
-        <input type="password" id="inputSupabaseAnonKey" class="input-text-dark" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
-
-        <button id="btnSaveSupabaseConfig" class="btn-primary" style="margin-top:8px;">
-          <span>Simpan & Terapkan</span>
-        </button>
-      </div>
-    </div>
   </div>
 
   <!-- Scripts Modular -->
