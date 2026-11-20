@@ -1,3 +1,16 @@
+### 2026-11-20 - Circuit Flow: PCB Circuit Trace & Algorithm Upgrade
+- **Folder Game:** `public/games/circuit-flow`
+- **Deskripsi:** Peningkatan besar pada visual dan logika koneksi sirkuit: jalur kini mengadopsi jejak tembaga PCB (*copper trace*, *circuit core*, dan *flowing electron pulse* dinamis), algoritma interaksi jalur bebas bug berbasis standar Pou Connect & Flow Free (backtracking otomatis, penimpaan tabrakan jalur, kalkulasi cakupan grid), serta 9 level puzzle yang diverifikasi 100% solvable menggunakan solver backtracking.
+- **Fitur Utama:**
+  - [x] Gameplay HTML5 Single File (Responsive Mobile & Desktop)
+  - [x] PCB Circuit Trace Visuals with Flowing Electrons Animation
+  - [x] Bug-Free Path Routing Logic & Automatic Backtracking
+  - [x] 100% Verified Solvable Levels via Backtracking Solver
+  - [x] Scoring, Grid Coverage Bonus & High Score (`teknogames_circuit-flow_highscore`)
+  - [x] Web Audio API Synthesizer & Toggle Audio Mute
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - [DELETED] Batik Flow (Dihapus Permanen)
 - **Folder Game:** `public/games/batik-flow` (DIHAPUS)
 - **Deskripsi:** Game Batik Flow telah dihapus permanen dari direktori public, katalog web utama, dan sistem navigasi atas instruksi mutlak pengguna. Aturan larangan permanen ditambahkan pada AGENTS.md (Bagian 8) dan game-guide.md (Bagian 9) yang melarang pembuatan kembali game bertema batik atau konsep sambung alur serupa.

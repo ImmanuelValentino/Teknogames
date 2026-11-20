@@ -8,6 +8,18 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.10.0] - 2026-11-20
+### Improved & Fixed (Circuit Flow Visuals & Zero-Bug Connection Algorithm)
+- **Upgrade Visual Jalur Sirkuit Elektronik (PCB Circuit Trace):**
+  - Mengubah tampilan garis menjadi jejak tembaga sirkuit PCB (*copper trace track* dengan garis inti neon *circuit core*).
+  - Menambahkan animasi aliran pulsa partikel elektron (*flowing electrons pulse*) yang mengalir dinamis di sepanjang jalur aktif.
+  - Mempercantik simpul terminal menjadi PCB via solder pad dengan detil crosshair dan glow interaktif saat terhubung.
+- **Logika Koneksi Bebas Bug (Standar Pou Connect & Backtracking):**
+  - Menerapkan penanganan pemotongan jalur tabrakan (*path overwrite resolution*) sesuai referensi Pou Connect / Flow Free tanpa menyebabkan kebuntuan (*deadlock*).
+  - Menerapkan fitur *smooth backtracking* (memendekkan jalur secara otomatis saat jari/kursor digerakkan mundur).
+  - Memperbaiki seluruh 9 level sirkuit sehingga terverifikasi 100% solvable menggunakan solver backtracking algoritma Numberlink.
+  - Menambahkan indikator kelistrikan / persentase cakupan papan (*Board Coverage Percentage*) dengan bonus skor 100% full grid.
+
 ## [3.9.0] - 2026-11-20
 ### Removed & Added (Permanent Deletion of Batik Flow & Blacklist Rule)
 - **Penghapusan Total Game Batik Flow:**

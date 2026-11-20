@@ -1,3 +1,36 @@
+### [2026-11-20 11:30] - [Games] - Upgrade Jalur PCB Circuit Flow & Logika Bebas Bug (Pou Connect & Backtracking)
+- **Kondisi Sebelum:** Garis jalur `circuit-flow` sebelumnya berupa pipa polos biasa, beberapa level sulit/tidak solvable (unsolvable), dan jalur tidak otomatis terpotong saat saling bertabrakan sehingga pemain mudah stuck.
+- **Perubahan Sesudah:**
+  1. Merombak visual jalur menjadi jejak tembaga PCB autentik (*PCB copper trace* berlapis dengan garis inti neon dan pulsa arus elektron animasi).
+  2. Mengimplementasikan algoritma interaksi jalur bebas bug: *smooth backtracking*, pemotongan otomatis jalur tabrakan (*path overwrite resolution*), pencegahan menembus terminal warna lain, dan kalkulasi cakupan papan (*grid coverage*).
+  3. Memvalidasi seluruh 9 level menggunakan solver algoritma backtracking sehingga 100% solvable tanpa kebuntuan.
+  4. Pengujian langsung dilakukan pada Chrome DevTools remote debugging terisolasi (0 error).
+  5. Menjalankan `npm run build` dan mencatat histori pada `game-log.md` serta `UPDATE.md`.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **File Terdampak:** `public/games/circuit-flow/index.html`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
+
+### [2026-11-20 11:25] - [Games] - Penghapusan Total Game Batik Flow & Penetapan Aturan Larangan Permanen
+- **Kondisi Sebelum:** Game `batik-flow` masih tersimpan di folder `public/games/batik-flow/` dan terdaftar di katalog `src/lib/games-data.ts`.
+- **Perubahan Sesudah:**
+  1. Menghapus folder `public/games/batik-flow/` dan seluruh aset terkait di `public/`.
+  2. Menghapus metadata game `batik-flow` dari `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, dan generator preview.
+  3. Menambahkan klausul aturan mutlak pada `AGENTS.md` (Bagian 8) dan `game-guide.md` (Bagian 9) yang melarang secara permanen pembuatan game bertema batik atau konsep alur/canting serupa di repositori ini.
+  4. Mencatat histori penghapusan pada `game-log.md` (bagian paling atas) dan `UPDATE.md`.
+  5. Menjalankan `npm run build` sehingga rute `/play/batik-flow` bersih dari export statis `out/`.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **File Terdampak:** `public/games/batik-flow/*`, `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `AGENTS.md`, `game-guide.md`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
+
+### [2026-11-20 11:30] - [Games] - Upgrade Jalur PCB Circuit Flow & Logika Bebas Bug (Pou Connect & Backtracking)
+- **Kondisi Sebelum:** Garis jalur `circuit-flow` sebelumnya berupa pipa polos biasa, beberapa level sulit/tidak solvable (unsolvable), dan jalur tidak otomatis terpotong saat saling bertabrakan sehingga pemain mudah stuck.
+- **Perubahan Sesudah:**
+  1. Merombak visual jalur menjadi jejak tembaga PCB autentik (*PCB copper trace* berlapis dengan garis inti neon dan pulsa arus elektron animasi).
+  2. Mengimplementasikan algoritma interaksi jalur bebas bug: *smooth backtracking*, pemotongan otomatis jalur tabrakan (*path overwrite resolution*), pencegahan menembus terminal warna lain, dan kalkulasi cakupan papan (*grid coverage*).
+  3. Memvalidasi seluruh 9 level menggunakan solver algoritma backtracking sehingga 100% solvable tanpa kebuntuan.
+  4. Pengujian langsung dilakukan pada Chrome DevTools remote debugging terisolasi (0 error).
+  5. Menjalankan `npm run build` dan mencatat histori pada `game-log.md` serta `UPDATE.md`.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **File Terdampak:** `public/games/circuit-flow/index.html`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
+
 ### [2026-11-20 11:25] - [Games] - Penghapusan Total Game Batik Flow & Penetapan Aturan Larangan Permanen
 - **Kondisi Sebelum:** Game `batik-flow` masih tersimpan di folder `public/games/batik-flow/` dan terdaftar di katalog `src/lib/games-data.ts`.
 - **Perubahan Sesudah:**

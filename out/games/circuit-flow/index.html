@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <link rel="icon" href="data:,">
   <title>Circuit Flow - TeknoGame</title>
   <style>
     * {
@@ -17,13 +18,14 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #060913;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #050811;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       touch-action: none;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      color: #f1f5f9;
     }
     #gameContainer {
       position: relative;
@@ -32,21 +34,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 16px;
+      justify-content: space-between;
+      padding: 16px 14px 20px;
+      max-width: 500px;
+      margin: 0 auto;
+      background: radial-gradient(circle at 50% 20%, #0d1627 0%, #050811 80%);
     }
+
+    /* Top HUD */
     #hud {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      right: 14px;
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 10;
-      max-width: 520px;
-      margin: 0 auto;
-      pointer-events: none;
     }
     .hud-left {
       display: flex;
@@ -55,30 +56,33 @@
       flex-wrap: wrap;
     }
     .badge {
-      background: rgba(11, 18, 34, 0.85);
+      background: rgba(13, 22, 39, 0.88);
       color: #94a3b8;
       padding: 5px 12px;
       border-radius: 9999px;
       font-weight: 800;
       font-size: 12px;
       border: 1px solid rgba(0, 240, 255, 0.25);
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       letter-spacing: 0.5px;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
     .badge span {
       color: #00f0ff;
+      font-weight: 800;
     }
     .badge.best span {
       color: #f59e0b;
     }
-    .badge.progress span {
+    .badge.flow span {
       color: #10b981;
     }
     .btn-audio {
-      pointer-events: auto;
-      background: rgba(11, 18, 34, 0.85);
-      border: 1px solid rgba(0, 240, 255, 0.25);
+      background: rgba(13, 22, 39, 0.88);
+      border: 1px solid rgba(0, 240, 255, 0.28);
       border-radius: 50%;
       width: 36px;
       height: 36px;
@@ -87,8 +91,12 @@
       justify-content: center;
       color: #00f0ff;
       cursor: pointer;
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
-      transition: transform 0.1s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: transform 0.1s, background 0.15s;
+    }
+    .btn-audio:hover {
+      background: rgba(0, 240, 255, 0.15);
+      transform: scale(1.06);
     }
     .btn-audio:active {
       transform: scale(0.92);
@@ -96,695 +104,910 @@
     .btn-audio svg {
       width: 18px;
       height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      fill: currentColor;
     }
+
+    /* Board Area */
     #boardWrapper {
       position: relative;
-      margin-top: 36px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      margin: auto 0;
     }
     canvas {
       display: block;
-      background: #0a1122;
-      border: 2px solid rgba(0, 240, 255, 0.25);
-      border-radius: 16px;
-      box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
+      background: #080f1d;
+      border: 2px solid rgba(0, 240, 255, 0.35);
+      border-radius: 18px;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.18), inset 0 0 20px rgba(0, 0, 0, 0.6);
       cursor: pointer;
+      touch-action: none;
     }
+
+    /* Controls Bar */
     .controls {
       display: flex;
-      gap: 12px;
-      margin-top: 16px;
+      gap: 10px;
+      margin-top: 14px;
+      width: 100%;
+      justify-content: center;
     }
     .btn-sub {
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.85);
       color: #94a3b8;
-      border: 1px solid rgba(0, 240, 255, 0.2);
-      padding: 8px 18px;
+      border: 1px solid rgba(0, 240, 255, 0.22);
+      padding: 8px 16px;
       border-radius: 9999px;
       font-weight: 700;
       font-size: 13px;
       cursor: pointer;
       transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     .btn-sub:hover {
       color: #00f0ff;
       border-color: #00f0ff;
+      transform: translateY(-1px);
     }
     .btn-sub:active {
-      transform: scale(0.95);
+      transform: translateY(1px);
     }
+    .btn-sub svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+
+    /* Overlays & Modals */
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(6, 9, 19, 0.9);
-      backdrop-filter: blur(8px);
+      background: rgba(5, 8, 17, 0.94);
+      backdrop-filter: blur(10px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 20;
-      color: #fff;
-      text-align: center;
       padding: 24px;
+      z-index: 50;
+      text-align: center;
+      transition: opacity 0.25s ease;
     }
-    .title {
-      font-size: 32px;
+    .overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .modal-card {
+      background: linear-gradient(180deg, #131c31 0%, #0c1220 100%);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      border-radius: 20px;
+      padding: 28px 22px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    }
+    .modal-card h1 {
+      font-size: 26px;
       font-weight: 900;
-      color: #00f0ff;
-      text-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
       margin-bottom: 8px;
-      letter-spacing: 1px;
+      background: linear-gradient(90deg, #38bdf8, #00f0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
     }
-    .desc {
-      font-size: 14px;
+    .modal-card p {
       color: #94a3b8;
-      max-width: 320px;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+    .info-box {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 14px;
       margin-bottom: 20px;
+      text-align: left;
+      font-size: 13px;
+      color: #cbd5e1;
       line-height: 1.6;
     }
-    .stats-card {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(0, 240, 255, 0.2);
-      border-radius: 16px;
-      padding: 16px 24px;
-      margin-bottom: 24px;
-      min-width: 220px;
+    .info-box ul {
+      padding-left: 20px;
+      margin-top: 4px;
     }
-    .stats-row {
+    .score-summary {
       display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      font-size: 14px;
+      justify-content: space-around;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 12px;
+      padding: 14px 10px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+    }
+    .score-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .score-col .label {
+      font-size: 12px;
+      color: #94a3b8;
+      text-transform: uppercase;
       font-weight: 700;
-      padding: 4px 0;
     }
-    .stats-label {
-      color: #64748b;
-    }
-    .stats-val {
-      color: #fff;
-    }
-    .btn-action {
-      background: linear-gradient(135deg, #00f0ff, #3b82f6);
-      color: #060913;
-      border: none;
-      padding: 13px 32px;
-      border-radius: 9999px;
+    .score-col .num {
+      font-size: 24px;
       font-weight: 900;
-      font-size: 15px;
+      color: #00f0ff;
+    }
+    .score-col .num.gold {
+      color: #f59e0b;
+    }
+    .btn-main {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #0284c7, #00f0ff);
+      color: #041324;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
       cursor: pointer;
-      box-shadow: 0 0 25px rgba(0, 240, 255, 0.45);
-      letter-spacing: 0.5px;
-      transition: transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .btn-action:hover {
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.65);
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 240, 255, 0.5);
     }
-    .btn-action:active {
-      transform: scale(0.96);
+    .btn-main:active {
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
   <div id="gameContainer">
+    <!-- Top HUD -->
     <div id="hud">
       <div class="hud-left">
         <div class="badge">LEVEL: <span id="levelVal">1/9</span></div>
-        <div class="badge progress">JALUR: <span id="pathVal">0/3</span></div>
-        <div class="badge">SKOR: <span id="scoreVal">0</span></div>
-        <div class="badge best">REKOR: <span id="highScoreVal">0</span></div>
+        <div class="badge flow">SIRKUIT: <span id="pathVal">0/3</span></div>
+        <div class="badge">CAKUPAN: <span id="coverageVal">0%</span></div>
+        <div class="badge best">SKOR: <span id="scoreVal">0</span></div>
       </div>
       <button class="btn-audio" id="audioToggle" aria-label="Toggle Suara">
         <svg id="iconSoundOn" viewBox="0 0 24 24">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
         </svg>
         <svg id="iconSoundOff" viewBox="0 0 24 24" style="display: none;">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-          <line x1="23" y1="9" x2="17" y2="15"></line>
-          <line x1="17" y1="9" x2="23" y2="15"></line>
+          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27l4.73 4.73H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
         </svg>
       </button>
     </div>
 
+    <!-- Board -->
     <div id="boardWrapper">
       <canvas id="gameCanvas"></canvas>
       <div class="controls">
-        <button class="btn-sub" id="resetBtn">RESET JALUR</button>
-        <button class="btn-sub" id="finishBtn">SELESAI MAIN</button>
+        <button class="btn-sub" id="resetBtn">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6 0 2.97-2.17 5.43-5 5.91v2.02c3.95-.49 7-3.85 7-7.93 0-4.42-3.58-8-8-8zm-6 8c0-1.65.67-3.15 1.76-4.24L6.34 7.34C4.9 8.79 4 10.79 4 13c0 4.08 3.05 7.44 7 7.93v-2.02c-2.83-.48-5-2.94-5-5.91z"/>
+          </svg>
+          <span>Reset Jalur</span>
+        </button>
+        <button class="btn-sub" id="finishBtn">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/>
+          </svg>
+          <span>Selesai Main</span>
+        </button>
       </div>
     </div>
 
     <!-- Start Overlay -->
     <div id="startScreen" class="overlay">
-      <div class="title">CIRCUIT FLOW</div>
-      <div class="desc">Hubungkan setiap pasang simpul terminal warna yang sama tanpa saling menyilang jalur kabel!</div>
-      <div class="stats-card">
-        <div class="stats-row">
-          <span class="stats-label">REKOR ANDA:</span>
-          <span class="stats-val" id="startHighScore">0</span>
+      <div class="modal-card">
+        <h1>Circuit Flow</h1>
+        <p>Hubungkan terminal sirkuit elektronik dengan jejak tembaga PCB tanpa saling memotong jalur.</p>
+        <div class="info-box">
+          <strong>PANDUAN ALUR SIRKUIT:</strong>
+          <ul>
+            <li>Tarik garis dari salah satu terminal PCB ke terminal pasangannya.</li>
+            <li>Jalur sirkuit tembaga dilengkapi pulsa arus listrik neon aktif saat tersambung.</li>
+            <li>Jika menabrak jalur lain, kabel lama otomatis terputus rapi untuk memberi jalan.</li>
+            <li>Penuhi 100% petak papan untuk meraih skor bonus kelistrikan sempurna!</li>
+          </ul>
         </div>
+        <button class="btn-main" id="startBtn">Mulai Sambung Sirkuit</button>
       </div>
-      <button class="btn-action" id="startBtn">MULAI SAMBUNG</button>
     </div>
 
     <!-- Win / Game Over Overlay -->
-    <div id="gameOverScreen" class="overlay" style="display: none;">
-      <div class="title" id="endTitle" style="color: #10b981; text-shadow: 0 0 25px rgba(16,185,129,0.7);">SEMUA SIRKUIT AKTIF</div>
-      <div class="desc" id="endDesc">Selamat! Seluruh sistem sirkuit telah berhasil dihubungkan dengan sempurna.</div>
-      <div class="stats-card">
-        <div class="stats-row">
-          <span class="stats-label">Skor Akhir:</span>
-          <span class="stats-val" id="finalScoreVal" style="color: #00f0ff;">0</span>
+    <div id="gameOverScreen" class="overlay hidden">
+      <div class="modal-card">
+        <h1 id="endTitle">Semua Sirkuit Aktif</h1>
+        <p id="endDesc">Selamat! Seluruh sistem sirkuit telah berhasil dihubungkan dengan daya optimal.</p>
+        <div class="score-summary">
+          <div class="score-col">
+            <span class="label">Skor Akhir</span>
+            <span class="num" id="finalScoreVal">0</span>
+          </div>
+          <div class="score-col">
+            <span class="label">Rekor</span>
+            <span class="num gold" id="finalHighScoreVal">0</span>
+          </div>
         </div>
-        <div class="stats-row">
-          <span class="stats-label">Rekor Tertinggi:</span>
-          <span class="stats-val" id="finalHighScoreVal" style="color: #f59e0b;">0</span>
-        </div>
+        <button class="btn-main" id="restartBtn">Main Lagi</button>
       </div>
-      <button class="btn-action" id="restartBtn">MAIN LAGI</button>
     </div>
   </div>
 
   <script>
-    // Audio Synth Web Audio API
-    let audioCtx = null;
-    let isMuted = localStorage.getItem('teknogames_muted') === 'true';
+    (function() {
+      // Audio Synth Web Audio API
+      let audioCtx = null;
+      let soundEnabled = true;
 
-    function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      function initAudio() {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            audioCtx = new AudioContextClass();
+          }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
       }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
+
+      function playTone(freq, dur, type = 'sine') {
+        if (!soundEnabled) return;
+        initAudio();
+        try {
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, now);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.linearRampToValueAtTime(0.001, now + dur);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + dur);
+        } catch (e) {}
       }
-    }
 
-    function playTone(freq, dur, type = 'sine') {
-      if (isMuted) return;
-      initAudio();
-      try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.14, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + dur);
-      } catch (e) {}
-    }
+      const Sound = {
+        step: (n) => playTone(320 + n * 35, 0.045, 'triangle'),
+        connect: () => {
+          if (!soundEnabled) return;
+          initAudio();
+          try {
+            const now = audioCtx.currentTime;
+            [523.25, 659.25, 783.99].forEach((f, idx) => {
+              const osc = audioCtx.createOscillator();
+              const gain = audioCtx.createGain();
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(f, now + idx * 0.05);
+              gain.gain.setValueAtTime(0.14, now + idx * 0.05);
+              gain.gain.linearRampToValueAtTime(0.001, now + idx * 0.05 + 0.18);
+              osc.connect(gain);
+              gain.connect(audioCtx.destination);
+              osc.start(now + idx * 0.05);
+              osc.stop(now + idx * 0.05 + 0.18);
+            });
+          } catch (e) {}
+        },
+        clear: () => playTone(180, 0.1, 'sawtooth'),
+        winLevel: () => {
+          if (!soundEnabled) return;
+          initAudio();
+          try {
+            const now = audioCtx.currentTime;
+            [523.25, 659.25, 783.99, 1046.5].forEach((f, idx) => {
+              const osc = audioCtx.createOscillator();
+              const gain = audioCtx.createGain();
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(f, now + idx * 0.07);
+              gain.gain.setValueAtTime(0.16, now + idx * 0.07);
+              gain.gain.linearRampToValueAtTime(0.001, now + idx * 0.07 + 0.25);
+              osc.connect(gain);
+              gain.connect(audioCtx.destination);
+              osc.start(now + idx * 0.07);
+              osc.stop(now + idx * 0.07 + 0.25);
+            });
+          } catch (e) {}
+        }
+      };
 
-    const Sound = {
-      step: (n) => playTone(300 + n * 45, 0.05),
-      connect: () => {
-        playTone(523, 0.08);
-        setTimeout(() => playTone(784, 0.14), 60);
-      },
-      clear: () => playTone(180, 0.12, 'sawtooth'),
-      winLevel: () => {
-        playTone(523, 0.08);
-        setTimeout(() => playTone(659, 0.08), 70);
-        setTimeout(() => playTone(1046, 0.2), 140);
-      }
-    };
-
-    // Toggle Audio UI
-    const audioBtn = document.getElementById('audioToggle');
-    const iconSoundOn = document.getElementById('iconSoundOn');
-    const iconSoundOff = document.getElementById('iconSoundOff');
-    function updateAudioUI() {
-      if (isMuted) {
-        iconSoundOn.style.display = 'none';
-        iconSoundOff.style.display = 'block';
-      } else {
-        iconSoundOn.style.display = 'block';
-        iconSoundOff.style.display = 'none';
-      }
-    }
-    audioBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      isMuted = !isMuted;
-      localStorage.setItem('teknogames_muted', isMuted);
-      updateAudioUI();
-    });
-    updateAudioUI();
-
-    // High Score System
-    const HS_KEY = 'teknogames_circuit-flow_highscore';
-    let highScore = parseInt(localStorage.getItem(HS_KEY) || '0', 10);
-    document.getElementById('highScoreVal').innerText = highScore;
-    document.getElementById('startHighScore').innerText = highScore;
-
-    // Skema Warna Terminal Sirkuit (Neon Hex)
-    const COLOR_PALETTE = [
-      { id: 1, name: 'Cyan', hex: '#00f0ff', glow: 'rgba(0, 240, 255, 0.5)' },
-      { id: 2, name: 'Amber', hex: '#f59e0b', glow: 'rgba(245, 158, 11, 0.5)' },
-      { id: 3, name: 'Rose', hex: '#ef4444', glow: 'rgba(239, 68, 68, 0.5)' },
-      { id: 4, name: 'Emerald', hex: '#10b981', glow: 'rgba(16, 185, 129, 0.5)' },
-      { id: 5, name: 'Violet', hex: '#8b5cf6', glow: 'rgba(139, 92, 246, 0.5)' }
-    ];
-
-    // Data 9 Level Progresif (4x4 -> 5x5 -> 6x6)
-    const LEVELS = [
-      // Level 1: 4x4 (3 pasang)
-      {
-        size: 4,
-        terminals: [
-          { x: 0, y: 0, c: 1 }, { x: 3, y: 0, c: 1 },
-          { x: 0, y: 3, c: 2 }, { x: 3, y: 3, c: 2 },
-          { x: 1, y: 1, c: 3 }, { x: 2, y: 2, c: 3 }
-        ]
-      },
-      // Level 2: 4x4 (3 pasang)
-      {
-        size: 4,
-        terminals: [
-          { x: 0, y: 0, c: 1 }, { x: 2, y: 3, c: 1 },
-          { x: 1, y: 0, c: 2 }, { x: 3, y: 1, c: 2 },
-          { x: 0, y: 2, c: 3 }, { x: 3, y: 3, c: 3 }
-        ]
-      },
-      // Level 3: 4x4 (3 pasang)
-      {
-        size: 4,
-        terminals: [
-          { x: 0, y: 1, c: 1 }, { x: 3, y: 2, c: 1 },
-          { x: 1, y: 0, c: 2 }, { x: 2, y: 3, c: 2 },
-          { x: 0, y: 3, c: 3 }, { x: 3, y: 0, c: 3 }
-        ]
-      },
-      // Level 4: 5x5 (4 pasang)
-      {
-        size: 5,
-        terminals: [
-          { x: 0, y: 0, c: 1 }, { x: 4, y: 0, c: 1 },
-          { x: 0, y: 4, c: 2 }, { x: 4, y: 4, c: 2 },
-          { x: 1, y: 2, c: 3 }, { x: 3, y: 2, c: 3 },
-          { x: 2, y: 1, c: 4 }, { x: 2, y: 3, c: 4 }
-        ]
-      },
-      // Level 5: 5x5 (4 pasang)
-      {
-        size: 5,
-        terminals: [
-          { x: 0, y: 0, c: 1 }, { x: 2, y: 2, c: 1 },
-          { x: 4, y: 0, c: 2 }, { x: 1, y: 3, c: 2 },
-          { x: 0, y: 4, c: 3 }, { x: 4, y: 2, c: 3 },
-          { x: 3, y: 4, c: 4 }, { x: 4, y: 4, c: 4 }
-        ]
-      },
-      // Level 6: 5x5 (4 pasang)
-      {
-        size: 5,
-        terminals: [
-          { x: 0, y: 1, c: 1 }, { x: 3, y: 0, c: 1 },
-          { x: 1, y: 1, c: 2 }, { x: 4, y: 1, c: 2 },
-          { x: 0, y: 3, c: 3 }, { x: 3, y: 4, c: 3 },
-          { x: 1, y: 3, c: 4 }, { x: 4, y: 3, c: 4 }
-        ]
-      },
-      // Level 7: 6x6 (5 pasang)
-      {
-        size: 6,
-        terminals: [
-          { x: 0, y: 0, c: 1 }, { x: 5, y: 0, c: 1 },
-          { x: 0, y: 5, c: 2 }, { x: 5, y: 5, c: 2 },
-          { x: 1, y: 2, c: 3 }, { x: 4, y: 2, c: 3 },
-          { x: 2, y: 1, c: 4 }, { x: 3, y: 4, c: 4 },
-          { x: 2, y: 3, c: 5 }, { x: 4, y: 4, c: 5 }
-        ]
-      },
-      // Level 8: 6x6 (5 pasang)
-      {
-        size: 6,
-        terminals: [
-          { x: 1, y: 0, c: 1 }, { x: 4, y: 5, c: 1 },
-          { x: 0, y: 2, c: 2 }, { x: 5, y: 3, c: 2 },
-          { x: 2, y: 1, c: 3 }, { x: 3, y: 4, c: 3 },
-          { x: 0, y: 5, c: 4 }, { x: 5, y: 0, c: 4 },
-          { x: 2, y: 3, c: 5 }, { x: 4, y: 1, c: 5 }
-        ]
-      },
-      // Level 9: 6x6 (5 pasang)
-      {
-        size: 6,
-        terminals: [
-          { x: 0, y: 0, c: 1 }, { x: 3, y: 3, c: 1 },
-          { x: 5, y: 0, c: 2 }, { x: 2, y: 2, c: 2 },
-          { x: 0, y: 5, c: 3 }, { x: 4, y: 4, c: 3 },
-          { x: 5, y: 5, c: 4 }, { x: 1, y: 1, c: 4 },
-          { x: 2, y: 4, c: 5 }, { x: 4, y: 2, c: 5 }
-        ]
-      }
-    ];
-
-    let currentLevel = 0;
-    let score = 0;
-    let currentPath = [];
-    let currentDrawingColor = null;
-    let paths = {}; // colorId -> Array of {x, y}
-    let isDrawing = false;
-
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    let cellSize = 60;
-    let gridSize = 4;
-
-    function resizeCanvas() {
-      const maxDim = Math.min(window.innerWidth * 0.88, 380);
-      cellSize = Math.floor(maxDim / gridSize);
-      canvas.width = cellSize * gridSize;
-      canvas.height = cellSize * gridSize;
-      render();
-    }
-    window.addEventListener('resize', resizeCanvas);
-
-    function initLevel() {
-      const lvl = LEVELS[currentLevel];
-      gridSize = lvl.size;
-      paths = {};
-      currentPath = [];
-      currentDrawingColor = null;
-      isDrawing = false;
-
-      document.getElementById('levelVal').innerText = `${currentLevel + 1}/9`;
-      document.getElementById('scoreVal').innerText = score;
-      document.getElementById('highScoreVal').innerText = highScore;
-
-      updatePathCount();
-      resizeCanvas();
-    }
-
-    function getUniqueColors() {
-      const lvl = LEVELS[currentLevel];
-      const colors = new Set();
-      lvl.terminals.forEach(t => colors.add(t.c));
-      return Array.from(colors);
-    }
-
-    function updatePathCount() {
-      const uniqueColors = getUniqueColors();
-      let connectedCount = 0;
-
-      uniqueColors.forEach(cid => {
-        if (isColorConnected(cid)) connectedCount++;
+      // Toggle Audio
+      const audioBtn = document.getElementById('audioToggle');
+      const iconSoundOn = document.getElementById('iconSoundOn');
+      const iconSoundOff = document.getElementById('iconSoundOff');
+      audioBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        initAudio();
+        soundEnabled = !soundEnabled;
+        if (soundEnabled) {
+          iconSoundOn.style.display = 'block';
+          iconSoundOff.style.display = 'none';
+        } else {
+          iconSoundOn.style.display = 'none';
+          iconSoundOff.style.display = 'block';
+        }
       });
 
-      document.getElementById('pathVal').innerText = `${connectedCount}/${uniqueColors.length}`;
-      return connectedCount === uniqueColors.length;
-    }
+      // High Score System
+      const HIGH_SCORE_KEY = 'teknogames_circuit-flow_highscore';
+      let highScore = parseInt(localStorage.getItem(HIGH_SCORE_KEY) || '0', 10);
 
-    function isColorConnected(cid) {
-      const p = paths[cid];
-      if (!p || p.length < 2) return false;
-      const lvl = LEVELS[currentLevel];
-      const t1 = lvl.terminals.find(t => t.c === cid && t.x === p[0].x && t.y === p[0].y);
-      const t2 = lvl.terminals.find(t => t.c === cid && t.x === p[p.length - 1].x && t.y === p[p.length - 1].y);
-      return Boolean(t1 && t2 && (p[0].x !== p[p.length - 1].x || p[0].y !== p[p.length - 1].y));
-    }
+      // Palet Warna Neon PCB Terminal
+      const COLOR_PALETTE = [
+        { id: 1, name: 'Cyan Flux', hex: '#00f0ff', copper: '#0e7490', glow: 'rgba(0, 240, 255, 0.6)' },
+        { id: 2, name: 'Amber Core', hex: '#f59e0b', copper: '#b45309', glow: 'rgba(245, 158, 11, 0.6)' },
+        { id: 3, name: 'Crimson Trace', hex: '#ef4444', copper: '#b91c1c', glow: 'rgba(239, 68, 68, 0.6)' },
+        { id: 4, name: 'Emerald Power', hex: '#10b981', copper: '#047857', glow: 'rgba(16, 185, 129, 0.6)' },
+        { id: 5, name: 'Violet Bus', hex: '#8b5cf6', copper: '#6d28d9', glow: 'rgba(139, 92, 246, 0.6)' }
+      ];
 
-    // Grid Coordinates dari Event Pointer
-    function getCellCoords(e) {
-      const rect = canvas.getBoundingClientRect();
-      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-      const x = Math.floor((clientX - rect.left) / cellSize);
-      const y = Math.floor((clientY - rect.top) / cellSize);
-      if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
-        return { x, y };
+      // 9 Level Terverifikasi 100% Solvable & Backtracking Tested
+      const LEVELS = [
+        // Level 1: 4x4 (3 pasang)
+        {
+          size: 4,
+          terminals: [
+            { x: 0, y: 0, c: 1 }, { x: 3, y: 0, c: 1 },
+            { x: 0, y: 3, c: 2 }, { x: 3, y: 3, c: 2 },
+            { x: 1, y: 1, c: 3 }, { x: 2, y: 2, c: 3 }
+          ]
+        },
+        // Level 2: 4x4 (3 pasang)
+        {
+          size: 4,
+          terminals: [
+            { x: 0, y: 0, c: 1 }, { x: 3, y: 1, c: 1 },
+            { x: 1, y: 1, c: 2 }, { x: 3, y: 3, c: 2 },
+            { x: 0, y: 2, c: 3 }, { x: 2, y: 3, c: 3 }
+          ]
+        },
+        // Level 3: 4x4 (4 pasang)
+        {
+          size: 4,
+          terminals: [
+            { x: 0, y: 0, c: 1 }, { x: 3, y: 1, c: 1 },
+            { x: 0, y: 1, c: 2 }, { x: 2, y: 2, c: 2 },
+            { x: 0, y: 2, c: 3 }, { x: 0, y: 3, c: 3 },
+            { x: 2, y: 3, c: 4 }, { x: 3, y: 2, c: 4 }
+          ]
+        },
+        // Level 4: 5x5 (4 pasang)
+        {
+          size: 5,
+          terminals: [
+            { x: 0, y: 0, c: 1 }, { x: 4, y: 0, c: 1 },
+            { x: 0, y: 4, c: 2 }, { x: 4, y: 4, c: 2 },
+            { x: 1, y: 2, c: 3 }, { x: 3, y: 2, c: 3 },
+            { x: 2, y: 1, c: 4 }, { x: 2, y: 3, c: 4 }
+          ]
+        },
+        // Level 5: 5x5 (4 pasang)
+        {
+          size: 5,
+          terminals: [
+            { x: 0, y: 0, c: 1 }, { x: 4, y: 1, c: 1 },
+            { x: 1, y: 1, c: 2 }, { x: 4, y: 3, c: 2 },
+            { x: 0, y: 3, c: 3 }, { x: 3, y: 3, c: 3 },
+            { x: 1, y: 4, c: 4 }, { x: 4, y: 4, c: 4 }
+          ]
+        },
+        // Level 6: 5x5 (4 pasang)
+        {
+          size: 5,
+          terminals: [
+            { x: 0, y: 1, c: 1 }, { x: 3, y: 0, c: 1 },
+            { x: 1, y: 1, c: 2 }, { x: 4, y: 1, c: 2 },
+            { x: 0, y: 3, c: 3 }, { x: 3, y: 4, c: 3 },
+            { x: 1, y: 3, c: 4 }, { x: 4, y: 3, c: 4 }
+          ]
+        },
+        // Level 7: 6x6 (5 pasang)
+        {
+          size: 6,
+          terminals: [
+            { x: 0, y: 0, c: 1 }, { x: 5, y: 0, c: 1 },
+            { x: 0, y: 5, c: 2 }, { x: 5, y: 5, c: 2 },
+            { x: 1, y: 2, c: 3 }, { x: 4, y: 2, c: 3 },
+            { x: 2, y: 1, c: 4 }, { x: 3, y: 4, c: 4 },
+            { x: 2, y: 3, c: 5 }, { x: 4, y: 4, c: 5 }
+          ]
+        },
+        // Level 8: 6x6 (5 pasang)
+        {
+          size: 6,
+          terminals: [
+            { x: 0, y: 0, c: 1 }, { x: 4, y: 1, c: 1 },
+            { x: 0, y: 2, c: 2 }, { x: 5, y: 2, c: 2 },
+            { x: 1, y: 3, c: 3 }, { x: 5, y: 4, c: 3 },
+            { x: 0, y: 5, c: 4 }, { x: 3, y: 5, c: 4 },
+            { x: 2, y: 4, c: 5 }, { x: 5, y: 5, c: 5 }
+          ]
+        },
+        // Level 9: 6x6 (5 pasang)
+        {
+          size: 6,
+          terminals: [
+            { x: 0, y: 0, c: 1 }, { x: 5, y: 0, c: 1 },
+            { x: 0, y: 1, c: 2 }, { x: 0, y: 5, c: 2 },
+            { x: 1, y: 1, c: 3 }, { x: 5, y: 5, c: 3 },
+            { x: 1, y: 2, c: 4 }, { x: 4, y: 5, c: 4 },
+            { x: 2, y: 2, c: 5 }, { x: 3, y: 3, c: 5 }
+          ]
+        }
+      ];
+
+      // Game State
+      let currentLevel = 0;
+      let score = 0;
+      let currentPath = [];
+      let currentDrawingColor = null;
+      let paths = {}; // colorId -> Array of {x, y}
+      let isDrawing = false;
+      let animTime = 0;
+
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
+      let cellSize = 60;
+      let gridSize = 4;
+
+      function resizeCanvas() {
+        const containerW = canvas.parentElement.parentElement.getBoundingClientRect().width;
+        const maxDim = Math.min(containerW - 32, window.innerHeight * 0.52, 380);
+        cellSize = Math.floor(maxDim / gridSize);
+        canvas.width = cellSize * gridSize;
+        canvas.height = cellSize * gridSize;
       }
-      return null;
-    }
+      window.addEventListener('resize', resizeCanvas);
 
-    function getTerminalAt(x, y) {
-      const lvl = LEVELS[currentLevel];
-      return lvl.terminals.find(t => t.x === x && t.y === y);
-    }
+      function initLevel() {
+        const lvl = LEVELS[currentLevel];
+        gridSize = lvl.size;
+        paths = {};
+        currentPath = [];
+        currentDrawingColor = null;
+        isDrawing = false;
 
-    function isCellOccupiedByOther(x, y, exceptColor) {
-      for (const [cid, pts] of Object.entries(paths)) {
-        if (parseInt(cid, 10) === exceptColor) continue;
-        if (pts.some(pt => pt.x === x && pt.y === y)) return true;
+        document.getElementById('levelVal').innerText = `${currentLevel + 1}/9`;
+        document.getElementById('scoreVal').innerText = score;
+        document.getElementById('coverageVal').innerText = '0%';
+
+        resizeCanvas();
+        updatePathCount();
       }
-      return false;
-    }
 
-    // Input Handling
-    function onPointerDown(e) {
-      initAudio();
-      const pos = getCellCoords(e);
-      if (!pos) return;
+      function getUniqueColors() {
+        const lvl = LEVELS[currentLevel];
+        const colors = new Set();
+        lvl.terminals.forEach(t => colors.add(t.c));
+        return Array.from(colors);
+      }
 
-      const term = getTerminalAt(pos.x, pos.y);
-      if (term) {
-        // Mulai dari terminal
-        isDrawing = true;
-        currentDrawingColor = term.c;
-        paths[term.c] = [{ x: pos.x, y: pos.y }];
-        currentPath = paths[term.c];
-        Sound.step(1);
-        render();
-      } else {
-        // Cek apakah mengklik jalur yang sudah ada untuk melanjutkan/menghapus
+      function isColorConnected(cid) {
+        const p = paths[cid];
+        if (!p || p.length < 2) return false;
+        const lvl = LEVELS[currentLevel];
+        const terms = lvl.terminals.filter(t => t.c === cid);
+        if (terms.length !== 2) return false;
+
+        const first = p[0];
+        const last = p[p.length - 1];
+
+        const match1 = (first.x === terms[0].x && first.y === terms[0].y && last.x === terms[1].x && last.y === terms[1].y);
+        const match2 = (first.x === terms[1].x && first.y === terms[1].y && last.x === terms[0].x && last.y === terms[0].y);
+
+        return match1 || match2;
+      }
+
+      function calculateBoardCoverage() {
+        const occupied = new Set();
         for (const [cid, pts] of Object.entries(paths)) {
-          const idx = pts.findIndex(p => p.x === pos.x && p.y === pos.y);
-          if (idx !== -1) {
-            isDrawing = true;
-            currentDrawingColor = parseInt(cid, 10);
-            paths[cid] = pts.slice(0, idx + 1);
-            currentPath = paths[cid];
-            Sound.step(idx + 1);
-            render();
-            break;
+          pts.forEach(pt => occupied.add(`${pt.x},${pt.y}`));
+        }
+        const totalCells = gridSize * gridSize;
+        return Math.round((occupied.size / totalCells) * 100);
+      }
+
+      function updatePathCount() {
+        const uniqueColors = getUniqueColors();
+        let connectedCount = 0;
+
+        uniqueColors.forEach(cid => {
+          if (isColorConnected(cid)) connectedCount++;
+        });
+
+        const cov = calculateBoardCoverage();
+        document.getElementById('pathVal').innerText = `${connectedCount}/${uniqueColors.length}`;
+        document.getElementById('coverageVal').innerText = `${cov}%`;
+
+        return connectedCount === uniqueColors.length;
+      }
+
+      // Koordinat Grid dari Pointer Event
+      function getCellCoords(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+        const x = Math.floor((clientX - rect.left) / cellSize);
+        const y = Math.floor((clientY - rect.top) / cellSize);
+        if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
+          return { x, y };
+        }
+        return null;
+      }
+
+      function getTerminalAt(x, y) {
+        const lvl = LEVELS[currentLevel];
+        return lvl.terminals.find(t => t.x === x && t.y === y);
+      }
+
+      // Potong jalur warna lain jika ditabrak (Pou Connect / Flow Free standard algorithm)
+      function truncateConflictingPath(x, y, activeColor) {
+        for (const [cidStr, pts] of Object.entries(paths)) {
+          const cid = parseInt(cidStr, 10);
+          if (cid === activeColor) continue;
+
+          const hitIndex = pts.findIndex(p => p.x === x && p.y === y);
+          if (hitIndex !== -1) {
+            // Jika sel yang ditabrak adalah terminal milik warna lain, jangan izinkan potong
+            const term = getTerminalAt(x, y);
+            if (term && term.c === cid) {
+              return false; // Tabrakan langsung ke terminal warna lain dilarang
+            }
+
+            // Potong jalur warna lain sebelum titik tabrakan
+            if (hitIndex === 0) {
+              // Jika titik tabrakan adalah pangkal, hapus seluruh jalur
+              delete paths[cid];
+            } else {
+              paths[cid] = pts.slice(0, hitIndex);
+            }
+          }
+        }
+        return true;
+      }
+
+      // Input Pointer Handling
+      function onPointerDown(e) {
+        initAudio();
+        const pos = getCellCoords(e);
+        if (!pos) return;
+
+        const term = getTerminalAt(pos.x, pos.y);
+        if (term) {
+          // Mulai dari terminal (bisa terminal 1 atau 2)
+          isDrawing = true;
+          currentDrawingColor = term.c;
+          paths[term.c] = [{ x: pos.x, y: pos.y }];
+          currentPath = paths[term.c];
+          Sound.step(1);
+          updatePathCount();
+        } else {
+          // Cek apakah mengklik jalur warna yang sudah ada untuk melanjutkan atau backtrack
+          for (const [cidStr, pts] of Object.entries(paths)) {
+            const idx = pts.findIndex(p => p.x === pos.x && p.y === pos.y);
+            if (idx !== -1) {
+              const cid = parseInt(cidStr, 10);
+              isDrawing = true;
+              currentDrawingColor = cid;
+              paths[cid] = pts.slice(0, idx + 1);
+              currentPath = paths[cid];
+              Sound.step(idx + 1);
+              updatePathCount();
+              break;
+            }
           }
         }
       }
-    }
 
-    function onPointerMove(e) {
-      if (!isDrawing || !currentDrawingColor) return;
-      const pos = getCellCoords(e);
-      if (!pos) return;
+      function onPointerMove(e) {
+        if (!isDrawing || !currentDrawingColor) return;
+        const pos = getCellCoords(e);
+        if (!pos) return;
 
-      const last = currentPath[currentPath.length - 1];
-      if (pos.x === last.x && pos.y === last.y) return;
+        const last = currentPath[currentPath.length - 1];
+        if (pos.x === last.x && pos.y === last.y) return;
 
-      // Cek apakah bertetangga orthogonal (hanya atas, bawah, kiri, kanan)
-      const dist = Math.abs(pos.x - last.x) + Math.abs(pos.y - last.y);
-      if (dist !== 1) return;
+        // Validasi: hanya bergerak 1 langkah orthogonal (atas, bawah, kiri, kanan)
+        const dist = Math.abs(pos.x - last.x) + Math.abs(pos.y - last.y);
+        if (dist !== 1) return;
 
-      // Cek apakah backtrack (mundur ke titik sebelumnya)
-      if (currentPath.length > 1) {
-        const prev = currentPath[currentPath.length - 2];
-        if (pos.x === prev.x && pos.y === prev.y) {
-          currentPath.pop();
-          Sound.step(currentPath.length);
-          render();
+        // 1. Backtracking halus (kembali ke sel sebelum ujung)
+        if (currentPath.length > 1) {
+          const prev = currentPath[currentPath.length - 2];
+          if (pos.x === prev.x && pos.y === prev.y) {
+            currentPath.pop();
+            Sound.step(currentPath.length);
+            updatePathCount();
+            return;
+          }
+        }
+
+        // 2. Loop ke diri sendiri (potong balik ke titik temu)
+        const selfLoopIdx = currentPath.findIndex(p => p.x === pos.x && p.y === pos.y);
+        if (selfLoopIdx !== -1) {
+          currentPath = currentPath.slice(0, selfLoopIdx + 1);
+          paths[currentDrawingColor] = currentPath;
+          updatePathCount();
           return;
         }
-      }
 
-      // Cek jika menabrak jalur warna lain
-      if (isCellOccupiedByOther(pos.x, pos.y, currentDrawingColor)) return;
+        // 3. Cek apakah menabrak terminal warna lain
+        const term = getTerminalAt(pos.x, pos.y);
+        if (term && term.c !== currentDrawingColor) {
+          return; // Dilarang menembus terminal warna lain
+        }
 
-      // Cek jika menabrak terminal warna lain
-      const targetTerm = getTerminalAt(pos.x, pos.y);
-      if (targetTerm && targetTerm.c !== currentDrawingColor) return;
+        // 4. Overwrite resolusi jalur lain (Connect Flow Overwrite algorithm)
+        const canPass = truncateConflictingPath(pos.x, pos.y, currentDrawingColor);
+        if (!canPass) return;
 
-      // Cek jika loop ke diri sendiri
-      const loopIdx = currentPath.findIndex(p => p.x === pos.x && p.y === pos.y);
-      if (loopIdx !== -1) {
-        currentPath = currentPath.slice(0, loopIdx + 1);
+        // 5. Tambahkan sel ke jalur sirkuit
+        currentPath.push({ x: pos.x, y: pos.y });
         paths[currentDrawingColor] = currentPath;
-        render();
-        return;
-      }
-
-      // Tambahkan titik ke jalur
-      currentPath.push({ x: pos.x, y: pos.y });
-      paths[currentDrawingColor] = currentPath;
-      Sound.step(currentPath.length);
-      render();
-
-      // Jika menyentuh terminal target yang sama
-      if (targetTerm && targetTerm.c === currentDrawingColor) {
-        isDrawing = false;
-        Sound.connect();
-        score += 40;
-        document.getElementById('scoreVal').innerText = score;
-        const allConnected = updatePathCount();
-
-        if (allConnected) {
-          // Level Selesai
-          setTimeout(() => {
-            Sound.winLevel();
-            score += 150;
-            if (currentLevel < LEVELS.length - 1) {
-              currentLevel++;
-              initLevel();
-            } else {
-              endGame(true);
-            }
-          }, 350);
-        }
-      }
-    }
-
-    function onPointerUp() {
-      if (isDrawing) {
-        isDrawing = false;
+        Sound.step(currentPath.length);
+        const isCompleteCircuit = isColorConnected(currentDrawingColor);
         updatePathCount();
-        render();
-      }
-    }
 
-    canvas.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
+        // 6. Jika menyentuh terminal target yang sama
+        if (isCompleteCircuit) {
+          isDrawing = false;
+          Sound.connect();
+          score += 50;
+          document.getElementById('scoreVal').innerText = score;
 
-    // Render Canvas Loop
-    function render() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // Cek kelengkapan seluruh level
+          const allConnected = updatePathCount();
+          if (allConnected) {
+            const cov = calculateBoardCoverage();
+            if (cov === 100) {
+              score += 100; // Bonus sirkuit penuh sempurna
+              document.getElementById('scoreVal').innerText = score;
+            }
 
-      // Gambar Garis Grid
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-      ctx.lineWidth = 1;
-      for (let i = 1; i < gridSize; i++) {
-        // Vertikal
-        ctx.beginPath();
-        ctx.moveTo(i * cellSize, 0);
-        ctx.lineTo(i * cellSize, canvas.height);
-        ctx.stroke();
-        // Horizontal
-        ctx.beginPath();
-        ctx.moveTo(0, i * cellSize);
-        ctx.lineTo(canvas.width, i * cellSize);
-        ctx.stroke();
-      }
+            setTimeout(() => {
+              Sound.winLevel();
+              score += 150;
+              document.getElementById('scoreVal').innerText = score;
 
-      // Gambar Jalur Kabel yang Sudah Digambar
-      for (const [cid, pts] of Object.entries(paths)) {
-        if (!pts || pts.length < 2) continue;
-        const col = COLOR_PALETTE.find(c => c.id === parseInt(cid, 10));
-        if (!col) continue;
-
-        ctx.strokeStyle = col.hex;
-        ctx.lineWidth = cellSize * 0.32;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        ctx.shadowColor = col.glow;
-        ctx.shadowBlur = 12;
-
-        ctx.beginPath();
-        ctx.moveTo(pts[0].x * cellSize + cellSize / 2, pts[0].y * cellSize + cellSize / 2);
-        for (let i = 1; i < pts.length; i++) {
-          ctx.lineTo(pts[i].x * cellSize + cellSize / 2, pts[i].y * cellSize + cellSize / 2);
+              if (currentLevel < LEVELS.length - 1) {
+                currentLevel++;
+                initLevel();
+              } else {
+                endGame(true);
+              }
+            }, 380);
+          }
         }
-        ctx.stroke();
-        ctx.shadowBlur = 0;
       }
 
-      // Gambar Simpul Terminal Bulat
-      const lvl = LEVELS[currentLevel];
-      lvl.terminals.forEach(t => {
-        const col = COLOR_PALETTE.find(c => c.id === t.c);
-        if (!col) return;
+      function onPointerUp() {
+        if (isDrawing) {
+          isDrawing = false;
+          updatePathCount();
+        }
+      }
 
-        const cx = t.x * cellSize + cellSize / 2;
-        const cy = t.y * cellSize + cellSize / 2;
-        const radius = cellSize * 0.35;
+      canvas.addEventListener('pointerdown', onPointerDown);
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointercancel', onPointerUp);
 
-        // Pendar Glow Luar
-        ctx.shadowColor = col.glow;
-        ctx.shadowBlur = 14;
+      // Reset Jalur Level
+      document.getElementById('resetBtn').onclick = () => {
+        paths = {};
+        currentPath = [];
+        currentDrawingColor = null;
+        isDrawing = false;
+        Sound.clear();
+        updatePathCount();
+      };
 
-        // Cincin Luar
-        ctx.fillStyle = col.hex;
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-        ctx.fill();
+      // Game Over & Start Handling
+      function startGame() {
+        initAudio();
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('gameOverScreen').classList.add('hidden');
+        currentLevel = 0;
+        score = 0;
+        initLevel();
+      }
 
-        // Inti Dalam
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = '#060913';
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius * 0.5, 0, Math.PI * 2);
-        ctx.fill();
+      function endGame(isComplete = false) {
+        if (score > highScore) {
+          highScore = score;
+          localStorage.setItem(HIGH_SCORE_KEY, highScore.toString());
+        }
 
-        // Titik Pusat Menyala
-        ctx.fillStyle = col.hex;
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius * 0.22, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    }
+        const endTitle = document.getElementById('endTitle');
+        const endDesc = document.getElementById('endDesc');
 
-    // Reset Jalur Level
-    document.getElementById('resetBtn').onclick = () => {
-      paths = {};
-      currentPath = [];
-      currentDrawingColor = null;
-      isDrawing = false;
-      Sound.clear();
-      updatePathCount();
-      render();
-    };
+        if (isComplete) {
+          endTitle.innerText = 'SELURUH SIRKUIT AKTIF';
+          endTitle.style.background = 'linear-gradient(90deg, #10b981, #00f0ff)';
+          endTitle.style.webkitBackgroundClip = 'text';
+          endTitle.style.webkitTextFillColor = 'transparent';
+          endDesc.innerText = 'Luar biasa! 9 level rangkaian sirkuit PCB berhasil dihubungkan dengan daya optimal.';
+        } else {
+          endTitle.innerText = 'PERMAINAN SELESAI';
+          endTitle.style.background = 'linear-gradient(90deg, #38bdf8, #00f0ff)';
+          endTitle.style.webkitBackgroundClip = 'text';
+          endTitle.style.webkitTextFillColor = 'transparent';
+          endDesc.innerText = `Anda menyelesaikan tantangan hingga level ${currentLevel + 1}.`;
+        }
 
-    function startGame() {
-      initAudio();
-      document.getElementById('startScreen').style.display = 'none';
-      document.getElementById('gameOverScreen').style.display = 'none';
-      currentLevel = 0;
-      score = 0;
+        document.getElementById('finalScoreVal').innerText = score;
+        document.getElementById('finalHighScoreVal').innerText = highScore;
+        document.getElementById('gameOverScreen').classList.remove('hidden');
+
+        try {
+          if (window.parent) {
+            window.parent.postMessage({
+              type: 'teknogames_game_over',
+              game: 'circuit-flow',
+              score: score,
+              highScore: highScore
+            }, '*');
+          }
+        } catch (e) {}
+      }
+
+      document.getElementById('finishBtn').onclick = () => endGame(false);
+      document.getElementById('startBtn').onclick = startGame;
+      document.getElementById('restartBtn').onclick = startGame;
+
+      // ==========================================
+      // VISUAL RENDER ENGINE (PCB CIRCUIT TRACE)
+      // ==========================================
+      function renderLoop(timestamp) {
+        animTime = timestamp * 0.003;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 1. Gambar PCB Grid & Solder Pads
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.08)';
+        ctx.lineWidth = 1;
+        for (let i = 1; i < gridSize; i++) {
+          ctx.beginPath();
+          ctx.moveTo(i * cellSize, 0); ctx.lineTo(i * cellSize, canvas.height);
+          ctx.moveTo(0, i * cellSize); ctx.lineTo(canvas.width, i * cellSize);
+          ctx.stroke();
+        }
+
+        // PCB Grid Dot Centers
+        for (let x = 0; x < gridSize; x++) {
+          for (let y = 0; y < gridSize; y++) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.07)';
+            ctx.beginPath();
+            ctx.arc(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+
+        // 2. Gambar Jalur Jejak Tembaga Sirkuit (PCB Copper Traces)
+        for (const [cidStr, pts] of Object.entries(paths)) {
+          if (!pts || pts.length < 2) continue;
+          const cid = parseInt(cidStr, 10);
+          const col = COLOR_PALETTE.find(c => c.id === cid);
+          if (!col) continue;
+
+          const isConnected = isColorConnected(cid);
+
+          // Lapisan A: Bayangan / Rel Tembaga Luar (Copper Base Track)
+          ctx.strokeStyle = isConnected ? col.copper : 'rgba(30, 41, 59, 0.8)';
+          ctx.lineWidth = cellSize * 0.38;
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          ctx.beginPath();
+          ctx.moveTo(pts[0].x * cellSize + cellSize / 2, pts[0].y * cellSize + cellSize / 2);
+          for (let i = 1; i < pts.length; i++) {
+            ctx.lineTo(pts[i].x * cellSize + cellSize / 2, pts[i].y * cellSize + cellSize / 2);
+          }
+          ctx.stroke();
+
+          // Lapisan B: Garis Inti Neon Bercahaya (Circuit Core Trace)
+          ctx.strokeStyle = col.hex;
+          ctx.lineWidth = cellSize * 0.18;
+          ctx.shadowColor = col.glow;
+          ctx.shadowBlur = isConnected ? 16 : 8;
+          ctx.beginPath();
+          ctx.moveTo(pts[0].x * cellSize + cellSize / 2, pts[0].y * cellSize + cellSize / 2);
+          for (let i = 1; i < pts.length; i++) {
+            ctx.lineTo(pts[i].x * cellSize + cellSize / 2, pts[i].y * cellSize + cellSize / 2);
+          }
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+
+          // Lapisan C: Animasi Aliran Pulsa Listrik (Circuit Flowing Electrons)
+          if (pts.length >= 2) {
+            // Hitung total segmen
+            const totalSegments = pts.length - 1;
+            const progress = (animTime * 1.5) % totalSegments;
+            const segIndex = Math.floor(progress);
+            const subT = progress - segIndex;
+
+            const p1 = pts[segIndex];
+            const p2 = pts[segIndex + 1];
+            if (p1 && p2) {
+              const pulseX = (p1.x + (p2.x - p1.x) * subT) * cellSize + cellSize / 2;
+              const pulseY = (p1.y + (p2.y - p1.y) * subT) * cellSize + cellSize / 2;
+
+              ctx.shadowColor = '#ffffff';
+              ctx.shadowBlur = 12;
+              ctx.fillStyle = '#ffffff';
+              ctx.beginPath();
+              ctx.arc(pulseX, pulseY, cellSize * 0.12, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.shadowBlur = 0;
+            }
+          }
+        }
+
+        // 3. Gambar Simpul Terminal PCB Via / Pad
+        const lvl = LEVELS[currentLevel];
+        lvl.terminals.forEach(t => {
+          const col = COLOR_PALETTE.find(c => c.id === t.c);
+          if (!col) return;
+
+          const cx = t.x * cellSize + cellSize / 2;
+          const cy = t.y * cellSize + cellSize / 2;
+          const isConn = isColorConnected(t.c);
+          const radius = cellSize * 0.36;
+
+          // Pendar Glow Luar
+          ctx.shadowColor = col.glow;
+          ctx.shadowBlur = isConn ? 18 : 10;
+
+          // Cincin Luar Tembaga (Copper Solder Pad)
+          ctx.fillStyle = col.hex;
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Cincin Isolasi Dalam
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = '#060913';
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius * 0.58, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Inti Via Menyala (Center Active Terminal)
+          ctx.fillStyle = isConn ? '#ffffff' : col.hex;
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius * 0.32, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Detil crosshair PCB via
+          ctx.strokeStyle = isConn ? col.hex : 'rgba(255, 255, 255, 0.4)';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(cx - radius * 0.7, cy); ctx.lineTo(cx + radius * 0.7, cy);
+          ctx.moveTo(cx, cy - radius * 0.7); ctx.lineTo(cx, cy + radius * 0.7);
+          ctx.stroke();
+        });
+
+        requestAnimationFrame(renderLoop);
+      }
+
+      // Initial Setup
       initLevel();
-    }
-
-    function endGame(isComplete = false) {
-      if (score > highScore) {
-        highScore = score;
-        localStorage.setItem(HS_KEY, highScore.toString());
-      }
-
-      const endTitle = document.getElementById('endTitle');
-      const endDesc = document.getElementById('endDesc');
-
-      if (isComplete) {
-        endTitle.innerText = 'SELURUH SIRKUIT AKTIF';
-        endTitle.style.color = '#10b981';
-        endTitle.style.textShadow = '0 0 25px rgba(16,185,129,0.7)';
-        endDesc.innerText = 'Luar biasa! 9 level rangkaian sirkuit berhasil diselesaikan.';
-      } else {
-        endTitle.innerText = 'PERMAINAN SELESAI';
-        endTitle.style.color = '#00f0ff';
-        endTitle.style.textShadow = '0 0 25px rgba(0,240,255,0.7)';
-        endDesc.innerText = `Anda menyelesaikan tantangan hingga level ${currentLevel + 1}.`;
-      }
-
-      document.getElementById('finalScoreVal').innerText = score;
-      document.getElementById('finalHighScoreVal').innerText = highScore;
-      document.getElementById('highScoreVal').innerText = highScore;
-      document.getElementById('gameOverScreen').style.display = 'flex';
-
-      // Kirim event skor ke portal utama
-      if (window.parent && window.parent !== window) {
-        window.parent.postMessage({ type: "GAME_OVER", score: score }, "*");
-      }
-    }
-
-    document.getElementById('finishBtn').onclick = () => endGame(false);
-    document.getElementById('startBtn').onclick = startGame;
-    document.getElementById('restartBtn').onclick = startGame;
+      requestAnimationFrame(renderLoop);
+    })();
   </script>
 </body>
 </html>
