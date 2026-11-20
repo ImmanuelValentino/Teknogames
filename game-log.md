@@ -1,3 +1,47 @@
+### 2026-11-20 - Werewolf: Malam & Desa
+- **Folder Game:** `public/games/werewolf`
+- **Deskripsi:** Game companion deduksi sosial misteri malam desa nusantara dengan dua mode: Mode Detektif Solo menganalisis alibi kebohongan serigala dan Mode Pass & Play pesta (Werewolf, Seer, Bodyguard, Villager) dengan voting sidang siang.
+- **Fitur Utama:**
+  - [x] Gameplay HTML5 Single File (Responsive Mobile & Desktop)
+  - [x] Scoring & High Score System (Local Storage: `teknogames_werewolf_highscore`)
+  - [x] Visual Asset (Deep Dark UI + SVG Zero-Emoji) & Preview Thumbnail (preview.png)
+  - [x] Web Audio API Synthesizer (Lonceng desa tengah malam, lolongan malam, palu sidang) & Audio Toggle
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
+### 2026-11-20 - Kamus Kelana: Kata Tersembunyi
+- **Folder Game:** `public/games/kamus-kelana`
+- **Deskripsi:** Teka-teki tebak kata jelajah destinasi nusantara (Bali, Bromo, Toba, Komodo, Raja Ampat) menggunakan roda kompas huruf interaktif dengan garis neon cyan, tombol acak, dan bantuan petunjuk.
+- **Fitur Utama:**
+  - [x] Gameplay HTML5 Single File (Responsive Mobile & Desktop)
+  - [x] Scoring & High Score System (Local Storage: `teknogames_kamus-kelana_highscore`)
+  - [x] Visual Asset (Canvas 2D Wheel + SVG Zero-Emoji) & Preview Thumbnail (preview.png)
+  - [x] Web Audio API Synthesizer (Tone tangga nada tiap sambungan huruf, success chime chord, error buzz) & Audio Toggle
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
+### 2026-11-20 - Pasar Terapung: Fruit Catch
+- **Folder Game:** `public/games/pasar-terapung`
+- **Deskripsi:** Game arcade menangkap komoditas buah lokal segar (Pisang, Durian, Rambutan, Belimbing) dari atas perahu jukung di Sungai Martapura Banjarmasin, menghindari kayu hanyut dan batu sungai tajam dengan sistem kombo bertingkat.
+- **Fitur Utama:**
+  - [x] Gameplay HTML5 Single File (Responsive Mobile & Desktop)
+  - [x] Scoring & High Score System (Local Storage: `teknogames_pasar-terapung_highscore`)
+  - [x] Visual Asset (Canvas 2D Riak Air + Jukung Tradisional + SVG Zero-Emoji) & Preview Thumbnail (preview.png)
+  - [x] Web Audio API Synthesizer (Cipratan air, plop tangkap buah, benturan kayu, kombo chime) & Audio Toggle
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
+### 2026-11-20 - Lembah Bromo: Hang Glider
+- **Folder Game:** `public/games/lembah-bromo`
+- **Deskripsi:** Permainan momentum lereng bukit pasir bergelombang (Tiny Wings style) menerbangkan gantole melintasi kaldera Bromo, menukik di lereng turun untuk melontarkan glider tinggi ke angkasa menghindari badai pasir kawah.
+- **Fitur Utama:**
+  - [x] Gameplay HTML5 Single File (Responsive Mobile & Desktop)
+  - [x] Scoring & High Score System (Local Storage: `teknogames_lembah-bromo_highscore`)
+  - [x] Visual Asset (Canvas 2D Sunrise Bromo + Glider Trail + SVG Zero-Emoji) & Preview Thumbnail (preview.png)
+  - [x] Web Audio API Synthesizer (Desau angin tukik, launch swoosh, kristal belerang ping) & Audio Toggle
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - Kopi Klotok: Barista Rhythm
 - **Folder Game:** `public/games/kopi-klotok`
 - **Deskripsi:** Permainan ritme ketukan barista warung kopi klotok Jogja pada 3 jalur rel tetesan air mendidih dan biji kopi sangrai menuju cangkir tanah liat dengan kombo bertingkat.

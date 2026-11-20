@@ -8,6 +8,20 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.8.0] - 2026-11-20
+### Added & Changed (Remake Batch 4: Lembah Bromo, Pasar Terapung, Kamus Kelana, Werewolf)
+- **Remake 4 Permainan Batch 4 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**
+  - **`lembah-bromo` ([index.html](public/games/lembah-bromo/index.html)):** Single-file Canvas 2D slope momentum hang glider (Tiny Wings style), visual sunrise kaldera Gunung Bromo & Gunung Batok, fisika luncuran lereng pasir dinamis (tahan tukik di downslope, lepas di upslope untuk lompatan tinggi), pengumpulan kristal embun belerang di udara, badai kabut pasir kawah yang mengejar dari belakang, Web Audio API synthesizer, High Score `localStorage` (`teknogames_lembah-bromo_highscore`), dan `postMessage`.
+  - **`pasar-terapung` ([index.html](public/games/pasar-terapung/index.html)):** Arcade river boat fruit catch di Sungai Martapura Lok Baintan Banjarmasin, kemudi perahu jukung tradisional dengan keranjang rotan (panah kiri/kanan, A/D, paddle layar), komoditas buah lokal (Pisang, Durian, Rambutan, Belimbing), rintangan kayu hanyut & batu sungai, sistem 3 hati nyawa SVG, kombo bertingkat (x1 s.d x4), Web Audio API synthesizer, High Score `localStorage` (`teknogames_pasar-terapung_highscore`), dan `postMessage`.
+  - **`kamus-kelana` ([index.html](public/games/kamus-kelana/index.html)):** Word connect compass puzzle jelajah 5 destinasi nusantara (Bali, Bromo, Toba, Komodo, Raja Ampat), roda kompas huruf melingkar dengan drag neon line cyan bercahaya, kotak teka-teki silang interaktif, tombol acak (shuffle) dan petunjuk (hint), Web Audio API synthesizer tone nada bertingkat & success arpeggio, High Score `localStorage` (`teknogames_kamus-kelana_highscore`), dan `postMessage`.
+  - **`werewolf` ([index.html](public/games/werewolf/index.html)):** Permainan deduksi sosial misteri malam desa nusantara dengan dua mode: Mode Detektif Solo menganalisis alibi logika kebohongan serigala dan Mode Pass & Play pesta (Werewolf, Seer, Bodyguard, Villager) dengan pemilihan malam hari dan sidang eliminasi siang, Web Audio API synthesizer (lonceng tengah malam, lolongan malam hari, palu sidang), High Score `localStorage` (`teknogames_werewolf_highscore`), dan `postMessage`.
+- **Quality Verification & Browser Testing:**
+  - Zero-emoji policy lolos audit 100% menggunakan regex Unicode property `/\p{Extended_Pictographic}/gu`.
+  - Seluruh tombol interaksi (Start, Audio Toggle, On-screen controls, Retry) responsif di mobile & desktop.
+  - Lolos pengujian browser terisolasi via Chrome DevTools remote debugging port 9222 (0 console error).
+  - Rute permainan merespons status HTTP 200 OK di dev server localhost.
+  - Berhasil diekspor via `npm run build` ke direktori statis `out/`.
+
 ## [3.7.0] - 2026-11-20
 ### Added & Changed (Remake Batch 3: Candi Stacker, Batik Flow, Layangan Sanur, Kopi Klotok)
 - **Remake 4 Permainan Batch 3 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**

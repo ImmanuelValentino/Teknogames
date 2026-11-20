@@ -1,3 +1,15 @@
+### [2026-11-20 11:20] - [Games] - Remake Game Batch 4 (Lembah Bromo, Pasar Terapung, Kamus Kelana, Werewolf) & Pengujian Browser Terisolasi
+- **Kondisi Sebelum:** 4 game Batch 4 (`lembah-bromo`, `pasar-terapung`, `kamus-kelana`, `werewolf`) masih menggunakan total lebih dari 70 karakter emoji, belum memiliki Web Audio API synthesizer dengan tombol audio toggle yang seragam, belum memiliki kunci `localStorage` terstandarisasi (`teknogames_<slug>_highscore`), dan belum mengirimkan event `postMessage` saat Game Over.
+- **Perubahan Sesudah:**
+  1. `lembah-bromo/index.html`: Di-remake dengan fisika slope momentum hang glider (Tiny Wings style), visual fajar kaldera Bromo, pengumpulan kristal embun belerang di udara, badai kabut pasir kawah pengejar dari belakang, Web Audio API synthesizer, High Score `localStorage`, dan `postMessage`.
+  2. `pasar-terapung/index.html`: Di-remake dengan arcade river boat fruit catch di Sungai Martapura Banjarmasin, kemudi perahu jukung tradisional (panah kiri/kanan, A/D, touch paddle), buah lokal segar (Pisang, Durian, Rambutan, Belimbing), rintangan kayu hanyut & batu sungai tajam, 3 nyawa hati SVG zero-emoji, kombo multiplier bertingkat, Web Audio API synthesizer, High Score `localStorage`, dan `postMessage`.
+  3. `kamus-kelana/index.html`: Di-remake dengan teka-teki kata kompas jelajah 5 destinasi nusantara (Bali, Bromo, Toba, Komodo, Raja Ampat), roda kompas huruf drag neon cyan interaktif, kotak TTS mulus, tombol acak & petunjuk bantuan, Web Audio API synthesizer tone nada bertingkat, High Score `localStorage`, dan `postMessage`.
+  4. `werewolf/index.html`: Di-remake dengan game companion deduksi sosial dua mode (Mode Investigasi Solo AI Logic Detective dan Mode Pass & Play 4-6 pemain Pesta Desa dengan voting siang), Web Audio API synthesizer (lonceng tengah malam, lolongan srigala, ketukan palu sidang), High Score `localStorage`, dan `postMessage`.
+  5. Pengujian langsung dilakukan via Chrome DevTools remote debugging dengan penutupan tab otomatis; seluruh game lulus verifikasi dengan 0 runtime error di console.
+  6. Static export `npm run build` sukses 100% dan histori dicatat di `game-log.md` serta `UPDATE.md`.
+- **Masalah yang Ditemukan:** Tidak ada. Seluruh poin checklist kualitas di Bagian 7 dan Bagian 8 `game-guide.md` telah terpenuhi dan terverifikasi.
+- **File Terdampak:** `public/games/lembah-bromo/index.html`, `public/games/pasar-terapung/index.html`, `public/games/kamus-kelana/index.html`, `public/games/werewolf/index.html`, `out/*`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-20 11:10] - [Games] - Remake Game Batch 3 (Candi Stacker, Batik Flow, Layangan Sanur, Kopi Klotok) & Pengujian Browser Terisolasi
 - **Kondisi Sebelum:** 4 game Batch 3 masih menggunakan karakter emoji, belum memiliki Web Audio API synthesizer dengan tombol audio mute, belum memiliki kunci `localStorage` terstandarisasi, dan belum mengirimkan event `postMessage` saat Game Over.
 - **Perubahan Sesudah:**
