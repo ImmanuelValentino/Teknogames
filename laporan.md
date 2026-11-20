@@ -1,3 +1,16 @@
+### [2026-11-20 19:50] - [Games] - Perbaikan Bug Seer Single-Lock, Timer 30 Detik Malam, dan Sinkronisasi Role Lobi Realtime
+- **Kondisi Sebelum:**
+  1. Seer bisa mengklik dan mengintip identitas seluruh pemain lain berkali-kali dalam 1 malam sebelum menekan tombol kunci aksi.
+  2. Giliran aksi malam tidak memiliki batas waktu (bisa idle tanpa batas), dan layar pemain lain saat menunggu tidak menampilkan peran apa yang sedang memilih aksi.
+  3. Saat Room Master menambah atau mengurangi jumlah role di lobi, pemain tamu (guest) tidak melihat pembaruan angka role tersebut secara real-time.
+- **Perubahan Sesudah:**
+  1. Membatasi klik Seer menjadi tepat 1 kali per malam: begitu 1 pemain dipilih, seluruh kartu target lainnya langsung dinonaktifkan (`disabled` dengan `pointer-events: none` dan pelepasan event click) sehingga Seer hanya bisa melihat 1 orang per malam.
+  2. Menambahkan timer pembatasan waktu 30 detik untuk setiap giliran peran malam (Bodyguard, Werewolf, Seer) dengan mekanisme auto-submit target jika waktu habis.
+  3. Memperbarui layar tunggu pemain lain di malam hari dengan menampilkan nama dan ikon peran yang sedang aktif beraksi serta hitung mundur sisa waktu gilirannya.
+  4. Menerapkan sistem dual-sync (Realtime websocket + polling sinkronisasi 1.2 detik) dan me-render daftar peran dinamis di layar tamu lobi, sehingga setiap perubahan tombol +/- oleh Room Master langsung tercermin seketika di layar pemain lain.
+- **Masalah yang Ditemukan:** Tidak ada. Zero-emoji policy tetap dipatuhi 100%.
+- **File Terdampak:** `public/games/werewolf/online-supabase.js`, `public/games/werewolf/offline-engine.js`, `public/games/werewolf/index.html`, `public/games/werewolf/styles.css`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
+
 ### [2026-11-20 18:45] - [Games] - Integrasi Fitur Werewolf Online Multiplayer Supabase (Room 6 Digit) & Arsitektur Modular
 - **Kondisi Sebelum:** Game Werewolf hanya dapat dimainkan secara offline di 1 HP (*Pass-and-Play*) dengan kode monolitik di dalam satu file `index.html`. Belum ada mode online mabar antar-perangkat, belum ada koneksi ke Supabase Realtime, dan belum ada skema database room temporary.
 - **Perubahan Sesudah:**

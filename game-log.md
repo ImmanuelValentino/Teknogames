@@ -1,3 +1,14 @@
+### 2026-11-20 - Werewolf: Bugfix Seer Single-Lock, Timer 30 Detik Malam, & Sinkronisasi Role Realtime
+- **Folder Game:** `public/games/werewolf`
+- **Deskripsi:** Memperbaiki 3 isu gameplay pada game Werewolf: (1) Membatasi Seer hanya dapat mengklik/melihat 1 identitas per malam dengan langsung mengunci dan menonaktifkan kartu target lainnya, (2) Menambahkan pembatasan waktu giliran aksi malam 30 detik (auto-submit/auto-skip saat waktu habis) serta menampilkan status peran yang sedang beraksi dan countdown waktu giliran di layar tunggu pemain lain, dan (3) Memperbaiki sinkronisasi perubahan jumlah role di room master agar user/guest lain di lobi dapat langsung melihat perubahan secara real-time via dual-sync (Realtime + Polling 1 detik).
+- **Fitur Utama:**
+  - [x] Seer Single-Target Lock (hanya 1 klik terawang per malam, kartu lain langsung nonaktif)
+  - [x] Batas Waktu Giliran Aksi Malam 30 Detik + Auto-Submit Timeout
+  - [x] Layar Tunggu Malam Informatif (Pemberitahuan Peran yang Sedang Beraksi + Timer Sisa)
+  - [x] Sinkronisasi Role Lobi Realtime untuk Seluruh User/Guest (Dual-Sync Realtime + Polling)
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - Werewolf: Online Multiplayer Supabase & Modular Architecture Upgrade
 - **Folder Game:** `public/games/werewolf`
 - **Deskripsi:** Pembaruan besar game Werewolf dengan menambahkan fitur Mode Online Multiplayer berbasis Supabase Realtime dengan sistem Room Kode 6 Digit Temporary, sambil mempertahankan Mode Offline (Pass-and-Play 1 HP) secara penuh. Arsitektur game dipecah menjadi multi-file modular (`index.html`, `styles.css`, `app.js`, `offline-engine.js`, `online-supabase.js`, `svg-icons.js`, `config.js`) dengan tema visual Dark Gothic Bloody Color, pemilihan kartu acak/terkunci (Single Pick Lock), siklus malam single-target, voting rahasia, auto-cleanup room, dan skema migrasi database SQL `supabase-werewolf-schema.sql`.

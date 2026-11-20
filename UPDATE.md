@@ -8,6 +8,16 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.14.1] - 2026-11-20
+### Fixed & Improved (Werewolf Seer Single-Lock, 30s Night Turn Timer, & Realtime Lobby Sync)
+- **Pembatasan Terawang Seer ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js), [offline-engine.js](public/games/werewolf/offline-engine.js)):**
+  - Mengunci pilihan Seer tepat pada klik pertama; seluruh kartu target lainnya langsung dinonaktifkan (`disabled` dan event klik dihapus) sehingga Seer tidak dapat mengintip lebih dari 1 pemain dalam satu malam.
+- **Pembatasan Waktu Giliran Malam 30 Detik & Layar Tunggu Informatif:**
+  - Menambahkan batas waktu 30 detik untuk setiap giliran peran aktif di malam hari (Bodyguard, Werewolf, Seer). Jika waktu habis sebelum pemain menekan kunci aksi, sistem secara otomatis mengeksekusi pilihan sasaran yang sah / auto-timeout.
+  - Memperbarui layar tunggu pemain lain di malam hari agar menampilkan status peran yang sedang beraksi secara spesifik serta sisa waktu hitung mundur gilirannya.
+- **Sinkronisasi Perubahan Role Lobi Realtime untuk Seluruh Pemain:**
+  - Memperbaiki sinkronisasi perubahan penambahan/pengurangan role oleh Room Master sehingga pemain tamu (guest) langsung melihat pembaruan jumlah peran secara instan melalui sistem dual-sync (Supabase Realtime + polling 1.2 detik).
+
 ## [3.14.0] - 2026-11-20
 ### Added & Improved (Werewolf Online Multiplayer Supabase & Modular Multi-File Architecture)
 - **Mode Online Multiplayer Berbasis Supabase Realtime ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js)):**

@@ -162,7 +162,15 @@
         </div>
 
         <!-- Guest Role Summary -->
-        <div id="onlineGuestRoleSummary" class="hidden" style="margin-top:14px; border-top:1px solid var(--border-subtle); padding-top:12px;"></div>
+        <div id="onlineGuestRoleSummary" class="hidden" style="margin-top:14px; border-top:1px solid var(--border-subtle); padding-top:12px;">
+          <div style="font-size:12px; font-weight:800; color:var(--rose-light); margin-bottom:8px; display:flex; justify-content:space-between;">
+            <span>KOMPOSISI PERAN DESA:</span>
+            <span id="onlineGuestRoleTotalSum" style="font-weight:900;">0 / 0</span>
+          </div>
+          <div id="onlineGuestRoleList" style="display:flex; flex-direction:column; gap:6px;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
       </div>
 
       <div style="width:100%; display:flex; flex-direction:column; gap:10px; margin-top:auto;">
@@ -301,21 +309,31 @@
     <section id="screenNightAction" class="screen hidden">
       <!-- Layar Tunggu (Jika bukan gilirannya) -->
       <div id="nightWaitingBox" class="waiting-box hidden">
-        <div class="waiting-pulse-icon" data-icon="moon"></div>
-        <h2 style="font-size:20px; font-weight:900; color:#fff; margin-bottom:8px;">Malam Telah Tiba</h2>
-        <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+        <div id="nightWaitingIcon" class="waiting-pulse-icon" data-icon="moon"></div>
+        <h2 id="nightWaitingTitle" style="font-size:20px; font-weight:900; color:#fff; margin-bottom:8px;">Malam Telah Tiba</h2>
+        <p id="nightWaitingDesc" style="font-size:13px; color:var(--text-muted); line-height:1.5; max-width:440px; margin:0 auto 14px;">
           Seluruh warga desa tertidur lelap... Menunggu peran yang berhak beraksi dalam kegelapan.
         </p>
+        <div class="hud-badge" style="display:inline-flex; border-color:var(--border-strong); margin:0 auto;">
+          <span data-icon="clock" style="display:inline-flex; width:14px; height:14px;"></span>
+          <span>Sisa Waktu Giliran: <strong id="nightWaitingTimerDigits" style="color:var(--blood-glow); font-family:monospace;">30</strong> detik</span>
+        </div>
       </div>
 
       <!-- Kotak Aksi Aktif -->
       <div id="nightActiveActionBox" style="width:100%;">
         <div class="panel">
-          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-            <div id="nightRoleIcon" style="width:36px; height:36px;"></div>
-            <div>
-              <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Giliran Beraksi:</div>
-              <h3 id="nightRoleTitle" style="font-size:17px; font-weight:900;">Nama Peran</h3>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div id="nightRoleIcon" style="width:36px; height:36px;"></div>
+              <div>
+                <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Giliran Beraksi:</div>
+                <h3 id="nightRoleTitle" style="font-size:17px; font-weight:900;">Nama Peran</h3>
+              </div>
+            </div>
+            <div class="hud-badge" style="border-color:var(--blood-glow); color:var(--rose-light);">
+              <span data-icon="clock" style="display:inline-flex; width:14px; height:14px;"></span>
+              <span><strong id="nightActiveTimerDigits" style="font-family:monospace; font-size:14px;">30</strong>s</span>
             </div>
           </div>
 
