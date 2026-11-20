@@ -1,3 +1,13 @@
+### 2026-11-20 - [DELETED] Batik Flow (Dihapus Permanen)
+- **Folder Game:** `public/games/batik-flow` (DIHAPUS)
+- **Deskripsi:** Game Batik Flow telah dihapus permanen dari direktori public, katalog web utama, dan sistem navigasi atas instruksi mutlak pengguna. Aturan larangan permanen ditambahkan pada AGENTS.md (Bagian 8) dan game-guide.md (Bagian 9) yang melarang pembuatan kembali game bertema batik atau konsep sambung alur serupa.
+- **Fitur Utama:**
+  - [x] Penghapusan folder `public/games/batik-flow/` dan aset terkait
+  - [x] Penghapusan registrasi game dari `src/lib/games-data.ts` dan `GameCard.tsx`
+  - [x] Penambahan klausul blacklist permanen di `AGENTS.md` & `game-guide.md`
+- **Status Akhir:** DELETED / REMOVED PERMANENTLY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - Werewolf: Malam & Desa
 - **Folder Game:** `public/games/werewolf`
 - **Deskripsi:** Game companion deduksi sosial misteri malam desa nusantara dengan dua mode: Mode Detektif Solo menganalisis alibi kebohongan serigala dan Mode Pass & Play pesta (Werewolf, Seer, Bodyguard, Villager) dengan voting sidang siang.

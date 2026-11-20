@@ -108,24 +108,6 @@ export const INITIAL_GAMES: Game[] = [
       touch: "Tap layar di mana saja untuk menjatuhkan balok",
     },
   },
-  // 6. Batik Flow (New from list-game2.md)
-  {
-    id: "batik-flow",
-    slug: "batik-flow",
-    title: "Batik Flow: Sambung Canting",
-    description: "Putar potongan ukiran lilin malam panas agar tersambung dari canting tembaga menuju mahkota batik nusantara!",
-    category: "puzzle",
-    thumbnailUrl: "/games/batik-flow/preview.png",
-    gamePath: "/games/batik-flow/index.html",
-    playCount: 6420,
-    likesCount: 540,
-    rating: 4.7,
-    badge: "BARU",
-    controlsGuide: {
-      keyboard: ["Klik Ubin : Putar 90 Derajat"],
-      touch: "Tap ubin kain untuk memutar arah jalur",
-    },
-  },
   // 7. Layangan Sanur (New from list-game2.md)
   {
     id: "layangan-sanur",

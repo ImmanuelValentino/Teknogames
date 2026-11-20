@@ -187,25 +187,6 @@ const GAMES_CONFIG = [
     `
   },
   {
-    slug: 'batik-flow',
-    category: 'TEKA-TEKI',
-    title: 'BATIK FLOW',
-    subtitle: 'SAMBUNG CANTING MOTIF PATTERN',
-    bg1: '#190826', bg2: '#340f4f',
-    primary: '#c084fc', secondary: '#e879f9',
-    iconSvg: `
-      <!-- Batik Parang Spiral Lines -->
-      <g transform="translate(300, 160)" stroke="#c084fc" stroke-width="4" fill="none">
-        <circle cx="0" cy="0" r="80" stroke="#a855f7" stroke-width="2" stroke-dasharray="6,6" />
-        <path d="M-60,-40 Q0,0 60,-40 T-60,40 Q0,0 60,40" stroke-width="5" />
-        <circle cx="0" cy="0" r="22" fill="#c084fc" />
-        <circle cx="0" cy="0" r="10" fill="#190826" />
-        <circle cx="-50" cy="-50" r="8" fill="#e879f9" />
-        <circle cx="50" cy="50" r="8" fill="#e879f9" />
-      </g>
-    `
-  },
-  {
     slug: 'layangan-sanur',
     category: 'AKSI',
     title: 'LAYANGAN SANUR',

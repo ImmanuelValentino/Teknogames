@@ -23,8 +23,6 @@ const getPlayForgeGradient = (slug: string, category: string) => {
       return "from-blue-500 via-indigo-600 to-violet-700";
     case "packing-master":
       return "from-amber-400 via-orange-500 to-rose-500";
-    case "batik-flow":
-      return "from-purple-500 via-fuchsia-600 to-pink-600";
     case "layangan-sanur":
       return "from-cyan-400 via-sky-500 to-blue-600";
     case "kopi-klotok":

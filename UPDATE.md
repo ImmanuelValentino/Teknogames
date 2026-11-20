@@ -8,6 +8,16 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.9.0] - 2026-11-20
+### Removed & Added (Permanent Deletion of Batik Flow & Blacklist Rule)
+- **Penghapusan Total Game Batik Flow:**
+  - Menghapus direktori `public/games/batik-flow/` beserta seluruh file kode dan aset preview di `public/batik-flow/` dan `public/images/games/batik-flow.*`.
+  - Menghapus registrasi metadata game `batik-flow` dari `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, dan generator preview.
+- **Penetapan Aturan Larangan Mutlak (Blacklist):**
+  - Menambahkan klausul permanen pada `AGENTS.md` (Bagian 8) dan `game-guide.md` (Bagian 9) yang **MELARANG KERAS** pembuatan, modifikasi, perancangan, atau pemulihan kembali game dengan nama mengandung "batik" maupun konsep serupa (puzzle alur lilin malam/canting/pipa bertema batik) untuk masa mendatang.
+- **Sinkronisasi Katalog & Static Build:**
+  - Mengekspor ulang build statis `npm run build` sehingga rute `/play/batik-flow` dan kartu terkait dihapus dari direktori output `out/`.
+
 ## [3.8.0] - 2026-11-20
 ### Added & Changed (Remake Batch 4: Lembah Bromo, Pasar Terapung, Kamus Kelana, Werewolf)
 - **Remake 4 Permainan Batch 4 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**
