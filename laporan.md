@@ -1,3 +1,16 @@
+### [2026-11-20 20:00] - [Games] - Hotfix Tembakan Pemburu & Penanganan Tombol Lewati Diskusi Online
+- **Kondisi Sebelum:**
+  1. Saat fajar menyingsing dengan hasil malam damai, muncul teks anomali `PEMBURU () GUGUR!` dengan nama kosong dan tombol `Lepaskan Tembakan Terakhir` tampil ke semua pemain. Hal ini terjadi karena class `.hidden` di `styles.css` hanya mencakup selector `.screen.hidden`, sehingga elemen panel pemburu tidak disembunyikan.
+  2. Tombol `Lepaskan Tembakan Terakhir` muncul di seluruh layar pemain, bukan eksklusif untuk Hunter yang gugur.
+  3. Tombol `Lewati Diskusi` tidak merespons atau tidak bisa dipencet pada mode online karena belum memiliki event handler di `online-supabase.js`, serta timer diskusi 2 menit tidak berjalan mundur.
+- **Perubahan Sesudah:**
+  1. Menambahkan rule CSS global `.hidden { display: none !important; }` serta inline style protektif pada `#dayHunterRevengePanel` sehingga seluruh elemen tersembunyi tidak akan pernah bocor lagi.
+  2. Mengisolasi panel dan tombol `Lepaskan Tembakan Terakhir` secara ketat: hanya pemain yang berstatus Hunter dan terbunuh semalam yang melihat panel aksi tersebut di peralatannya. Pemain lain melihat teks menunggu.
+  3. Memasang event listener klik pada tombol `Lewati Diskusi` (`btnSkipDiscussion`) dan `Mulai Sesi Voting` (`btnProceedToVoting`) di mode online: Host dapat langsung mempercepat alur ke voting eksekusi desa.
+  4. Menjalankan sinkronisasi countdown timer diskusi 120 detik (`#discussionTimerDigits`) dengan auto-transition ke voting jika waktu habis.
+- **Masalah yang Ditemukan:** Tidak ada. Zero-emoji policy terjaga 100%.
+- **File Terdampak:** `public/games/werewolf/styles.css`, `public/games/werewolf/index.html`, `public/games/werewolf/online-supabase.js`, `public/games/werewolf/offline-engine.js`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-20 19:50] - [Games] - Perbaikan Bug Seer Single-Lock, Timer 30 Detik Malam, dan Sinkronisasi Role Lobi Realtime
 - **Kondisi Sebelum:**
   1. Seer bisa mengklik dan mengintip identitas seluruh pemain lain berkali-kali dalam 1 malam sebelum menekan tombol kunci aksi.

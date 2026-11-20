@@ -134,6 +134,10 @@ html, body {
   animation: fadeIn 0.25s ease;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .screen.hidden {
   display: none !important;
 }

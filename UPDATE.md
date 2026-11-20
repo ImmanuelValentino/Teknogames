@@ -8,6 +8,18 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.14.2] - 2026-11-20
+### Fixed & Improved (Werewolf Hunter Revenge Isolation, .hidden CSS Rule, & Online Discussion Controls)
+- **Perbaikan Kebocoran Panel Pemburu ([public/games/werewolf/styles.css](public/games/werewolf/styles.css), [index.html](public/games/werewolf/index.html)):**
+  - Menambahkan aturan CSS global `.hidden { display: none !important; }` pada `styles.css`. Sebelumnya selector hanya `.screen.hidden` sehingga elemen internal seperti `#dayHunterRevengePanel` bocor ke layar dengan teks anomali `PEMBURU () GUGUR!`.
+  - Menambahkan fallback proteksi inline style `display: none` pada elemen `#dayHunterRevengePanel`.
+- **Isolasi Panel Tembakan Terakhir Hunter ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js), [offline-engine.js](public/games/werewolf/offline-engine.js)):**
+  - Memastikan panel `#dayHunterRevengePanel` dan tombol "Lepaskan Tembakan Terakhir" HANYA terbuka dan aktif di layar pemain yang berstatus Hunter DAN sedang gugur.
+  - Untuk pemain lain atau saat malam damai tanpa korban, panel disembunyikan secara absolut (`display: none`), dan pemain lain hanya melihat status info "Menunggu tembakan pembalasan Pemburu...".
+- **Pengaktifan Tombol Lewati Diskusi & Timer 120 Detik Online ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js)):**
+  - Mengimplementasikan event listener pada `btnSkipDiscussion` dan `btnProceedToVoting` untuk Mode Online: Host dapat melewati waktu diskusi atau langsung menuju voting, sedangkan pemain tamu mendapatkan panduan status "Menunggu Host...".
+  - Menjalankan sinkronisasi hitung mundur waktu diskusi 120 detik (`#discussionTimerDigits`) dengan auto-trigger voting saat timer habis.
+
 ## [3.14.1] - 2026-11-20
 ### Fixed & Improved (Werewolf Seer Single-Lock, 30s Night Turn Timer, & Realtime Lobby Sync)
 - **Pembatasan Terawang Seer ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js), [offline-engine.js](public/games/werewolf/offline-engine.js)):**

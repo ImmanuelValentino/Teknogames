@@ -579,6 +579,7 @@
     const newsText = document.getElementById('dayNewsText');
     const hunterPanel = document.getElementById('dayHunterRevengePanel');
     hunterPanel.classList.add('hidden');
+    hunterPanel.style.display = 'none';
 
     if (nightVictim) {
       newsText.innerHTML = `
@@ -605,6 +606,7 @@
     hunterPendingVictim = hunter;
     const panel = document.getElementById('dayHunterRevengePanel');
     panel.classList.remove('hidden');
+    panel.style.display = 'block';
     document.getElementById('hunterRevengeName').textContent = hunter.name;
 
     const targetList = document.getElementById('hunterTargetList');
@@ -634,6 +636,7 @@
 
       alert(`DOR! ${hunter.name} melepaskan tembakan terakhir ke ${target.name}! ${target.name} gugur dan perannya adalah [${ROLE_DEFS[target.role].name}].`);
       panel.classList.add('hidden');
+      panel.style.display = 'none';
 
       if (checkWinCondition()) return;
       setupDiscussionTimer();

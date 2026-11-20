@@ -1,3 +1,14 @@
+### 2026-11-20 - Werewolf: Hotfix Tembakan Pemburu & Penanganan Tombol Diskusi Online
+- **Folder Game:** `public/games/werewolf`
+- **Deskripsi:** Memperbaiki 3 isu pada fase siang game Werewolf: (1) Menghilangkan teks anomali 'PEMBURU () GUGUR!' yang muncul saat malam damai akibat kebocoran elemen panel, (2) Memastikan panel dan tombol 'Lepaskan Tembakan Terakhir' HANYA muncul pada layar pemain Pemburu (Hunter) yang benar-benar gugur dan disembunyikan secara absolut untuk pemain lain atau saat malam damai, serta (3) Mengaktifkan fungsi klik tombol 'Lewati Diskusi' dan 'Lanjut ke Voting' di Mode Online bersama sinkronisasi hitung mundur timer diskusi 120 detik.
+- **Fitur Utama:**
+  - [x] Rule CSS Global `.hidden { display: none !important; }` dan proteksi inline style
+  - [x] Isolasi Panel Tembakan Terakhir Khusus Hunter yang Gugur
+  - [x] Fungsionalitas Tombol Lewati Diskusi (Host Skip Controller)
+  - [x] Timer Countdown Diskusi Siang 120 Detik Online Realtime
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - Werewolf: Bugfix Seer Single-Lock, Timer 30 Detik Malam, & Sinkronisasi Role Realtime
 - **Folder Game:** `public/games/werewolf`
 - **Deskripsi:** Memperbaiki 3 isu gameplay pada game Werewolf: (1) Membatasi Seer hanya dapat mengklik/melihat 1 identitas per malam dengan langsung mengunci dan menonaktifkan kartu target lainnya, (2) Menambahkan pembatasan waktu giliran aksi malam 30 detik (auto-submit/auto-skip saat waktu habis) serta menampilkan status peran yang sedang beraksi dan countdown waktu giliran di layar tunggu pemain lain, dan (3) Memperbaiki sinkronisasi perubahan jumlah role di room master agar user/guest lain di lobi dapat langsung melihat perubahan secara real-time via dual-sync (Realtime + Polling 1 detik).

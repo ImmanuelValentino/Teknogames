@@ -941,18 +941,6 @@
       resolveNightOnline(state);
     }
   }
-      await supabaseClient
-        .from('werewolf_rooms')
-        .update({
-          game_state: state,
-          updated_at: new Date().toISOString()
-        })
-        .eq('room_code', currentRoomCode);
-    } else {
-      // Resolusi malam
-      resolveNightOnline(state);
-    }
-  }
 
   async function resolveNightOnline(state) {
     const wolfTarget = state.players.find(p => p.id === state.night_actions.wolf_target_id);
@@ -999,11 +987,19 @@
   // ==========================================
   // 7. SIKLUS SIANG & VOTING ONLINE
   // ==========================================
+  let onlineDiscussionTimer = null;
+  let onlineDiscussionSeconds = 120;
+
   function renderOnlineDayAnnouncement(state) {
     if (nightStepCountdownTimer) {
       clearInterval(nightStepCountdownTimer);
       nightStepCountdownTimer = null;
     }
+    if (onlineDiscussionTimer) {
+      clearInterval(onlineDiscussionTimer);
+      onlineDiscussionTimer = null;
+    }
+
     window.WerewolfApp.switchScreen('screenDayAnnouncement');
     window.WerewolfApp.setHudStatus('FASE SIANG');
     window.WerewolfAudio.play('bell');
@@ -1011,9 +1007,15 @@
     const newsText = document.getElementById('dayNewsText');
     const hunterPanel = document.getElementById('dayHunterRevengePanel');
     const btnVote = document.getElementById('btnProceedToVoting');
+    const btnSkip = document.getElementById('btnSkipDiscussion');
+
+    // Default: Selalu sembunyikan panel tembakan hunter secara ketat
     hunterPanel.classList.add('hidden');
+    hunterPanel.style.display = 'none';
 
     const victim = state.last_night_victim;
+    let waitingHunterAction = false;
+
     if (victim) {
       newsText.innerHTML = `
         Kabar duka! <strong style="color:var(--blood-red);">${victim.name}</strong> ditemukan tewas semalam diserang Werewolf.<br>
@@ -1023,10 +1025,11 @@
       if (victim.role === 'hunter') {
         const isDeadHunterMe = (victim.id === myPlayerId);
         if (isDeadHunterMe) {
+          waitingHunterAction = true;
           setupOnlineHunterShoot(state);
-          return;
         } else {
-          newsText.innerHTML += `<br><em>Menunggu tembakan pembalasan Hunter (${victim.name})...</em>`;
+          waitingHunterAction = true;
+          newsText.innerHTML += `<br><span style="color:var(--role-hunter); font-weight:700;">Menunggu tembakan pembalasan Pemburu (${victim.name})...</span>`;
         }
       }
     } else {
@@ -1035,29 +1038,81 @@
       `;
     }
 
+    // Aksi menuju voting
+    const proceedToVotingOnline = async () => {
+      if (onlineDiscussionTimer) {
+        clearInterval(onlineDiscussionTimer);
+        onlineDiscussionTimer = null;
+      }
+      state.phase = 'day_voting';
+      state.players.forEach(p => p.vote = null);
+      await supabaseClient
+        .from('werewolf_rooms')
+        .update({
+          status: 'day_voting',
+          game_state: state,
+          updated_at: new Date().toISOString()
+        })
+        .eq('room_code', currentRoomCode);
+    };
+
+    // Tombol Lanjut ke Voting & Lewati Diskusi
     if (isHost) {
       btnVote.classList.remove('hidden');
+      btnVote.disabled = false;
       btnVote.textContent = 'Mulai Sesi Voting';
-      btnVote.onclick = async () => {
-        state.phase = 'day_voting';
-        state.players.forEach(p => p.vote = null);
-        await supabaseClient
-          .from('werewolf_rooms')
-          .update({
-            status: 'day_voting',
-            game_state: state,
-            updated_at: new Date().toISOString()
-          })
-          .eq('room_code', currentRoomCode);
-      };
+      btnVote.onclick = proceedToVotingOnline;
+
+      if (btnSkip) {
+        btnSkip.classList.remove('hidden');
+        btnSkip.disabled = false;
+        btnSkip.onclick = proceedToVotingOnline;
+      }
     } else {
-      btnVote.classList.add('hidden');
+      btnVote.classList.remove('hidden');
+      btnVote.disabled = true;
+      btnVote.textContent = 'Menunggu Host...';
+
+      if (btnSkip) {
+        btnSkip.classList.remove('hidden');
+        btnSkip.disabled = false;
+        btnSkip.onclick = () => {
+          alert('Hanya Host ruang yang dapat mempercepat atau melewati waktu diskusi.');
+        };
+      }
+    }
+
+    // Countdown Timer Diskusi Terbuka
+    onlineDiscussionSeconds = 120;
+    const timerDigits = document.getElementById('discussionTimerDigits');
+    const updateTimerDisplay = () => {
+      if (timerDigits) {
+        const m = String(Math.floor(onlineDiscussionSeconds / 60)).padStart(2, '0');
+        const s = String(onlineDiscussionSeconds % 60).padStart(2, '0');
+        timerDigits.textContent = `${m}:${s}`;
+      }
+    };
+    updateTimerDisplay();
+
+    if (!waitingHunterAction) {
+      onlineDiscussionTimer = setInterval(() => {
+        onlineDiscussionSeconds--;
+        updateTimerDisplay();
+        if (onlineDiscussionSeconds <= 0) {
+          clearInterval(onlineDiscussionTimer);
+          onlineDiscussionTimer = null;
+          if (isHost) {
+            proceedToVotingOnline();
+          }
+        }
+      }, 1000);
     }
   }
 
   function setupOnlineHunterShoot(state) {
     const hunterPanel = document.getElementById('dayHunterRevengePanel');
     hunterPanel.classList.remove('hidden');
+    hunterPanel.style.display = 'block';
     document.getElementById('hunterRevengeName').textContent = myPlayerName;
 
     const list = document.getElementById('hunterTargetList');
@@ -1087,6 +1142,7 @@
 
       window.WerewolfAudio.play('gunshot');
       hunterPanel.classList.add('hidden');
+      hunterPanel.style.display = 'none';
 
       if (checkOnlineWin(state)) {
         state.phase = 'finished';
@@ -1101,6 +1157,7 @@
         return;
       }
 
+      state.last_night_victim = null; // Tembakan selesai diproses
       await supabaseClient
         .from('werewolf_rooms')
         .update({
@@ -1112,6 +1169,16 @@
   }
 
   function renderOnlineDayVoting(state) {
+    if (onlineDiscussionTimer) {
+      clearInterval(onlineDiscussionTimer);
+      onlineDiscussionTimer = null;
+    }
+    const hunterPanel = document.getElementById('dayHunterRevengePanel');
+    if (hunterPanel) {
+      hunterPanel.classList.add('hidden');
+      hunterPanel.style.display = 'none';
+    }
+
     window.WerewolfApp.switchScreen('screenDayVoting');
     window.WerewolfApp.setHudStatus('VOTING EKSEKUSI');
 
