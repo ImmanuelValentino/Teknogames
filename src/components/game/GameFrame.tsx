@@ -128,6 +128,9 @@ export default function GameFrame({ game, onOpenLeaderboard }: GameFrameProps) {
       {/* Kontainer Layar Permainan (Iframe) */}
       <div
         ref={containerRef}
+        suppressHydrationWarning
+        data-grammarly-skip="true"
+        data-enable-grammarly="false"
         className={`relative w-full rounded-2xl overflow-hidden bg-black/60 border border-white/10 shadow-lg transition-all ${
           isFullscreen ? "h-screen rounded-none" : "h-[450px] sm:h-[540px] md:h-[600px]"
         }`}
