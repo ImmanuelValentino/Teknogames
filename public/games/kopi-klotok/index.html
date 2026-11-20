@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" href="data:,">
   <title>Kopi Klotok: Barista Rhythm - TeknoGame</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -10,20 +11,23 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #1c1917;
+      background: #090e1a;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
       touch-action: manipulation;
     }
+    #game-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
     canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       display: block;
-      touch-action: manipulation;
     }
     #ui {
       position: absolute;
@@ -35,83 +39,122 @@
       top: 14px;
       left: 14px;
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       pointer-events: auto;
       z-index: 20;
     }
     .badge {
-      background: rgba(28, 25, 23, 0.9);
+      background: rgba(15, 23, 42, 0.9);
       color: #fff;
       padding: 6px 14px;
       border-radius: 9999px;
       font-weight: 800;
       font-size: 13px;
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      backdrop-filter: blur(6px);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .badge span { color: #f59e0b; }
-    .rating-banner {
+    .badge-icon {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: #f59e0b;
+      stroke-width: 2;
+    }
+
+    .rating-pop {
       position: absolute;
-      top: 28%;
+      top: 45%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.6);
-      font-size: 30px;
+      font-size: 24px;
       font-weight: 900;
       opacity: 0;
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
       pointer-events: none;
-      text-shadow: 0 4px 16px rgba(0,0,0,0.6);
       z-index: 15;
+      letter-spacing: 0.05em;
     }
-    .rating-banner.show {
+    .rating-pop.show {
       opacity: 1;
-      transform: translate(-50%, -50%) scale(1.1);
+      transform: translate(-50%, -50%) scale(1.15);
     }
-    .tap-btn {
+    .rating-perfect { color: #f59e0b; text-shadow: 0 0 16px rgba(245, 158, 11, 0.9); }
+    .rating-good { color: #38bdf8; text-shadow: 0 0 14px rgba(56, 189, 248, 0.8); }
+    .rating-miss { color: #ef4444; text-shadow: 0 0 14px rgba(239, 68, 68, 0.8); }
+
+    /* Audio Toggle Button */
+    .audio-btn {
       position: absolute;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 180px;
-      height: 58px;
-      background: linear-gradient(135deg, #b45309, #d97706);
-      border: 3px solid #fef3c7;
-      border-radius: 20px;
+      top: 14px;
+      right: 14px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(245, 158, 11, 0.3);
       color: #fff;
-      font-size: 17px;
-      font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
       cursor: pointer;
       pointer-events: auto;
-      box-shadow: 0 8px 24px rgba(180, 83, 9, 0.55);
-      touch-action: manipulation;
-      transition: transform 0.1s, background 0.1s;
       z-index: 25;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.1s;
     }
-    .tap-btn:active {
-      transform: translateX(-50%) scale(0.94);
-      background: #92400e;
-    }
-    .screen-hint {
+    .audio-btn:active { transform: scale(0.92); }
+    .audio-btn svg { width: 18px; height: 18px; stroke: #f59e0b; stroke-width: 2; fill: none; }
+
+    /* 3 Mobile Rhythm Tap Buttons */
+    .lane-buttons {
       position: absolute;
-      bottom: 90px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 11px;
-      color: #a8a29e;
-      font-weight: 700;
-      pointer-events: none;
-      letter-spacing: 0.05em;
+      display: flex;
+      gap: 16px;
+      pointer-events: auto;
+      z-index: 25;
     }
+    .lane-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 2px solid rgba(245, 158, 11, 0.4);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      touch-action: manipulation;
+      backdrop-filter: blur(8px);
+      transition: transform 0.08s, background 0.08s, border-color 0.08s;
+    }
+    .lane-btn:active, .lane-btn.active {
+      transform: scale(0.92);
+      background: rgba(245, 158, 11, 0.35);
+      border-color: #f59e0b;
+    }
+    .lane-btn svg { width: 22px; height: 22px; stroke: #f59e0b; stroke-width: 2.5; fill: none; }
+    .lane-btn span { font-size: 11px; font-weight: 800; color: #fde68a; }
+
+    /* Modal Screens */
     .modal {
       position: absolute;
       inset: 0;
-      background: rgba(28, 25, 23, 0.94);
-      backdrop-filter: blur(10px);
+      background: rgba(9, 14, 26, 0.95);
+      backdrop-filter: blur(12px);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -122,347 +165,683 @@
       padding: 24px;
       z-index: 50;
     }
+    .modal-box {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 30px;
+      border-radius: 24px;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+    }
+    .modal-icon-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .modal-icon-badge svg {
+      width: 30px;
+      height: 30px;
+      stroke: #f59e0b;
+      stroke-width: 2;
+      fill: none;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .stat-row span:last-child { color: #f59e0b; }
     .btn {
       background: linear-gradient(135deg, #d97706, #b45309);
       color: #fff;
       border: none;
       padding: 13px 32px;
       border-radius: 14px;
-      font-weight: 800;
-      font-size: 16px;
+      font-weight: 900;
+      font-size: 15px;
       cursor: pointer;
-      transition: all 0.2s;
-      margin-top: 18px;
-      box-shadow: 0 8px 20px rgba(180, 83, 9, 0.45);
+      transition: transform 0.15s, box-shadow 0.15s;
+      margin-top: 16px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(217, 119, 6, 0.4);
     }
-    .btn:hover { transform: translateY(-2px); }
     .btn:active { transform: scale(0.96); }
-    .title { font-size: 26px; font-weight: 900; margin-bottom: 6px; }
-    .subtitle { font-size: 13px; color: #cbd5e1; max-width: 320px; line-height: 1.4; }
+    .control-hint {
+      margin-top: 14px;
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
-  <canvas id="canvas"></canvas>
-  <div id="ui">
-    <div class="hud">
-      <div class="badge">Cangkir: <span id="cups-val">0</span> ☕</div>
-      <div class="badge">Skor Barista: <span id="score-val">0</span> pts</div>
-      <div class="badge">Sisa Nyawa: <span id="lives-val">❤️❤️❤️❤️❤️</span></div>
-    </div>
-    
-    <div class="rating-banner" id="rating-banner">SEMPURNA! ✨</div>
-    <div class="screen-hint">Tap layar atau tombol SEDOH tepat di garis sasaran</div>
-    <div class="tap-btn" id="tap-btn">SEDOH! ☕</div>
+  <div id="game-container">
+    <canvas id="canvas"></canvas>
 
-    <!-- Start Modal -->
-    <div class="modal" id="start-modal">
-      <div style="font-size: 48px; margin-bottom: 8px;">☕🔥</div>
-      <h1 class="title">Kopi Klotok: Barista Rhythm</h1>
-      <p class="subtitle">Ketuk seduhan kopi tepat saat tetesan kopi & biji sangrai menyentuh bibir cangkir tanah liat!</p>
-      <div style="margin-top: 14px; font-size: 12px; color: #fde68a; background: rgba(255,255,255,0.08); padding: 8px 16px; border-radius: 10px;">
-        Tekan <b>SPASI</b> atau <b>TAP LAYAR / TOMBOL SEDOH</b> saat tetesan berada di garis merah
+    <div id="ui">
+      <!-- HUD Top Bar -->
+      <div class="hud">
+        <div class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Skor: <span id="hud-score">0</span>
+        </div>
+        <div class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Kombo: <span id="hud-combo">0x</span>
+        </div>
+        <div class="badge">
+          <svg class="badge-icon" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          Nyawa: <span id="hud-lives">3</span>
+        </div>
       </div>
-      <button class="btn" id="start-btn" type="button">Buka Warung Kopi</button>
-    </div>
 
-    <!-- Over Modal -->
-    <div class="modal" id="over-modal" style="display: none;">
-      <div style="font-size: 48px; margin-bottom: 8px;">♨️</div>
-      <h2 class="title" style="color: #ef4444;">Kopi Tumpah & Gosong!</h2>
-      <p class="subtitle">Ketukan meleset terlalu banyak dari ritme seduhan warung.</p>
-      <div style="font-size: 26px; font-weight: 900; color: #f59e0b; margin-top: 12px;" id="final-score">0 pts</div>
-      <button class="btn" id="restart-btn" type="button">Seduh Kopi Baru ☕</button>
+      <div class="rating-pop" id="rating-pop">SEMPURNA!</div>
+
+      <!-- Audio Toggle Button -->
+      <button class="audio-btn" id="audio-toggle" title="Toggle Suara">
+        <svg id="audio-icon-on" viewBox="0 0 24 24">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        </svg>
+        <svg id="audio-icon-off" viewBox="0 0 24 24" style="display: none;">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <line x1="23" y1="9" x2="17" y2="15"/>
+          <line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+      </button>
+
+      <!-- 3 Lane Rhythm Virtual Buttons -->
+      <div class="lane-buttons">
+        <button class="lane-btn" id="btn-lane-0">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          <span>A / KIRI</span>
+        </button>
+        <button class="lane-btn" id="btn-lane-1">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          <span>S / TENGAH</span>
+        </button>
+        <button class="lane-btn" id="btn-lane-2">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          <span>D / KANAN</span>
+        </button>
+      </div>
+
+      <!-- Start Modal -->
+      <div class="modal" id="start-modal">
+        <div class="modal-box">
+          <div class="modal-icon-badge">
+            <svg viewBox="0 0 24 24">
+              <path d="M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
+              <line x1="6" y1="2" x2="6" y2="4"/>
+              <line x1="10" y1="2" x2="10" y2="4"/>
+              <line x1="14" y1="2" x2="14" y2="4"/>
+            </svg>
+          </div>
+          <h1 class="title">Kopi Klotok</h1>
+          <p class="subtitle">Ketuk seduhan kopi tepat saat tetesan air mendidih & biji kopi sangrai menyentuh cangkir tanah liat!</p>
+          <div class="stat-row">
+            <span>Rekor Tertinggi</span>
+            <span id="start-high">0 pts</span>
+          </div>
+          <button class="btn" id="start-btn">Mulai Menyeduh</button>
+          <div class="control-hint">
+            Desktop: Tombol <b>A / S / D</b> atau <b>PANAH KIRI / BAWAH / KANAN</b><br>
+            Mobile: Tap tombol seduh cangkir di bawah masing-masing rel
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Over Modal -->
+      <div class="modal" id="game-over-modal" style="display: none;">
+        <div class="modal-box">
+          <div class="modal-icon-badge" style="border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.1);">
+            <svg viewBox="0 0 24 24" style="stroke: #ef4444;">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="15" y1="9" x2="9" y2="15"/>
+              <line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <h2 class="title" style="color: #ef4444;">Seduhan Kopi Tumpah!</h2>
+          <p class="subtitle" id="game-over-desc">Ritme seduhan terlewat 3 kali berturut-turut.</p>
+          <div class="stat-row">
+            <span>Skor Akhir</span>
+            <span id="final-score">0 pts</span>
+          </div>
+          <div class="stat-row">
+            <span>Rekor Terbaik</span>
+            <span id="final-high">0 pts</span>
+          </div>
+          <button class="btn" id="restart-btn">Seduh Cangkir Baru</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
+    // --- AUDIO SYSTEM (Web Audio API Synthesizer) ---
+    class SoundEffects {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playPerfect() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [587, 880].forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f, now + i * 0.05);
+          gain.gain.setValueAtTime(0.2, now + i * 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.05 + 0.18);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.05);
+          osc.stop(now + i * 0.05 + 0.2);
+        });
+      }
+      playGood() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(440, now);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.13);
+      }
+      playMiss() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(140, now);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.16);
+      }
+      playCrash() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(35, now + 0.4);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.42);
+      }
+      toggle() {
+        this.enabled = !this.enabled;
+        return this.enabled;
+      }
+    }
+
+    const sound = new SoundEffects();
+
+    // --- DOM REFERENCES ---
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    const cupsVal = document.getElementById('cups-val');
-    const scoreVal = document.getElementById('score-val');
-    const livesVal = document.getElementById('lives-val');
-    const ratingBanner = document.getElementById('rating-banner');
-    const tapBtn = document.getElementById('tap-btn');
+    const hudScore = document.getElementById('hud-score');
+    const hudCombo = document.getElementById('hud-combo');
+    const hudLives = document.getElementById('hud-lives');
+    const ratingPop = document.getElementById('rating-pop');
     const startModal = document.getElementById('start-modal');
-    const overModal = document.getElementById('over-modal');
-    const finalScore = document.getElementById('final-score');
+    const gameOverModal = document.getElementById('game-over-modal');
     const startBtn = document.getElementById('start-btn');
     const restartBtn = document.getElementById('restart-btn');
+    const startHigh = document.getElementById('start-high');
+    const finalScore = document.getElementById('final-score');
+    const finalHigh = document.getElementById('final-high');
+    const btnLanes = [
+      document.getElementById('btn-lane-0'),
+      document.getElementById('btn-lane-1'),
+      document.getElementById('btn-lane-2')
+    ];
+    const audioToggle = document.getElementById('audio-toggle');
+    const audioIconOn = document.getElementById('audio-icon-on');
+    const audioIconOff = document.getElementById('audio-icon-off');
 
-    let width, height;
+    // --- GAME CONSTANTS & STATE ---
+    const STORAGE_KEY = 'teknogames_kopi-klotok_highscore';
+    let highScore = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+    startHigh.innerText = highScore + ' pts';
+
+    let width = 0;
+    let height = 0;
+    let animationId = null;
+    let gameState = 'START';
+    let lastTime = 0;
+
+    let score = 0;
+    let combo = 0;
+    let lives = 3;
+    let noteSpeed = 340; // px/sec
+
+    // 3 Lanes configuration
+    const LANE_COUNT = 3;
+    let laneXs = [0, 0, 0];
+    let laneWidth = 90;
+    let hitLineY = 0;
+
+    // Falling rhythm notes (drops & coffee beans)
+    let notes = [];
+    let noteTimer = 0;
+    let particles = [];
+
+    // --- RESIZE CANVAS ---
     function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      laneWidth = Math.min(100, Math.floor(width / 3.8));
+      const totalWidth = laneWidth * LANE_COUNT + 32;
+      const startX = (width - totalWidth) / 2 + laneWidth / 2 + 8;
+
+      laneXs = [
+        startX,
+        startX + laneWidth + 8,
+        startX + (laneWidth + 8) * 2
+      ];
+
+      hitLineY = height * 0.72;
     }
     window.addEventListener('resize', resize);
     resize();
 
-    // Audio SFX
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    let actx = null;
-    function initAudio() {
-      if (!actx) actx = new AudioCtx();
-      if (actx.state === 'suspended') actx.resume();
-    }
-    function playDropSound(freq) {
-      initAudio();
-      try {
-        const osc = actx.createOscillator(), gain = actx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, actx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(freq * 1.8, actx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.28, actx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + 0.08);
-        osc.connect(gain); gain.connect(actx.destination);
-        osc.start(); osc.stop(actx.currentTime + 0.08);
-      } catch(e){}
-    }
-    function playMissSound() {
-      initAudio();
-      try {
-        const osc = actx.createOscillator(), gain = actx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(140, actx.currentTime);
-        gain.gain.setValueAtTime(0.18, actx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + 0.12);
-        osc.connect(gain); gain.connect(actx.destination);
-        osc.start(); osc.stop(actx.currentTime + 0.12);
-      } catch(e){}
-    }
+    // --- AUDIO TOGGLE ---
+    audioToggle.addEventListener('click', () => {
+      const active = sound.toggle();
+      audioIconOn.style.display = active ? 'block' : 'none';
+      audioIconOff.style.display = active ? 'none' : 'block';
+    });
 
-    let isPlaying = false;
-    let score = 0;
-    let cups = 0;
-    let misses = 0;
-    const MAX_MISSES = 5;
-    let drops = [];
-    let steam = [];
-    const HIT_Y = () => height - 170;
+    // --- TAP / HIT ACTION ---
+    function tapLane(laneIdx) {
+      if (gameState !== 'PLAYING') return;
 
-    function init() {
-      startModal.style.display = 'none';
-      overModal.style.display = 'none';
-      score = 0;
-      cups = 0;
-      misses = 0;
-      drops = [];
-      steam = [];
-      cupsVal.innerText = '0';
-      scoreVal.innerText = '0';
-      updateLives();
-      isPlaying = true;
-    }
+      // Flash button active style
+      btnLanes[laneIdx].classList.add('active');
+      setTimeout(() => btnLanes[laneIdx].classList.remove('active'), 120);
 
-    function updateLives() {
-      const left = Math.max(0, MAX_MISSES - misses);
-      livesVal.innerText = '❤️'.repeat(left) + '🖤'.repeat(MAX_MISSES - left);
-    }
-
-    function hit() {
-      if (!isPlaying) return;
-      initAudio();
-
-      const hitY = HIT_Y();
-      let hitIdx = -1;
+      // Search nearest note in this lane
+      let nearestNote = null;
       let minDiff = 999;
+      let noteIndex = -1;
 
-      drops.forEach((d, idx) => {
-        const diff = Math.abs(d.y - hitY);
-        if (diff < minDiff) {
-          minDiff = diff;
-          hitIdx = idx;
+      for (let i = 0; i < notes.length; i++) {
+        const n = notes[i];
+        if (n.lane === laneIdx && !n.hit) {
+          const diff = Math.abs(n.y - hitLineY);
+          if (diff < minDiff) {
+            minDiff = diff;
+            nearestNote = n;
+            noteIndex = i;
+          }
         }
-      });
+      }
 
-      if (hitIdx !== -1 && minDiff < 48) {
-        // Successful hit
-        drops.splice(hitIdx, 1);
-        cups++;
-        cupsVal.innerText = cups;
+      if (nearestNote && minDiff < 75) {
+        nearestNote.hit = true;
 
-        if (minDiff < 16) {
-          score += 300;
-          showRating("SEMPURNA! ✨", "#4ade80");
-          playDropSound(640);
+        if (minDiff < 25) {
+          // PERFECT
+          sound.playPerfect();
+          combo++;
+          const pts = 100 * Math.min(4, 1 + Math.floor(combo / 5));
+          score += pts;
+          showRating('SEMPURNA!', 'rating-perfect');
+          createNoteSparkle(laneXs[laneIdx], hitLineY, '#f59e0b');
         } else {
-          score += 150;
-          showRating("PAS! ☕", "#facc15");
-          playDropSound(460);
+          // GOOD
+          sound.playGood();
+          combo++;
+          const pts = 50 * Math.min(4, 1 + Math.floor(combo / 5));
+          score += pts;
+          showRating('BAGUS!', 'rating-good');
+          createNoteSparkle(laneXs[laneIdx], hitLineY, '#38bdf8');
         }
-        scoreVal.innerText = score.toLocaleString('id-ID');
 
-        // Add steam particles
-        for (let i = 0; i < 5; i++) {
-          steam.push({
-            x: width / 2 + (Math.random() - 0.5) * 44,
-            y: hitY,
-            vy: -1.8,
-            alpha: 0.85
-          });
-        }
+        hudScore.innerText = score.toString();
+        hudCombo.innerText = combo + 'x';
+        notes.splice(noteIndex, 1);
       } else {
-        // Miss / Tap Kosong
-        misses++;
-        updateLives();
-        playMissSound();
-        showRating("LEWAT!", "#ef4444");
-        if (misses >= MAX_MISSES) gameOver();
+        // Empty tap / early tap
+        sound.playMiss();
       }
     }
 
-    let ratingTimeout = null;
-    function showRating(text, color) {
-      ratingBanner.innerText = text;
-      ratingBanner.style.color = color;
-      ratingBanner.classList.add('show');
-      if (ratingTimeout) clearTimeout(ratingTimeout);
-      ratingTimeout = setTimeout(() => ratingBanner.classList.remove('show'), 400);
+    function showRating(text, cssClass) {
+      ratingPop.innerText = text;
+      ratingPop.className = 'rating-pop show ' + cssClass;
+      setTimeout(() => ratingPop.classList.remove('show'), 400);
+    }
+
+    function createNoteSparkle(x, y, color) {
+      for (let i = 0; i < 10; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const spd = Math.random() * 120 + 40;
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(ang) * spd,
+          vy: Math.sin(ang) * spd,
+          size: Math.random() * 4 + 2,
+          color: color,
+          life: 0.35,
+          maxLife: 0.35
+        });
+      }
+    }
+
+    // Key listeners
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'KeyA' || e.code === 'ArrowLeft' || e.code === 'Digit1') {
+        e.preventDefault();
+        tapLane(0);
+      } else if (e.code === 'KeyS' || e.code === 'ArrowDown' || e.code === 'Digit2') {
+        e.preventDefault();
+        tapLane(1);
+      } else if (e.code === 'KeyD' || e.code === 'ArrowRight' || e.code === 'Digit3') {
+        e.preventDefault();
+        tapLane(2);
+      }
+    });
+
+    btnLanes.forEach((btn, idx) => {
+      btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        tapLane(idx);
+      });
+    });
+
+    startBtn.addEventListener('click', () => startGame());
+    restartBtn.addEventListener('click', () => startGame());
+
+    // --- GAME CONTROL ---
+    function startGame() {
+      sound.init();
+      gameState = 'PLAYING';
+      score = 0;
+      combo = 0;
+      lives = 3;
+      noteSpeed = 340;
+      notes = [];
+      particles = [];
+      noteTimer = 0.8;
+
+      hudScore.innerText = '0';
+      hudCombo.innerText = '0x';
+      hudLives.innerText = '3';
+      startModal.style.display = 'none';
+      gameOverModal.style.display = 'none';
+
+      lastTime = performance.now();
+      if (!animationId) {
+        animationId = requestAnimationFrame(gameLoop);
+      }
     }
 
     function gameOver() {
-      if (!isPlaying) return;
-      isPlaying = false;
-      finalScore.innerText = score.toLocaleString('id-ID') + ' pts';
-      overModal.style.display = 'flex';
+      gameState = 'GAMEOVER';
+      sound.playCrash();
+
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem(STORAGE_KEY, highScore.toString());
+        hudHigh.innerText = highScore;
+      }
 
       if (window.parent) {
-        window.parent.postMessage({
-          type: 'GAME_OVER',
-          gameId: 'kopi-klotok',
-          score: score
-        }, '*');
+        window.parent.postMessage({ type: 'GAME_OVER', score: score }, '*');
+      }
+
+      finalScore.innerText = score + ' pts';
+      finalHigh.innerText = highScore + ' pts';
+      gameOverModal.style.display = 'flex';
+    }
+
+    // --- SPAWNING ---
+    function spawnNote() {
+      const lane = Math.floor(Math.random() * 3);
+      const isBean = Math.random() > 0.4;
+      notes.push({
+        lane: lane,
+        y: -30,
+        isBean: isBean,
+        hit: false
+      });
+    }
+
+    // --- UPDATE LOOP ---
+    function update(dt) {
+      if (gameState !== 'PLAYING') return;
+
+      // Progressive speed scaling
+      noteSpeed = Math.min(520, 340 + score * 0.05);
+
+      // Note spawning
+      noteTimer -= dt;
+      if (noteTimer <= 0) {
+        spawnNote();
+        noteTimer = Math.max(0.45, 0.95 - (noteSpeed - 340) * 0.0015);
+      }
+
+      // Update notes
+      for (let i = notes.length - 1; i >= 0; i--) {
+        const n = notes[i];
+        n.y += noteSpeed * dt;
+
+        // Check miss (past hit line by > 60px)
+        if (n.y > hitLineY + 65 && !n.hit) {
+          n.hit = true;
+          combo = 0;
+          lives--;
+          hudCombo.innerText = '0x';
+          hudLives.innerText = lives.toString();
+          showRating('MELESET!', 'rating-miss');
+          sound.playMiss();
+
+          if (lives <= 0) {
+            gameOver();
+            return;
+          }
+        }
+
+        if (n.y > height + 40) {
+          notes.splice(i, 1);
+        }
+      }
+
+      // Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.life -= dt;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        if (p.life <= 0) particles.splice(i, 1);
       }
     }
 
-    // Keyboard & Touch Handlers
-    window.addEventListener('keydown', e => { if (e.code === 'Space') hit(); });
-    tapBtn.addEventListener('pointerdown', (e) => {
-      e.stopPropagation();
-      hit();
-    });
-    // Canvas tap anywhere to hit
-    canvas.addEventListener('pointerdown', (e) => {
-      if (isPlaying) hit();
-    });
-
-    startBtn.addEventListener('click', () => { initAudio(); init(); });
-    restartBtn.addEventListener('click', () => { initAudio(); init(); });
-
-    let spawnTimer = 0;
-
-    function loop() {
-      requestAnimationFrame(loop);
-      ctx.clearRect(0, 0, width, height);
-
-      // Warung Ambient Background
-      const bg = ctx.createLinearGradient(0, 0, 0, height);
-      bg.addColorStop(0, '#1c1917');
-      bg.addColorStop(1, '#292524');
-      ctx.fillStyle = bg;
+    // --- DRAWING ---
+    function draw() {
+      // Warm dark coffee shop ambience
+      ctx.fillStyle = '#0f172a';
       ctx.fillRect(0, 0, width, height);
 
-      const hitY = HIT_Y();
+      // Draw 3 vertical coffee rails
+      for (let i = 0; i < LANE_COUNT; i++) {
+        const lx = laneXs[i];
 
-      // Wooden Table
-      ctx.fillStyle = '#78350f';
-      ctx.fillRect(0, hitY + 22, width, height - (hitY + 22));
-      ctx.fillStyle = '#451a03';
-      ctx.fillRect(0, hitY + 22, width, 6);
+        // Track lane background glow
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+        ctx.fillRect(lx - laneWidth / 2, 0, laneWidth, height);
 
-      // Hit Line Target Marker
-      ctx.strokeStyle = '#ef4444';
-      ctx.lineWidth = 2.5;
-      ctx.setLineDash([8, 8]);
+        // Track lane border lines
+        ctx.strokeStyle = 'rgba(245, 158, 11, 0.15)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(lx - laneWidth / 2, 0); ctx.lineTo(lx - laneWidth / 2, height);
+        ctx.moveTo(lx + laneWidth / 2, 0); ctx.lineTo(lx + laneWidth / 2, height);
+        ctx.stroke();
+
+        // Hit target cup circle at hitLineY
+        ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(lx, hitLineY, 24, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Clay cup illustration
+        ctx.fillStyle = '#78350f';
+        ctx.beginPath();
+        ctx.roundRect(lx - 20, hitLineY - 14, 40, 28, [6, 6, 12, 12]);
+        ctx.fill();
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Cup handle
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(lx + 22, hitLineY, 6, -Math.PI / 2, Math.PI / 2);
+        ctx.stroke();
+      }
+
+      // Hit Target Line Across Rails
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([8, 6]);
       ctx.beginPath();
-      ctx.moveTo(width / 2 - 85, hitY);
-      ctx.lineTo(width / 2 + 85, hitY);
+      ctx.moveTo(laneXs[0] - laneWidth / 2, hitLineY);
+      ctx.lineTo(laneXs[2] + laneWidth / 2, hitLineY);
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Clay Coffee Cup (Cangkir Tanah Liat)
-      const cupX = width / 2;
-      ctx.fillStyle = '#92400e';
-      ctx.beginPath();
-      ctx.roundRect(cupX - 44, hitY, 88, 56, [0, 0, 20, 20]);
-      ctx.fill();
+      // Draw Falling Rhythm Notes
+      for (const n of notes) {
+        if (n.hit) continue;
+        const nx = laneXs[n.lane];
+        const ny = n.y;
 
-      // Cup handle
-      ctx.strokeStyle = '#92400e';
-      ctx.lineWidth = 8;
-      ctx.beginPath();
-      ctx.arc(cupX + 44, hitY + 26, 14, -Math.PI / 2, Math.PI / 2);
-      ctx.stroke();
+        if (n.isBean) {
+          // Coffee Bean (Brown oval with center wave slit)
+          ctx.save();
+          ctx.translate(nx, ny);
+          ctx.fillStyle = '#451a03';
+          ctx.beginPath();
+          ctx.ellipse(0, 0, 14, 18, 0.3, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#d97706';
+          ctx.lineWidth = 2;
+          ctx.stroke();
 
-      // Coffee surface inside cup
-      ctx.fillStyle = '#1c1917';
-      ctx.beginPath();
-      ctx.ellipse(cupX, hitY + 4, 40, 10, 0, 0, Math.PI * 2);
-      ctx.fill();
+          // Bean center crack line
+          ctx.strokeStyle = '#78350f';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(0, -12);
+          ctx.quadraticCurveTo(4, 0, 0, 12);
+          ctx.stroke();
+          ctx.restore();
+        } else {
+          // Boiling Water Drop (Golden liquid drop)
+          ctx.save();
+          ctx.translate(nx, ny);
+          ctx.fillStyle = '#f59e0b';
+          ctx.beginPath();
+          ctx.arc(0, 6, 12, 0, Math.PI);
+          ctx.lineTo(0, -12);
+          ctx.closePath();
+          ctx.fill();
+          ctx.strokeStyle = '#fef08a';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
 
-      // Steam particles
-      for (let i = steam.length - 1; i >= 0; i--) {
-        const s = steam[i];
-        s.y += s.vy;
-        s.alpha -= 0.015;
-        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+      // Draw Particles
+      for (const p of particles) {
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.life / p.maxLife;
         ctx.beginPath();
-        ctx.arc(s.x, s.y, 8, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
-        if (s.alpha <= 0) steam.splice(i, 1);
       }
-
-      if (isPlaying) {
-        // Slow falling at start (2.0), gradually faster with score (up to 6.5)
-        const currentSpeed = 2.0 + Math.min(score / 500, 4.5);
-        // Spawn cadence: starts at 72 frames, speeds up to 34 frames
-        const spawnCadence = Math.max(34, 72 - Math.floor(score / 450) * 4);
-
-        spawnTimer++;
-        if (spawnTimer >= spawnCadence) {
-          spawnTimer = 0;
-          drops.push({
-            x: cupX,
-            y: 35,
-            vy: currentSpeed,
-            isBean: Math.random() > 0.5
-          });
-        }
-
-        // Move Drops
-        for (let i = drops.length - 1; i >= 0; i--) {
-          const d = drops[i];
-          d.y += d.vy;
-
-          // Draw Drops
-          if (d.isBean) {
-            // Roasted Bean
-            ctx.fillStyle = '#451a03';
-            ctx.beginPath();
-            ctx.ellipse(d.x, d.y, 9, 13, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#292524';
-            ctx.fillRect(d.x - 1, d.y - 8, 2, 16);
-          } else {
-            // Boiling Water Droplet
-            ctx.fillStyle = '#38bdf8';
-            ctx.beginPath();
-            ctx.arc(d.x, d.y, 9, 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          // Missed Drop
-          if (d.y > hitY + 45) {
-            drops.splice(i, 1);
-            misses++;
-            updateLives();
-            playMissSound();
-            showRating("TERLEWAT!", "#ef4444");
-            if (misses >= MAX_MISSES) gameOver();
-          }
-        }
-      }
+      ctx.globalAlpha = 1.0;
     }
-    loop();
+
+    // --- MAIN GAME LOOP ---
+    function gameLoop(time) {
+      if (!lastTime) lastTime = time;
+      const dt = Math.min((time - lastTime) / 1000, 0.05);
+      lastTime = time;
+
+      update(dt);
+      draw();
+
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    // Initial render
+    draw();
   </script>
 </body>
 </html>

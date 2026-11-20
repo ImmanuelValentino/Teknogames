@@ -8,6 +8,19 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 ---
 
+## [3.7.0] - 2026-11-20
+### Added & Changed (Remake Batch 3: Candi Stacker, Batik Flow, Layangan Sanur, Kopi Klotok)
+- **Remake 4 Permainan Batch 3 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**
+  - **`candi-stacker` ([index.html](public/games/candi-stacker/index.html)):** Single-file Canvas 2D, penyusunan balok batu andesit bertingkat candi Borobudur, pemotongan presisi balok overhang berlebih, bonus sempurna (*Perfect Placement*), scrolling kamera vertikal halus, Web Audio API synthesizer, High Score `localStorage` (`teknogames_candi-stacker_highscore`), dan `postMessage`.
+  - **`batik-flow` ([index.html](public/games/batik-flow/index.html)):** Pipe connection puzzle 16 ubin membatik nusantara (Parang Rusak, Kawung, Mega Mendung), validasi BFS aliran lilin malam cair dari canting tembaga ke mahkota batik, Web Audio API synthesizer, High Score `localStorage` (`teknogames_batik-flow_highscore`), dan `postMessage`.
+  - **`layangan-sanur` ([index.html](public/games/layangan-sanur/index.html)):** Aksi adu layangan bebean Bali di langit Pantai Sanur, manajemen tensi benang (tarik menukik vs ulur), pemotongan benang layangan musuh, Web Audio API synthesizer, High Score `localStorage` (`teknogames_layangan-sanur_highscore`), dan `postMessage`.
+  - **`kopi-klotok` ([index.html](public/games/kopi-klotok/index.html)):** 3-lane rhythm game seduhan warung kopi klotok Jogja, ketukan presisi tetesan air & biji kopi sangrai menuju cangkir tanah liat, kombo bertingkat (Perfect, Good, Miss), 3 nyawa seduhan, Web Audio API synthesizer, High Score `localStorage` (`teknogames_kopi-klotok_highscore`), dan `postMessage`.
+- **Quality Verification & Browser Testing:**
+  - Zero-emoji policy lolos audit 100% menggunakan regex Unicode pictographic.
+  - Lolos pengujian browser terisolasi via Chrome DevTools remote debugging tanpa runtime error console.
+  - Rute permainan merespons status HTTP 200 OK di localhost.
+  - Berhasil diekspor via `npm run build` ke direktori statis `out/`.
+
 ## [3.6.0] - 2026-11-20
 ### Added & Changed (Remake Batch 2: Nusantara Runner, Kapal Feri, Packing Master, Becak Drift)
 - **Remake 4 Permainan Batch 2 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**

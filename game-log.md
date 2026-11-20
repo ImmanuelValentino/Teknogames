@@ -1,3 +1,47 @@
+### 2026-11-20 - Kopi Klotok: Barista Rhythm
+- **Folder Game:** `public/games/kopi-klotok`
+- **Deskripsi:** Permainan ritme ketukan barista warung kopi klotok Jogja pada 3 jalur rel tetesan air mendidih dan biji kopi sangrai menuju cangkir tanah liat dengan kombo bertingkat.
+- **Fitur Utama:**
+  - [x] Gameplay HTML5 Single File (Responsive Mobile & Desktop)
+  - [x] Scoring & High Score System (Local Storage: `teknogames_kopi-klotok_highscore`)
+  - [x] Visual Asset (Canvas 2D + SVG Zero-Emoji) & Preview Thumbnail (preview.png)
+  - [x] Web Audio API Synthesizer (Chime seduh, tap good, miss, crash) & Audio Toggle
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
+### 2026-11-20 - Layangan Sanur: Wind Battle
+- **Folder Game:** `public/games/layangan-sanur`
+- **Deskripsi:** Pertarungan adu tarik-ulur layangan bebean khas Pantai Sanur Bali di udara dengan mekanisme manajemen tensi benang dan manuver menukik pemotong benang lawan.
+- **Fitur Utama:**
+  - [x] Gameplay HTML5 Single File (Responsive Mobile & Desktop)
+  - [x] Scoring & High Score System (Local Storage: `teknogames_layangan-sanur_highscore`)
+  - [x] Visual Asset (Canvas 2D + SVG Zero-Emoji) & Preview Thumbnail (preview.png)
+  - [x] Web Audio API Synthesizer (Desau angin, whistle benang, snap cut) & Audio Toggle
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
+### 2026-11-20 - Batik Flow: Sambung Canting
+- **Folder Game:** `public/games/batik-flow`
+- **Deskripsi:** Teka-teki logika memutar 16 ubin jalur lilin malam canting tembaga agar terhubung membentuk 3 motif adiluhung batik nusantara (Parang Rusak, Kawung, Mega Mendung).
+- **Fitur Utama:**
+  - [x] Gameplay HTML5 Single File (Responsive Mobile & Desktop)
+  - [x] Scoring & High Score System (Local Storage: `teknogames_batik-flow_highscore`)
+  - [x] Visual Asset (Canvas 2D + SVG Zero-Emoji) & Preview Thumbnail (preview.png)
+  - [x] Web Audio API Synthesizer (Tick putar, droplet flow, victory arpeggio) & Audio Toggle
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
+### 2026-11-20 - Candi Stacker: Megalitikum
+- **Folder Game:** `public/games/candi-stacker`
+- **Deskripsi:** Permainan presisi menyusun tumpukan balok batu andesit bertingkat candi Borobudur dengan fisika pemotongan balok berlebih dan bonus kombo tumpukan sempurna.
+- **Fitur Utama:**
+  - [x] Gameplay HTML5 Single File (Responsive Mobile & Desktop)
+  - [x] Scoring & High Score System (Local Storage: `teknogames_candi-stacker_highscore`)
+  - [x] Visual Asset (Canvas 2D + SVG Zero-Emoji) & Preview Thumbnail (preview.png)
+  - [x] Web Audio API Synthesizer (Thud batu, kencring sempurna, slice cut) & Audio Toggle
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - Becak Drift: Malioboro Rush
 - **Folder Game:** `public/games/becak-drift`
 - **Deskripsi:** Balapan drifting becak modern menembus lorong Malioboro Jogja, menghindari andong dan pot bunga jalanan dengan sistem pengganda skor kombo drift.

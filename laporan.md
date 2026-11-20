@@ -1,3 +1,15 @@
+### [2026-11-20 11:10] - [Games] - Remake Game Batch 3 (Candi Stacker, Batik Flow, Layangan Sanur, Kopi Klotok) & Pengujian Browser Terisolasi
+- **Kondisi Sebelum:** 4 game Batch 3 masih menggunakan karakter emoji, belum memiliki Web Audio API synthesizer dengan tombol audio mute, belum memiliki kunci `localStorage` terstandarisasi, dan belum mengirimkan event `postMessage` saat Game Over.
+- **Perubahan Sesudah:**
+  1. `candi-stacker/index.html`: Di-remake dengan fisika susun batu andesit bertingkat, pemotongan balok berlebih, bonus kombo tumpukan sempurna, sound synthesis, High Score `localStorage`, dan `postMessage`.
+  2. `batik-flow/index.html`: Di-remake dengan 16 ubin jalur lilin malam canting ke mahkota batik (3 motif nusantara), validasi aliran BFS, sound synthesis, High Score `localStorage`, dan `postMessage`.
+  3. `layangan-sanur/index.html`: Di-remake dengan adu layangan bebean Bali, kontrol tensi benang (tarik dive & ulur slack), pemotongan benang musuh, sound synthesis, High Score `localStorage`, dan `postMessage`.
+  4. `kopi-klotok/index.html`: Di-remake dengan 3-lane rhythm game seduhan kopi klotok, feedback ketukan presisi (Perfect, Good, Miss), 3 nyawa, sound synthesis, High Score `localStorage`, dan `postMessage`.
+  5. Pengujian langsung dilakukan via Chrome DevTools remote debugging dengan penutupan tab otomatis; seluruh game lulus verifikasi dengan 0 runtime error di console.
+  6. Static export `npm run build` sukses 100% dan histori dicatat di `game-log.md` serta `UPDATE.md`.
+- **Masalah yang Ditemukan:** Tidak ada. Seluruh poin checklist kualitas di Bagian 7 dan Bagian 8 `game-guide.md` telah terpenuhi dan terverifikasi.
+- **File Terdampak:** `public/games/candi-stacker/index.html`, `public/games/batik-flow/index.html`, `public/games/layangan-sanur/index.html`, `public/games/kopi-klotok/index.html`, `out/*`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-20 10:55] - [Games] - Remake Game Batch 2 (Nusantara Runner, Kapal Feri, Packing Master, Becak Drift) & Quality Testing
 - **Kondisi Sebelum:** 4 game Batch 2 (`nusantara-runner`, `kapal-feri`, `packing-master`, `becak-drift`) masih memuat banyak karakter emoji (melanggar zero-emoji policy), belum memiliki Web Audio API synthesizer dengan tombol mute, belum memiliki kunci `localStorage` konsisten (`teknogames_<slug>_highscore`), dan belum mengirimkan event `postMessage` saat Game Over.
 - **Perubahan Sesudah:**
