@@ -1,5 +1,6 @@
-:HL["/games/_next/static/css/44c8551aa9d960e5.css","style"]
+:HL["/games/_next/static/css/b2afee3be411421c.css","style"]
+:HL["/games/_next/static/css/68c2b2850f688f25.css","style"]
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"d","k":"kopi-klotok","s":[]},"h":96,"c":"$Q3"}]]
 1:[["children",{"s":"play","h":96,"c":"$Q2"}]]
-0:{"b":"jzr0_sazSS5cJOkmPguSo","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"PNDhMT-ITSqZn45zTURY2","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

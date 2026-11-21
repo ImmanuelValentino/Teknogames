@@ -8,6 +8,22 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.0] - 2026-11-21
+### Added & Improved (Content Management System Indexing & Ranking Game di /manage-games)
+- **Panel Admin CMS ([src/app/manage-games/page.tsx](src/app/manage-games/page.tsx)):**
+  - Rute `/manage-games` terlindungi form verifikasi kata sandi rahasia yang tersimpan di Supabase (`cms_settings`).
+  - Antarmuka **Drag-and-Drop** intuitif untuk menggeser susunan game dari posisi #1 hingga terakhir, dilengkapi tombol geser satu posisi (naik/turun) untuk kemudahan di perangkat mobile.
+  - Tombol shortcut **"Jadikan Top 1"** pada setiap baris game untuk menaikkan game pilihan langsung ke puncak.
+  - Panel **Live Highlight Box** yang menampilkan pratinjau game pemegang posisi Top 1 beserta status Hero Homepage.
+  - Dialog modal pengaturan untuk mengganti kata sandi admin kapan saja.
+- **Layanan CMS Supabase ([src/lib/cms-supabase.ts](src/lib/cms-supabase.ts)):**
+  - Integrasi REST API ke tabel `public.cms_settings` untuk memuat dan menyimpan urutan slug game (`game_order`) serta validasi kata sandi (`admin_password`).
+  - Sistem dual-cache (Supabase + LocalStorage) yang memastikan pemuatan halaman beranda instan (0 ms).
+- **Integrasi Otomatis Beranda ([src/app/page.tsx](src/app/page.tsx)):**
+  - Game pada urutan #1 otomatis menjadi **Kartu Pilihan Utama di Hero Banner** (paling depan dan siap dimainkan).
+  - Game pada urutan #2 otomatis menjadi kartu kedua di Hero Banner.
+  - Katalog game di bagian bawah beranda otomatis menampilkan urutan kurasi admin dari Top 1 hingga terakhir.
+
 ## [3.14.2] - 2026-11-20
 ### Fixed & Improved (Werewolf Hunter Revenge Isolation, .hidden CSS Rule, & Online Discussion Controls)
 - **Perbaikan Kebocoran Panel Pemburu ([public/games/werewolf/styles.css](public/games/werewolf/styles.css), [index.html](public/games/werewolf/index.html)):**

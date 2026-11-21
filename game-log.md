@@ -1,3 +1,16 @@
+### 2026-11-21 - Fitur CMS Indexing & Ranking Game (/manage-games)
+- **Folder Game:** `src/app/manage-games`, `src/lib/cms-supabase.ts`, `src/app/page.tsx`
+- **Deskripsi:** Menambahkan sistem Content Management System (CMS) untuk indexing dan kurasi urutan game dari Top 1 hingga terakhir. Urutan dikontrol penuh oleh Admin melalui panel `/manage-games` dengan antarmuka drag-and-drop dan tombol geser. Game yang ditempatkan pada posisi Top 1 secara otomatis menjadi Kartu Utama di Hero Banner Beranda, dan susunan katalog game langsung menyesuaikan secara instan melalui Supabase database (`cms_settings`).
+- **Fitur Utama:**
+  - [x] Panel CMS di rute `/manage-games` terlindungi kata sandi rahasia Supabase
+  - [x] Antarmuka Drag-and-Drop Native + Tombol Geser Panah Cepat & Shortcut "Jadikan Top 1"
+  - [x] Live Highlight Box untuk memantau game pemegang posisi Top 1 Hero Homepage
+  - [x] Sinkronisasi instan ke Beranda: Top 1 menjadi Hero Banner, Top 2 kartu kedua, katalog tersusun berurutan
+  - [x] Fitur Ganti Kata Sandi Admin langsung ke database Supabase
+  - [x] Zero-Emoji Policy 100% menggunakan Lucide React icons
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - Werewolf: Hotfix Tembakan Pemburu & Penanganan Tombol Diskusi Online
 - **Folder Game:** `public/games/werewolf`
 - **Deskripsi:** Memperbaiki 3 isu pada fase siang game Werewolf: (1) Menghilangkan teks anomali 'PEMBURU () GUGUR!' yang muncul saat malam damai akibat kebocoran elemen panel, (2) Memastikan panel dan tombol 'Lepaskan Tembakan Terakhir' HANYA muncul pada layar pemain Pemburu (Hunter) yang benar-benar gugur dan disembunyikan secara absolut untuk pemain lain atau saat malam damai, serta (3) Mengaktifkan fungsi klik tombol 'Lewati Diskusi' dan 'Lanjut ke Voting' di Mode Online bersama sinkronisasi hitung mundur timer diskusi 120 detik.

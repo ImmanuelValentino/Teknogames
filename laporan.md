@@ -1,3 +1,15 @@
+### [2026-11-21 11:00] - [Frontend & CMS] - Implementasi CMS Indexing & Ranking Game (/manage-games)
+- **Kondisi Sebelum:**
+  1. Urutan game di Beranda bersifat statis berdasarkan susunan hardcode di `INITIAL_GAMES`.
+  2. Untuk mengganti game yang tampil sebagai Hero Pilihan Utama (Top 1) atau mengatur urutan katalog, admin harus mengedit file kode dan melakukan build ulang/deploy.
+- **Perubahan Sesudah:**
+  1. Dibuat rute CMS khusus di `/manage-games` dengan perlindungan kata sandi rahasia yang terhubung langsung ke tabel `cms_settings` di Supabase.
+  2. Dilengkapi antarmuka Drag-and-Drop native, tombol panah naik/turun, shortcut "Jadikan Top 1", tombol reset default, serta tombol "Terapkan Urutan" untuk menyimpan urutan kurasi admin ke Supabase.
+  3. Beranda (`src/app/page.tsx`) langsung terhubung dengan data urutan CMS: game pada urutan #1 otomatis menjadi Kartu Utama di Hero Banner, game #2 menjadi kartu pendamping Hero, dan katalog game di bawahnya tersusun rapi sesuai urutan kurasi admin.
+  4. Tersedia fitur ganti kata sandi admin secara mandiri langsung ke database Supabase.
+- **Masalah yang Ditemukan:** Tidak ada. Zero-Emoji policy terjaga 100%.
+- **File Terdampak:** `src/app/manage-games/page.tsx`, `src/lib/cms-supabase.ts`, `src/app/page.tsx`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-20 20:00] - [Games] - Hotfix Tembakan Pemburu & Penanganan Tombol Lewati Diskusi Online
 - **Kondisi Sebelum:**
   1. Saat fajar menyingsing dengan hasil malam damai, muncul teks anomali `PEMBURU () GUGUR!` dengan nama kosong dan tombol `Lepaskan Tembakan Terakhir` tampil ke semua pemain. Hal ini terjadi karena class `.hidden` di `styles.css` hanya mencakup selector `.screen.hidden`, sehingga elemen panel pemburu tidak disembunyikan.
