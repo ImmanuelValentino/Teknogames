@@ -21,6 +21,32 @@ import { CATEGORIES, INITIAL_GAMES } from "@/lib/games-data";
 import { GameCategory, Game } from "@/types/game";
 import { getLocalScores, getLocalFavorites } from "@/lib/local-storage";
 import { getGamePortalUrl } from "@/lib/site";
+import { fetchGameOrder, getCachedGameOrder } from "@/lib/cms-supabase";
+
+function sortGamesByOrder(baseGames: Game[], orderSlugs: string[]): Game[] {
+  if (!orderSlugs || orderSlugs.length === 0) return baseGames;
+  const map = new Map<string, Game>();
+  baseGames.forEach((g) => map.set(g.slug, g));
+
+  const sorted: Game[] = [];
+  const added = new Set<string>();
+
+  orderSlugs.forEach((slug) => {
+    const game = map.get(slug);
+    if (game) {
+      sorted.push(game);
+      added.add(slug);
+    }
+  });
+
+  baseGames.forEach((g) => {
+    if (!added.has(g.slug)) {
+      sorted.push(g);
+    }
+  });
+
+  return sorted;
+}
 
 interface ScoreGameArtworkProps {
   title: string;
@@ -98,6 +124,10 @@ function ScoreGameArtwork({
 
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<GameCategory>("all");
+  const [games, setGames] = useState<Game[]>(() => {
+    const cachedOrder = getCachedGameOrder();
+    return sortGamesByOrder(INITIAL_GAMES, cachedOrder);
+  });
   const [topScores, setTopScores] = useState<
     {
       gameId: string;
@@ -108,6 +138,19 @@ export default function HomePage() {
     }[]
   >([]);
   const [favoriteGames, setFavoriteGames] = useState<Game[]>([]);
+
+  // Sinkronisasi Urutan Game dari Supabase CMS
+  useEffect(() => {
+    let isMounted = true;
+    fetchGameOrder().then((remoteOrder) => {
+      if (isMounted && Array.isArray(remoteOrder) && remoteOrder.length > 0) {
+        setGames(sortGamesByOrder(INITIAL_GAMES, remoteOrder));
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Sinkronisasi Rekor Skor & Game Favorit dari LocalStorage
   useEffect(() => {
@@ -144,14 +187,15 @@ export default function HomePage() {
     };
   }, []);
 
-  const featuredGames = INITIAL_GAMES.filter((g) => g.featured);
+  // Game urutan #1 menjadi Kartu Utama Hero Banner, urutan #2 menjadi kartu kedua
+  const featuredGames = [games[0], games[1] || games[0]].filter(Boolean);
   const selectedCategoryLabel =
     CATEGORIES.find((category) => category.id === selectedCategory)?.label ??
     "Semua Permainan";
   const displayGames =
     selectedCategory === "all"
-      ? INITIAL_GAMES
-      : INITIAL_GAMES.filter((g) => g.category === selectedCategory);
+      ? games
+      : games.filter((g) => g.category === selectedCategory);
 
   const jsonLd = {
     "@context": "https://schema.org",

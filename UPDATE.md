@@ -8,6 +8,44 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.0] - 2026-11-21
+### Added & Improved (Content Management System Indexing & Ranking Game di /manage-games)
+- **Panel Admin CMS ([src/app/manage-games/page.tsx](src/app/manage-games/page.tsx)):**
+  - Rute `/manage-games` terlindungi form verifikasi kata sandi rahasia yang tersimpan di Supabase (`cms_settings`).
+  - Antarmuka **Drag-and-Drop** intuitif untuk menggeser susunan game dari posisi #1 hingga terakhir, dilengkapi tombol geser satu posisi (naik/turun) untuk kemudahan di perangkat mobile.
+  - Tombol shortcut **"Jadikan Top 1"** pada setiap baris game untuk menaikkan game pilihan langsung ke puncak.
+  - Panel **Live Highlight Box** yang menampilkan pratinjau game pemegang posisi Top 1 beserta status Hero Homepage.
+  - Dialog modal pengaturan untuk mengganti kata sandi admin kapan saja.
+- **Layanan CMS Supabase ([src/lib/cms-supabase.ts](src/lib/cms-supabase.ts)):**
+  - Integrasi REST API ke tabel `public.cms_settings` untuk memuat dan menyimpan urutan slug game (`game_order`) serta validasi kata sandi (`admin_password`).
+  - Sistem dual-cache (Supabase + LocalStorage) yang memastikan pemuatan halaman beranda instan (0 ms).
+- **Integrasi Otomatis Beranda ([src/app/page.tsx](src/app/page.tsx)):**
+  - Game pada urutan #1 otomatis menjadi **Kartu Pilihan Utama di Hero Banner** (paling depan dan siap dimainkan).
+  - Game pada urutan #2 otomatis menjadi kartu kedua di Hero Banner.
+  - Katalog game di bagian bawah beranda otomatis menampilkan urutan kurasi admin dari Top 1 hingga terakhir.
+
+## [3.14.2] - 2026-11-20
+### Fixed & Improved (Werewolf Hunter Revenge Isolation, .hidden CSS Rule, & Online Discussion Controls)
+- **Perbaikan Kebocoran Panel Pemburu ([public/games/werewolf/styles.css](public/games/werewolf/styles.css), [index.html](public/games/werewolf/index.html)):**
+  - Menambahkan aturan CSS global `.hidden { display: none !important; }` pada `styles.css`. Sebelumnya selector hanya `.screen.hidden` sehingga elemen internal seperti `#dayHunterRevengePanel` bocor ke layar dengan teks anomali `PEMBURU () GUGUR!`.
+  - Menambahkan fallback proteksi inline style `display: none` pada elemen `#dayHunterRevengePanel`.
+- **Isolasi Panel Tembakan Terakhir Hunter ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js), [offline-engine.js](public/games/werewolf/offline-engine.js)):**
+  - Memastikan panel `#dayHunterRevengePanel` dan tombol "Lepaskan Tembakan Terakhir" HANYA terbuka dan aktif di layar pemain yang berstatus Hunter DAN sedang gugur.
+  - Untuk pemain lain atau saat malam damai tanpa korban, panel disembunyikan secara absolut (`display: none`), dan pemain lain hanya melihat status info "Menunggu tembakan pembalasan Pemburu...".
+- **Pengaktifan Tombol Lewati Diskusi & Timer 120 Detik Online ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js)):**
+  - Mengimplementasikan event listener pada `btnSkipDiscussion` dan `btnProceedToVoting` untuk Mode Online: Host dapat melewati waktu diskusi atau langsung menuju voting, sedangkan pemain tamu mendapatkan panduan status "Menunggu Host...".
+  - Menjalankan sinkronisasi hitung mundur waktu diskusi 120 detik (`#discussionTimerDigits`) dengan auto-trigger voting saat timer habis.
+
+## [3.14.1] - 2026-11-20
+### Fixed & Improved (Werewolf Seer Single-Lock, 30s Night Turn Timer, & Realtime Lobby Sync)
+- **Pembatasan Terawang Seer ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js), [offline-engine.js](public/games/werewolf/offline-engine.js)):**
+  - Mengunci pilihan Seer tepat pada klik pertama; seluruh kartu target lainnya langsung dinonaktifkan (`disabled` dan event klik dihapus) sehingga Seer tidak dapat mengintip lebih dari 1 pemain dalam satu malam.
+- **Pembatasan Waktu Giliran Malam 30 Detik & Layar Tunggu Informatif:**
+  - Menambahkan batas waktu 30 detik untuk setiap giliran peran aktif di malam hari (Bodyguard, Werewolf, Seer). Jika waktu habis sebelum pemain menekan kunci aksi, sistem secara otomatis mengeksekusi pilihan sasaran yang sah / auto-timeout.
+  - Memperbarui layar tunggu pemain lain di malam hari agar menampilkan status peran yang sedang beraksi secara spesifik serta sisa waktu hitung mundur gilirannya.
+- **Sinkronisasi Perubahan Role Lobi Realtime untuk Seluruh Pemain:**
+  - Memperbaiki sinkronisasi perubahan penambahan/pengurangan role oleh Room Master sehingga pemain tamu (guest) langsung melihat pembaruan jumlah peran secara instan melalui sistem dual-sync (Supabase Realtime + polling 1.2 detik).
+
 ## [3.14.0] - 2026-11-20
 ### Added & Improved (Werewolf Online Multiplayer Supabase & Modular Multi-File Architecture)
 - **Mode Online Multiplayer Berbasis Supabase Realtime ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js)):**

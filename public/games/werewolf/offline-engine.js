@@ -476,16 +476,25 @@
       });
     } 
     else if (role === 'seer') {
-      promptWrap.textContent = 'Pilih 1 pemain hidup untuk diterawang identitas aslinya:';
+      promptWrap.textContent = 'Pilih 1 pemain hidup untuk diterawang identitas aslinya (hanya 1 kali per malam):';
       window.WerewolfAudio.play('seer');
 
       players.forEach(p => {
         if (!p.alive || p.role === 'seer') return;
         const card = createTargetCard(p, 'Terawang');
         card.onclick = () => {
-          targetList.querySelectorAll('.target-card').forEach(c => c.classList.remove('selected'));
-          card.classList.add('selected');
+          if (selectedNightChoiceId !== null) return; // Batasi hanya tepat 1 kali klik!
           selectedNightChoiceId = p.id;
+
+          // Nonaktifkan seluruh kartu target lain agar Seer tidak bisa mengintip pemain kedua
+          targetList.querySelectorAll('.target-card').forEach(c => {
+            c.classList.remove('selected');
+            c.classList.add('disabled');
+            c.onclick = null;
+          });
+          card.classList.add('selected');
+          card.classList.remove('disabled');
+
           window.WerewolfAudio.play('click');
 
           // Tampilkan hasil terawang seketika
@@ -496,6 +505,9 @@
             <span style="font-size:16px; font-weight:900; color:${isWolf ? 'var(--role-wolf)' : 'var(--role-villager)'};">
               ${isWolf ? 'WEREWOLF !' : 'BUKAN WEREWOLF (Warga Desa)'}
             </span>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">
+              Penerawangan selesai untuk malam ini. Klik 'Kunci Aksi Malam Ini' di bawah.
+            </div>
           `;
         };
         targetList.appendChild(card);
@@ -567,6 +579,7 @@
     const newsText = document.getElementById('dayNewsText');
     const hunterPanel = document.getElementById('dayHunterRevengePanel');
     hunterPanel.classList.add('hidden');
+    hunterPanel.style.display = 'none';
 
     if (nightVictim) {
       newsText.innerHTML = `
@@ -593,6 +606,7 @@
     hunterPendingVictim = hunter;
     const panel = document.getElementById('dayHunterRevengePanel');
     panel.classList.remove('hidden');
+    panel.style.display = 'block';
     document.getElementById('hunterRevengeName').textContent = hunter.name;
 
     const targetList = document.getElementById('hunterTargetList');
@@ -622,6 +636,7 @@
 
       alert(`DOR! ${hunter.name} melepaskan tembakan terakhir ke ${target.name}! ${target.name} gugur dan perannya adalah [${ROLE_DEFS[target.role].name}].`);
       panel.classList.add('hidden');
+      panel.style.display = 'none';
 
       if (checkWinCondition()) return;
       setupDiscussionTimer();

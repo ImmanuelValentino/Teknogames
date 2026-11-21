@@ -134,6 +134,10 @@ html, body {
   animation: fadeIn 0.25s ease;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .screen.hidden {
   display: none !important;
 }
@@ -620,8 +624,9 @@ html, body {
 }
 
 .target-card.disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .target-name {

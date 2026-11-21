@@ -1,3 +1,38 @@
+### 2026-11-21 - Fitur CMS Indexing & Ranking Game (/manage-games)
+- **Folder Game:** `src/app/manage-games`, `src/lib/cms-supabase.ts`, `src/app/page.tsx`
+- **Deskripsi:** Menambahkan sistem Content Management System (CMS) untuk indexing dan kurasi urutan game dari Top 1 hingga terakhir. Urutan dikontrol penuh oleh Admin melalui panel `/manage-games` dengan antarmuka drag-and-drop dan tombol geser. Game yang ditempatkan pada posisi Top 1 secara otomatis menjadi Kartu Utama di Hero Banner Beranda, dan susunan katalog game langsung menyesuaikan secara instan melalui Supabase database (`cms_settings`).
+- **Fitur Utama:**
+  - [x] Panel CMS di rute `/manage-games` terlindungi kata sandi rahasia Supabase
+  - [x] Antarmuka Drag-and-Drop Native + Tombol Geser Panah Cepat & Shortcut "Jadikan Top 1"
+  - [x] Live Highlight Box untuk memantau game pemegang posisi Top 1 Hero Homepage
+  - [x] Sinkronisasi instan ke Beranda: Top 1 menjadi Hero Banner, Top 2 kartu kedua, katalog tersusun berurutan
+  - [x] Fitur Ganti Kata Sandi Admin langsung ke database Supabase
+  - [x] Zero-Emoji Policy 100% menggunakan Lucide React icons
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
+### 2026-11-20 - Werewolf: Hotfix Tembakan Pemburu & Penanganan Tombol Diskusi Online
+- **Folder Game:** `public/games/werewolf`
+- **Deskripsi:** Memperbaiki 3 isu pada fase siang game Werewolf: (1) Menghilangkan teks anomali 'PEMBURU () GUGUR!' yang muncul saat malam damai akibat kebocoran elemen panel, (2) Memastikan panel dan tombol 'Lepaskan Tembakan Terakhir' HANYA muncul pada layar pemain Pemburu (Hunter) yang benar-benar gugur dan disembunyikan secara absolut untuk pemain lain atau saat malam damai, serta (3) Mengaktifkan fungsi klik tombol 'Lewati Diskusi' dan 'Lanjut ke Voting' di Mode Online bersama sinkronisasi hitung mundur timer diskusi 120 detik.
+- **Fitur Utama:**
+  - [x] Rule CSS Global `.hidden { display: none !important; }` dan proteksi inline style
+  - [x] Isolasi Panel Tembakan Terakhir Khusus Hunter yang Gugur
+  - [x] Fungsionalitas Tombol Lewati Diskusi (Host Skip Controller)
+  - [x] Timer Countdown Diskusi Siang 120 Detik Online Realtime
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
+### 2026-11-20 - Werewolf: Bugfix Seer Single-Lock, Timer 30 Detik Malam, & Sinkronisasi Role Realtime
+- **Folder Game:** `public/games/werewolf`
+- **Deskripsi:** Memperbaiki 3 isu gameplay pada game Werewolf: (1) Membatasi Seer hanya dapat mengklik/melihat 1 identitas per malam dengan langsung mengunci dan menonaktifkan kartu target lainnya, (2) Menambahkan pembatasan waktu giliran aksi malam 30 detik (auto-submit/auto-skip saat waktu habis) serta menampilkan status peran yang sedang beraksi dan countdown waktu giliran di layar tunggu pemain lain, dan (3) Memperbaiki sinkronisasi perubahan jumlah role di room master agar user/guest lain di lobi dapat langsung melihat perubahan secara real-time via dual-sync (Realtime + Polling 1 detik).
+- **Fitur Utama:**
+  - [x] Seer Single-Target Lock (hanya 1 klik terawang per malam, kartu lain langsung nonaktif)
+  - [x] Batas Waktu Giliran Aksi Malam 30 Detik + Auto-Submit Timeout
+  - [x] Layar Tunggu Malam Informatif (Pemberitahuan Peran yang Sedang Beraksi + Timer Sisa)
+  - [x] Sinkronisasi Role Lobi Realtime untuk Seluruh User/Guest (Dual-Sync Realtime + Polling)
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-20 - Werewolf: Online Multiplayer Supabase & Modular Architecture Upgrade
 - **Folder Game:** `public/games/werewolf`
 - **Deskripsi:** Pembaruan besar game Werewolf dengan menambahkan fitur Mode Online Multiplayer berbasis Supabase Realtime dengan sistem Room Kode 6 Digit Temporary, sambil mempertahankan Mode Offline (Pass-and-Play 1 HP) secara penuh. Arsitektur game dipecah menjadi multi-file modular (`index.html`, `styles.css`, `app.js`, `offline-engine.js`, `online-supabase.js`, `svg-icons.js`, `config.js`) dengan tema visual Dark Gothic Bloody Color, pemilihan kartu acak/terkunci (Single Pick Lock), siklus malam single-target, voting rahasia, auto-cleanup room, dan skema migrasi database SQL `supabase-werewolf-schema.sql`.

@@ -60,6 +60,8 @@
   let mySelectedVoteTargetId = null;
   let mySelectedHunterShotId = null;
   let onlineDiscussionInterval = null;
+  let roomPollingInterval = null;
+  let nightStepCountdownTimer = null;
 
   function initClient() {
     if (supabaseClient) return supabaseClient;
@@ -261,6 +263,35 @@
     renderLobbyScreen(gameState);
   }
 
+  function startRoomPolling(roomCode) {
+    stopRoomPolling();
+    roomPollingInterval = setInterval(async () => {
+      if (!currentRoomCode || !supabaseClient) return;
+      try {
+        const { data: room } = await supabaseClient
+          .from('werewolf_rooms')
+          .select('*')
+          .eq('room_code', currentRoomCode)
+          .single();
+
+        if (room && room.game_state) {
+          if (!currentRoomData || room.updated_at !== currentRoomData.updated_at) {
+            handleRoomStateSync(room);
+          }
+        }
+      } catch (err) {
+        // Abaikan network jitter
+      }
+    }, 1200);
+  }
+
+  function stopRoomPolling() {
+    if (roomPollingInterval) {
+      clearInterval(roomPollingInterval);
+      roomPollingInterval = null;
+    }
+  }
+
   // ==========================================
   // REALTIME SUBSCRIPTION
   // ==========================================
@@ -271,6 +302,8 @@
     if (activeChannel) {
       supabaseClient.removeChannel(activeChannel);
     }
+
+    startRoomPolling(roomCode);
 
     activeChannel = client
       .channel('werewolf_room_' + roomCode)
@@ -383,12 +416,38 @@
       guestRoleSummary.classList.remove('hidden');
       btnStartGame.classList.add('hidden');
 
-      guestRoleSummary.innerHTML = `
-        <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">
-          <strong>Komposisi Peran:</strong> Werewolf (${state.role_config.werewolf}), Warga (${state.role_config.villager}), Seer (${state.role_config.seer}), Bodyguard (${state.role_config.bodyguard}), Hunter (${state.role_config.hunter})<br>
-          <em>Menunggu Host memulai permainan...</em>
-        </div>
-      `;
+      const guestList = document.getElementById('onlineGuestRoleList');
+      if (guestList) {
+        guestList.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:var(--role-wolf); font-weight:700;">Werewolf</span>
+            <span style="font-weight:800; color:#fff;">${state.role_config.werewolf || 0}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:var(--role-villager); font-weight:700;">Warga Biasa</span>
+            <span style="font-weight:800; color:#fff;">${state.role_config.villager || 0}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:var(--role-seer); font-weight:700;">Penerawang (Seer)</span>
+            <span style="font-weight:800; color:#fff;">${state.role_config.seer || 0}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:var(--role-guard); font-weight:700;">Pelindung (Bodyguard)</span>
+            <span style="font-weight:800; color:#fff;">${state.role_config.bodyguard || 0}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:var(--role-hunter); font-weight:700;">Pemburu (Hunter)</span>
+            <span style="font-weight:800; color:#fff;">${state.role_config.hunter || 0}</span>
+          </div>
+        `;
+      }
+
+      const totalRoles = Object.values(state.role_config).reduce((a, b) => a + b, 0);
+      const sumEl = document.getElementById('onlineGuestRoleTotalSum');
+      if (sumEl) {
+        sumEl.textContent = `${totalRoles} / ${state.players.length}`;
+        sumEl.style.color = (totalRoles === state.players.length) ? 'var(--role-hunter)' : 'var(--blood-red)';
+      }
     }
   }
 
@@ -426,6 +485,7 @@
     if (role === 'werewolf' && nextVal < 1) return;
 
     state.role_config[role] = nextVal;
+    renderLobbyScreen(state); // Update optimistik di layar Host
 
     await supabaseClient
       .from('werewolf_rooms')
@@ -604,6 +664,7 @@
     if (allReady) {
       state.phase = 'night';
       state.night_step = 'bodyguard';
+      state.night_step_start_time = Date.now();
       state.players.forEach(p => p.ready = false);
 
       await supabaseClient
@@ -629,6 +690,11 @@
   // 6. SIKLUS MALAM REALTIME
   // ==========================================
   function renderOnlineNight(state) {
+    if (nightStepCountdownTimer) {
+      clearInterval(nightStepCountdownTimer);
+      nightStepCountdownTimer = null;
+    }
+
     window.WerewolfApp.switchScreen('screenNightAction');
     window.WerewolfApp.setHudStatus('MALAM HARI');
 
@@ -639,6 +705,11 @@
     const actionBox = document.getElementById('nightActiveActionBox');
 
     const isMyTurn = (me && me.alive && me.role === currentStep);
+
+    // Hitung sisa waktu 30 detik untuk langkah malam saat ini
+    const stepStartTime = state.night_step_start_time || Date.now();
+    const elapsed = Math.floor((Date.now() - stepStartTime) / 1000);
+    let remainSec = Math.max(0, 30 - elapsed);
 
     if (isMyTurn) {
       waitingBox.classList.add('hidden');
@@ -651,6 +722,7 @@
       const seerResultBox = document.getElementById('seerResultBox');
       const targetList = document.getElementById('nightTargetList');
       const btnConfirm = document.getElementById('btnConfirmNightAction');
+      const timerDigits = document.getElementById('nightActiveTimerDigits');
 
       iconWrap.innerHTML = window.WerewolfIcons.get(currentStep);
       titleWrap.textContent = ROLE_DEFS[currentStep].name;
@@ -659,6 +731,39 @@
       teammateWrap.classList.add('hidden');
       targetList.innerHTML = '';
       mySelectedNightTargetId = null;
+
+      if (timerDigits) timerDigits.textContent = remainSec;
+
+      // Jalankan hitung mundur 30 detik untuk pemain aktif
+      nightStepCountdownTimer = setInterval(async () => {
+        remainSec--;
+        if (timerDigits) timerDigits.textContent = Math.max(0, remainSec);
+
+        if (remainSec <= 0) {
+          clearInterval(nightStepCountdownTimer);
+          nightStepCountdownTimer = null;
+
+          // Auto-submit bila waktu habis
+          if (!mySelectedNightTargetId) {
+            if (currentStep === 'bodyguard') {
+              const valids = state.players.filter(p => p.alive && p.id !== me.last_protected);
+              if (valids.length > 0) mySelectedNightTargetId = valids[0].id;
+            } else if (currentStep === 'werewolf') {
+              const valids = state.players.filter(p => p.alive && p.role !== 'werewolf');
+              if (valids.length > 0) mySelectedNightTargetId = valids[0].id;
+            } else if (currentStep === 'seer') {
+              const valids = state.players.filter(p => p.alive && p.id !== myPlayerId);
+              if (valids.length > 0) mySelectedNightTargetId = valids[0].id;
+            }
+          }
+
+          if (mySelectedNightTargetId) {
+            await submitNightAction(currentStep, mySelectedNightTargetId);
+          } else {
+            await advanceNightStep();
+          }
+        }
+      }, 1000);
 
       if (currentStep === 'bodyguard') {
         promptWrap.textContent = 'Pilih 1 pemain hidup untuk dilindungi malam ini (tidak boleh sama berturut-turut):';
@@ -707,16 +812,25 @@
         });
       } 
       else if (currentStep === 'seer') {
-        promptWrap.textContent = 'Pilih 1 pemain hidup untuk diterawang identitasnya:';
+        promptWrap.textContent = 'Pilih 1 pemain hidup untuk diterawang identitasnya (hanya 1 kali per malam):';
         window.WerewolfAudio.play('seer');
 
         state.players.forEach(p => {
           if (!p.alive || p.id === myPlayerId) return;
           const card = createOnlineTargetCard(p, 'Terawang');
           card.onclick = () => {
-            targetList.querySelectorAll('.target-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
+            if (mySelectedNightTargetId !== null) return; // Batasi klik Seer hanya 1 kali!
             mySelectedNightTargetId = p.id;
+
+            // Kunci seluruh kartu target lain agar Seer tidak bisa mengintip pemain kedua
+            targetList.querySelectorAll('.target-card').forEach(c => {
+              c.classList.remove('selected');
+              c.classList.add('disabled');
+              c.onclick = null;
+            });
+            card.classList.add('selected');
+            card.classList.remove('disabled');
+
             window.WerewolfAudio.play('click');
 
             const isWolf = (p.role === 'werewolf');
@@ -726,6 +840,9 @@
               <span style="font-size:16px; font-weight:900; color:${isWolf ? 'var(--role-wolf)' : 'var(--role-villager)'};">
                 ${isWolf ? 'WEREWOLF !' : 'BUKAN WEREWOLF (Warga)'}
               </span>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">
+                Penerawangan selesai untuk malam ini. Klik tombol 'Kunci Aksi Malam Ini' di bawah.
+              </div>
             `;
           };
           targetList.appendChild(card);
@@ -737,12 +854,45 @@
           alert('Kamu harus memilih tepat 1 sasaran!');
           return;
         }
+        clearInterval(nightStepCountdownTimer);
+        nightStepCountdownTimer = null;
         await submitNightAction(currentStep, mySelectedNightTargetId);
       };
     } else {
-      // Layar tunggu
+      // Layar tunggu bagi pemain lain
       waitingBox.classList.remove('hidden');
       actionBox.classList.add('hidden');
+
+      const waitingIcon = document.getElementById('nightWaitingIcon');
+      const waitingTitle = document.getElementById('nightWaitingTitle');
+      const waitingDesc = document.getElementById('nightWaitingDesc');
+      const waitingDigits = document.getElementById('nightWaitingTimerDigits');
+
+      if (waitingIcon) waitingIcon.innerHTML = window.WerewolfIcons.get(currentStep) || window.WerewolfIcons.get('moon');
+      if (waitingTitle) waitingTitle.textContent = `Malam Hari: ${ROLE_DEFS[currentStep].name}`;
+
+      if (waitingDesc) {
+        if (currentStep === 'bodyguard') {
+          waitingDesc.textContent = 'Pelindung (Bodyguard) sedang memilih 1 warga untuk dilindungi malam ini...';
+        } else if (currentStep === 'werewolf') {
+          waitingDesc.textContent = 'Kawanan Werewolf sedang berdiskusi menentukan sasaran mangsa di desa...';
+        } else if (currentStep === 'seer') {
+          waitingDesc.textContent = 'Penerawang (Seer) sedang menerawang tabir identitas warga...';
+        } else {
+          waitingDesc.textContent = 'Malam hening menyelimuti desa... Menunggu fajar tiba.';
+        }
+      }
+
+      if (waitingDigits) waitingDigits.textContent = remainSec;
+
+      nightStepCountdownTimer = setInterval(() => {
+        remainSec--;
+        if (waitingDigits) waitingDigits.textContent = Math.max(0, remainSec);
+        if (remainSec <= 0) {
+          clearInterval(nightStepCountdownTimer);
+          nightStepCountdownTimer = null;
+        }
+      }, 1000);
 
       // Jika role yang aktif sudah mati atau tidak ada di game, Host memicu jeda otomatis
       if (isHost && !state.players.some(p => p.role === currentStep && p.alive)) {
@@ -778,6 +928,7 @@
 
     if (currentIdx < steps.length - 1) {
       state.night_step = steps[currentIdx + 1];
+      state.night_step_start_time = Date.now(); // Reset timer untuk langkah berikutnya
       await supabaseClient
         .from('werewolf_rooms')
         .update({
@@ -836,7 +987,19 @@
   // ==========================================
   // 7. SIKLUS SIANG & VOTING ONLINE
   // ==========================================
+  let onlineDiscussionTimer = null;
+  let onlineDiscussionSeconds = 120;
+
   function renderOnlineDayAnnouncement(state) {
+    if (nightStepCountdownTimer) {
+      clearInterval(nightStepCountdownTimer);
+      nightStepCountdownTimer = null;
+    }
+    if (onlineDiscussionTimer) {
+      clearInterval(onlineDiscussionTimer);
+      onlineDiscussionTimer = null;
+    }
+
     window.WerewolfApp.switchScreen('screenDayAnnouncement');
     window.WerewolfApp.setHudStatus('FASE SIANG');
     window.WerewolfAudio.play('bell');
@@ -844,9 +1007,15 @@
     const newsText = document.getElementById('dayNewsText');
     const hunterPanel = document.getElementById('dayHunterRevengePanel');
     const btnVote = document.getElementById('btnProceedToVoting');
+    const btnSkip = document.getElementById('btnSkipDiscussion');
+
+    // Default: Selalu sembunyikan panel tembakan hunter secara ketat
     hunterPanel.classList.add('hidden');
+    hunterPanel.style.display = 'none';
 
     const victim = state.last_night_victim;
+    let waitingHunterAction = false;
+
     if (victim) {
       newsText.innerHTML = `
         Kabar duka! <strong style="color:var(--blood-red);">${victim.name}</strong> ditemukan tewas semalam diserang Werewolf.<br>
@@ -856,10 +1025,11 @@
       if (victim.role === 'hunter') {
         const isDeadHunterMe = (victim.id === myPlayerId);
         if (isDeadHunterMe) {
+          waitingHunterAction = true;
           setupOnlineHunterShoot(state);
-          return;
         } else {
-          newsText.innerHTML += `<br><em>Menunggu tembakan pembalasan Hunter (${victim.name})...</em>`;
+          waitingHunterAction = true;
+          newsText.innerHTML += `<br><span style="color:var(--role-hunter); font-weight:700;">Menunggu tembakan pembalasan Pemburu (${victim.name})...</span>`;
         }
       }
     } else {
@@ -868,29 +1038,81 @@
       `;
     }
 
+    // Aksi menuju voting
+    const proceedToVotingOnline = async () => {
+      if (onlineDiscussionTimer) {
+        clearInterval(onlineDiscussionTimer);
+        onlineDiscussionTimer = null;
+      }
+      state.phase = 'day_voting';
+      state.players.forEach(p => p.vote = null);
+      await supabaseClient
+        .from('werewolf_rooms')
+        .update({
+          status: 'day_voting',
+          game_state: state,
+          updated_at: new Date().toISOString()
+        })
+        .eq('room_code', currentRoomCode);
+    };
+
+    // Tombol Lanjut ke Voting & Lewati Diskusi
     if (isHost) {
       btnVote.classList.remove('hidden');
+      btnVote.disabled = false;
       btnVote.textContent = 'Mulai Sesi Voting';
-      btnVote.onclick = async () => {
-        state.phase = 'day_voting';
-        state.players.forEach(p => p.vote = null);
-        await supabaseClient
-          .from('werewolf_rooms')
-          .update({
-            status: 'day_voting',
-            game_state: state,
-            updated_at: new Date().toISOString()
-          })
-          .eq('room_code', currentRoomCode);
-      };
+      btnVote.onclick = proceedToVotingOnline;
+
+      if (btnSkip) {
+        btnSkip.classList.remove('hidden');
+        btnSkip.disabled = false;
+        btnSkip.onclick = proceedToVotingOnline;
+      }
     } else {
-      btnVote.classList.add('hidden');
+      btnVote.classList.remove('hidden');
+      btnVote.disabled = true;
+      btnVote.textContent = 'Menunggu Host...';
+
+      if (btnSkip) {
+        btnSkip.classList.remove('hidden');
+        btnSkip.disabled = false;
+        btnSkip.onclick = () => {
+          alert('Hanya Host ruang yang dapat mempercepat atau melewati waktu diskusi.');
+        };
+      }
+    }
+
+    // Countdown Timer Diskusi Terbuka
+    onlineDiscussionSeconds = 120;
+    const timerDigits = document.getElementById('discussionTimerDigits');
+    const updateTimerDisplay = () => {
+      if (timerDigits) {
+        const m = String(Math.floor(onlineDiscussionSeconds / 60)).padStart(2, '0');
+        const s = String(onlineDiscussionSeconds % 60).padStart(2, '0');
+        timerDigits.textContent = `${m}:${s}`;
+      }
+    };
+    updateTimerDisplay();
+
+    if (!waitingHunterAction) {
+      onlineDiscussionTimer = setInterval(() => {
+        onlineDiscussionSeconds--;
+        updateTimerDisplay();
+        if (onlineDiscussionSeconds <= 0) {
+          clearInterval(onlineDiscussionTimer);
+          onlineDiscussionTimer = null;
+          if (isHost) {
+            proceedToVotingOnline();
+          }
+        }
+      }, 1000);
     }
   }
 
   function setupOnlineHunterShoot(state) {
     const hunterPanel = document.getElementById('dayHunterRevengePanel');
     hunterPanel.classList.remove('hidden');
+    hunterPanel.style.display = 'block';
     document.getElementById('hunterRevengeName').textContent = myPlayerName;
 
     const list = document.getElementById('hunterTargetList');
@@ -920,6 +1142,7 @@
 
       window.WerewolfAudio.play('gunshot');
       hunterPanel.classList.add('hidden');
+      hunterPanel.style.display = 'none';
 
       if (checkOnlineWin(state)) {
         state.phase = 'finished';
@@ -934,6 +1157,7 @@
         return;
       }
 
+      state.last_night_victim = null; // Tembakan selesai diproses
       await supabaseClient
         .from('werewolf_rooms')
         .update({
@@ -945,6 +1169,16 @@
   }
 
   function renderOnlineDayVoting(state) {
+    if (onlineDiscussionTimer) {
+      clearInterval(onlineDiscussionTimer);
+      onlineDiscussionTimer = null;
+    }
+    const hunterPanel = document.getElementById('dayHunterRevengePanel');
+    if (hunterPanel) {
+      hunterPanel.classList.add('hidden');
+      hunterPanel.style.display = 'none';
+    }
+
     window.WerewolfApp.switchScreen('screenDayVoting');
     window.WerewolfApp.setHudStatus('VOTING EKSEKUSI');
 
@@ -1132,6 +1366,11 @@
   }
 
   function leaveRoom(shouldDelete = true) {
+    stopRoomPolling();
+    if (nightStepCountdownTimer) {
+      clearInterval(nightStepCountdownTimer);
+      nightStepCountdownTimer = null;
+    }
     if (shouldDelete && isHost && currentRoomCode) {
       deleteCurrentRoom();
     }

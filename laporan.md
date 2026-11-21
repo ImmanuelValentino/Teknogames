@@ -1,3 +1,41 @@
+### [2026-11-21 11:00] - [Frontend & CMS] - Implementasi CMS Indexing & Ranking Game (/manage-games)
+- **Kondisi Sebelum:**
+  1. Urutan game di Beranda bersifat statis berdasarkan susunan hardcode di `INITIAL_GAMES`.
+  2. Untuk mengganti game yang tampil sebagai Hero Pilihan Utama (Top 1) atau mengatur urutan katalog, admin harus mengedit file kode dan melakukan build ulang/deploy.
+- **Perubahan Sesudah:**
+  1. Dibuat rute CMS khusus di `/manage-games` dengan perlindungan kata sandi rahasia yang terhubung langsung ke tabel `cms_settings` di Supabase.
+  2. Dilengkapi antarmuka Drag-and-Drop native, tombol panah naik/turun, shortcut "Jadikan Top 1", tombol reset default, serta tombol "Terapkan Urutan" untuk menyimpan urutan kurasi admin ke Supabase.
+  3. Beranda (`src/app/page.tsx`) langsung terhubung dengan data urutan CMS: game pada urutan #1 otomatis menjadi Kartu Utama di Hero Banner, game #2 menjadi kartu pendamping Hero, dan katalog game di bawahnya tersusun rapi sesuai urutan kurasi admin.
+  4. Tersedia fitur ganti kata sandi admin secara mandiri langsung ke database Supabase.
+- **Masalah yang Ditemukan:** Tidak ada. Zero-Emoji policy terjaga 100%.
+- **File Terdampak:** `src/app/manage-games/page.tsx`, `src/lib/cms-supabase.ts`, `src/app/page.tsx`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-20 20:00] - [Games] - Hotfix Tembakan Pemburu & Penanganan Tombol Lewati Diskusi Online
+- **Kondisi Sebelum:**
+  1. Saat fajar menyingsing dengan hasil malam damai, muncul teks anomali `PEMBURU () GUGUR!` dengan nama kosong dan tombol `Lepaskan Tembakan Terakhir` tampil ke semua pemain. Hal ini terjadi karena class `.hidden` di `styles.css` hanya mencakup selector `.screen.hidden`, sehingga elemen panel pemburu tidak disembunyikan.
+  2. Tombol `Lepaskan Tembakan Terakhir` muncul di seluruh layar pemain, bukan eksklusif untuk Hunter yang gugur.
+  3. Tombol `Lewati Diskusi` tidak merespons atau tidak bisa dipencet pada mode online karena belum memiliki event handler di `online-supabase.js`, serta timer diskusi 2 menit tidak berjalan mundur.
+- **Perubahan Sesudah:**
+  1. Menambahkan rule CSS global `.hidden { display: none !important; }` serta inline style protektif pada `#dayHunterRevengePanel` sehingga seluruh elemen tersembunyi tidak akan pernah bocor lagi.
+  2. Mengisolasi panel dan tombol `Lepaskan Tembakan Terakhir` secara ketat: hanya pemain yang berstatus Hunter dan terbunuh semalam yang melihat panel aksi tersebut di peralatannya. Pemain lain melihat teks menunggu.
+  3. Memasang event listener klik pada tombol `Lewati Diskusi` (`btnSkipDiscussion`) dan `Mulai Sesi Voting` (`btnProceedToVoting`) di mode online: Host dapat langsung mempercepat alur ke voting eksekusi desa.
+  4. Menjalankan sinkronisasi countdown timer diskusi 120 detik (`#discussionTimerDigits`) dengan auto-transition ke voting jika waktu habis.
+- **Masalah yang Ditemukan:** Tidak ada. Zero-emoji policy terjaga 100%.
+- **File Terdampak:** `public/games/werewolf/styles.css`, `public/games/werewolf/index.html`, `public/games/werewolf/online-supabase.js`, `public/games/werewolf/offline-engine.js`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-20 19:50] - [Games] - Perbaikan Bug Seer Single-Lock, Timer 30 Detik Malam, dan Sinkronisasi Role Lobi Realtime
+- **Kondisi Sebelum:**
+  1. Seer bisa mengklik dan mengintip identitas seluruh pemain lain berkali-kali dalam 1 malam sebelum menekan tombol kunci aksi.
+  2. Giliran aksi malam tidak memiliki batas waktu (bisa idle tanpa batas), dan layar pemain lain saat menunggu tidak menampilkan peran apa yang sedang memilih aksi.
+  3. Saat Room Master menambah atau mengurangi jumlah role di lobi, pemain tamu (guest) tidak melihat pembaruan angka role tersebut secara real-time.
+- **Perubahan Sesudah:**
+  1. Membatasi klik Seer menjadi tepat 1 kali per malam: begitu 1 pemain dipilih, seluruh kartu target lainnya langsung dinonaktifkan (`disabled` dengan `pointer-events: none` dan pelepasan event click) sehingga Seer hanya bisa melihat 1 orang per malam.
+  2. Menambahkan timer pembatasan waktu 30 detik untuk setiap giliran peran malam (Bodyguard, Werewolf, Seer) dengan mekanisme auto-submit target jika waktu habis.
+  3. Memperbarui layar tunggu pemain lain di malam hari dengan menampilkan nama dan ikon peran yang sedang aktif beraksi serta hitung mundur sisa waktu gilirannya.
+  4. Menerapkan sistem dual-sync (Realtime websocket + polling sinkronisasi 1.2 detik) dan me-render daftar peran dinamis di layar tamu lobi, sehingga setiap perubahan tombol +/- oleh Room Master langsung tercermin seketika di layar pemain lain.
+- **Masalah yang Ditemukan:** Tidak ada. Zero-emoji policy tetap dipatuhi 100%.
+- **File Terdampak:** `public/games/werewolf/online-supabase.js`, `public/games/werewolf/offline-engine.js`, `public/games/werewolf/index.html`, `public/games/werewolf/styles.css`, `game-log.md`, `UPDATE.md`, `laporan.md`, `out/*`
+
 ### [2026-11-20 18:45] - [Games] - Integrasi Fitur Werewolf Online Multiplayer Supabase (Room 6 Digit) & Arsitektur Modular
 - **Kondisi Sebelum:** Game Werewolf hanya dapat dimainkan secara offline di 1 HP (*Pass-and-Play*) dengan kode monolitik di dalam satu file `index.html`. Belum ada mode online mabar antar-perangkat, belum ada koneksi ke Supabase Realtime, dan belum ada skema database room temporary.
 - **Perubahan Sesudah:**
