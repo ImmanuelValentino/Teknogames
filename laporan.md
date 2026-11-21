@@ -1,3 +1,15 @@
+### [2026-11-21 14:17] - [Frontend] - Penyempurnaan Keterbacaan & Responsivitas UI
+- **Kondisi Sebelum:**
+  1. Sejumlah teks dan tombol kurang kontras pada mode terang maupun gelap.
+  2. Padding beberapa bagian masih terasa lebar pada layar ponsel, dan warna latar Tentang Portal berbeda dari kartu peringkat Papan Skor Saya.
+- **Perubahan Sesudah:**
+  1. Meningkatkan kontras teks dan tombol layanan mitra agar lebih mudah dibaca pada kedua mode.
+  2. Mempersempit padding mobile pada beberapa area tanpa mengubah ukuran desktop.
+  3. Menyesuaikan tampilan ikon skor agar lebih mudah terlihat, tanpa mengubah warna ikon kategorinya.
+  4. Menyamakan latar Tentang Portal dengan kartu peringkat Papan Skor Saya (`#292a31`).
+- **Masalah yang Ditemukan:** Tidak ada masalah fungsional yang dilaporkan; perubahan berfokus pada tampilan.
+- **File Terdampak:** `src/app/globals.css`, `src/app/page.tsx`, `src/components/ads/AdBottomAnchor.tsx`, `src/components/game/GameCard.tsx`, `src/components/game/GameFrame.tsx`, `src/components/game/GameGrid.tsx`, `src/components/game/GameHero.tsx`, `src/components/layout/Footer.tsx`, `src/components/layout/LayoutWrapper.tsx`, `src/components/layout/Navbar.tsx`
+
 ### [2026-11-21 11:00] - [Frontend & CMS] - Implementasi CMS Indexing & Ranking Game (/manage-games)
 - **Kondisi Sebelum:**
   1. Urutan game di Beranda bersifat statis berdasarkan susunan hardcode di `INITIAL_GAMES`.

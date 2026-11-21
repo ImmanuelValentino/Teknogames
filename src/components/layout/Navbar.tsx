@@ -13,16 +13,11 @@ import {
   Menu,
   X,
   Gamepad2,
-  Compass,
-  Puzzle,
-  Zap,
-  Coffee,
-  Dumbbell,
   Moon,
   Sun,
 } from "lucide-react";
 import { INITIAL_GAMES, CATEGORIES } from "@/lib/games-data";
-import { GameCategory } from "@/types/game";
+import CategoryIcon from "@/components/game/CategoryIcon";
 
 type Theme = "light" | "dark";
 const THEME_STORAGE_KEY = "teknogame-theme";
@@ -83,25 +78,6 @@ export default function Navbar() {
       localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
     } catch (error) {
       console.error("Preferensi tema tidak dapat disimpan.", error);
-    }
-  };
-
-  const getCategoryIcon = (id: GameCategory) => {
-    switch (id) {
-      case "arcade":
-        return <Gamepad2 className="w-4 h-4 text-red-700" strokeWidth={2.5} />;
-      case "adventure":
-        return <Compass className="w-4 h-4 text-emerald-700" strokeWidth={2.5} />;
-      case "puzzle":
-        return <Puzzle className="w-4 h-4 text-rose-700" strokeWidth={2.5} />;
-      case "action":
-        return <Zap className="w-4 h-4 text-rose-700" strokeWidth={2.5} />;
-      case "casual":
-        return <Coffee className="w-4 h-4 text-amber-700" strokeWidth={2.5} />;
-      case "sports":
-        return <Dumbbell className="w-4 h-4 text-yellow-700" strokeWidth={2.5} />;
-      default:
-        return <Gamepad2 className="w-4 h-4 text-red-700" strokeWidth={2.5} />;
     }
   };
 
@@ -171,7 +147,7 @@ export default function Navbar() {
                     onClick={() => setDropdownOpen(false)}
                     className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/8 transition-colors"
                   >
-                    <Gamepad2 className="w-4 h-4 text-[#ff8c9f]" />
+                    <CategoryIcon category="all" />
                     <span>Semua Permainan</span>
                   </Link>
                   <div className="h-px bg-white/8 my-1" />
@@ -182,7 +158,7 @@ export default function Navbar() {
                       onClick={() => setDropdownOpen(false)}
                       className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-white/8 transition-colors"
                     >
-                      {getCategoryIcon(cat.id)}
+                      <CategoryIcon category={cat.id} />
                       <span>{cat.label}</span>
                     </Link>
                   ))}
@@ -205,7 +181,7 @@ export default function Navbar() {
               href="/#papan-skor"
               className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
             >
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
+              <span className="score-icon flex h-7 w-7 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
                 <Trophy className="h-4 w-4 text-amber-700" strokeWidth={2.5} />
               </span>
               <span>Papan Skor</span>
@@ -284,7 +260,7 @@ export default function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-white/8 transition-colors"
               >
-                {getCategoryIcon(cat.id)}
+                <CategoryIcon category={cat.id} variant="dark" />
                 <span>{cat.label}</span>
               </Link>
             ))}
@@ -306,7 +282,7 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen(false)}
             className="flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/8"
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
+            <span className="score-icon flex h-7 w-7 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
               <Trophy className="h-4 w-4 text-amber-700" strokeWidth={2.5} />
             </span>
             <span>Papan Skor</span>

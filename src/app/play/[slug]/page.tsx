@@ -9,6 +9,7 @@ import {
 } from "@/lib/games-data";
 import { getGamePortalPath, getGamePortalUrl } from "@/lib/site";
 import GameFrame from "@/components/game/GameFrame";
+import CategoryIcon from "@/components/game/CategoryIcon";
 import AdCompanion from "@/components/ads/AdCompanion";
 import GameCard from "@/components/game/GameCard";
 import GoogleAdSlot from "@/components/ads/GoogleAdSlot";
@@ -225,8 +226,9 @@ export default async function PlayPage({ params }: PlayPageProps) {
         <span>/</span>
         <Link
           href={`/category/${game.category}`}
-          className="capitalize hover:text-white transition-colors"
+          className="inline-flex items-center gap-1 capitalize hover:text-white transition-colors"
         >
+          <CategoryIcon category={game.category} />
           {getCategoryLabel(game.category)}
         </Link>
         <span>/</span>
@@ -334,7 +336,10 @@ export default async function PlayPage({ params }: PlayPageProps) {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
                 <div className="bg-black/20 p-2.5 rounded-xl border border-white/10">
                   <span className="text-[11px] text-slate-400 block">Kategori</span>
-                  <span className="font-semibold text-white capitalize">{getCategoryLabel(game.category)}</span>
+                  <span className="inline-flex items-center gap-1.5 font-semibold text-white capitalize">
+                    <CategoryIcon category={game.category} variant="dark" />
+                    {getCategoryLabel(game.category)}
+                  </span>
                 </div>
                 <div className="bg-black/20 p-2.5 rounded-xl border border-white/10">
                   <span className="text-[11px] text-slate-400 block">Pengembang</span>

@@ -17,8 +17,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className="mt-2 pt-4 pb-8 text-xs">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <footer className="mt-2 pt-3 sm:pt-4 pb-8 text-xs">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 border-b border-[#b6a8aa] pb-6 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.85fr_0.85fr_1.2fr]">
           {/* Kolom 1: Identitas */}
           <div className="space-y-2">
@@ -85,7 +85,7 @@ export default function Footer() {
                 <button
                   type="button"
                   onClick={handleRandomPlay}
-                  className="border-0 bg-transparent p-0 text-left text-[#843441] transition-colors hover:text-[#642832]"
+                  className="footer-random-play border-0 bg-transparent p-0 text-left font-sans tracking-normal text-[#843441] transition-colors hover:text-[#642832]"
                 >
                   Main Acak
                 </button>

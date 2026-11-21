@@ -6,6 +6,7 @@ import { Game } from "@/types/game";
 import { GameCategory } from "@/types/game";
 import { searchGames } from "@/lib/games-data";
 import GameCard from "./GameCard";
+import CategoryIcon from "./CategoryIcon";
 import AdNativeTile from "../ads/AdNativeTile";
 
 interface CategoryOption {
@@ -118,13 +119,16 @@ export default function GameGrid({
                     });
                   }
                 }}
-                className="catalog-category-trigger flex min-h-11 w-full items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors sm:w-52"
+                className="catalog-category-trigger flex min-h-11 w-full items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors sm:w-60"
                 aria-label="Filter berdasarkan kategori"
                 aria-haspopup="menu"
                 aria-expanded={categoryMenuOpen}
                 aria-controls={categoryMenuId}
               >
-                <span>{selectedCategoryLabel}</span>
+                <span className="flex items-center gap-2 whitespace-nowrap">
+                  <CategoryIcon category={selectedCategory} />
+                  {selectedCategoryLabel}
+                </span>
                 <ChevronDown
                   className={`h-4 w-4 shrink-0 text-slate-500 transition-transform duration-200 ${
                     categoryMenuOpen ? "rotate-180" : ""
@@ -138,7 +142,7 @@ export default function GameGrid({
                   id={categoryMenuId}
                   role="menu"
                   aria-label="Kategori permainan"
-                  className="glass-modal absolute right-0 top-full z-30 mt-1.5 max-h-64 w-full overflow-y-auto rounded-2xl border p-1.5 shadow-2xl sm:w-52"
+                  className="glass-modal absolute right-0 top-full z-30 mt-1.5 max-h-64 w-full overflow-y-auto rounded-2xl border p-1.5 shadow-2xl sm:w-60"
                 >
                   {categories.map((category, index) => (
                     <React.Fragment key={category.id}>
@@ -179,7 +183,8 @@ export default function GameGrid({
                             : "font-medium"
                         }`}
                       >
-                        {category.label}
+                        <CategoryIcon category={category.id} />
+                        <span>{category.label}</span>
                       </button>
                     </React.Fragment>
                   ))}

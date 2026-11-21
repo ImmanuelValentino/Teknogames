@@ -8,6 +8,14 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.1] - 2026-11-21
+### Improved (Readability, Mobile Spacing, & UI Contrast)
+- **Readability and contrast:** Improved text and the Teknotama partner link so they remain visible in light and dark themes.
+- **Mobile layout:** Reduced padding in selected mobile sections while preserving desktop spacing.
+- **Icon visibility:** Improved score-related icon visibility without changing category icon colors.
+- **About Portal card:** Matched its dark background to the Papan Skor Saya rank card (`#292a31`).
+- **Files:** [globals.css](src/app/globals.css), [page.tsx](src/app/page.tsx), [AdBottomAnchor.tsx](src/components/ads/AdBottomAnchor.tsx), [GameCard.tsx](src/components/game/GameCard.tsx), [GameFrame.tsx](src/components/game/GameFrame.tsx), [GameGrid.tsx](src/components/game/GameGrid.tsx), [GameHero.tsx](src/components/game/GameHero.tsx), [Footer.tsx](src/components/layout/Footer.tsx), [LayoutWrapper.tsx](src/components/layout/LayoutWrapper.tsx), [Navbar.tsx](src/components/layout/Navbar.tsx)
+
 ## [3.15.0] - 2026-11-21
 ### Added & Improved (Content Management System Indexing & Ranking Game di /manage-games)
 - **Panel Admin CMS ([src/app/manage-games/page.tsx](src/app/manage-games/page.tsx)):**

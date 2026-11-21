@@ -254,7 +254,7 @@ export default function HomePage() {
       <section id="papan-skor" className="mb-4 scroll-mt-24 rounded-2xl card-natural p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 border-b border-white/10 pb-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
+            <div className="score-icon flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
               <Trophy className="h-4 w-4 text-amber-700" strokeWidth={2.5} />
             </div>
             <div>
@@ -460,7 +460,7 @@ export default function HomePage() {
 
       {/* Kartu Tengah: Layanan Mitra (4 Kartu) */}
       <section className="mb-6" aria-labelledby="partner-services-title">
-        <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <div className="mb-2 sm:mb-4 flex flex-wrap items-end justify-between gap-2 sm:gap-3">
           <div>
             <p className="section-kicker mb-2">Layanan mitra</p>
             <h2 id="partner-services-title" className="section-heading">
@@ -471,7 +471,7 @@ export default function HomePage() {
             href="https://teknotama.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 px-4 text-xs font-semibold text-slate-200 transition-colors hover:border-[#ce2541]/50 hover:text-white"
+            className="partner-service-link inline-flex min-h-11 items-center gap-2 rounded-full border px-3 sm:px-4 text-xs font-semibold transition-colors"
           >
             <span>Lihat layanan Teknotama</span>
             <ExternalLink className="h-3.5 w-3.5" />
@@ -509,7 +509,7 @@ export default function HomePage() {
               href="https://teknotama.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="partner-service-card group rounded-2xl border border-white/10 bg-white/[0.025] p-5 transition-all duration-200 hover:border-[#ce2541]/50 hover:bg-white/[0.045] flex flex-col justify-between"
+              className="partner-service-card group rounded-2xl border border-white/10 bg-white/[0.025] p-4 sm:p-5 transition-all duration-200 hover:border-[#ce2541]/50 hover:bg-white/[0.045] flex flex-col justify-between"
             >
               <div>
                 <span className="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-[#ce2541]/25 bg-[#610212]/30 text-[#ff8c9f] transition-colors group-hover:text-white">
@@ -528,7 +528,7 @@ export default function HomePage() {
       </section>
 
       {/* Kartu Bawah: Partner Panel Teknotama */}
-      <section className="partner-panel mb-2 flex flex-col items-start justify-between gap-6 p-6 sm:p-8 md:flex-row md:items-center">
+      <section className="partner-panel mb-2 flex flex-col items-start justify-between gap-6 p-4 sm:p-8 md:flex-row md:items-center">
         <div className="relative z-10 max-w-2xl space-y-2">
           <span className="section-kicker">
             Partner Teknologi Resmi

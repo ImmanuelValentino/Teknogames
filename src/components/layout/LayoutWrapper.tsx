@@ -7,7 +7,7 @@ interface LayoutWrapperProps {
 
 export default function LayoutWrapper({ children }: LayoutWrapperProps) {
   return (
-    <div className="relative pb-16 md:pb-0">
+    <div className="relative pb-4 md:pb-0">
       {/* Floating Side Ads di luar margin layar lebar (>= 1680px), aman tanpa bentrok konten */}
       <AdSkyscraper position="left" />
 

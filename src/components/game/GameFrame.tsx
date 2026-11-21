@@ -11,9 +11,9 @@ import {
   Trophy,
   Check,
   X,
-  Gamepad2,
 } from "lucide-react";
 import { getCategoryLabel } from "@/lib/games-data";
+import CategoryIcon from "./CategoryIcon";
 import {
   toggleLocalFavorite,
   getLocalFavorites,
@@ -153,8 +153,9 @@ export default function GameFrame({ game, onOpenLeaderboard }: GameFrameProps) {
               </div>
               <div className="min-w-0">
                 <span className="block text-xs text-[#68595c]">Permainan selesai! Skor:</span>
-                <span className="whitespace-nowrap text-lg font-bold text-[#765b2c]">
-                  {lastScore.toLocaleString("id-ID")} Poin
+                <span className="whitespace-nowrap text-lg font-bold">
+                  <span className="text-[#ffd166]">{lastScore.toLocaleString("id-ID")}</span>
+                  <span className="ml-1 text-[#fffafa]">Poin</span>
                 </span>
               </div>
             </div>
@@ -183,7 +184,11 @@ export default function GameFrame({ game, onOpenLeaderboard }: GameFrameProps) {
       <div className="rounded-2xl card-natural p-3 sm:p-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0 text-white">
-            <Gamepad2 className="w-5 h-5 text-[#ff8c9f]" />
+            <CategoryIcon
+              category={game.category}
+              variant="dark"
+              className="h-5 w-5"
+            />
           </div>
           <div className="min-w-0">
             <h1 className="font-heading text-sm sm:text-base font-semibold text-white leading-tight truncate">
@@ -201,7 +206,8 @@ export default function GameFrame({ game, onOpenLeaderboard }: GameFrameProps) {
             type="button"
             onClick={handleToggleFavorite}
             aria-label={isFavorite ? "Hapus dari Favorit" : "Tambah ke Favorit"}
-            className={`min-h-11 min-w-11 p-2.5 rounded-xl border transition-colors cursor-pointer flex items-center justify-center ${
+            aria-pressed={isFavorite}
+            className={`favorite-toggle min-h-11 min-w-11 p-2.5 rounded-xl border transition-colors cursor-pointer flex items-center justify-center ${
               isFavorite
                 ? "bg-[#8a1347] border-rose-300 text-white"
                 : "bg-white/10 border-white/10 text-slate-300 hover:text-white hover:bg-white/15"

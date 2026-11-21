@@ -2,8 +2,14 @@
 
 import React from "react";
 import Link from "next/link";
-import { Game } from "@/types/game";
-import { Play, Sparkles, ArrowDown } from "lucide-react";
+import { Game, GameCategory } from "@/types/game";
+import {
+  ArrowDown,
+  Play,
+  Sparkles,
+} from "lucide-react";
+import { getCategoryLabel } from "@/lib/games-data";
+import CategoryIcon from "./CategoryIcon";
 
 interface GameHeroProps {
   featuredGames: Game[];
@@ -106,11 +112,12 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 z-0 pointer-events-none" />
 
               <div className="relative z-10 flex items-center justify-between gap-2">
-                <span className="rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
+                <span className="shrink-0 whitespace-nowrap rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-wider leading-none text-white backdrop-blur">
                   Pilihan Kedua
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-white/80">
-                  {secondaryHero.category}
+                <span className="flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md shadow-sm">
+                  <CategoryIcon category={secondaryHero.category} variant="dark" />
+                  {getCategoryLabel(secondaryHero.category)}
                 </span>
               </div>
               <div className="relative z-10 my-auto flex flex-col items-center justify-center text-center">
@@ -120,9 +127,6 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                   }`}
                 >
                   {getInitials(secondaryHero.title)}
-                </span>
-                <span className="mt-1 text-[11px] font-semibold uppercase tracking-widest text-white/80">
-                  {secondaryHero.category}
                 </span>
               </div>
               <div className="relative z-10 flex items-center justify-between gap-3 rounded-2xl border border-white/15 bg-black/40 p-3.5 backdrop-blur-md">
@@ -177,8 +181,9 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                 <span className="rounded-full bg-black/60 border border-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md shadow-sm">
                   Pilihan Utama
                 </span>
-                <span className="rounded-full bg-rose-950/70 border border-rose-400/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-rose-200 backdrop-blur-md">
-                  {mainHero.category}
+                <span className="flex items-center gap-1.5 rounded-full bg-rose-950/70 border border-rose-400/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-rose-200 backdrop-blur-md">
+                  <CategoryIcon category={mainHero.category} variant="dark" />
+                  {getCategoryLabel(mainHero.category)}
                 </span>
               </div>
 

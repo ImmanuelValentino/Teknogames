@@ -18,7 +18,7 @@ export default function AdBottomAnchor() {
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           aria-label={isCollapsed ? "Tampilkan Iklan" : "Sembunyikan Iklan"}
-          className="min-h-11 rounded-t-xl bg-[#5e1824] px-3 text-[10px] font-medium text-slate-200 border-t border-x border-white/10 shadow-md flex items-center gap-1.5 cursor-pointer transition-colors hover:bg-[#752432]"
+          className="min-h-11 rounded-t-xl bg-[#5e1824] px-2.5 text-[10px] font-medium text-slate-200 border-t border-x border-white/10 shadow-md flex items-center gap-1.5 cursor-pointer transition-colors hover:bg-[#752432]"
         >
           {isCollapsed ? (
             <>
@@ -38,7 +38,7 @@ export default function AdBottomAnchor() {
 
       <div
         style={{ minHeight: "60px" }}
-        className="pointer-events-auto w-full max-w-sm mx-auto bg-[#47141d] border-t border-x border-white/10 shadow-xl rounded-t-xl overflow-hidden px-3 py-2 flex items-center justify-center"
+        className="pointer-events-auto w-full max-w-sm mx-auto bg-[#47141d] border-t border-x border-white/10 shadow-xl rounded-t-xl overflow-hidden px-2 py-1 flex items-center justify-center"
       >
         <GoogleAdSlot
           slotType="mobile-anchor-320x50"

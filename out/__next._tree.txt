@@ -1,4 +1,4 @@
 :HL["/games/_next/static/css/b2afee3be411421c.css","style"]
-:HL["/games/_next/static/css/68c2b2850f688f25.css","style"]
+:HL["/games/_next/static/css/8d06b92483612175.css","style"]
 1:[["children",{"s":"__PAGE__","h":160}]]
-0:{"b":"PNDhMT-ITSqZn45zTURY2","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"CGhRu2uvFOfvE_r4ml6MM","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
