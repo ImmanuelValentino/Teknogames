@@ -3,14 +3,8 @@
 import React from "react";
 import { CATEGORIES } from "@/lib/games-data";
 import { GameCategory } from "@/types/game";
-import {
-  Gamepad2,
-  Compass,
-  Puzzle,
-  Zap,
-  Coffee,
-  Dumbbell,
-} from "lucide-react";
+import { useTranslation, getLocalizedCategoryLabel } from "@/lib/i18n";
+import CategoryIcon from "./CategoryIcon";
 
 interface CategoryChipsProps {
   selectedCategory: GameCategory;
@@ -21,25 +15,7 @@ export default function CategoryChips({
   selectedCategory,
   onSelectCategory,
 }: CategoryChipsProps) {
-  const getCategoryIcon = (id: GameCategory) => {
-    switch (id) {
-      case "arcade":
-        return <Gamepad2 className="w-3.5 h-3.5" />;
-      case "adventure":
-        return <Compass className="w-3.5 h-3.5" />;
-      case "puzzle":
-        return <Puzzle className="w-3.5 h-3.5" />;
-      case "action":
-        return <Zap className="w-3.5 h-3.5" />;
-      case "casual":
-        return <Coffee className="w-3.5 h-3.5" />;
-      case "sports":
-        return <Dumbbell className="w-3.5 h-3.5" />;
-      default:
-        return <Gamepad2 className="w-3.5 h-3.5" />;
-    }
-  };
-
+  const { lang } = useTranslation();
   return (
     <div className="py-2 mb-2">
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
@@ -55,8 +31,8 @@ export default function CategoryChips({
                   : "bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-slate-300 hover:text-white"
               }`}
             >
-              <span>{getCategoryIcon(cat.id)}</span>
-              <span>{cat.label}</span>
+              <span><CategoryIcon category={cat.id} /></span>
+              <span>{getLocalizedCategoryLabel(cat.id, lang)}</span>
             </button>
           );
         })}

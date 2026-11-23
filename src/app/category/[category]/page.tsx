@@ -4,10 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getGamesByCategory, CATEGORIES } from "@/lib/games-data";
 import { getGamePortalPath } from "@/lib/site";
-import GameGrid from "@/components/game/GameGrid";
-import GoogleAdSlot from "@/components/ads/GoogleAdSlot";
-import { ArrowLeft, Gamepad2, Compass, Puzzle, Zap, Coffee, Dumbbell } from "lucide-react";
-import { GameCategory } from "@/types/game";
+import CategoryView from "@/components/game/CategoryView";
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
@@ -60,87 +57,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const games = getGamesByCategory(category);
 
-  const getCategoryHeroIcon = (id: GameCategory) => {
-    switch (id) {
-      case "arcade":
-        return <Gamepad2 className="w-6 h-6 text-red-700" strokeWidth={2.5} />;
-      case "adventure":
-        return <Compass className="w-6 h-6 text-emerald-700" strokeWidth={2.5} />;
-      case "puzzle":
-        return <Puzzle className="w-6 h-6 text-rose-700" strokeWidth={2.5} />;
-      case "action":
-        return <Zap className="w-6 h-6 text-rose-700" strokeWidth={2.5} />;
-      case "casual":
-        return <Coffee className="w-6 h-6 text-amber-700" strokeWidth={2.5} />;
-      case "sports":
-        return <Dumbbell className="w-6 h-6 text-yellow-700" strokeWidth={2.5} />;
-      default:
-        return <Gamepad2 className="w-6 h-6 text-red-700" strokeWidth={2.5} />;
-    }
-  };
-
   return (
-    <div className="pt-6 space-y-6">
-      {/* Breadcrumb */}
-      <nav
-        aria-label="Jejak navigasi"
-        className="flex items-center gap-2 text-xs font-medium text-slate-300"
-      >
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1 hover:text-white transition-colors"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Semua Permainan</span>
-        </Link>
-        <span>/</span>
-        <span className="text-white font-semibold capitalize">
-          {validCat.label}
-        </span>
-      </nav>
-
-      {/* Header Banner Kategori */}
-      <div className="rounded-2xl card-natural p-6 sm:p-8 flex items-center justify-between">
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl border border-[#ce7c8a] bg-[#e09aa6] flex items-center justify-center shrink-0 shadow-sm">
-              {getCategoryHeroIcon(validCat.id)}
-            </div>
-            <h1 className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-white">
-              Kategori: {validCat.label}
-            </h1>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl">
-            Jelajahi beragam permainan web kategori {validCat.label.toLowerCase()} secara gratis langsung di peramban.
-          </p>
-        </div>
-      </div>
-
-      {/* Slot Iklan Horizontal Tengah Ukuran 1080 x 90 */}
-      <GoogleAdSlot
-        slotType="leaderboard-1080x90"
-        adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_CATEGORY || ""}
-      />
-
-      {/* Grid Katalog atau Tampilan Kondisi Kosong (Empty State) untuk Olahraga / Kategori Kosong */}
-      {games.length === 0 ? (
-        <div className="card-natural rounded-2xl p-10 sm:p-16 text-center my-8">
-          <h3 className="font-heading text-lg sm:text-xl font-bold text-white mb-2">
-            Belum Ada Permainan di Kategori {validCat.label}
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto mb-6 leading-relaxed">
-            Permainan dalam kategori {validCat.label.toLowerCase()} sedang dalam tahap pengembangan oleh tim pengembang kami. Silakan jelajahi kategori permainan menarik lainnya!
-          </p>
-          <Link
-            href="/#katalog"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full btn-primary-clean text-xs font-semibold shadow-md"
-          >
-            <span>Jelajahi Kategori Lainnya</span>
-          </Link>
-        </div>
-      ) : (
-        <GameGrid games={games} title={`Permainan ${validCat.label}`} />
-      )}
-    </div>
+    <CategoryView
+      categoryId={validCat.id}
+      defaultLabel={validCat.label}
+      games={games}
+      adSlot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_CATEGORY || ""}
+    />
   );
 }

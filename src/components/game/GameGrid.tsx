@@ -8,6 +8,7 @@ import { searchGames } from "@/lib/games-data";
 import GameCard from "./GameCard";
 import CategoryIcon from "./CategoryIcon";
 import AdNativeTile from "../ads/AdNativeTile";
+import { useTranslation, getLocalizedCategoryLabel } from "@/lib/i18n";
 
 interface CategoryOption {
   id: GameCategory;
@@ -24,11 +25,13 @@ interface GameGridProps {
 
 export default function GameGrid({
   games,
-  title = "Semua Koleksi Permainan",
+  title,
   selectedCategory = "all",
   onSelectCategory,
   categories = [],
 }: GameGridProps) {
+  const { lang, t } = useTranslation();
+  const displayTitle = title ?? t.catalog.title;
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const categoryMenuId = useId();
@@ -43,8 +46,7 @@ export default function GameGrid({
   const selectedCategoryIndex = categories.findIndex(
     (category) => category.id === selectedCategory
   );
-  const selectedCategoryLabel =
-    categories[selectedCategoryIndex]?.label ?? categories[0]?.label ?? "";
+  const selectedCategoryLabel = getLocalizedCategoryLabel(selectedCategory, lang);
 
   useEffect(() => {
     if (!categoryMenuOpen) return;
@@ -84,8 +86,8 @@ export default function GameGrid({
       {/* Section Header dengan Dropdown Kategori */}
       <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
-          <p className="section-kicker mb-2">Pilih permainan</p>
-          <h2 className="section-heading">{title}</h2>
+          <p className="section-kicker mb-2">{t.catalog.kicker}</p>
+          <h2 className="section-heading">{displayTitle}</h2>
         </div>
 
         {/* Pencarian dan dropdown filter kategori */}
@@ -97,8 +99,8 @@ export default function GameGrid({
                 type="search"
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Cari permainan..."
-                aria-label="Cari permainan"
+                placeholder={t.catalog.searchPlaceholder}
+                aria-label={t.catalog.searchAriaLabel}
                 className="w-full bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none"
               />
             </label>
@@ -120,7 +122,7 @@ export default function GameGrid({
                   }
                 }}
                 className="catalog-category-trigger flex min-h-11 w-full items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors sm:w-60"
-                aria-label="Filter berdasarkan kategori"
+                aria-label={t.catalog.selectCategory}
                 aria-haspopup="menu"
                 aria-expanded={categoryMenuOpen}
                 aria-controls={categoryMenuId}
@@ -141,7 +143,7 @@ export default function GameGrid({
                 <div
                   id={categoryMenuId}
                   role="menu"
-                  aria-label="Kategori permainan"
+                  aria-label={t.catalog.selectCategory}
                   className="glass-modal absolute right-0 top-full z-30 mt-1.5 max-h-64 w-full overflow-y-auto rounded-2xl border p-1.5 shadow-2xl sm:w-60"
                 >
                   {categories.map((category, index) => (
@@ -184,7 +186,7 @@ export default function GameGrid({
                         }`}
                       >
                         <CategoryIcon category={category.id} />
-                        <span>{category.label}</span>
+                        <span>{getLocalizedCategoryLabel(category.id, lang)}</span>
                       </button>
                     </React.Fragment>
                   ))}
@@ -199,11 +201,12 @@ export default function GameGrid({
       {isEmpty || filteredGames.length === 0 ? (
         <div className="card-natural rounded-2xl p-8 py-16 text-center">
           <h3 className="font-heading text-base font-semibold text-white">
-            Permainan Tidak Ditemukan
+            {lang === "en" ? "No Games Found" : "Permainan Tidak Ditemukan"}
           </h3>
           <p className="text-xs text-slate-300 mt-1 max-w-sm mx-auto">
-            Coba ubah kata kunci pencarian atau pilih kategori lain untuk
-            menemukan permainan yang Anda cari.
+            {lang === "en"
+              ? "Try changing your search query or select another category to find games."
+              : "Coba ubah kata kunci pencarian atau pilih kategori lain untuk menemukan permainan yang Anda cari."}
           </p>
         </div>
       ) : (

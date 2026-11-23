@@ -8,6 +8,18 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.2] - 2026-11-23
+### Added, Changed, & Fixed (Dukungan Bahasa ID/EN, Kontras & Ikon Responsif, Notifikasi Skor, & Tombol Tutup Ads)
+- **Dukungan Bahasa Indonesia & Bahasa Inggris (ID/EN):**
+1. Menambahkan fitur peralihan bahasa Indonesia dan bahasa Inggris pada antarmuka portal.
+- **Pembetulan Visualisasi & Ikon Responsif:**
+1. Memperbaiki kontras pada sejumlah teks yang kurang terlihat baik saat mode gelap maupun mode terang.
+2. Menyesuaikan warna ikon ketika menu hamburger dibuka pada tampilan responsif di ponsel serta pada ikon kartu.
+
+- **Notifikasi Skor & Posisi Tombol Tutup Google Ads:**
+1. Menyesuaikan warna notifikasi perolehan skor/poin saat menang atau kalah permainan agar lebih mudah terlihat.
+2. Memindahkan posisi tombol tutup (X) pada banner Google AdSense ke sisi kanan di dalam area banner iklan.
+
 ## [3.15.1] - 2026-11-21
 ### Improved (Readability, Mobile Spacing, & UI Contrast)
 - **Readability and contrast:** Improved text and the Teknotama partner link so they remain visible in light and dark themes.

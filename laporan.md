@@ -1,3 +1,17 @@
+### [2026-11-23 23:52] - [Frontend] - Multi-language (ID/EN), Perbaikan Kontras & Responsivitas UI, serta Posisi Tombol Tutup Iklan
+- **Kondisi Sebelum:**
+1. Antarmuka portal belum memiliki dukungan peralihan Bahasa Indonesia dan Bahasa Inggris.
+2. Sejumlah teks masih sulit terlihat pada mode terang maupun gelap, dan warna ikon pada menu hamburger mobile serta ikon kartu belum selaras.
+3. Warna notifikasi perolehan skor/poin saat kondisi menang atau kalah permainan kurang kontras sehingga sulit dibaca.
+4. Posisi tombol tutup (X) pada banner Google AdSense belum berada di sisi kanan di dalam area banner iklan.
+- **Perubahan Sesudah:**
+1. Menambahkan dukungan dwibahasa Bahasa Indonesia (ID) dan Bahasa Inggris (EN) di antarmuka portal.
+2. Memperbaiki kontras visualisasi pada sebagian teks yang kurang terlihat di mode terang maupun gelap, menyesuaikan warna ikon saat menu hamburger terbuka di layar ponsel serta pada ikon kartu.
+3. Menyesuaikan warna notifikasi skor/poin ketika menang atau kalah permainan agar lebih jelas dan mudah terlihat.
+4. Memindahkan posisi tombol X pada banner Google AdSense ke sisi kanan di dalam banner iklan.
+- **Masalah yang Ditemukan:** Tidak ada masalah fungsional yang dilaporkan; pembaruan berfokus pada lokalisasi bahasa, keterbacaan visual, dan tata letak UI.
+- **File Terdampak:** 'src/app/globals.css', 'src/components/layout/Navbar.tsx', 'src/components/game/GameCard.tsx', 'src/components/ads/AdBottomAnchor.tsx'
+
 ### [2026-11-21 14:17] - [Frontend] - Penyempurnaan Keterbacaan & Responsivitas UI
 - **Kondisi Sebelum:**
   1. Sejumlah teks dan tombol kurang kontras pada mode terang maupun gelap.

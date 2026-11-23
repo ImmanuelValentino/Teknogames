@@ -175,14 +175,14 @@ export default function GoogleAdSlot({
       return (
         <div className={`w-full flex flex-col items-center ${className}`}>
           <div
-            style={{ width: "320px", height: "50px", minHeight: "50px" }}
-            className="w-[320px] h-[50px] min-h-[50px] rounded-lg border border-dashed border-white/20 bg-white/[0.04] flex items-center justify-center px-2 text-center overflow-hidden relative"
+            style={{ width: "100%", maxWidth: "320px", height: "50px", minHeight: "50px" }}
+            className="h-[50px] min-h-[50px] w-full max-w-[320px] rounded-lg border border-dashed border-white/20 bg-white/[0.04] flex items-center justify-center px-2 text-center overflow-hidden relative"
           >
             {client && slot ? (
               <ins
                 ref={adRef}
                 className="adsbygoogle"
-                style={{ display: "inline-block", width: "320px", height: "50px" }}
+                style={{ display: "inline-block", width: "100%", maxWidth: "320px", height: "50px" }}
                 data-ad-client={client}
                 data-ad-slot={slot}
               />

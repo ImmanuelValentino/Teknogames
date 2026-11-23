@@ -115,8 +115,18 @@ export default function RootLayout({
             __html: `try {
               document.documentElement.dataset.theme =
                 localStorage.getItem("teknogame-theme") === "dark" ? "dark" : "light";
+              var savedLang = localStorage.getItem("teknogame-lang");
+              if (savedLang === "en" || savedLang === "id") {
+                document.documentElement.dataset.lang = savedLang;
+                document.documentElement.lang = savedLang;
+              } else {
+                document.documentElement.dataset.lang = "id";
+                document.documentElement.lang = "id";
+              }
             } catch {
               document.documentElement.dataset.theme = "light";
+              document.documentElement.dataset.lang = "id";
+              document.documentElement.lang = "id";
             }`,
           }}
         />

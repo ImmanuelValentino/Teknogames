@@ -6,9 +6,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 import { CATEGORIES, INITIAL_GAMES } from "@/lib/games-data";
+import { useTranslation, getLocalizedCategoryLabel } from "@/lib/i18n";
 
 export default function Footer() {
   const router = useRouter();
+  const { lang, t } = useTranslation();
 
   const handleRandomPlay = () => {
     if (!INITIAL_GAMES.length) return;
@@ -42,19 +44,19 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-slate-300 text-xs leading-relaxed">
-              Portal permainan web HTML5 resmi persembahan PT Teknotama Prakarsa Mulia. Mainkan permainan gratis langsung di peramban tanpa perlu memasang aplikasi.
+              {t.footer.desc}
             </p>
           </div>
 
           {/* Kolom 2: Kategori permainan */}
           <div>
             <h4 className="text-white text-xs font-semibold uppercase tracking-wider mb-3">
-              Kategori
+              {t.footer.categories}
             </h4>
             <ul className="space-y-1.5">
               <li>
                 <Link href="/#katalog" className="hover:text-white transition-colors">
-                  Semua Permainan
+                  {t.footer.allGames}
                 </Link>
               </li>
               {CATEGORIES.filter((cat) => cat.id !== "all").map((cat) => (
@@ -63,7 +65,7 @@ export default function Footer() {
                     href={`/category/${cat.id}`}
                     className="hover:text-white transition-colors"
                   >
-                    <span>{cat.label}</span>
+                    <span>{getLocalizedCategoryLabel(cat.id, lang)}</span>
                   </Link>
                 </li>
               ))}
@@ -73,12 +75,12 @@ export default function Footer() {
           {/* Kolom 3: Navigasi */}
           <div>
             <h4 className="text-white text-xs font-semibold uppercase tracking-wider mb-3">
-              Navigasi
+              {t.footer.navigation}
             </h4>
             <ul className="space-y-1.5">
               <li>
                 <Link href="/" className="hover:text-white transition-colors">
-                  Beranda
+                  {t.footer.home}
                 </Link>
               </li>
               <li>
@@ -87,17 +89,17 @@ export default function Footer() {
                   onClick={handleRandomPlay}
                   className="footer-random-play border-0 bg-transparent p-0 text-left font-sans tracking-normal text-[#843441] transition-colors hover:text-[#642832]"
                 >
-                  Main Acak
+                  {t.footer.randomPlay}
                 </button>
               </li>
               <li>
                 <Link href="/#papan-skor" className="hover:text-white transition-colors">
-                  Papan Skor
+                  {t.footer.leaderboard}
                 </Link>
               </li>
               <li>
                 <Link href="/#favorit" className="hover:text-white transition-colors">
-                  Favorit
+                  {t.footer.favorites}
                 </Link>
               </li>
             </ul>
@@ -106,10 +108,10 @@ export default function Footer() {
           {/* Kolom 4: Mitra */}
           <div className="space-y-1.5">
             <h4 className="text-white text-xs font-semibold uppercase tracking-wider">
-              Partner Teknologi Resmi
+              {t.footer.partnerTitle}
             </h4>
             <p className="text-slate-300 text-xs leading-relaxed">
-              Didukung oleh <strong className="text-white font-semibold">PT Teknotama Prakarsa Mulia</strong>, penyedia solusi infrastruktur teknologi informasi, sistem awan, keamanan data, dan pengembangan perangkat lunak khusus untuk mendukung bisnis Anda.
+              {t.footer.partnerDesc}
             </p>
             <div className="pt-1">
               <a
@@ -118,7 +120,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 py-1.5 btn-sponsor-clean text-xs font-medium shadow-sm"
               >
-                <span>Kunjungi teknotama.com</span>
+                <span>{t.footer.visitButton}</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
@@ -127,7 +129,7 @@ export default function Footer() {
 
         {/* Baris Bawah */}
         <div className="flex flex-col items-center justify-between gap-2 pt-4 text-slate-400 text-[11px] sm:flex-row">
-          <p>© 2026 Tekno Game. Seluruh hak cipta dilindungi undang-undang.</p>
+          <p>{t.footer.copyright}</p>
           <div className="flex items-center gap-4">
             <a
               href="https://teknotama.com"

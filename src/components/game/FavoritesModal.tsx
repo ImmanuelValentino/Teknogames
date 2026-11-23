@@ -6,6 +6,7 @@ import { X, Heart, Play, Gamepad2 } from "lucide-react";
 import { getLocalFavorites, toggleLocalFavorite } from "@/lib/local-storage";
 import { getCategoryLabel, INITIAL_GAMES } from "@/lib/games-data";
 import { Game } from "@/types/game";
+import { useTranslation, getLocalizedCategoryLabel } from "@/lib/i18n";
 
 interface FavoritesModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface FavoritesModalProps {
 
 export default function FavoritesModal({ isOpen, onClose }: FavoritesModalProps) {
   const [favoriteGames, setFavoriteGames] = useState<Game[]>([]);
+  const { lang, t } = useTranslation();
 
   useEffect(() => {
     if (isOpen) {
@@ -42,10 +44,10 @@ export default function FavoritesModal({ isOpen, onClose }: FavoritesModalProps)
             </div>
             <div>
               <h3 className="font-heading text-base font-bold text-white">
-                Permainan Favorit Saya
+                {t.favorites.title}
               </h3>
               <p className="text-[11px] text-slate-300">
-                Daftar permainan yang Anda simpan
+                {t.favorites.modalSubtitle}
               </p>
             </div>
           </div>
@@ -66,10 +68,10 @@ export default function FavoritesModal({ isOpen, onClose }: FavoritesModalProps)
                 <Gamepad2 className="w-6 h-6" />
               </div>
               <h4 className="text-xs sm:text-sm font-semibold text-slate-200">
-                Belum Ada Permainan Favorit
+                {t.favorites.emptyTitle}
               </h4>
               <p className="text-xs text-slate-400 max-w-xs mx-auto">
-                Tekan tombol hati pada permainan untuk menyimpannya ke daftar favorit ini.
+                {t.favorites.modalEmptyDesc}
               </p>
             </div>
           ) : (
@@ -87,7 +89,7 @@ export default function FavoritesModal({ isOpen, onClose }: FavoritesModalProps)
                       {game.title}
                     </h4>
                     <span className="text-[10px] text-slate-400 capitalize block">
-                      {getCategoryLabel(game.category)}
+                      {getLocalizedCategoryLabel(game.category, lang)}
                     </span>
                   </div>
                 </div>
@@ -96,9 +98,9 @@ export default function FavoritesModal({ isOpen, onClose }: FavoritesModalProps)
                   <button
                     type="button"
                     onClick={(e) => handleRemoveFavorite(game.id, e)}
-                    title="Hapus dari Favorit"
+                    title={t.favorites.removeFromFavorites}
                     className="flex min-h-11 min-w-11 items-center justify-center rounded-lg text-rose-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                    aria-label="Hapus"
+                    aria-label={t.favorites.removeFromFavorites}
                   >
                     <Heart className="w-4 h-4 fill-rose-400" />
                   </button>
@@ -108,7 +110,7 @@ export default function FavoritesModal({ isOpen, onClose }: FavoritesModalProps)
                     onClick={onClose}
                     className="flex min-h-11 items-center gap-1 rounded-full px-3 btn-primary-clean text-xs font-semibold shadow-sm"
                   >
-                    <span>Main</span>
+                    <span>{t.favorites.playNow}</span>
                     <Play className="w-3 h-3 fill-current ml-0.5" />
                   </Link>
                 </div>
@@ -118,13 +120,13 @@ export default function FavoritesModal({ isOpen, onClose }: FavoritesModalProps)
         </div>
 
         <div className="p-3 bg-black/20 border-t border-white/10 flex items-center justify-between text-xs text-slate-300">
-          <span>{favoriteGames.length} Permainan Tersimpan</span>
+          <span>{favoriteGames.length} {lang === "en" ? "Saved Games" : "Permainan Tersimpan"}</span>
           <button
             type="button"
             onClick={onClose}
             className="text-xs font-medium text-white/70 hover:text-white cursor-pointer"
           >
-            Tutup
+            {lang === "en" ? "Close" : "Tutup"}
           </button>
         </div>
       </div>

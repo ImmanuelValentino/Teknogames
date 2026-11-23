@@ -6,6 +6,7 @@ import { Game } from "@/types/game";
 import { Play } from "lucide-react";
 import { getCategoryLabel } from "@/lib/games-data";
 import CategoryIcon from "./CategoryIcon";
+import { useTranslation, getLocalizedCategoryLabel, getLocalizedGame } from "@/lib/i18n";
 
 interface GameCardProps {
   game: Game;
@@ -59,6 +60,8 @@ const getPlayForgeGradient = (slug: string, category: string) => {
 };
 
 export default function GameCard({ game }: GameCardProps) {
+  const { lang } = useTranslation();
+  const localized = getLocalizedGame(game, lang);
   const candidateSources = React.useMemo(() => [
     `/games/${game.slug}/preview.png`,
     `/games/games/${game.slug}/preview.png`,
@@ -131,8 +134,8 @@ export default function GameCard({ game }: GameCardProps) {
         {/* Baris Atas: Kategori Badge */}
         <div className="relative z-10 flex items-center justify-between p-3.5 pointer-events-none">
           <span className="flex items-center gap-1.5 rounded-full bg-black/60 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white border border-white/10 shadow-sm">
-            <CategoryIcon category={game.category} variant="dark" />
-            {getCategoryLabel(game.category)}
+            <CategoryIcon category={game.category} />
+            {getLocalizedCategoryLabel(game.category, lang)}
           </span>
         </div>
 
@@ -151,7 +154,7 @@ export default function GameCard({ game }: GameCardProps) {
             {game.title}
           </h4>
           <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-slate-400">
-            {game.description}
+            {localized.description}
           </p>
         </div>
       </div>

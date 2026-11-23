@@ -4,8 +4,10 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { Compass, Home, RefreshCw } from "lucide-react";
 import { getGamePortalPath } from "@/lib/site";
+import { useTranslation } from "@/lib/i18n";
 
 export default function NotFound() {
+  const { t } = useTranslation();
   useEffect(() => {
     if (typeof window !== "undefined") {
       const path = window.location.pathname;
@@ -22,19 +24,15 @@ export default function NotFound() {
       </div>
 
       <span className="text-[#ff8c9f] text-xs font-black tracking-widest uppercase mb-2">
-        Kesalahan 404 • Halaman Tidak Ditemukan
+        {t.notFound.badge}
       </span>
 
       <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-white mb-3">
-        Halaman tidak tersedia
+        {t.notFound.title}
       </h1>
 
       <p className="text-slate-300 text-sm max-w-md leading-relaxed mb-8">
-        Halaman yang Anda tuju tidak ditemukan atau telah dipindahkan. Portal Tekno Game tersedia di subdirektori{" "}
-        <code className="text-[#ff8c9f] bg-[#610212]/50 px-2 py-0.5 rounded border border-[#ce2541]/40 font-mono">
-          /games
-        </code>
-        . Silakan kembali ke beranda melalui tombol di bawah:
+        {t.notFound.desc}
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-3">
@@ -43,7 +41,7 @@ export default function NotFound() {
           className="min-h-11 rounded-full px-6 btn-burgundy text-white font-bold text-sm flex items-center gap-2 shadow-lg active:scale-95 cursor-pointer"
         >
           <Home className="w-4 h-4" />
-          <span>Beranda Tekno Game</span>
+          <span>{t.notFound.homeButton}</span>
         </Link>
 
         <button
@@ -56,7 +54,7 @@ export default function NotFound() {
           className="min-h-11 rounded-full px-5 bg-[#610212] hover:bg-[#ce2541]/30 text-slate-200 border border-[#ce2541]/50 font-bold text-sm flex items-center gap-2 transition-all cursor-pointer"
         >
           <RefreshCw className="w-4 h-4 text-[#ff8c9f]" />
-          <span>Kembali ke Tekno Game</span>
+          <span>{t.notFound.refreshButton}</span>
         </button>
       </div>
     </div>

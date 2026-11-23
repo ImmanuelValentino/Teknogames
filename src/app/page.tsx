@@ -22,6 +22,7 @@ import { GameCategory, Game } from "@/types/game";
 import { getLocalScores, getLocalFavorites } from "@/lib/local-storage";
 import { getGamePortalUrl } from "@/lib/site";
 import { fetchGameOrder, getCachedGameOrder } from "@/lib/cms-supabase";
+import { useTranslation, getLocalizedCategoryLabel } from "@/lib/i18n";
 
 function sortGamesByOrder(baseGames: Game[], orderSlugs: string[]): Game[] {
   if (!orderSlugs || orderSlugs.length === 0) return baseGames;
@@ -123,6 +124,7 @@ function ScoreGameArtwork({
 }
 
 export default function HomePage() {
+  const { lang, t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<GameCategory>("all");
   const [games, setGames] = useState<Game[]>(() => {
     const cachedOrder = getCachedGameOrder();
@@ -241,8 +243,8 @@ export default function HomePage() {
           games={displayGames}
           title={
             selectedCategory === "all"
-              ? "Semua Koleksi Permainan"
-              : `Koleksi Permainan: ${selectedCategoryLabel}`
+              ? t.catalog.title
+              : `${lang === "en" ? "Games Collection:" : "Koleksi Permainan:"} ${getLocalizedCategoryLabel(selectedCategory, lang)}`
           }
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
@@ -259,10 +261,10 @@ export default function HomePage() {
             </div>
             <div>
               <h2 className="font-heading text-lg sm:text-xl font-bold text-white">
-                Papan Skor Saya
+                {t.leaderboard.title}
               </h2>
               <p className="text-xs text-slate-300">
-                Pencapaian skor tertinggi Anda yang tersimpan di peramban ini
+                {t.leaderboard.subtitle}
               </p>
             </div>
           </div>
@@ -271,14 +273,16 @@ export default function HomePage() {
         {topScores.length === 0 ? (
           <div className="py-8 text-center bg-white/[0.02] rounded-xl border border-white/10">
             <p className="text-xs sm:text-sm text-slate-300">
-              Belum ada skor yang dicatat. Mainkan salah satu permainan sekarang untuk mulai mencatat skor terbaik Anda.
+              {lang === "en"
+                ? "No scores recorded yet. Play a game now to start tracking your best score."
+                : "Belum ada skor yang dicatat. Mainkan salah satu permainan sekarang untuk mulai mencatat skor terbaik Anda."}
             </p>
             <div className="mt-4">
               <Link
                 href="/play/nusantara-runner"
                 className="inline-flex items-center gap-2 rounded-full border border-[#686a74] bg-[#50525c] px-5 py-2.5 text-xs font-semibold text-[#fffafa] shadow-md transition-colors hover:border-[#858792] hover:bg-[#646671]"
               >
-                <span>Mainkan Nusantara Runner</span>
+                <span>{lang === "en" ? "Play Nusantara Runner" : "Mainkan Nusantara Runner"}</span>
                 <Play className="w-3.5 h-3.5 fill-current" />
               </Link>
             </div>
@@ -305,7 +309,7 @@ export default function HomePage() {
                     className="text-xs font-bold uppercase tracking-[0.16em]"
                     style={{ color: "#ffd166" }}
                   >
-                    Peringkat 1
+                    {t.leaderboard.rank1}
                   </span>
                   <h3
                     className="mt-1 break-words text-xl font-bold sm:text-2xl"
@@ -322,17 +326,17 @@ export default function HomePage() {
                     className="text-xl font-bold tracking-tight sm:text-2xl"
                     style={{ color: "#ffd166" }}
                   >
-                    {topScores[0].score.toLocaleString("id-ID")}
+                    {topScores[0].score.toLocaleString(lang === "en" ? "en-US" : "id-ID")}
                   </span>
                   <span className="text-sm font-semibold" style={{ color: "#fffafa" }}>
-                    Poin
+                    {t.leaderboard.points}
                   </span>
                 </div>
                 <Link
                   href={`/play/${topScores[0].slug}`}
                   className="flex min-h-11 min-w-11 items-center justify-center rounded-full border border-[#686a74] bg-[#50525c] text-[#fffafa] shadow-sm transition-colors hover:border-[#858792] hover:bg-[#646671]"
-                  title="Mainkan lagi"
-                  aria-label={`Mainkan lagi ${topScores[0].title}`}
+                  title={t.leaderboard.playAgain}
+                  aria-label={`${t.leaderboard.playAgain} ${topScores[0].title}`}
                 >
                   <Play className="h-4 w-4 fill-current" />
                 </Link>
@@ -364,7 +368,7 @@ export default function HomePage() {
                           className="block text-[9px] font-bold uppercase tracking-wider"
                           style={{ color: "#765b2c" }}
                         >
-                          Peringkat {index + 2}
+                          {t.leaderboard.rankPrefix} {index + 2}
                         </span>
                         <h4
                           className="truncate text-xs font-semibold sm:text-sm"
@@ -380,17 +384,17 @@ export default function HomePage() {
                           className="text-xl font-bold tracking-tight sm:text-2xl"
                           style={{ color: "#ffd166" }}
                         >
-                          {item.score.toLocaleString("id-ID")}
+                          {item.score.toLocaleString(lang === "en" ? "en-US" : "id-ID")}
                         </span>
                         <span className="text-[9px] font-semibold" style={{ color: "#fffafa" }}>
-                          poin
+                          {t.leaderboard.pointsUnit}
                         </span>
                       </div>
                       <Link
                         href={`/play/${item.slug}`}
                         className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full border border-[#686a74] bg-[#50525c] text-[#fffafa] shadow-sm transition-colors hover:border-[#858792] hover:bg-[#646671]"
-                        title="Mainkan lagi"
-                        aria-label={`Mainkan lagi ${item.title}`}
+                        title={t.leaderboard.playAgain}
+                        aria-label={`${t.leaderboard.playAgain} ${item.title}`}
                       >
                         <Play className="h-3.5 w-3.5 fill-current" />
                       </Link>
@@ -412,10 +416,10 @@ export default function HomePage() {
             </div>
             <div>
               <h2 className="font-heading text-lg sm:text-xl font-bold text-white">
-                Permainan Favorit Saya
+                {t.favorites.title}
               </h2>
               <p className="text-xs text-slate-300">
-                Daftar permainan yang Anda tandai dengan ikon hati
+                {t.favorites.subtitle}
               </p>
             </div>
           </div>
@@ -424,14 +428,14 @@ export default function HomePage() {
         {favoriteGames.length === 0 ? (
           <div className="py-8 text-center bg-white/[0.02] rounded-xl border border-white/10">
             <p className="text-xs sm:text-sm text-slate-300">
-              Belum ada permainan favorit yang disimpan. Klik ikon hati pada permainan favorit Anda untuk menambahkannya ke sini.
+              {t.favorites.emptyDesc}
             </p>
             <div className="mt-4">
               <Link
                 href="#katalog"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.04] text-xs font-semibold text-slate-200 hover:text-white hover:border-[#ce2541]/40 transition-colors"
               >
-                <span>Lihat Koleksi Permainan</span>
+                <span>{t.favorites.browseCatalog}</span>
               </Link>
             </div>
           </div>
@@ -444,17 +448,17 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* 6. Section Tentang Portal & Layanan Mitra Sesuai Referensi Gambar */}
+      {/* 6. Section Tentang Portal & Layanan Mitra */}
       {/* Kartu Atas: Tentang Portal */}
       <section className="card-natural mb-6 grid gap-6 p-6 sm:p-8 md:grid-cols-[1.1fr_1.9fr] md:items-center">
         <div>
-          <p className="section-kicker mb-2">Tentang portal</p>
+          <p className="section-kicker mb-2">{t.about.kicker}</p>
           <h2 className="section-heading">
-            Dirancang untuk <span>langsung bermain.</span>
+            {t.about.heading1} <span>{t.about.heading2}</span>
           </h2>
         </div>
         <p className="text-sm leading-7 text-slate-300">
-          Tekno Game adalah portal permainan web HTML5 resmi yang dioperasikan sebagai subdirektori dari <strong className="text-white">PT Teknotama Prakarsa Mulia</strong> (<a href="https://teknotama.com" target="_blank" rel="noopener noreferrer" className="font-medium text-[#ff8c9f] underline underline-offset-4">teknotama.com</a>). Portal ini menyajikan berbagai permainan yang dapat dimainkan secara gratis langsung melalui peramban tanpa perlu memasang aplikasi.
+          {t.about.desc}
         </p>
       </section>
 
@@ -462,9 +466,9 @@ export default function HomePage() {
       <section className="mb-6" aria-labelledby="partner-services-title">
         <div className="mb-2 sm:mb-4 flex flex-wrap items-end justify-between gap-2 sm:gap-3">
           <div>
-            <p className="section-kicker mb-2">Layanan mitra</p>
+            <p className="section-kicker mb-2">{t.about.partnerKicker}</p>
             <h2 id="partner-services-title" className="section-heading">
-              Teknologi untuk <span>bertumbuh.</span>
+              {t.about.partnerHeading1} <span>{t.about.partnerHeading2}</span>
             </h2>
           </div>
           <a
@@ -473,7 +477,7 @@ export default function HomePage() {
             rel="noopener noreferrer"
             className="partner-service-link inline-flex min-h-11 items-center gap-2 rounded-full border px-3 sm:px-4 text-xs font-semibold transition-colors"
           >
-            <span>Lihat layanan Teknotama</span>
+            <span>{t.about.partnerButton}</span>
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </div>
@@ -481,27 +485,23 @@ export default function HomePage() {
           {[
             {
               icon: <Network className="h-5 w-5" />,
-              title: "Infrastruktur Jaringan",
-              description:
-                "Perencanaan dan pengelolaan jaringan yang andal untuk operasional bisnis.",
+              title: t.about.services.network.title,
+              description: t.about.services.network.description,
             },
             {
               icon: <Cloud className="h-5 w-5" />,
-              title: "Sistem Awan",
-              description:
-                "Solusi komputasi awan yang fleksibel, aman, dan siap berkembang.",
+              title: t.about.services.cloud.title,
+              description: t.about.services.cloud.description,
             },
             {
               icon: <ShieldCheck className="h-5 w-5" />,
-              title: "Keamanan Data",
-              description:
-                "Perlindungan data dan sistem untuk menjaga kelangsungan bisnis.",
+              title: t.about.services.security.title,
+              description: t.about.services.security.description,
             },
             {
               icon: <Code2 className="h-5 w-5" />,
-              title: "Perangkat Lunak",
-              description:
-                "Pengembangan perangkat lunak khusus sesuai kebutuhan organisasi.",
+              title: t.about.services.software.title,
+              description: t.about.services.software.description,
             },
           ].map((service) => (
             <a
@@ -531,13 +531,13 @@ export default function HomePage() {
       <section className="partner-panel mb-2 flex flex-col items-start justify-between gap-6 p-4 sm:p-8 md:flex-row md:items-center">
         <div className="relative z-10 max-w-2xl space-y-2">
           <span className="section-kicker">
-            Partner Teknologi Resmi
+            {t.about.partnerPanelKicker}
           </span>
           <h3 className="font-heading text-xl font-bold text-white sm:text-2xl">
-            Solusi Transformasi Digital Bersama PT Teknotama Prakarsa Mulia
+            {t.about.partnerPanelTitle}
           </h3>
           <p className="text-sm leading-6 text-slate-300">
-            PT Teknotama Prakarsa Mulia menyediakan layanan infrastruktur jaringan, sistem awan, keamanan data, serta pengembangan perangkat lunak khusus untuk perusahaan.
+            {t.about.partnerPanelDesc}
           </p>
         </div>
         <div className="relative z-10 w-full shrink-0 md:w-auto">
@@ -547,7 +547,7 @@ export default function HomePage() {
             rel="noopener noreferrer"
             className="inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold btn-sponsor-clean md:w-auto shadow-md"
           >
-            <span>Kunjungi teknotama.com</span>
+            <span>{t.about.partnerPanelButton}</span>
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>

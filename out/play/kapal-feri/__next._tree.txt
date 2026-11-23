@@ -1,6 +1,6 @@
 :HL["/games/_next/static/css/b2afee3be411421c.css","style"]
-:HL["/games/_next/static/css/8d06b92483612175.css","style"]
+:HL["/games/_next/static/css/ab790debc883d8cf.css","style"]
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"d","k":"kapal-feri","s":[]},"h":96,"c":"$Q3"}]]
 1:[["children",{"s":"play","h":96,"c":"$Q2"}]]
-0:{"b":"CGhRu2uvFOfvE_r4ml6MM","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"PeSqQY_3fnhsAZn15yPOU","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

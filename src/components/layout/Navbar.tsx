@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { INITIAL_GAMES, CATEGORIES } from "@/lib/games-data";
 import CategoryIcon from "@/components/game/CategoryIcon";
+import { useTranslation, getLocalizedCategoryLabel } from "@/lib/i18n";
 
 type Theme = "light" | "dark";
 const THEME_STORAGE_KEY = "teknogame-theme";
@@ -47,6 +48,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const theme = useSyncExternalStore(subscribeToTheme, getTheme, () => "light");
+  const { lang, setLang, t } = useTranslation();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -121,7 +123,7 @@ export default function Navbar() {
               href="/"
               className="px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors"
             >
-              Beranda
+              {t.nav.home}
             </Link>
 
             {/* Pilihan Kategori (Dropdown 6 Kategori) */}
@@ -132,7 +134,7 @@ export default function Navbar() {
                 className="flex items-center gap-1 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
                 aria-expanded={dropdownOpen}
               >
-                <span>Kategori</span>
+                <span>{t.nav.categories}</span>
                 <ChevronDown
                   className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
                     dropdownOpen ? "rotate-180" : ""
@@ -148,7 +150,7 @@ export default function Navbar() {
                     className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/8 transition-colors"
                   >
                     <CategoryIcon category="all" />
-                    <span>Semua Permainan</span>
+                    <span>{t.nav.allGames}</span>
                   </Link>
                   <div className="h-px bg-white/8 my-1" />
                   {CATEGORIES.filter((c) => c.id !== "all").map((cat) => (
@@ -159,7 +161,7 @@ export default function Navbar() {
                       className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-white/8 transition-colors"
                     >
                       <CategoryIcon category={cat.id} />
-                      <span>{cat.label}</span>
+                      <span>{getLocalizedCategoryLabel(cat.id, lang)}</span>
                     </Link>
                   ))}
                 </div>
@@ -173,7 +175,7 @@ export default function Navbar() {
               className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
             >
               <Dices className="w-4 h-4 text-slate-400" />
-              <span>Main Acak</span>
+              <span>{t.nav.randomPlay}</span>
             </button>
 
             {/* Papan Skor (Direct Smooth Scroll Anchor) */}
@@ -184,7 +186,7 @@ export default function Navbar() {
               <span className="score-icon flex h-7 w-7 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
                 <Trophy className="h-4 w-4 text-amber-700" strokeWidth={2.5} />
               </span>
-              <span>Papan Skor</span>
+              <span>{t.nav.leaderboard}</span>
             </Link>
 
             {/* Favorit (Direct Smooth Scroll Anchor) */}
@@ -195,12 +197,54 @@ export default function Navbar() {
               <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/25 bg-rose-400/15">
                 <Heart className="h-4 w-4 fill-current text-rose-600" strokeWidth={2.5} />
               </span>
-              <span>Favorit</span>
+              <span>{t.nav.favorites}</span>
             </Link>
           </nav>
 
-          {/* Sisi Kanan: Link Sponsor teknotama.com */}
-          <div className="flex items-center gap-2.5">
+          {/* Sisi Kanan: Theme Toggle, Language Switcher, Link Sponsor teknotama.com */}
+          <div className="flex items-center gap-2">
+            {/* Language Switcher ID | EN */}
+            <div
+              className={`flex h-11 items-center rounded-full border p-1 text-xs font-bold transition-colors ${
+                theme === "dark"
+                  ? "border-[#51535c] bg-[#2b2d34]"
+                  : "border-[#b6a8aa] bg-[#e3d3d6]"
+              }`}
+              role="group"
+              aria-label={t.nav.switchLanguage}
+            >
+              <button
+                type="button"
+                onClick={() => setLang("id")}
+                className={`h-full px-2.5 rounded-full transition-all text-xs font-bold ${
+                  lang === "id"
+                    ? "bg-[#ce2541] text-white shadow-sm"
+                    : theme === "dark"
+                    ? "text-slate-400 hover:text-white"
+                    : "text-[#5e4b4e] hover:text-[#241b1d]"
+                }`}
+                aria-pressed={lang === "id"}
+                title="Bahasa Indonesia"
+              >
+                ID
+              </button>
+              <button
+                type="button"
+                onClick={() => setLang("en")}
+                className={`h-full px-2.5 rounded-full transition-all text-xs font-bold ${
+                  lang === "en"
+                    ? "bg-[#ce2541] text-white shadow-sm"
+                    : theme === "dark"
+                    ? "text-slate-400 hover:text-white"
+                    : "text-[#5e4b4e] hover:text-[#241b1d]"
+                }`}
+                aria-pressed={lang === "en"}
+                title="English"
+              >
+                EN
+              </button>
+            </div>
+
             <button
               type="button"
               onClick={toggleTheme}
@@ -209,9 +253,9 @@ export default function Navbar() {
                   ? "border-[#51535c] bg-[#2b2d34] text-[#f3f4f6]"
                   : "border-[#b6a8aa] bg-[#e3d3d6] text-[#241b1d]"
               }`}
-              aria-label={`Aktifkan mode ${theme === "dark" ? "terang" : "gelap"}`}
+              aria-label={theme === "dark" ? t.nav.themeToggleLight : t.nav.themeToggleDark}
               aria-pressed={theme === "dark"}
-              title={`Mode ${theme === "dark" ? "gelap" : "terang"}`}
+              title={theme === "dark" ? t.nav.themeDark : t.nav.themeLight}
             >
               {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
@@ -229,7 +273,7 @@ export default function Navbar() {
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="flex min-h-11 min-w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-300 transition-colors hover:text-white lg:hidden"
-              aria-label="Menu navigasi"
+              aria-label={t.nav.menuLabel}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -246,11 +290,11 @@ export default function Navbar() {
             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-semibold text-white hover:bg-white/8 transition-colors"
           >
             <Gamepad2 className="w-4 h-4 text-[#ff8c9f]" />
-            <span>Beranda</span>
+            <span>{t.nav.home}</span>
           </Link>
 
           <div className="pt-2 text-xs font-semibold text-slate-500 px-3">
-            Kategori Permainan
+            {t.nav.categoriesTitle}
           </div>
           <div className="grid grid-cols-2 gap-1 px-1">
             {CATEGORIES.map((cat) => (
@@ -260,8 +304,8 @@ export default function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-white/8 transition-colors"
               >
-                <CategoryIcon category={cat.id} variant="dark" />
-                <span>{cat.label}</span>
+                <CategoryIcon category={cat.id} />
+                <span>{getLocalizedCategoryLabel(cat.id, lang)}</span>
               </Link>
             ))}
           </div>
@@ -274,7 +318,7 @@ export default function Navbar() {
             className="flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/8"
           >
             <Dices className="w-4 h-4" />
-            <span>Main Acak</span>
+            <span>{t.nav.randomPlay}</span>
           </button>
 
           <Link
@@ -285,7 +329,7 @@ export default function Navbar() {
             <span className="score-icon flex h-7 w-7 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
               <Trophy className="h-4 w-4 text-amber-700" strokeWidth={2.5} />
             </span>
-            <span>Papan Skor</span>
+            <span>{t.nav.leaderboard}</span>
           </Link>
 
           <Link
@@ -296,7 +340,7 @@ export default function Navbar() {
             <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/25 bg-rose-400/15">
               <Heart className="h-4 w-4 fill-current text-rose-600" strokeWidth={2.5} />
             </span>
-            <span>Favorit</span>
+            <span>{t.nav.favorites}</span>
           </Link>
 
           <div className="pt-2">
@@ -306,7 +350,7 @@ export default function Navbar() {
               rel="noopener noreferrer"
               className="flex min-h-11 w-full items-center justify-between rounded-full px-4 py-2.5 text-xs font-semibold shadow-md btn-sponsor"
             >
-              <span>Kunjungi teknotama.com</span>
+              <span>{t.nav.visitTeknotama}</span>
               <ExternalLink className="h-4 w-4" />
             </a>
           </div>

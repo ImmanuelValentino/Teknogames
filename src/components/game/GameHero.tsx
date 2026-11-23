@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { getCategoryLabel } from "@/lib/games-data";
 import CategoryIcon from "./CategoryIcon";
+import { useTranslation, getLocalizedCategoryLabel } from "@/lib/i18n";
 
 interface GameHeroProps {
   featuredGames: Game[];
@@ -17,6 +18,7 @@ interface GameHeroProps {
 
 export default function GameHero({ featuredGames }: GameHeroProps) {
   const [secondaryOnTop, setSecondaryOnTop] = React.useState(false);
+  const { lang, t } = useTranslation();
 
   if (!featuredGames || featuredGames.length === 0) return null;
 
@@ -46,20 +48,20 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
             <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-950/40 px-3.5 py-1.5 backdrop-blur-md">
               <Sparkles className="h-3.5 w-3.5 text-rose-400" />
               <span className="text-xs font-semibold tracking-wide text-rose-200">
-                Game Online Gratis Tanpa Download – TeknoGame
+                {t.hero.badge}
               </span>
             </div>
 
             <div className="space-y-2">
               <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold uppercase tracking-tight text-white leading-[1.05]">
-                Petualangan Baru
+                {t.hero.title1}
                 <br />
                 <span className="bg-gradient-to-r from-rose-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
-                  Dimulai Di Sini.
+                  {t.hero.title2}
                 </span>
               </h1>
               <p className="pt-2 text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl">
-                Temukan aneka game web HTML5 gratis berkualitas persembahan resmi <strong className="text-white">PT Teknotama Prakarsa Mulia</strong>. Main langsung bersama teman tanpa instalasi.
+                {t.hero.subtitlePrefix} <strong className="text-white">PT Teknotama Prakarsa Mulia</strong>. {t.hero.subtitleSuffix}
               </p>
             </div>
 
@@ -69,14 +71,14 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                 className="inline-flex min-h-12 items-center gap-2.5 rounded-full bg-gradient-to-r from-rose-600 via-purple-600 to-pink-600 px-7 py-3 text-sm font-bold text-white shadow-[0_8px_25px_rgba(241, 99, 123,0.4)] transition-all hover:scale-105 hover:shadow-[0_12px_30px_rgba(241, 99, 123,0.6)]"
               >
                 <Play className="h-4 w-4 fill-current" />
-                <span>Jelajahi Permainan</span>
+                <span>{t.hero.ctaPrimary}</span>
               </Link>
 
               <Link
                 href="#katalog"
                 className="inline-flex min-h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-slate-200 backdrop-blur-md transition-all hover:border-rose-400/50 hover:bg-white/[0.08] hover:text-white"
               >
-                <span>Lihat yang Populer</span>
+                <span>{t.hero.ctaSecondary}</span>
                 <ArrowDown className="h-4 w-4" />
               </Link>
             </div>
@@ -113,11 +115,11 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
 
               <div className="relative z-10 flex items-center justify-between gap-2">
                 <span className="shrink-0 whitespace-nowrap rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-wider leading-none text-white backdrop-blur">
-                  Pilihan Kedua
+                  {t.hero.secondChoiceBadge}
                 </span>
                 <span className="flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md shadow-sm">
                   <CategoryIcon category={secondaryHero.category} variant="dark" />
-                  {getCategoryLabel(secondaryHero.category)}
+                  {getLocalizedCategoryLabel(secondaryHero.category, lang)}
                 </span>
               </div>
               <div className="relative z-10 my-auto flex flex-col items-center justify-center text-center">
@@ -179,11 +181,11 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
               {/* Top Tag & Category Badge */}
               <div className="relative z-10 flex items-center justify-between">
                 <span className="rounded-full bg-black/60 border border-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md shadow-sm">
-                  Pilihan Utama
+                  {lang === "en" ? "Top Pick" : "Pilihan Utama"}
                 </span>
                 <span className="flex items-center gap-1.5 rounded-full bg-rose-950/70 border border-rose-400/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-rose-200 backdrop-blur-md">
                   <CategoryIcon category={mainHero.category} variant="dark" />
-                  {getCategoryLabel(mainHero.category)}
+                  {getLocalizedCategoryLabel(mainHero.category, lang)}
                 </span>
               </div>
 

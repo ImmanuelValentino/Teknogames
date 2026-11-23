@@ -178,6 +178,19 @@ header.glass-nav .btn-sponsor:hover {
   color: #642832;
 }
 
+.glass-nav [role="group"] button[aria-pressed="true"],
+.glass-nav [role="group"] button[aria-pressed="true"]:hover {
+  background: #843441;
+  color: #fffafa;
+  box-shadow: 0 2px 6px rgba(100, 40, 50, 0.28);
+}
+
+html:not([data-theme="dark"]) .glass-nav [role="group"] button[aria-pressed="false"]:hover,
+html:not([data-theme="dark"]) .glass-nav [role="group"] button[aria-pressed="false"]:focus-visible {
+  background: #e09aa6;
+  color: #241b1d;
+}
+
 .glass-nav .navbar-brand:hover {
   background: transparent;
   color: inherit;
