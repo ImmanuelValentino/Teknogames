@@ -1222,14 +1222,18 @@ html[data-theme="dark"] header.glass-nav .btn-sponsor svg {
   color: #fffafa;
 }
 
-html[data-theme="dark"] .navbar-random-play:hover,
-html[data-theme="dark"] .navbar-random-play:focus-visible {
+html[data-theme="dark"] header.glass-nav a:hover,
+html[data-theme="dark"] header.glass-nav a:focus-visible,
+html[data-theme="dark"] header.glass-nav button:not([aria-pressed]):hover,
+html[data-theme="dark"] header.glass-nav button:not([aria-pressed]):focus-visible {
   background: #ff6b70;
   color: #101010;
 }
 
-html[data-theme="dark"] .navbar-random-play:hover svg,
-html[data-theme="dark"] .navbar-random-play:focus-visible svg {
+html[data-theme="dark"] header.glass-nav a:hover :is(svg, span),
+html[data-theme="dark"] header.glass-nav a:focus-visible :is(svg, span),
+html[data-theme="dark"] header.glass-nav button:not([aria-pressed]):hover :is(svg, span),
+html[data-theme="dark"] header.glass-nav button:not([aria-pressed]):focus-visible :is(svg, span) {
   color: #101010;
 }
 

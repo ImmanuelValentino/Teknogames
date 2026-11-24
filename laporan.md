@@ -1,3 +1,10 @@
+### [2026-11-24 20:38] - [Frontend] - Efek Hover Konsisten pada Navbar
+- **Kondisi Sebelum:** Hanya tombol Main Acak yang punya state hover/fokus coral khusus dark mode; item navbar lain memakai efek berbeda.
+- **Perubahan Sesudah:** Semua tautan dan tombol navbar memakai latar coral serta teks/ikon hitam pada hover/fokus dark mode, kecuali switch tema dan bahasa.
+- **Masalah yang Ditemukan:** Efek kursor tidak seragam dan ikon beberapa item kurang terlihat.
+- **Penyelesaian:** Memperluas selector dark mode untuk interaksi navbar dan mengecualikan kontrol beratribut aria-pressed.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 20:22] - [Frontend] - Warna Teks Dimulai Di Sini Konsisten
 - **Kondisi Sebelum:** Highlight teks memakai warna putih di atas latar merah.
 - **Perubahan Sesudah:** Teks memakai warna #D9141D secara konsisten di light dan dark mode tanpa latar highlight.
@@ -492,6 +499,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

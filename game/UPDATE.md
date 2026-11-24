@@ -66,3 +66,8 @@
 ### Fixed (Warna Teks Dimulai Di Sini Konsisten)
 - Menetapkan warna teks Dimulai Di Sini ke #D9141D pada kedua tema tanpa highlight latar.
 
+
+## [3.15.29] - 2026-11-24
+### Changed (Efek Hover Konsisten pada Navbar Dark Mode)
+- Menyamakan efek hover/fokus semua item navbar dengan Main Acak; switch tema dan bahasa tidak berubah.
+
