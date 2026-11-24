@@ -1,4 +1,8 @@
 # Update Game
+## [3.15.39] - 2026-11-24
+### Fixed (Hover Favorit Navbar Konsisten)
+- Menyamakan efek hover/fokus item Favorit dengan item navbar lain di dark mode tanpa mengubah warna ikon hati.
+
 ## [3.15.38] - 2026-11-24
 ### Fixed (Kontras Ikon Tombol Teknotama Navbar)
 - Ikon tombol teknotama.com di navbar kini mewarisi warna teks tombol pada state normal dan hover di kedua tema.

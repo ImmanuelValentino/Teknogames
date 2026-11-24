@@ -1284,12 +1284,6 @@ html[data-theme="dark"] header.glass-nav .navbar-favorites-link:focus-visible sv
   color: #d9141d;
 }
 
-html[data-theme="dark"] header.glass-nav .navbar-favorites-link:hover,
-html[data-theme="dark"] header.glass-nav .navbar-favorites-link:focus-visible {
-  background: #fffafa;
-  color: #101010;
-}
-
 html .glass-nav .navbar-theme-toggle:hover,
 html .glass-nav .navbar-theme-toggle:focus-visible {
   background: #ff6b70;

@@ -1,3 +1,10 @@
+### [2026-11-24 18:54] - [Frontend] - Hover Favorit Navbar Konsisten
+- **Kondisi Sebelum:** Item Favorit memakai latar putih sendiri saat hover/fokus dark mode, berbeda dari item navbar lain yang memakai coral.
+- **Perubahan Sesudah:** Favorit memakai efek hover/fokus coral yang sama seperti item lain; ikon hati tetap merah.
+- **Masalah yang Ditemukan:** Latar hover Favorit tidak konsisten dengan navbar.
+- **Penyelesaian:** Menghapus override latar putih khusus Favorit dan memakai aturan hover navbar bersama.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:52] - [Frontend] - Ikon Tombol Teknotama Navbar Mengikuti Teks
 - **Kondisi Sebelum:** SVG pada tombol teknotama.com navbar memiliki warna putih tetap sehingga berbeda dari teks tombol, terutama pada dark mode dan hover.
 - **Perubahan Sesudah:** Ikon mewarisi warna teks tombol melalui currentColor.
