@@ -1,3 +1,10 @@
+### [2026-11-24 20:05] - [Frontend] - Warna Konsisten Frasa Dimulai Di Sini
+- **Kondisi Sebelum:** Frasa pada judul hero berganti dari merah gelap ke coral antara light dan dark mode.
+- **Perubahan Sesudah:** Frasa memakai Snow White di atas highlight merah Teknotama yang konsisten pada kedua tema.
+- **Masalah yang Ditemukan:** Warna tema sebelumnya berubah saat berganti mode.
+- **Penyelesaian:** Menetapkan warna teks dan latar highlight di rule bersama serta menghapus override dark mode khusus.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 19:47] - [Frontend] - Kontras Hover Main Acak Navbar
 - **Kondisi Sebelum:** Ikon Main Acak berwarna abu statis dan kurang terlihat saat hover di dark mode.
 - **Perubahan Sesudah:** Tombol memakai latar coral dengan teks serta ikon hitam saat hover dan fokus keyboard di dark mode.
@@ -478,6 +485,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

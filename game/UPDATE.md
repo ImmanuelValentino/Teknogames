@@ -56,3 +56,8 @@
 ### Fixed (Ikon Main Acak Navbar saat Hover Dark Mode)
 - Menyamakan kontras teks dan ikon Main Acak dengan latar coral terang pada hover/fokus dark mode.
 
+
+## [3.15.27] - 2026-11-24
+### Changed (Warna Konsisten untuk Frasa Dimulai Di Sini)
+- Menyamakan warna frasa hero Dimulai Di Sini di kedua tema menggunakan teks putih dan highlight merah Teknotama.
+
