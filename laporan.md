@@ -1,3 +1,10 @@
+### [2026-11-24 18:47] - [Frontend] - Konsistensi Efek Tombol Teknotama
+- **Kondisi Sebelum:** Tombol menuju teknotama.com di navbar, halaman utama, halaman permainan, dan footer memakai warna serta efek hover yang berbeda.
+- **Perubahan Sesudah:** Semua CTA eksternal memakai merah-putih dengan hover merah tua di light mode, serta coral-hitam dengan hover putih-hitam di dark mode. Ikon mengikuti warna teks.
+- **Masalah yang Ditemukan:** Efek tombol partner dan navbar tidak konsisten dengan tombol footer.
+- **Penyelesaian:** Menambahkan class bersama dan aturan tema/state yang mengatasi aturan khusus komponen.
+- **File Terdampak:** `src/app/globals.css`, `src/app/page.tsx`, `src/components/game/PlayPageView.tsx`, `src/components/layout/Footer.tsx`, `src/components/layout/Navbar.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:45] - [Frontend] - Hapus Inisial dari Kartu Home
 - **Kondisi Sebelum:** Kartu pilihan, favorit, hero, dan papan skor di halaman utama menampilkan huruf inisial dari judul permainan di atas gambar atau latar fallback.
 - **Perubahan Sesudah:** Teks inisial dihilangkan dari kartu pada home page; gambar permainan, badge, judul, dan latar fallback tetap dipakai.

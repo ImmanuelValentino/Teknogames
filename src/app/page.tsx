@@ -453,7 +453,7 @@ export default function HomePage() {
             href="https://teknotama.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="partner-service-link inline-flex min-h-11 items-center gap-2 rounded-full border px-3 sm:px-4 text-xs font-semibold transition-colors"
+            className="teknotama-cta partner-service-link inline-flex min-h-11 items-center gap-2 rounded-full border px-3 sm:px-4 text-xs font-semibold transition-colors"
           >
             <span>{t.about.partnerButton}</span>
             <ExternalLink className="h-3.5 w-3.5" />
@@ -523,7 +523,7 @@ export default function HomePage() {
             href="https://teknotama.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold btn-sponsor-clean md:w-auto shadow-md"
+            className="teknotama-cta inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold btn-sponsor-clean md:w-auto shadow-md"
           >
             <span>{t.about.partnerPanelButton}</span>
             <ExternalLink className="w-4 h-4" />

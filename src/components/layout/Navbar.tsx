@@ -263,7 +263,7 @@ export default function Navbar() {
               href="https://teknotama.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden min-h-11 items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold shadow-sm transition sm:inline-flex btn-sponsor"
+              className="teknotama-cta hidden min-h-11 items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold shadow-sm transition sm:inline-flex btn-sponsor"
             >
               <span>teknotama.com</span>
               <ExternalLink className="h-3 w-3" />
@@ -348,7 +348,7 @@ export default function Navbar() {
               href="https://teknotama.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex min-h-11 w-full items-center justify-between rounded-full px-4 py-2.5 text-xs font-semibold shadow-md btn-sponsor"
+                className="teknotama-cta flex min-h-11 w-full items-center justify-between rounded-full px-4 py-2.5 text-xs font-semibold shadow-md btn-sponsor"
             >
               <span>{t.nav.visitTeknotama}</span>
               <ExternalLink className="h-4 w-4" />

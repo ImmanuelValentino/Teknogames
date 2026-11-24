@@ -1559,6 +1559,49 @@ html[data-theme="dark"] footer .footer-visit-link:hover {
   color: #101010;
 }
 
+a.teknotama-cta,
+header.glass-nav a.teknotama-cta,
+.partner-panel a.teknotama-cta {
+  border-color: #d9141d;
+  background: #d9141d;
+  color: #fffafa;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+a.teknotama-cta svg {
+  color: currentColor;
+}
+
+a.teknotama-cta:hover,
+a.teknotama-cta:focus-visible,
+header.glass-nav a.teknotama-cta:hover,
+header.glass-nav a.teknotama-cta:focus-visible,
+.partner-panel a.teknotama-cta:hover,
+.partner-panel a.teknotama-cta:focus-visible {
+  border-color: #800b12;
+  background: #800b12;
+  color: #fffafa;
+}
+
+html[data-theme="dark"] a.teknotama-cta,
+html[data-theme="dark"] header.glass-nav a.teknotama-cta,
+html[data-theme="dark"] .partner-panel a.teknotama-cta {
+  border-color: #ff6b70;
+  background: #ff6b70;
+  color: #101010;
+}
+
+html[data-theme="dark"] a.teknotama-cta:hover,
+html[data-theme="dark"] a.teknotama-cta:focus-visible,
+html[data-theme="dark"] header.glass-nav a.teknotama-cta:hover,
+html[data-theme="dark"] header.glass-nav a.teknotama-cta:focus-visible,
+html[data-theme="dark"] .partner-panel a.teknotama-cta:hover,
+html[data-theme="dark"] .partner-panel a.teknotama-cta:focus-visible {
+  border-color: #fffafa;
+  background: #fffafa;
+  color: #101010;
+}
+
 html[data-theme="dark"] ::-webkit-scrollbar-track {
   background: #17181c;
 }

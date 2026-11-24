@@ -252,7 +252,7 @@ export default function PlayPageView({
                 href="https://teknotama.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block min-h-11 w-full rounded-full py-3 text-center btn-sponsor-clean text-xs font-semibold shadow-sm"
+                className="teknotama-cta block min-h-11 w-full rounded-full py-3 text-center btn-sponsor-clean text-xs font-semibold shadow-sm"
               >
                 <span>{t.play.sponsorButton}</span>
                 <ExternalLink className="w-3.5 h-3.5 inline ml-1" />
