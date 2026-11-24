@@ -783,11 +783,9 @@ html[data-theme="dark"] .category-icon-on-dark {
 }
 
 .mb-12 > div.relative.overflow-hidden.rounded-3xl h1 span {
-  border-radius: 0.12em;
-  background: #d9141d;
-  color: #fffafa;
-  padding-inline: 0.08em;
-  -webkit-text-fill-color: #fffafa;
+  background: none;
+  color: #d9141d;
+  -webkit-text-fill-color: #d9141d;
 }
 
 .mb-12 > div.relative.overflow-hidden.rounded-3xl p {

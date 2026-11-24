@@ -10,6 +10,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.28] - 2026-11-24
+### Fixed (Warna Teks Dimulai Di Sini Konsisten)
+- **Hero beranda (src/app/globals.css):** Memastikan teks Dimulai Di Sini selalu berwarna #D9141D pada light dan dark mode.
+
 ## [3.15.27] - 2026-11-24
 ### Changed (Warna Konsisten untuk Frasa Dimulai Di Sini)
 - **Hero beranda (src/app/globals.css):** Menjaga frasa Dimulai Di Sini memakai teks putih dengan highlight merah Teknotama yang sama di light dan dark mode.
@@ -942,6 +946,7 @@ Added (Initial Blueprint & Specification Release)
 Design System (Design.md): Token warna, blueprint navbar 2-tier, aturan slot iklan AdSense / Better Ads Standards, dan grid katalog ala Friv.
 Konsep Game (List-Game.md): Brainstorming 12 konsep game mini bertema wisata, kuliner, dan transportasi nusantara beserta use case dan spesifikasi teknis HTML5.
 Product Requirements Document (PRD.md): Dokumen spesifikasi kebutuhan produk, arsitektur sistem, dan roadmap peluncuran.
+
 
 
 

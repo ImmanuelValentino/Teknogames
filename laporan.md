@@ -1,3 +1,10 @@
+### [2026-11-24 20:22] - [Frontend] - Warna Teks Dimulai Di Sini Konsisten
+- **Kondisi Sebelum:** Highlight teks memakai warna putih di atas latar merah.
+- **Perubahan Sesudah:** Teks memakai warna #D9141D secara konsisten di light dan dark mode tanpa latar highlight.
+- **Masalah yang Ditemukan:** Gaya sebelumnya tidak sesuai warna yang diminta.
+- **Penyelesaian:** Mengatur warna foreground dan text fill pada selector hero yang sama untuk kedua tema.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 20:05] - [Frontend] - Warna Konsisten Frasa Dimulai Di Sini
 - **Kondisi Sebelum:** Frasa pada judul hero berganti dari merah gelap ke coral antara light dan dark mode.
 - **Perubahan Sesudah:** Frasa memakai Snow White di atas highlight merah Teknotama yang konsisten pada kedua tema.
@@ -485,6 +492,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

@@ -61,3 +61,8 @@
 ### Changed (Warna Konsisten untuk Frasa Dimulai Di Sini)
 - Menyamakan warna frasa hero Dimulai Di Sini di kedua tema menggunakan teks putih dan highlight merah Teknotama.
 
+
+## [3.15.28] - 2026-11-24
+### Fixed (Warna Teks Dimulai Di Sini Konsisten)
+- Menetapkan warna teks Dimulai Di Sini ke #D9141D pada kedua tema tanpa highlight latar.
+
