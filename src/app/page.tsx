@@ -359,19 +359,14 @@ export default function HomePage() {
                     key={item.gameId}
                     className="flex min-w-0 items-center justify-between gap-2 rounded-xl border border-[#d8c99e] bg-[#f5edda] p-2.5 sm:gap-3 sm:p-3"
                   >
-                    <div className="flex min-w-0 items-center gap-3">
-                      <ScoreGameArtwork
-                        title={item.title}
-                        slug={item.slug}
-                        className="h-12 w-16 shrink-0 rounded-lg"
-                      />
+                    <div className="min-w-0">
+                      <span
+                        className="block text-[10px] font-bold uppercase tracking-wider"
+                        style={{ color: "#765b2c" }}
+                      >
+                        {t.leaderboard.rankPrefix} {index + 2}
+                      </span>
                       <div className="min-w-0">
-                        <span
-                          className="block text-[9px] font-bold uppercase tracking-wider"
-                          style={{ color: "#765b2c" }}
-                        >
-                          {t.leaderboard.rankPrefix} {index + 2}
-                        </span>
                         <h4
                           className="truncate text-xs font-semibold sm:text-sm"
                           style={{ color: "#241b1d" }}
@@ -383,7 +378,7 @@ export default function HomePage() {
                     <div className="flex shrink-0 items-center gap-2">
                       <div className="flex items-baseline gap-1.5 rounded-lg bg-[#303139] px-2 py-1.5">
                         <span
-                          className="text-xl font-bold tracking-tight sm:text-2xl"
+                          className="text-base font-bold tracking-tight sm:text-lg"
                           style={{ color: "#ffd166" }}
                         >
                           {item.score.toLocaleString(lang === "en" ? "en-US" : "id-ID")}

@@ -25,3 +25,8 @@
 ### Fixed (Sumber Gambar Papan Rekor Disamakan dengan Katalog)
 - Menggunakan urutan sumber gambar dan fallback kartu katalog di area papan rekor, termasuk gambar peringkat tertinggi.
 
+
+## [3.15.21] - 2026-11-24
+### Changed (Tampilan Ringkas Peringkat 2–5)
+- Menghapus thumbnail pada peringkat 2–5 dan menyesuaikan ukuran font skor agar daftar lebih ringkas.
+

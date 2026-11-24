@@ -1,3 +1,10 @@
+### [2026-11-24 18:32] - [Frontend] - Tampilan Ringkas Peringkat 2–5
+- **Kondisi Sebelum:** Baris peringkat 2–5 menampilkan thumbnail besar dan angka skor dengan ukuran besar.
+- **Perubahan Sesudah:** Thumbnail dihapus, nomor peringkat dan nama game tetap ditampilkan, sementara angka poin diperkecil agar lebih proporsional.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Merapikan layout daftar skor pada section papan rekor.
+- **File Terdampak:** `src/app/page.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:22] - [Frontend] - Samakan Sumber Gambar Papan Rekor dengan Katalog
 - **Kondisi Sebelum:** Kartu peringkat pertama hanya mencoba satu URL thumbnail dan berakhir pada artwork fallback ketika URL tidak tersedia.
 - **Perubahan Sesudah:** Papan rekor memakai urutan kandidat gambar dan fallback yang sama seperti kartu katalog, mencakup file WebP dan preview PNG.
@@ -436,6 +443,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 
