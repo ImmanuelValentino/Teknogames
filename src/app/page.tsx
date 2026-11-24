@@ -53,13 +53,11 @@ function sortGamesByOrder(baseGames: Game[], orderSlugs: string[]): Game[] {
 }
 
 interface ScoreGameArtworkProps {
-  title: string;
   slug: string;
   className: string;
 }
 
 function ScoreGameArtwork({
-  title,
   slug,
   className,
 }: ScoreGameArtworkProps) {
@@ -71,15 +69,6 @@ function ScoreGameArtwork({
     `/games/games/${slug}/preview.png`,
     `/${slug}/preview.png`,
   ];
-  const initials = title
-    .split(":")[0]
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase();
-
   return (
     <div
       className={`relative isolate overflow-hidden bg-gradient-to-br from-rose-900 via-[#252432] to-[#292a31] ${className}`}
@@ -109,13 +98,6 @@ function ScoreGameArtwork({
           strokeWidth="2"
         />
       </svg>
-      <span
-        aria-hidden="true"
-        className="absolute inset-0 grid place-items-center font-heading text-6xl font-black text-white/20"
-        style={{ color: "rgba(255,255,255,0.2)" }}
-      >
-        {initials}
-      </span>
       <img
         alt=""
         src={imageSources[sourceIndex]}
@@ -302,7 +284,6 @@ export default function HomePage() {
             <article className="flex min-h-[280px] flex-col overflow-hidden rounded-2xl border border-[#d8c99e] bg-[#292a31] lg:min-h-0">
               <div className="relative min-h-[190px] flex-1">
                 <ScoreGameArtwork
-                  title={topScores[0].title}
                   slug={topScores[0].slug}
                   className="absolute inset-0"
                 />
@@ -439,7 +420,7 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-2 gap-3.5 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
             {favoriteGames.map((game) => (
-              <GameCard key={game.id} game={game} />
+              <GameCard key={game.id} game={game} showInitials={false} />
             ))}
           </div>
         )}

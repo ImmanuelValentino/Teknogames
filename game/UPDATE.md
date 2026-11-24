@@ -1,4 +1,8 @@
 # Update Game
+## [3.15.36] - 2026-11-24
+### Changed (Menghapus Inisial pada Kartu Home)
+- Menghapus teks inisial dari kartu-kartu di halaman utama tanpa mengubah gambar dan latar fallback.
+
 ## [3.15.35] - 2026-11-24
 ### Fixed (Warna Logo Footer Menyamai Navbar)
 - Menyamakan warna teks Game pada logo footer dengan navbar di kedua tema.

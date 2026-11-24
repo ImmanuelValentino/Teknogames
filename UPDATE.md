@@ -10,6 +10,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.36] - 2026-11-24
+### Changed (Menghapus Inisial pada Kartu Home)
+- **Kartu game home (page.tsx, GameHero.tsx, GameCard.tsx):** Menghapus huruf inisial dekoratif pada kartu pilihan, favorit, dan papan skor di halaman utama; gambar permainan dan latar kartu tetap tampil.
+
 ## [3.15.35] - 2026-11-24
 ### Fixed (Warna Logo Footer Menyamai Navbar)
 - **Footer (Footer.tsx, globals.css):** Menyamakan warna teks Game pada logo footer dengan navbar: merah #D9141D di light mode dan coral di dark mode.

@@ -9,6 +9,7 @@ import { useTranslation, getLocalizedCategoryLabel, getLocalizedGame } from "@/l
 
 interface GameCardProps {
   game: Game;
+  showInitials?: boolean;
 }
 
 // Skema palet warna gradasi cerah, modern & bervariasi sesuai referensi PlayForge
@@ -58,7 +59,7 @@ const getPlayForgeGradient = (slug: string, category: string) => {
   }
 };
 
-export default function GameCard({ game }: GameCardProps) {
+export default function GameCard({ game, showInitials = true }: GameCardProps) {
   const { lang } = useTranslation();
   const localized = getLocalizedGame(game, lang);
   const candidateSources = React.useMemo(() => [
@@ -72,16 +73,6 @@ export default function GameCard({ game }: GameCardProps) {
   const [srcIndex, setSrcIndex] = React.useState(0);
   const [imgFailed, setImgFailed] = React.useState(false);
 
-  // Ambil 2 huruf inisial dari judul game untuk visual Monogram PlayForge fallback
-  const getInitials = (title: string) => {
-    const clean = title.split(":")[0].trim();
-    const parts = clean.split(" ");
-    if (parts.length >= 2) {
-      return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-    return clean.slice(0, 2).toUpperCase();
-  };
-
   const handleImageError = () => {
     if (srcIndex < candidateSources.length - 1) {
       setSrcIndex((prev) => prev + 1);
@@ -91,8 +82,14 @@ export default function GameCard({ game }: GameCardProps) {
   };
 
   const gradientClass = getPlayForgeGradient(game.slug, game.category);
-  const initials = getInitials(game.title);
-
+  const initials = game.title
+    .split(":")[0]
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
   return (
     <Link
       href={`/play/${game.slug}`}
@@ -122,11 +119,11 @@ export default function GameCard({ game }: GameCardProps) {
             </div>
 
             {/* Tengah: Monogram 2 Huruf Tebal Fallback */}
-            <div className="relative z-10 my-auto flex items-center justify-center">
+            {showInitials && <div className="relative z-10 my-auto flex items-center justify-center">
               <span className="font-heading text-4xl sm:text-5xl font-black tracking-tight text-white/90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-110">
                 {initials}
               </span>
-            </div>
+            </div>}
           </>
         )}
 

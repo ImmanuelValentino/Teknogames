@@ -1,3 +1,10 @@
+### [2026-11-24 18:45] - [Frontend] - Hapus Inisial dari Kartu Home
+- **Kondisi Sebelum:** Kartu pilihan, favorit, hero, dan papan skor di halaman utama menampilkan huruf inisial dari judul permainan di atas gambar atau latar fallback.
+- **Perubahan Sesudah:** Teks inisial dihilangkan dari kartu pada home page; gambar permainan, badge, judul, dan latar fallback tetap dipakai.
+- **Masalah yang Ditemukan:** Inisial judul tampil sebagai teks dekoratif pada kartu.
+- **Penyelesaian:** Menghapus elemen inisial home-only dan menonaktifkan monogram untuk GameCard yang dipakai di home page.
+- **File Terdampak:** `src/app/page.tsx`, `src/components/game/GameHero.tsx`, `src/components/game/GameCard.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:42] - [Frontend] - Warna Logo Footer Menyamai Navbar
 - **Kondisi Sebelum:** Teks Game pada logo footer selalu coral, berbeda dari warna logo navbar pada light mode.
 - **Perubahan Sesudah:** Warna Game footer menjadi #D9141D pada light mode dan #FF6B70 pada dark mode, sama seperti navbar.
