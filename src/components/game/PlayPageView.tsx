@@ -1,13 +1,19 @@
 "use client";
 
 import React from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Game } from "@/types/game";
 import GameFrame from "@/components/game/GameFrame";
 import CategoryIcon from "@/components/game/CategoryIcon";
-import AdCompanion from "@/components/ads/AdCompanion";
 import GameCard from "@/components/game/GameCard";
-import GoogleAdSlot from "@/components/ads/GoogleAdSlot";
+
+const AdCompanion = dynamic(() => import("@/components/ads/AdCompanion"), {
+  ssr: false,
+});
+const GoogleAdSlot = dynamic(() => import("@/components/ads/GoogleAdSlot"), {
+  ssr: false,
+});
 import { useTranslation, getLocalizedCategoryLabel, getLocalizedGame } from "@/lib/i18n";
 import {
   ArrowLeft,

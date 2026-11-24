@@ -288,11 +288,11 @@
     <div class="hud">
       <div class="hud-left">
         <div class="badge">
-          <span>SKOR:</span>
+          <span data-i18n="hudScore">SKOR:</span>
           <span class="val" id="hud-score">0</span>
         </div>
         <div class="badge">
-          <span>KOMBO:</span>
+          <span data-i18n="hudCombo">KOMBO:</span>
           <span class="val combo" id="hud-combo">x1</span>
         </div>
       </div>
@@ -309,10 +309,10 @@
           </svg>
         </div>
         <div class="badge">
-          <span>REKOR:</span>
+          <span data-i18n="hudBest">REKOR:</span>
           <span class="val" id="hud-best">0</span>
         </div>
-        <button class="btn-icon" id="btn-audio" aria-label="Toggle Suara">
+        <button class="btn-icon" id="btn-audio" aria-label="Toggle Suara" data-i18n-aria="toggleAudio">
           <svg id="icon-vol-on" viewBox="0 0 24 24">
             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
           </svg>
@@ -329,10 +329,10 @@
         <svg viewBox="0 0 24 24">
           <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
         </svg>
-        <span>Kiri</span>
+        <span data-i18n="btnLeft">Kiri</span>
       </button>
       <button class="paddle-btn" id="btn-right">
-        <span>Kanan</span>
+        <span data-i18n="btnRight">Kanan</span>
         <svg viewBox="0 0 24 24">
           <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
         </svg>
@@ -342,9 +342,9 @@
     <!-- Start Modal -->
     <div class="modal-overlay" id="modal-start">
       <div class="modal-card">
-        <h1>Pasar Terapung</h1>
-        <p>Kemudikan perahu jukung di Sungai Martapura dan tangkap hasil bumi segar!</p>
-        <div class="info-box">
+        <h1 data-i18n="title">Pasar Terapung</h1>
+        <p data-i18n="startDesc">Kemudikan perahu jukung di Sungai Martapura dan tangkap hasil bumi segar!</p>
+        <div class="info-box" data-i18n-html="howToPlay">
           <strong>CARA BERMAIN:</strong>
           <ul>
             <li>Gunakan <strong>Panah Kiri / Kanan</strong> atau tombol layar untuk menggeser perahu.</li>
@@ -353,36 +353,124 @@
             <li>Pertahankan kombo tangkapan untuk skor berlipat ganda.</li>
           </ul>
         </div>
-        <button class="btn-main" id="btn-play">Mulai Berniaga</button>
+        <button class="btn-main" id="btn-play" data-i18n="btnPlay">Mulai Berniaga</button>
       </div>
     </div>
 
     <!-- Game Over Modal -->
     <div class="modal-overlay hidden" id="modal-gameover">
       <div class="modal-card">
-        <h1>Perahu Sandar</h1>
-        <p id="gameover-desc">Perahu jukung mengalami kerusakan akibat benturan rintangan sungai.</p>
+        <h1 data-i18n="gameoverTitle">Perahu Sandar</h1>
+        <p id="gameover-desc" data-i18n="gameoverDesc">Perahu jukung mengalami kerusakan akibat benturan rintangan sungai.</p>
         <div class="score-summary">
           <div class="score-col">
-            <span class="label">Total Tangkapan</span>
+            <span class="label" data-i18n="totalCatches">Total Tangkapan</span>
             <span class="num" id="final-catches">0</span>
           </div>
           <div class="score-col">
-            <span class="label">Skor Akhir</span>
+            <span class="label" data-i18n="finalScore">Skor Akhir</span>
             <span class="num" id="final-score">0</span>
           </div>
           <div class="score-col">
-            <span class="label">Rekor</span>
+            <span class="label" data-i18n="bestLabel">Rekor</span>
             <span class="num gold" id="final-best">0</span>
           </div>
         </div>
-        <button class="btn-main" id="btn-restart">Mendayung Lagi</button>
+        <button class="btn-main" id="btn-restart" data-i18n="btnRestart">Mendayung Lagi</button>
       </div>
     </div>
   </div>
 
   <script>
     (function() {
+      // I18N
+      let currentLang = 'id';
+      try {
+        if (localStorage.getItem('teknogame-lang') === 'en') currentLang = 'en';
+      } catch {}
+
+      const I18N = {
+        id: {
+          pageTitle: 'Pasar Terapung: Fruit Catch - TeknoGame',
+          hudScore: 'SKOR:',
+          hudCombo: 'KOMBO:',
+          hudBest: 'REKOR:',
+          toggleAudio: 'Toggle Suara',
+          btnLeft: 'Kiri',
+          btnRight: 'Kanan',
+          title: 'Pasar Terapung',
+          startDesc: 'Kemudikan perahu jukung di Sungai Martapura dan tangkap hasil bumi segar!',
+          howToPlay: '<strong>CARA BERMAIN:</strong><ul><li>Gunakan <strong>Panah Kiri / Kanan</strong> atau tombol layar untuk menggeser perahu.</li><li>Tangkap buah-buahan segar (Pisang, Durian, Rambutan, Belimbing).</li><li><strong>Hindari</strong> kayu hanyut dan batu sungai agar perahu tidak rusak!</li><li>Pertahankan kombo tangkapan untuk skor berlipat ganda.</li></ul>',
+          btnPlay: 'Mulai Berniaga',
+          gameoverTitle: 'Perahu Sandar',
+          gameoverDesc: 'Perahu jukung mengalami kerusakan akibat benturan rintangan sungai.',
+          totalCatches: 'Total Tangkapan',
+          finalScore: 'Skor Akhir',
+          bestLabel: 'Rekor',
+          btnRestart: 'Mendayung Lagi'
+        },
+        en: {
+          pageTitle: 'Floating Market: Fruit Catch - TeknoGame',
+          hudScore: 'SCORE:',
+          hudCombo: 'COMBO:',
+          hudBest: 'BEST:',
+          toggleAudio: 'Toggle Sound',
+          btnLeft: 'Left',
+          btnRight: 'Right',
+          title: 'Floating Market',
+          startDesc: 'Steer the jukung boat on the Martapura River and catch fresh local produce!',
+          howToPlay: '<strong>HOW TO PLAY:</strong><ul><li>Use <strong>Left / Right Arrows</strong> or the on-screen buttons to steer the boat.</li><li>Catch fresh fruits (Banana, Durian, Rambutan, Starfruit).</li><li><strong>Avoid</strong> drifting logs and river rocks so your boat stays intact!</li><li>Keep your catch combo going for multiplied points.</li></ul>',
+          btnPlay: 'Start Trading',
+          gameoverTitle: 'Boat Docked',
+          gameoverDesc: 'Your jukung boat was damaged after hitting river obstacles.',
+          totalCatches: 'Total Catches',
+          finalScore: 'Final Score',
+          bestLabel: 'Best',
+          btnRestart: 'Row Again'
+        }
+      };
+
+      function t(key, vars) {
+        const dict = I18N[currentLang] || I18N.id;
+        let str = dict[key] !== undefined ? dict[key] : (I18N.id[key] !== undefined ? I18N.id[key] : key);
+        if (vars) {
+          Object.keys(vars).forEach((k) => {
+            str = str.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]);
+          });
+        }
+        return str;
+      }
+
+      function applyLanguage(lang) {
+        currentLang = lang === 'en' ? 'en' : 'id';
+        document.documentElement.lang = currentLang;
+        document.title = t('pageTitle');
+
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
+          el.textContent = t(el.getAttribute('data-i18n'));
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+          el.innerHTML = t(el.getAttribute('data-i18n-html'));
+        });
+        document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+          el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
+        });
+        document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+          el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
+        });
+      }
+
+      window.addEventListener('message', (e) => {
+        if (e.data && e.data.type === 'LANG_CHANGE' && (e.data.lang === 'id' || e.data.lang === 'en')) {
+          applyLanguage(e.data.lang);
+        }
+      });
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'teknogame-lang') {
+          applyLanguage(e.newValue === 'en' ? 'en' : 'id');
+        }
+      });
+
       // Audio Synth
       const HIGH_SCORE_KEY = 'teknogames_pasar-terapung_highscore';
       let bestScore = parseInt(localStorage.getItem(HIGH_SCORE_KEY) || '0', 10);
@@ -1064,6 +1152,7 @@
         requestAnimationFrame(gameLoop);
       }
 
+      applyLanguage(currentLang);
       requestAnimationFrame(gameLoop);
     })();
   </script>

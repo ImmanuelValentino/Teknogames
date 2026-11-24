@@ -58,7 +58,7 @@
       align-items: center;
       gap: 6px;
     }
-    .badge span { color: #38bdf8; }
+    .badge span:last-child { color: #38bdf8; }
     .badge-icon {
       width: 14px;
       height: 14px;
@@ -265,22 +265,22 @@
       <div class="hud">
         <div class="badge">
           <svg class="badge-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          Skor: <span id="hud-score">0</span>
+          <span data-i18n="hudScore">Skor:</span> <span id="hud-score">0</span>
         </div>
         <div class="badge">
           <svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg>
-          Putus: <span id="hud-cuts">0</span>
+          <span data-i18n="hudCuts">Putus:</span> <span id="hud-cuts">0</span>
         </div>
         <div class="badge">
           <svg class="badge-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
-          Rekor: <span id="hud-high">0</span>
+          <span data-i18n="hudHigh">Rekor:</span> <span id="hud-high">0</span>
         </div>
       </div>
 
       <!-- Tension Meter -->
       <div class="tension-wrap">
         <div class="tension-label">
-          <span>TENSI BENANG</span>
+          <span data-i18n="tensionLabel">TENSI BENANG</span>
           <span id="tension-val">20%</span>
         </div>
         <div class="tension-bar">
@@ -289,7 +289,7 @@
       </div>
 
       <!-- Audio Toggle Button -->
-      <button class="audio-btn" id="audio-toggle" title="Toggle Suara">
+      <button class="audio-btn" id="audio-toggle" title="Toggle Suara" data-i18n-title="audioToggle" data-i18n-aria="audioToggle">
         <svg id="audio-icon-on" viewBox="0 0 24 24">
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
           <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
@@ -304,7 +304,7 @@
       <!-- Onscreen Mobile Touch Pull Button -->
       <button class="pull-btn" id="btn-pull">
         <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        <span>TARIK MENUKIK</span>
+        <span data-i18n="pullBtn">TARIK MENUKIK</span>
       </button>
 
       <!-- Start Modal -->
@@ -315,14 +315,14 @@
               <path d="M12 2L2 12l10 10 10-10L12 2zM12 2v20M2 12h20"/>
             </svg>
           </div>
-          <h1 class="title">Layangan Sanur</h1>
-          <p class="subtitle">Adu tarik-ulur benang layangan bebean di pantai Bali! Potong benang lawan tanpa membuat benang sendiri putus!</p>
+          <h1 class="title" data-i18n="title">Layangan Sanur</h1>
+          <p class="subtitle" data-i18n="startDesc">Adu tarik-ulur benang layangan bebean di pantai Bali! Potong benang lawan tanpa membuat benang sendiri putus!</p>
           <div class="stat-row">
-            <span>Rekor Tertinggi</span>
+            <span data-i18n="highScoreLabel">Rekor Tertinggi</span>
             <span id="start-high">0 layangan</span>
           </div>
-          <button class="btn" id="start-btn">Terbangkan Layangan</button>
-          <div class="control-hint">
+          <button class="btn" id="start-btn" data-i18n="startBtn">Terbangkan Layangan</button>
+          <div class="control-hint" data-i18n-html="controlHint">
             Desktop: <b>TAHAN SPASI / KLIK</b> untuk menukik, <b>LEPAS</b> untuk mengulur.<br>
             Mobile: Tahan dan lepas tombol <b>TARIK MENUKIK</b>.
           </div>
@@ -338,21 +338,21 @@
               <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
           </div>
-          <h2 class="title" style="color: #ef4444;" id="game-over-title">Benang Putus!</h2>
-          <p class="subtitle" id="game-over-desc">Tensi benang melebihi batas kekuatan tarik di udara.</p>
+          <h2 class="title" style="color: #ef4444;" id="game-over-title" data-i18n="gameOverTitle">Benang Putus!</h2>
+          <p class="subtitle" id="game-over-desc" data-i18n="gameOverDesc">Tensi benang melebihi batas kekuatan tarik di udara.</p>
           <div class="stat-row">
-            <span>Layangan Dipotong</span>
+            <span data-i18n="finalCutsLabel">Layangan Dipotong</span>
             <span id="final-cuts">0</span>
           </div>
           <div class="stat-row">
-            <span>Skor Akhir</span>
+            <span data-i18n="finalScoreLabel">Skor Akhir</span>
             <span id="final-score">0 pts</span>
           </div>
           <div class="stat-row">
-            <span>Rekor Terbaik</span>
+            <span data-i18n="finalHighLabel">Rekor Terbaik</span>
             <span id="final-high">0 layangan</span>
           </div>
-          <button class="btn" id="restart-btn">Terbangkan Lagi</button>
+          <button class="btn" id="restart-btn" data-i18n="restartBtn">Terbangkan Lagi</button>
         </div>
       </div>
     </div>
@@ -455,11 +455,117 @@
     const audioIconOn = document.getElementById('audio-icon-on');
     const audioIconOff = document.getElementById('audio-icon-off');
 
+    // --- I18N & LANGUAGE SYNC ---
+    let currentLang = 'id';
+    try {
+      if (localStorage.getItem('teknogame-lang') === 'en') currentLang = 'en';
+    } catch {}
+
+    const I18N = {
+      id: {
+        pageTitle: 'Layangan Sanur: Wind Battle - TeknoGame',
+        hudScore: 'Skor:',
+        hudCuts: 'Putus:',
+        hudHigh: 'Rekor:',
+        tensionLabel: 'TENSI BENANG',
+        audioToggle: 'Toggle Suara',
+        pullBtn: 'TARIK MENUKIK',
+        title: 'Layangan Sanur',
+        startDesc: 'Adu tarik-ulur benang layangan bebean di pantai Bali! Potong benang lawan tanpa membuat benang sendiri putus!',
+        highScoreLabel: 'Rekor Tertinggi',
+        startBtn: 'Terbangkan Layangan',
+        controlHint: 'Desktop: <b>TAHAN SPASI / KLIK</b> untuk menukik, <b>LEPAS</b> untuk mengulur.<br>Mobile: Tahan dan lepas tombol <b>TARIK MENUKIK</b>.',
+        gameOverTitle: 'Benang Putus!',
+        gameOverDesc: 'Tensi benang melebihi batas kekuatan tarik di udara.',
+        gameOverDescTension: 'Benang putus akibat tarikan terlalu kencang!',
+        gameOverDescCut: 'Layanganmu terpotong oleh layangan lawan!',
+        finalCutsLabel: 'Layangan Dipotong',
+        finalScoreLabel: 'Skor Akhir',
+        finalHighLabel: 'Rekor Terbaik',
+        restartBtn: 'Terbangkan Lagi',
+        kiteCount: '{n} layangan',
+        ptsCount: '{n} pts'
+      },
+      en: {
+        pageTitle: 'Layangan Sanur: Wind Battle - TeknoGame',
+        hudScore: 'Score:',
+        hudCuts: 'Cuts:',
+        hudHigh: 'Best:',
+        tensionLabel: 'STRING TENSION',
+        audioToggle: 'Toggle Sound',
+        pullBtn: 'PULL & DIVE',
+        title: 'Layangan Sanur',
+        startDesc: 'Battle with traditional Balinese bebean kites on Sanur Beach! Cut your rival\'s string without snapping your own!',
+        highScoreLabel: 'High Score',
+        startBtn: 'Launch Kite',
+        controlHint: 'Desktop: <b>HOLD SPACE / CLICK</b> to dive, <b>RELEASE</b> to slacken.<br>Mobile: Hold and release the <b>PULL & DIVE</b> button.',
+        gameOverTitle: 'String Snapped!',
+        gameOverDesc: 'String tension exceeded its airborne breaking limit.',
+        gameOverDescTension: 'Your string snapped from pulling too hard!',
+        gameOverDescCut: 'Your kite was cut by the rival kite!',
+        finalCutsLabel: 'Kites Cut',
+        finalScoreLabel: 'Final Score',
+        finalHighLabel: 'Best Record',
+        restartBtn: 'Fly Again',
+        kiteCount: '{n} kites',
+        ptsCount: '{n} pts'
+      }
+    };
+
+    function t(key, vars) {
+      const dict = I18N[currentLang] || I18N.id;
+      let str = dict[key] !== undefined ? dict[key] : (I18N.id[key] !== undefined ? I18N.id[key] : key);
+      if (vars) {
+        for (const k in vars) {
+          str = str.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]);
+        }
+      }
+      return str;
+    }
+
+    let lastGameOverReasonKey = null;
+
+    function applyLanguage(lang) {
+      currentLang = lang === 'en' ? 'en' : 'id';
+      document.documentElement.lang = currentLang;
+      document.title = t('pageTitle');
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        el.textContent = t(el.getAttribute('data-i18n'));
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+        el.innerHTML = t(el.getAttribute('data-i18n-html'));
+      });
+      document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+        el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
+      });
+      document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+        el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
+      });
+      startHigh.innerText = t('kiteCount', { n: highScore });
+      finalHigh.innerText = t('kiteCount', { n: highScore });
+      finalScore.innerText = t('ptsCount', { n: score });
+      if (gameState === 'GAMEOVER' && lastGameOverReasonKey) {
+        const descEl = document.getElementById('game-over-desc');
+        if (descEl) descEl.textContent = t(lastGameOverReasonKey);
+      }
+    }
+
+    window.addEventListener('message', (e) => {
+      if (e.data && e.data.type === 'LANG_CHANGE' && (e.data.lang === 'id' || e.data.lang === 'en')) {
+        applyLanguage(e.data.lang);
+      }
+    });
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'teknogame-lang') {
+        applyLanguage(e.newValue === 'en' ? 'en' : 'id');
+      }
+    });
+
     // --- GAME CONSTANTS & STATE ---
     const STORAGE_KEY = 'teknogames_layangan-sanur_highscore';
     let highScore = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
     hudHigh.innerText = highScore;
-    startHigh.innerText = highScore + ' layangan';
+    startHigh.innerText = t('kiteCount', { n: highScore });
 
     let width = 0;
     let height = 0;
@@ -608,8 +714,9 @@
       }
     }
 
-    function gameOver(reason) {
+    function gameOver(reasonKey) {
       gameState = 'GAMEOVER';
+      lastGameOverReasonKey = reasonKey || 'gameOverDesc';
       sound.playSnap();
 
       if (cutsCount > highScore) {
@@ -622,9 +729,11 @@
         window.parent.postMessage({ type: 'GAME_OVER', score: score }, '*');
       }
 
-      finalScore.innerText = score + ' pts';
+      const descEl = document.getElementById('game-over-desc');
+      if (descEl) descEl.textContent = t(lastGameOverReasonKey);
+      finalScore.innerText = t('ptsCount', { n: score });
       finalCuts.innerText = cutsCount.toString();
-      finalHigh.innerText = highScore + ' layangan';
+      finalHigh.innerText = t('kiteCount', { n: highScore });
       gameOverModal.style.display = 'flex';
     }
 
@@ -647,7 +756,7 @@
 
       // Check tension overload
       if (tension >= 100) {
-        gameOver('Benang putus akibat tarikan terlalu kencang!');
+        gameOver('gameOverDescTension');
         return;
       }
 
@@ -693,7 +802,7 @@
             hudScore.innerText = score.toString();
           } else if (!isPulling && tension < 20) {
             // Player cut by enemy
-            gameOver('Layanganmu terpotong oleh layangan lawan!');
+            gameOver('gameOverDescCut');
             return;
           }
         }
@@ -827,6 +936,7 @@
     }
 
     // Initial render
+    applyLanguage(currentLang);
     draw();
   </script>
 </body>

@@ -257,20 +257,20 @@
     <div class="hud">
       <div class="hud-left">
         <div class="badge">
-          <span>JARAK:</span>
+          <span data-i18n="hudDist">JARAK:</span>
           <span class="val" id="hud-dist">0m</span>
         </div>
         <div class="badge">
-          <span>SKOR:</span>
+          <span data-i18n="hudScore">SKOR:</span>
           <span class="val" id="hud-score">0</span>
         </div>
       </div>
       <div class="hud-right">
         <div class="badge">
-          <span>TERBAIK:</span>
+          <span data-i18n="hudBest">TERBAIK:</span>
           <span class="val" id="hud-best">0</span>
         </div>
-        <button class="btn-icon" id="btn-audio" aria-label="Toggle Suara">
+        <button class="btn-icon" id="btn-audio" aria-label="Toggle Suara" data-i18n-aria="audioToggle" data-i18n-title="audioToggle">
           <svg id="icon-vol-on" viewBox="0 0 24 24">
             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
           </svg>
@@ -287,53 +287,150 @@
         <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor;">
           <path d="M7 10l5 5 5-5z"/>
         </svg>
-        <span>Tukik / Meluncur</span>
+        <span data-i18n="diveBtn">Tukik / Meluncur</span>
       </button>
     </div>
 
     <!-- Start Modal -->
     <div class="modal-overlay" id="modal-start">
       <div class="modal-card">
-        <h1>Lembah Bromo</h1>
-        <p>Terbangkan gantole melintasi bukit pasir bergelombang Gunung Bromo.</p>
+        <h1 data-i18n="title">Lembah Bromo</h1>
+        <p data-i18n="startDesc">Terbangkan gantole melintasi bukit pasir bergelombang Gunung Bromo.</p>
         <div class="info-box">
-          <strong>CARA BERMAIN:</strong>
+          <strong data-i18n="howToPlayTitle">CARA BERMAIN:</strong>
           <ul>
-            <li><strong>Tahan Tukik</strong> saat menuruni lereng bukit untuk mengumpulkan momentum kencang.</li>
-            <li><strong>Lepaskan Tukik</strong> tepat saat mulai menanjak untuk melontarkan glider tinggi ke angkasa!</li>
-            <li>Raih kelereng embun & hindari badai kabut pasir kawah dari belakang.</li>
+            <li data-i18n-html="tip1"><strong>Tahan Tukik</strong> saat menuruni lereng bukit untuk mengumpulkan momentum kencang.</li>
+            <li data-i18n-html="tip2"><strong>Lepaskan Tukik</strong> tepat saat mulai menanjak untuk melontarkan glider tinggi ke angkasa!</li>
+            <li data-i18n="tip3">Raih kelereng embun &amp; hindari badai kabut pasir kawah dari belakang.</li>
           </ul>
         </div>
-        <button class="btn-main" id="btn-play">Mulai Terbang</button>
+        <button class="btn-main" id="btn-play" data-i18n="startBtn">Mulai Terbang</button>
       </div>
     </div>
 
     <!-- Game Over Modal -->
     <div class="modal-overlay hidden" id="modal-gameover">
       <div class="modal-card">
-        <h1>Luncuran Berakhir</h1>
-        <p id="gameover-desc">Glider kehilangan momentum di hamparan pasir berbisik Bromo.</p>
+        <h1 data-i18n="gameOverTitle">Luncuran Berakhir</h1>
+        <p id="gameover-desc" data-i18n="gameOverDescDefault">Glider kehilangan momentum di hamparan pasir berbisik Bromo.</p>
         <div class="score-summary">
           <div class="score-col">
-            <span class="label">Jarak</span>
+            <span class="label" data-i18n="finalDistLabel">Jarak</span>
             <span class="num" id="final-dist">0m</span>
           </div>
           <div class="score-col">
-            <span class="label">Skor Akhir</span>
+            <span class="label" data-i18n="finalScoreLabel">Skor Akhir</span>
             <span class="num" id="final-score">0</span>
           </div>
           <div class="score-col">
-            <span class="label">Rekor</span>
+            <span class="label" data-i18n="finalBestLabel">Rekor</span>
             <span class="num gold" id="final-best">0</span>
           </div>
         </div>
-        <button class="btn-main" id="btn-restart">Terbang Lagi</button>
+        <button class="btn-main" id="btn-restart" data-i18n="restartBtn">Terbang Lagi</button>
       </div>
     </div>
   </div>
 
   <script>
     (function() {
+      // I18N & Language Sync
+      let currentLang = 'id';
+      try {
+        if (localStorage.getItem('teknogame-lang') === 'en') currentLang = 'en';
+      } catch {}
+
+      const I18N = {
+        id: {
+          pageTitle: 'Lembah Bromo: Hang Glider - TeknoGame',
+          hudDist: 'JARAK:',
+          hudScore: 'SKOR:',
+          hudBest: 'TERBAIK:',
+          audioToggle: 'Toggle Suara',
+          diveBtn: 'Tukik / Meluncur',
+          title: 'Lembah Bromo',
+          startDesc: 'Terbangkan gantole melintasi bukit pasir bergelombang Gunung Bromo.',
+          howToPlayTitle: 'CARA BERMAIN:',
+          tip1: '<strong>Tahan Tukik</strong> saat menuruni lereng bukit untuk mengumpulkan momentum kencang.',
+          tip2: '<strong>Lepaskan Tukik</strong> tepat saat mulai menanjak untuk melontarkan glider tinggi ke angkasa!',
+          tip3: 'Raih kelereng embun & hindari badai kabut pasir kawah dari belakang.',
+          startBtn: 'Mulai Terbang',
+          gameOverTitle: 'Luncuran Berakhir',
+          gameOverDescDefault: 'Glider kehilangan momentum di hamparan pasir berbisik Bromo.',
+          gameOverDescStorm: 'Paralayang tertelan badai pasir kawah Bromo yang pekat!',
+          gameOverDescStall: 'Paralayang kehilangan daya dorong angin di lereng pasir Bromo.',
+          finalDistLabel: 'Jarak',
+          finalScoreLabel: 'Skor Akhir',
+          finalBestLabel: 'Rekor',
+          restartBtn: 'Terbang Lagi'
+        },
+        en: {
+          pageTitle: 'Lembah Bromo: Hang Glider - TeknoGame',
+          hudDist: 'DIST:',
+          hudScore: 'SCORE:',
+          hudBest: 'BEST:',
+          audioToggle: 'Toggle Sound',
+          diveBtn: 'Dive / Glide',
+          title: 'Lembah Bromo',
+          startDesc: 'Pilot a hang glider across the rolling sand dunes of Mount Bromo.',
+          howToPlayTitle: 'HOW TO PLAY:',
+          tip1: '<strong>Hold Dive</strong> while descending slopes to build high-speed momentum.',
+          tip2: '<strong>Release Dive</strong> right as you climb a ridge to launch your glider high into the sky!',
+          tip3: 'Collect sulfur dew orbs & outrun the crater sandstorm chasing from behind.',
+          startBtn: 'Start Flying',
+          gameOverTitle: 'Glide Ended',
+          gameOverDescDefault: 'Your glider lost momentum over Bromo\'s whispering sands.',
+          gameOverDescStorm: 'Your glider was swallowed by Bromo\'s dense crater sandstorm!',
+          gameOverDescStall: 'Your glider lost wind lift on the sandy slopes of Mount Bromo.',
+          finalDistLabel: 'Distance',
+          finalScoreLabel: 'Final Score',
+          finalBestLabel: 'Best',
+          restartBtn: 'Fly Again'
+        }
+      };
+
+      function t(key) {
+        const dict = I18N[currentLang] || I18N.id;
+        return dict[key] !== undefined ? dict[key] : (I18N.id[key] !== undefined ? I18N.id[key] : key);
+      }
+
+      let lastGameOverReason = null;
+
+      function applyLanguage(lang) {
+        currentLang = lang === 'en' ? 'en' : 'id';
+        document.documentElement.lang = currentLang;
+        document.title = t('pageTitle');
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
+          el.textContent = t(el.getAttribute('data-i18n'));
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+          el.innerHTML = t(el.getAttribute('data-i18n-html'));
+        });
+        document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+          el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
+        });
+        document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+          el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
+        });
+        if (lastGameOverReason) {
+          const desc = document.getElementById('gameover-desc');
+          if (desc) {
+            desc.textContent = lastGameOverReason === 'storm' ? t('gameOverDescStorm') : t('gameOverDescStall');
+          }
+        }
+      }
+
+      window.addEventListener('message', (e) => {
+        if (e.data && e.data.type === 'LANG_CHANGE' && (e.data.lang === 'id' || e.data.lang === 'en')) {
+          applyLanguage(e.data.lang);
+        }
+      });
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'teknogame-lang') {
+          applyLanguage(e.newValue === 'en' ? 'en' : 'id');
+        }
+      });
+
       // Configuration & Audio Synth
       const HIGH_SCORE_KEY = 'teknogames_lembah-bromo_highscore';
       let bestScore = parseInt(localStorage.getItem(HIGH_SCORE_KEY) || '0', 10);
@@ -642,11 +739,12 @@
         finalScore.textContent = finalS;
         finalBest.textContent = bestScore;
 
+        lastGameOverReason = reason;
         const desc = document.getElementById('gameover-desc');
         if (reason === 'storm') {
-          desc.textContent = 'Paralayang tertelan badai pasir kawah Bromo yang pekat!';
+          desc.textContent = t('gameOverDescStorm');
         } else {
-          desc.textContent = 'Paralayang kehilangan daya dorong angin di lereng pasir Bromo.';
+          desc.textContent = t('gameOverDescStall');
         }
 
         modalGameover.classList.remove('hidden');
@@ -1049,6 +1147,7 @@
         requestAnimationFrame(gameLoop);
       }
 
+      applyLanguage(currentLang);
       requestAnimationFrame(gameLoop);
     })();
   </script>

@@ -169,11 +169,11 @@
   <div id="gameContainer">
     <div id="hud">
       <div class="hud-left">
-        <div class="badge">SKOR: <span id="scoreVal">0</span></div>
-        <div class="badge best">REKOR: <span id="highScoreVal">0</span></div>
-        <div class="badge">SPEED: <span id="speedVal">1.0x</span></div>
+        <div class="badge"><span data-i18n="hudScore" style="color: inherit;">SKOR:</span> <span id="scoreVal">0</span></div>
+        <div class="badge best"><span data-i18n="hudBest" style="color: inherit;">REKOR:</span> <span id="highScoreVal">0</span></div>
+        <div class="badge"><span data-i18n="hudSpeed" style="color: inherit;">SPEED:</span> <span id="speedVal">1.0x</span></div>
       </div>
-      <button class="btn-audio" id="audioToggle" aria-label="Toggle Suara">
+      <button class="btn-audio" id="audioToggle" aria-label="Toggle Suara" data-i18n-aria="toggleAudio">
         <svg id="iconSoundOn" viewBox="0 0 24 24">
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
           <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
@@ -189,32 +189,32 @@
 
     <!-- Start Overlay -->
     <div id="startScreen" class="overlay">
-      <div class="title">CYBER BIRD</div>
-      <div class="desc">Navigasikan drone siber melintasi pilar neon. Tekan Spasi atau ketuk layar untuk bermanuver!</div>
+      <div class="title" data-i18n="title">CYBER BIRD</div>
+      <div class="desc" data-i18n="startDesc">Navigasikan drone siber melintasi pilar neon. Tekan Spasi atau ketuk layar untuk bermanuver!</div>
       <div class="stats-card">
         <div class="stats-row">
-          <span class="stats-label">REKOR ANDA:</span>
+          <span class="stats-label" data-i18n="yourBest">REKOR ANDA:</span>
           <span class="stats-val" id="startHighScore">0</span>
         </div>
       </div>
-      <button class="btn-action" id="startBtn">MULAI TERBANG</button>
+      <button class="btn-action" id="startBtn" data-i18n="startBtn">MULAI TERBANG</button>
     </div>
 
     <!-- Game Over Overlay -->
     <div id="gameOverScreen" class="overlay" style="display: none;">
-      <div class="title" style="color: #ef4444; text-shadow: 0 0 25px rgba(239,68,68,0.7);">MISI BERAKHIR</div>
-      <div class="desc">Drone siber mengalami benturan pada pilar energi.</div>
+      <div class="title" style="color: #ef4444; text-shadow: 0 0 25px rgba(239,68,68,0.7);" data-i18n="gameOverTitle">MISI BERAKHIR</div>
+      <div class="desc" data-i18n="gameOverDesc">Drone siber mengalami benturan pada pilar energi.</div>
       <div class="stats-card">
         <div class="stats-row">
-          <span class="stats-label">Skor Misi:</span>
+          <span class="stats-label" data-i18n="missionScore">Skor Misi:</span>
           <span class="stats-val" id="finalScoreVal" style="color: #00f0ff;">0</span>
         </div>
         <div class="stats-row">
-          <span class="stats-label">Rekor Tertinggi:</span>
+          <span class="stats-label" data-i18n="highScoreLabel">Rekor Tertinggi:</span>
           <span class="stats-val" id="finalHighScoreVal" style="color: #f59e0b;">0</span>
         </div>
       </div>
-      <button class="btn-action" id="restartBtn">TERBANG LAGI</button>
+      <button class="btn-action" id="restartBtn" data-i18n="restartBtn">TERBANG LAGI</button>
     </div>
 
     <canvas id="canvas"></canvas>
@@ -529,6 +529,82 @@
       requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
+
+    // --- I18N BILINGUAL SYNC ---
+    let currentLang = "id";
+    try {
+      if (localStorage.getItem("teknogame-lang") === "en") currentLang = "en";
+    } catch {}
+
+    const I18N = {
+      id: {
+        pageTitle: "Cyber Bird - TeknoGame",
+        hudScore: "SKOR:",
+        hudBest: "REKOR:",
+        hudSpeed: "SPEED:",
+        toggleAudio: "Toggle Suara",
+        title: "CYBER BIRD",
+        startDesc: "Navigasikan drone siber melintasi pilar neon. Tekan Spasi atau ketuk layar untuk bermanuver!",
+        yourBest: "REKOR ANDA:",
+        startBtn: "MULAI TERBANG",
+        gameOverTitle: "MISI BERAKHIR",
+        gameOverDesc: "Drone siber mengalami benturan pada pilar energi.",
+        missionScore: "Skor Misi:",
+        highScoreLabel: "Rekor Tertinggi:",
+        restartBtn: "TERBANG LAGI"
+      },
+      en: {
+        pageTitle: "Cyber Bird - TeknoGame",
+        hudScore: "SCORE:",
+        hudBest: "BEST:",
+        hudSpeed: "SPEED:",
+        toggleAudio: "Toggle Sound",
+        title: "CYBER BIRD",
+        startDesc: "Navigate the cyber drone through neon pillars. Press Space or tap the screen to maneuver!",
+        yourBest: "YOUR BEST:",
+        startBtn: "START FLIGHT",
+        gameOverTitle: "MISSION OVER",
+        gameOverDesc: "The cyber drone collided with an energy pillar.",
+        missionScore: "Mission Score:",
+        highScoreLabel: "High Score:",
+        restartBtn: "FLY AGAIN"
+      }
+    };
+
+    function t(key, vars) {
+      let str = (I18N[currentLang] && I18N[currentLang][key]) || I18N.id[key] || key;
+      if (vars) {
+        for (const k of Object.keys(vars)) {
+          str = str.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]);
+        }
+      }
+      return str;
+    }
+
+    function applyLanguage(lang) {
+      currentLang = lang === "en" ? "en" : "id";
+      document.documentElement.lang = currentLang;
+      document.title = t("pageTitle");
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        el.textContent = t(el.getAttribute("data-i18n"));
+      });
+      document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+        el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria")));
+      });
+    }
+
+    window.addEventListener("message", (e) => {
+      if (e.data && e.data.type === "LANG_CHANGE" && (e.data.lang === "id" || e.data.lang === "en")) {
+        applyLanguage(e.data.lang);
+      }
+    });
+    window.addEventListener("storage", (e) => {
+      if (e.key === "teknogame-lang") {
+        applyLanguage(e.newValue === "en" ? "en" : "id");
+      }
+    });
+
+    applyLanguage(currentLang);
   </script>
 </body>
 </html>

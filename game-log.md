@@ -1,3 +1,13 @@
+### 2026-11-24 - Sinkronisasi Fitur 2 Bahasa (ID / EN) ke Seluruh 13 Game HTML5
+- **Folder Game:** `src/components/game/GameFrame.tsx`, `public/games/*` (seluruh 13 game)
+- **Deskripsi:** Menghubungkan sistem pergantian bahasa portal (`teknogame-lang` di `localStorage`, event `storage`, dan `postMessage` `{ type: "LANG_CHANGE", lang }` dari `GameFrame.tsx`) ke seluruh 13 game HTML5 (`becak-drift`, `candi-stacker`, `circuit-flow`, `cyber-bird`, `kapal-feri`, `kopi-klotok`, `layangan-sanur`, `lembah-bromo`, `nusantara-runner`, `packing-master`, `pasar-terapung`, `tekno-memory`, `werewolf`). Setiap game otomatis mengikuti bahasa aktif saat dimuat maupun saat tombol ID/EN di Navbar diklik secara langsung tanpa perlu reload.
+- **Fitur Utama:**
+  - [x] Sinkronisasi `postMessage` (`LANG_CHANGE`) pada `GameFrame.tsx` saat `lang` berubah dan saat `iframe` selesai dimuat (`onLoad`)
+  - [x] Pembacaan preferensi awal dari `localStorage` (`teknogame-lang`) + listener `message` & `storage` di masing-masing game
+  - [x] Kamus I18N (ID/EN) internal untuk HUD, modal mulai/selesai, kontrol, pesan dinamis, dan label Canvas tanpa dependensi eksternal maupun emoji
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-21 - Fitur CMS Indexing & Ranking Game (/manage-games)
 - **Folder Game:** `src/app/manage-games`, `src/lib/cms-supabase.ts`, `src/app/page.tsx`
 - **Deskripsi:** Menambahkan sistem Content Management System (CMS) untuk indexing dan kurasi urutan game dari Top 1 hingga terakhir. Urutan dikontrol penuh oleh Admin melalui panel `/manage-games` dengan antarmuka drag-and-drop dan tombol geser. Game yang ditempatkan pada posisi Top 1 secara otomatis menjadi Kartu Utama di Hero Banner Beranda, dan susunan katalog game langsung menyesuaikan secara instan melalui Supabase database (`cms_settings`).

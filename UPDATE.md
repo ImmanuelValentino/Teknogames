@@ -8,6 +8,29 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.7] - 2026-11-24
+### Fixed (403 Forbidden pada /games/manage-games/ dan Rute Trailing Slash)
+- **`.htaccess` Rewrite Rule:** Menghapus syarat `!-d` dan mengabaikan trailing slash (`^(.+?)/?$`) pada rewrite `.html` di `public/.htaccess`, sehingga URL seperti `/games/manage-games/` langsung melayani `manage-games.html` alih-alih terkena `403 Forbidden` dari `Options -Indexes`.
+
+## [3.15.6] - 2026-11-24
+### Improved (WebP Previews & Lighter Hero GPU Effects)
+- **Preview `.webp` Menyeluruh:** Mengubah `thumbnailUrl` di `games-data.ts` dan sumber gambar di `GameHero.tsx` ke `.webp` (`/games/images/games/<slug>.webp` dengan fallback `.png`).
+- **Pengurangan Beban Blur GPU:** Mengganti `blur-[120px]` di `GameHero.tsx` dengan `radial-gradient` CSS dan menghapus `backdrop-blur` berlapis pada kartu Hero.
+
+## [3.15.5] - 2026-11-24
+### Fixed (React Hydration Mismatch pada Head & Hero Game Order)
+- **AdSense Script (`layout.tsx`):** Memindahkan loader AdSense ke `next/script` dengan `strategy="afterInteractive"` agar injeksi skrip Google (`show_ads_impl`) tidak menggeser DOM `<head>` sebelum React hydration selesai.
+- **Urutan Game (`page.tsx`):** Memindahkan pembacaan `getCachedGameOrder()` dari initializer `useState` ke dalam `useEffect` agar render awal server dan client selalu konsisten.
+
+## [3.15.4] - 2026-11-24
+### Changed (Hide AdSense Placeholders Until Slot IDs Configured)
+- **Auto Ads Only Mode:** Menyembunyikan placeholder `GoogleAdSlot` dan bar `AdBottomAnchor` saat `NEXT_PUBLIC_ADSENSE_CLIENT_ID` atau `adSlot` belum diisi, sehingga tampilan tetap bersih sambil mengandalkan Google AdSense Auto Ads dari `layout.tsx`.
+
+## [3.15.3] - 2026-11-24
+### Improved (Lazy Loading & Asset Priority)
+- **Code-Splitting Komponen Sekunder:** Menggunakan `next/dynamic` untuk `AdBottomAnchor`, `AdSkyscraper`, `AdCompanion`, `AdNativeTile`, dan `GoogleAdSlot`.
+- **Optimasi Iframe & Gambar:** Menambahkan `loading="lazy"` pada `<iframe>` di `GameFrame.tsx`, `fetchPriority="high"` + `decoding="async"` pada gambar hero di `GameHero.tsx`, serta memprioritaskan `.webp` sebelum `.png` di `GameCard.tsx`.
+
 ## [3.15.2] - 2026-11-23
 ### Added, Changed, & Fixed (Dukungan Bahasa ID/EN, Kontras & Ikon Responsif, Notifikasi Skor, & Tombol Tutup Ads)
 - **Dukungan Bahasa Indonesia & Bahasa Inggris (ID/EN):**

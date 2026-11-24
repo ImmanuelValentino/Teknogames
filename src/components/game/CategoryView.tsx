@@ -1,12 +1,16 @@
 "use client";
 
 import React from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowLeft, Gamepad2, Compass, Puzzle, Zap, Coffee, Dumbbell } from "lucide-react";
 import { Game, GameCategory } from "@/types/game";
 import { useTranslation, getLocalizedCategoryLabel } from "@/lib/i18n";
 import GameGrid from "@/components/game/GameGrid";
-import GoogleAdSlot from "@/components/ads/GoogleAdSlot";
+
+const GoogleAdSlot = dynamic(() => import("@/components/ads/GoogleAdSlot"), {
+  ssr: false,
+});
 
 interface CategoryViewProps {
   categoryId: GameCategory;

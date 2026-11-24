@@ -6,8 +6,10 @@ import GoogleAdSlot from "./GoogleAdSlot";
 
 export default function AdBottomAnchor() {
   const [isVisible, setIsVisible] = useState(true);
+  const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "";
+  const adSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_ANCHOR || "";
 
-  if (!isVisible) return null;
+  if (!isVisible || !client || !adSlot) return null;
 
   return (
     <aside

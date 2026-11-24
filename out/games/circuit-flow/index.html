@@ -276,12 +276,12 @@
     <!-- Top HUD -->
     <div id="hud">
       <div class="hud-left">
-        <div class="badge">LEVEL: <span id="levelVal">1/9</span></div>
-        <div class="badge flow">SIRKUIT: <span id="pathVal">0/3</span></div>
-        <div class="badge">CAKUPAN: <span id="coverageVal">0%</span></div>
-        <div class="badge best">SKOR: <span id="scoreVal">0</span></div>
+        <div class="badge"><em data-i18n="hud_level" style="font-style:normal">LEVEL:</em> <span id="levelVal">1/9</span></div>
+        <div class="badge flow"><em data-i18n="hud_circuit" style="font-style:normal">SIRKUIT:</em> <span id="pathVal">0/3</span></div>
+        <div class="badge"><em data-i18n="hud_coverage" style="font-style:normal">CAKUPAN:</em> <span id="coverageVal">0%</span></div>
+        <div class="badge best"><em data-i18n="hud_score" style="font-style:normal">SKOR:</em> <span id="scoreVal">0</span></div>
       </div>
-      <button class="btn-audio" id="audioToggle" aria-label="Toggle Suara">
+      <button class="btn-audio" id="audioToggle" aria-label="Toggle Suara" data-i18n-aria="audio_toggle">
         <svg id="iconSoundOn" viewBox="0 0 24 24">
           <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
         </svg>
@@ -299,13 +299,13 @@
           <svg viewBox="0 0 24 24">
             <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6 0 2.97-2.17 5.43-5 5.91v2.02c3.95-.49 7-3.85 7-7.93 0-4.42-3.58-8-8-8zm-6 8c0-1.65.67-3.15 1.76-4.24L6.34 7.34C4.9 8.79 4 10.79 4 13c0 4.08 3.05 7.44 7 7.93v-2.02c-2.83-.48-5-2.94-5-5.91z"/>
           </svg>
-          <span>Reset Jalur</span>
+          <span data-i18n="btn_reset">Reset Jalur</span>
         </button>
         <button class="btn-sub" id="finishBtn">
           <svg viewBox="0 0 24 24">
             <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/>
           </svg>
-          <span>Selesai Main</span>
+          <span data-i18n="btn_finish">Selesai Main</span>
         </button>
       </div>
     </div>
@@ -313,9 +313,9 @@
     <!-- Start Overlay -->
     <div id="startScreen" class="overlay">
       <div class="modal-card">
-        <h1>Circuit Flow</h1>
-        <p>Hubungkan terminal sirkuit elektronik dengan jejak tembaga PCB tanpa saling memotong jalur.</p>
-        <div class="info-box">
+        <h1 data-i18n="start_title">Circuit Flow</h1>
+        <p data-i18n="start_subtitle">Hubungkan terminal sirkuit elektronik dengan jejak tembaga PCB tanpa saling memotong jalur.</p>
+        <div class="info-box" data-i18n-html="info_box">
           <strong>PANDUAN ALUR SIRKUIT:</strong>
           <ul>
             <li>Tarik garis dari salah satu terminal PCB ke terminal pasangannya.</li>
@@ -324,32 +324,133 @@
             <li>Penuhi 100% petak papan untuk meraih skor bonus kelistrikan sempurna!</li>
           </ul>
         </div>
-        <button class="btn-main" id="startBtn">Mulai Sambung Sirkuit</button>
+        <button class="btn-main" id="startBtn" data-i18n="start_btn">Mulai Sambung Sirkuit</button>
       </div>
     </div>
 
     <!-- Win / Game Over Overlay -->
     <div id="gameOverScreen" class="overlay hidden">
       <div class="modal-card">
-        <h1 id="endTitle">Semua Sirkuit Aktif</h1>
-        <p id="endDesc">Selamat! Seluruh sistem sirkuit telah berhasil dihubungkan dengan daya optimal.</p>
+        <h1 id="endTitle" data-i18n="end_win_title">Semua Sirkuit Aktif</h1>
+        <p id="endDesc" data-i18n="end_win_desc">Selamat! Seluruh sistem sirkuit telah berhasil dihubungkan dengan daya optimal.</p>
         <div class="score-summary">
           <div class="score-col">
-            <span class="label">Skor Akhir</span>
+            <span class="label" data-i18n="final_score">Skor Akhir</span>
             <span class="num" id="finalScoreVal">0</span>
           </div>
           <div class="score-col">
-            <span class="label">Rekor</span>
+            <span class="label" data-i18n="best_score">Rekor</span>
             <span class="num gold" id="finalHighScoreVal">0</span>
           </div>
         </div>
-        <button class="btn-main" id="restartBtn">Main Lagi</button>
+        <button class="btn-main" id="restartBtn" data-i18n="restart_btn">Main Lagi</button>
       </div>
     </div>
   </div>
 
   <script>
     (function() {
+      // I18N (EN / ID)
+      let currentLang = "id";
+      try {
+        if (localStorage.getItem("teknogame-lang") === "en") currentLang = "en";
+      } catch {}
+
+      const I18N = {
+        id: {
+          title: "Circuit Flow - TeknoGame",
+          hud_level: "LEVEL:",
+          hud_circuit: "SIRKUIT:",
+          hud_coverage: "CAKUPAN:",
+          hud_score: "SKOR:",
+          audio_toggle: "Toggle Suara",
+          btn_reset: "Reset Jalur",
+          btn_finish: "Selesai Main",
+          start_title: "Circuit Flow",
+          start_subtitle: "Hubungkan terminal sirkuit elektronik dengan jejak tembaga PCB tanpa saling memotong jalur.",
+          info_box: "<strong>PANDUAN ALUR SIRKUIT:</strong><ul><li>Tarik garis dari salah satu terminal PCB ke terminal pasangannya.</li><li>Jalur sirkuit tembaga dilengkapi pulsa arus listrik neon aktif saat tersambung.</li><li>Jika menabrak jalur lain, kabel lama otomatis terputus rapi untuk memberi jalan.</li><li>Penuhi 100% petak papan untuk meraih skor bonus kelistrikan sempurna!</li></ul>",
+          start_btn: "Mulai Sambung Sirkuit",
+          end_win_title: "SELURUH SIRKUIT AKTIF",
+          end_win_desc: "Luar biasa! 9 level rangkaian sirkuit PCB berhasil dihubungkan dengan daya optimal.",
+          end_over_title: "PERMAINAN SELESAI",
+          end_over_desc: "Anda menyelesaikan tantangan hingga level {level}.",
+          final_score: "Skor Akhir",
+          best_score: "Rekor",
+          restart_btn: "Main Lagi"
+        },
+        en: {
+          title: "Circuit Flow - TeknoGame",
+          hud_level: "LEVEL:",
+          hud_circuit: "CIRCUITS:",
+          hud_coverage: "COVERAGE:",
+          hud_score: "SCORE:",
+          audio_toggle: "Toggle Sound",
+          btn_reset: "Reset Paths",
+          btn_finish: "Finish Game",
+          start_title: "Circuit Flow",
+          start_subtitle: "Connect matching PCB circuit terminals with copper traces without crossing paths.",
+          info_box: "<strong>CIRCUIT FLOW GUIDE:</strong><ul><li>Drag a line from any PCB terminal to its matching pair.</li><li>Copper circuit traces light up with active neon electric pulses when connected.</li><li>Crossing another trace cleanly cuts the old wire to make way.</li><li>Fill 100% of the board cells to earn a perfect power bonus!</li></ul>",
+          start_btn: "Start Connecting",
+          end_win_title: "ALL CIRCUITS ACTIVE",
+          end_win_desc: "Awesome! All 9 PCB circuit levels have been connected at optimal power.",
+          end_over_title: "GAME OVER",
+          end_over_desc: "You completed the challenge up to level {level}.",
+          final_score: "Final Score",
+          best_score: "Best",
+          restart_btn: "Play Again"
+        }
+      };
+
+      function t(key, vars) {
+        const dict = I18N[currentLang] || I18N.id;
+        let str = dict[key] !== undefined ? dict[key] : (I18N.id[key] || key);
+        if (vars) {
+          for (const k in vars) {
+            str = str.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]);
+          }
+        }
+        return str;
+      }
+
+      let lastEndComplete = null;
+
+      function applyLanguage(lang) {
+        currentLang = lang === "en" ? "en" : "id";
+        document.documentElement.lang = currentLang;
+        document.title = t("title");
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          el.textContent = t(el.getAttribute("data-i18n"));
+        });
+        document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+          el.innerHTML = t(el.getAttribute("data-i18n-html"));
+        });
+        document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+          el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria")));
+        });
+        if (lastEndComplete !== null) {
+          const endTitle = document.getElementById("endTitle");
+          const endDesc = document.getElementById("endDesc");
+          if (lastEndComplete) {
+            endTitle.innerText = t("end_win_title");
+            endDesc.innerText = t("end_win_desc");
+          } else {
+            endTitle.innerText = t("end_over_title");
+            endDesc.innerText = t("end_over_desc", { level: currentLevel + 1 });
+          }
+        }
+      }
+
+      window.addEventListener("message", (e) => {
+        if (e.data && e.data.type === "LANG_CHANGE" && (e.data.lang === "id" || e.data.lang === "en")) {
+          applyLanguage(e.data.lang);
+        }
+      });
+      window.addEventListener("storage", (e) => {
+        if (e.key === "teknogame-lang") {
+          applyLanguage(e.newValue === "en" ? "en" : "id");
+        }
+      });
+
       // Audio Synth Web Audio API
       let audioCtx = null;
       let soundEnabled = true;
@@ -821,6 +922,7 @@
       // Game Over & Start Handling
       function startGame() {
         initAudio();
+        lastEndComplete = null;
         document.getElementById('startScreen').classList.add('hidden');
         document.getElementById('gameOverScreen').classList.add('hidden');
         currentLevel = 0;
@@ -829,6 +931,7 @@
       }
 
       function endGame(isComplete = false) {
+        lastEndComplete = isComplete;
         if (score > highScore) {
           highScore = score;
           localStorage.setItem(HIGH_SCORE_KEY, highScore.toString());
@@ -838,17 +941,17 @@
         const endDesc = document.getElementById('endDesc');
 
         if (isComplete) {
-          endTitle.innerText = 'SELURUH SIRKUIT AKTIF';
+          endTitle.innerText = t('end_win_title');
           endTitle.style.background = 'linear-gradient(90deg, #10b981, #00f0ff)';
           endTitle.style.webkitBackgroundClip = 'text';
           endTitle.style.webkitTextFillColor = 'transparent';
-          endDesc.innerText = 'Luar biasa! 9 level rangkaian sirkuit PCB berhasil dihubungkan dengan daya optimal.';
+          endDesc.innerText = t('end_win_desc');
         } else {
-          endTitle.innerText = 'PERMAINAN SELESAI';
+          endTitle.innerText = t('end_over_title');
           endTitle.style.background = 'linear-gradient(90deg, #38bdf8, #00f0ff)';
           endTitle.style.webkitBackgroundClip = 'text';
           endTitle.style.webkitTextFillColor = 'transparent';
-          endDesc.innerText = `Anda menyelesaikan tantangan hingga level ${currentLevel + 1}.`;
+          endDesc.innerText = t('end_over_desc', { level: currentLevel + 1 });
         }
 
         document.getElementById('finalScoreVal').innerText = score;
@@ -1005,6 +1108,7 @@
       }
 
       // Initial Setup
+      applyLanguage(currentLang);
       initLevel();
       requestAnimationFrame(renderLoop);
     })();

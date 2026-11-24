@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -16,7 +17,10 @@ import {
 import GameHero from "@/components/game/GameHero";
 import GameGrid from "@/components/game/GameGrid";
 import GameCard from "@/components/game/GameCard";
-import GoogleAdSlot from "@/components/ads/GoogleAdSlot";
+
+const GoogleAdSlot = dynamic(() => import("@/components/ads/GoogleAdSlot"), {
+  ssr: false,
+});
 import { CATEGORIES, INITIAL_GAMES } from "@/lib/games-data";
 import { GameCategory, Game } from "@/types/game";
 import { getLocalScores, getLocalFavorites } from "@/lib/local-storage";
@@ -126,10 +130,7 @@ function ScoreGameArtwork({
 export default function HomePage() {
   const { lang, t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<GameCategory>("all");
-  const [games, setGames] = useState<Game[]>(() => {
-    const cachedOrder = getCachedGameOrder();
-    return sortGamesByOrder(INITIAL_GAMES, cachedOrder);
-  });
+  const [games, setGames] = useState<Game[]>(INITIAL_GAMES);
   const [topScores, setTopScores] = useState<
     {
       gameId: string;
@@ -141,9 +142,13 @@ export default function HomePage() {
   >([]);
   const [favoriteGames, setFavoriteGames] = useState<Game[]>([]);
 
-  // Sinkronisasi Urutan Game dari Supabase CMS
+  // Sinkronisasi Urutan Game dari Cache & Supabase CMS
   useEffect(() => {
     let isMounted = true;
+    const cachedOrder = getCachedGameOrder();
+    if (cachedOrder.length > 0) {
+      setGames(sortGamesByOrder(INITIAL_GAMES, cachedOrder));
+    }
     fetchGameOrder().then((remoteOrder) => {
       if (isMounted && Array.isArray(remoteOrder) && remoteOrder.length > 0) {
         setGames(sortGamesByOrder(INITIAL_GAMES, remoteOrder));

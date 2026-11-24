@@ -1,3 +1,67 @@
+### [2026-11-24 08:20] - [Backend / Server Config] - Perbaikan 403 Forbidden pada /games/manage-games/ di .htaccess
+- **Kondisi Sebelum:**
+  1. Next.js static export menghasilkan `manage-games.html` sekaligus folder `manage-games/` (berisi payload RSC tanpa `index.html`).
+  2. Di `public/.htaccess`, rule rewrite `.html` memakai `RewriteCond %{REQUEST_FILENAME} !-d`, sehingga saat user membuka `/games/manage-games/` (yang merupakan folder fisik tanpa `index.html`), rewrite dilewati dan `Options -Indexes` memicu `403 Forbidden`.
+- **Perubahan Sesudah:**
+  1. Memperbarui `public/.htaccess` agar me-rewrite `^(.+?)/?$` ke `/games/$1.html` selama bukan file fisik (`!-f`) dan file `$1.html` tersedia.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui rule di `public/.htaccess` dan mencatat agar file `.htaccess` ikut di-upload ulang ke server setelah `npm run build`.
+- **File Terdampak:** `public/.htaccess`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 08:11] - [Frontend] - Konversi Preview ke WebP Menyeluruh & Pengurangan Efek Blur GPU di Hero
+- **Kondisi Sebelum:**
+  1. `GameHero.tsx` dan `thumbnailUrl` di `games-data.ts` masih menggunakan `.png` (`/games/<slug>/preview.png`).
+  2. `GameHero.tsx` memakai dua layer `blur-[120px]` besar serta beberapa `backdrop-blur-md` yang membebani rendering GPU/CPU mobile.
+- **Perubahan Sesudah:**
+  1. Mengarahkan sumber preview di `GameHero.tsx` dan `thumbnailUrl` di `src/lib/games-data.ts` ke `/games/images/games/<slug>.webp` (dengan fallback ke `.png` di `GameHero.tsx`).
+  2. Mengganti dua elemen `blur-[120px]` di `GameHero.tsx` menjadi `radial-gradient` CSS biasa dan menghilangkan `backdrop-blur` berlapis pada badge/footer kartu Hero.
+- **Masalah yang Ditemukan:** `npx tsc --noEmit` lulus tanpa error.
+- **Penyelesaian:** Memverifikasi TypeScript dengan `npx tsc --noEmit` dan melakukan commit sesuai workflow.
+- **File Terdampak:** `src/components/game/GameHero.tsx`, `src/lib/games-data.ts`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 08:05] - [Frontend] - Perbaikan Hydration Mismatch pada Head AdSense & Urutan Game Beranda
+- **Kondisi Sebelum:**
+  1. `<script async src="...adsbygoogle.js">` di dalam `<head>` pada `layout.tsx` menyuntikkan skrip `show_ads_impl` sebelum React hydration selesai sehingga memicu *Hydration failed* pada `<head>`.
+  2. `useState` di `src/app/page.tsx` memanggil `getCachedGameOrder()` (`localStorage`) saat render awal sehingga urutan kartu Hero berbeda antara server (`nusantara-runner`) dan client (`werewolf`).
+- **Perubahan Sesudah:**
+  1. Mengganti loader AdSense di `layout.tsx` menggunakan `next/script` (`strategy="afterInteractive"`) di dalam `<body>`.
+  2. Menginisialisasi `games` di `src/app/page.tsx` dengan `INITIAL_GAMES` lalu menerapkan `getCachedGameOrder()` di dalam `useEffect`.
+- **Masalah yang Ditemukan:** `npx tsc --noEmit` lulus tanpa error; `npm run build` di sandbox tetap terkendala jaringan untuk Google Fonts.
+- **Penyelesaian:** Memverifikasi TypeScript dengan `npx tsc --noEmit` dan melakukan commit perubahan.
+- **File Terdampak:** `src/app/layout.tsx`, `src/app/page.tsx`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 08:02] - [Frontend] - Sembunyikan Placeholder Slot Iklan Sementara (Mode Auto Ads)
+- **Kondisi Sebelum:**
+  1. Ketika `NEXT_PUBLIC_ADSENSE_CLIENT_ID` dan `NEXT_PUBLIC_ADSENSE_SLOT_*` masih kosong, `GoogleAdSlot.tsx` dan `AdBottomAnchor.tsx` tetap menampilkan kotak placeholder *"Slot Google AdSense"* ke pengunjung.
+- **Perubahan Sesudah:**
+  1. Menambahkan early return `null` di `GoogleAdSlot.tsx` saat `client` atau `slot` kosong, serta di `AdBottomAnchor.tsx` saat `NEXT_PUBLIC_ADSENSE_CLIENT_ID` atau `NEXT_PUBLIC_ADSENSE_SLOT_ANCHOR` kosong.
+  2. Script Google AdSense Auto Ads di `layout.tsx` dan `public/ads.txt` tetap aktif tanpa perubahan.
+- **Masalah yang Ditemukan:** `npx tsc --noEmit` lulus; `npm run build` di sandbox tetap terkendala jaringan untuk Google Fonts (`ENOTFOUND fonts.googleapis.com`).
+- **Penyelesaian:** Memverifikasi TypeScript dengan `npx tsc --noEmit` dan melakukan commit sesuai workflow.
+- **File Terdampak:** `src/components/ads/GoogleAdSlot.tsx`, `src/components/ads/AdBottomAnchor.tsx`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 07:56] - [Frontend] - Implementasi Lazy Loading Selektif untuk Optimasi Performa
+- **Kondisi Sebelum:**
+  1. Lazy loading baru diterapkan pada `<img loading="lazy">` di `GameCard.tsx`; komponen iklan di luar viewport awal masih di-bundle secara eager.
+  2. `<iframe>` di `GameFrame.tsx` belum memiliki `loading="lazy"`, gambar hero belum memakai `fetchPriority="high"`, dan `GameCard.tsx` masih memuat `.png` lebih dulu sebelum `.webp`.
+- **Perubahan Sesudah:**
+  1. Menerapkan `next/dynamic` pada `AdBottomAnchor`, `AdSkyscraper`, `AdCompanion`, `AdNativeTile`, dan `GoogleAdSlot` tanpa mengubah struktur slot iklan.
+  2. Menambahkan `loading="lazy"` pada `<iframe>` di `GameFrame.tsx`, `fetchPriority="high"` + `decoding="async"` pada gambar hero di `GameHero.tsx`, serta memprioritaskan format `.webp` di `GameCard.tsx`.
+- **Masalah yang Ditemukan:** `npx tsc --noEmit` lulus tanpa error; `npm run build` di lingkungan sandbox tanpa internet gagal saat mengunduh Google Fonts (`ENOTFOUND fonts.googleapis.com`).
+- **Penyelesaian:** Memverifikasi tipe TypeScript dengan `npx tsc --noEmit` dan menyertakan catatan agar `npm run build` dijalankan di lingkungan dengan akses jaringan untuk menghasilkan `out/`.
+- **File Terdampak:** `src/components/layout/ClientLayout.tsx`, `src/components/layout/LayoutWrapper.tsx`, `src/app/page.tsx`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `src/components/game/GameGrid.tsx`, `src/components/game/GameFrame.tsx`, `src/components/game/GameHero.tsx`, `src/components/game/GameCard.tsx`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 07:45] - [Games & Frontend] - Sinkronisasi Bahasa (ID/EN) pada 13 Game HTML5 & Pembersihan Badge Genre di Preview Gambar
+- **Kondisi Sebelum:**
+  1. Tombol pergantian bahasa (ID/EN) di Navbar hanya mengubah tampilan antarmuka portal Next.js, sedangkan 13 game HTML5 di dalam `<iframe>` tetap berbahasa Indonesia.
+  2. Gambar preview (`preview.png` / `.webp`) hasil generator masih memiliki badge genre bawaan (`ARKADE`, `STRATEGI`, `PETUALANGAN`, dll.) di pojok kiri atas sehingga menumpuk dengan badge genre dinamis di kartu beranda.
+- **Perubahan Sesudah:**
+  1. Menambahkan sinkronisasi `postMessage` (`{ type: "LANG_CHANGE", lang }`) di `src/components/game/GameFrame.tsx` saat bahasa berubah maupun saat `iframe` selesai dimuat (`onLoad`).
+  2. Menambahkan dukungan dwibahasa ID/EN (`localStorage` `teknogame-lang`, listener `message` dan `storage`, kamus `I18N`, serta fungsi `applyLanguage`) di seluruh 13 game (`becak-drift`, `candi-stacker`, `circuit-flow`, `cyber-bird`, `kapal-feri`, `kopi-klotok`, `layangan-sanur`, `lembah-bromo`, `nusantara-runner`, `packing-master`, `pasar-terapung`, `tekno-memory`, dan `werewolf` beserta skrip modularnya).
+  3. Menghapus badge kategori bawaan dari `scripts/generate-all-previews.js` dan meng-generate ulang seluruh preview gambar game agar tampil bersih, sambil tetap mempertahankan badge genre dinamis ID/EN di `src/components/game/GameCard.tsx`.
+- **Masalah yang Ditemukan:** Validasi `npx tsc --noEmit` dan sintaks JS seluruh 13 game lulus; `npm run build` di sandbox gagal hanya karena keterbatasan jaringan (`ENOTFOUND fonts.googleapis.com` untuk Google Fonts).
+- **File Terdampak:** `src/components/game/GameFrame.tsx`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `public/games/*`, `public/*/preview.png`, `public/images/games/*`, `game-log.md`, `laporan.md`
+
 ### [2026-11-23 23:52] - [Frontend] - Multi-language (ID/EN), Perbaikan Kontras & Responsivitas UI, serta Posisi Tombol Tutup Iklan
 - **Kondisi Sebelum:**
 1. Antarmuka portal belum memiliki dukungan peralihan Bahasa Indonesia dan Bahasa Inggris.

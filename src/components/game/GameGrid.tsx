@@ -1,13 +1,17 @@
 "use client";
 
 import React, { useEffect, useId, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { ChevronDown, Search } from "lucide-react";
 import { Game } from "@/types/game";
 import { GameCategory } from "@/types/game";
 import { searchGames } from "@/lib/games-data";
 import GameCard from "./GameCard";
 import CategoryIcon from "./CategoryIcon";
-import AdNativeTile from "../ads/AdNativeTile";
+
+const AdNativeTile = dynamic(() => import("../ads/AdNativeTile"), {
+  ssr: false,
+});
 import { useTranslation, getLocalizedCategoryLabel } from "@/lib/i18n";
 
 interface CategoryOption {
