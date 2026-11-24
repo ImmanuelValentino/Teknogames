@@ -1,3 +1,17 @@
+### [2026-11-24 17:42] - [Frontend] - Footer Hitam dan Pengurangan Warna Krem
+- **Kondisi Sebelum:** Footer memakai permukaan abu terang dan beberapa state umum memakai warna krem.
+- **Perubahan Sesudah:** Footer memakai #101010 dengan teks #FFFAFA, teks sekunder abu terang, serta tombol dan tautan beraksen merah; warna krem di elemen umum diganti Snow White. Krem tetap dipakai pada papan rekor sesuai palet.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui token dan aturan CSS footer untuk kedua tema serta warna permukaan state interaksi.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 17:42] - [Frontend] - Footer Hitam dan Pengurangan Warna Krem
+- **Kondisi Sebelum:** Footer memakai permukaan abu terang dan beberapa state umum memakai warna krem.
+- **Perubahan Sesudah:** Footer memakai #101010 dengan teks #FFFAFA, teks sekunder abu terang, serta tombol dan tautan beraksen merah; warna krem di elemen umum diganti Snow White. Krem tetap dipakai pada papan rekor sesuai palet.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui token dan aturan CSS footer untuk kedua tema serta warna permukaan state interaksi.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 17:33] - [Frontend] - Penyelarasan Palet Warna Teknotama
 - **Kondisi Sebelum:** Palet website menggunakan abu kemerahan dan aksen pink yang belum mengikuti identitas warna Teknotama.
 - **Perubahan Sesudah:** Mengatur token light/dark, latar, teks, garis, aksen merah #D9141D, hover, serta highlight papan rekor #F5EDDA agar kontras tetap jelas.
@@ -387,4 +401,6 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
+
 

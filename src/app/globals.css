@@ -33,9 +33,9 @@
   --muted: #62595a;
   --midnight: #17181c;
   --ivory: #fffafa;
-  --pearl: #f5edda;
+  --pearl: #fffafa;
   --silver: #8a7777;
-  --lavender: #f5edda;
+  --lavender: #fffafa;
   --amber: #d9141d;
   --emerald: #d9141d;
   --orange: #101010;
@@ -180,7 +180,7 @@ header.glass-nav .btn-sponsor:hover {
 
 .glass-nav a:hover,
 .glass-nav button:hover {
-  background: #f5edda;
+  background: #fffafa;
   color: #800b12;
 }
 
@@ -244,7 +244,7 @@ header > div[class*="lg:hidden"][class*="border-t"] .text-slate-500 {
 }
 
 .glass-modal a:hover {
-  background: #f5edda;
+  background: #fffafa;
   color: #101010;
 }
 
@@ -334,7 +334,7 @@ header > div[class*="lg:hidden"][class*="border-t"] .text-slate-500 {
 
 .btn-sponsor-clean:hover,
 .btn-sponsor:hover {
-  background: #f5edda;
+  background: #fffafa;
   border-color: #d9141d;
   color: #101010;
 }
@@ -527,7 +527,7 @@ section.card-natural.mb-6 .text-slate-300 {
 .partner-service-card > div > span:first-child {
   border-color: #e5d9d5;
   border-radius: 0.65rem;
-  background: #f5edda;
+  background: #fffafa;
   color: #d9141d;
 }
 
@@ -544,7 +544,7 @@ section.card-natural.mb-6 .text-slate-300 {
 
 div.border-dashed[class*="bg-white"] {
   border-color: #8a7777;
-  background: #f5edda;
+  background: #fffafa;
   color: #101010;
 }
 
@@ -744,7 +744,7 @@ html[data-theme="dark"] .category-icon-on-dark {
 }
 
 .scrollbar-none > button:hover {
-  background: #f5edda;
+  background: #fffafa;
   border-color: #d9141d;
   color: #101010;
 }
@@ -802,7 +802,7 @@ html[data-theme="dark"] .category-icon-on-dark {
 }
 
 .mb-12 > div.relative.overflow-hidden.rounded-3xl [class*="lg:col-span-7"] > div:first-child {
-  background: #f5edda;
+  background: #fffafa;
   border: 1px solid #e5d9d5;
   border-radius: 9999px;
 }
@@ -837,7 +837,7 @@ html[data-theme="dark"] .category-icon-on-dark {
 }
 
 .mb-12 > div.relative.overflow-hidden.rounded-3xl [class*="lg:col-span-7"] a[href="#katalog"]:hover {
-  background: #f5edda;
+  background: #fffafa;
   border-color: #d9141d;
 }
 
@@ -954,7 +954,7 @@ a.group.flex.flex-col.overflow-hidden.rounded-2xl:hover h4 {
 
 #catalog .glass-modal [role="menuitemradio"]:hover,
 #catalog .glass-modal [role="menuitemradio"]:focus-visible {
-  background: #f5edda;
+  background: #fffafa;
   color: #101010;
 }
 
@@ -969,7 +969,7 @@ a.group.flex.flex-col.overflow-hidden.rounded-2xl:hover h4 {
 .card-natural button:not(.btn-primary-clean),
 .card-natural [class~="bg-black/20"],
 .card-natural [class~="bg-white/10"] {
-  background: #f5edda;
+  background: #fffafa;
   border-color: #e5d9d5;
   color: #101010;
 }
@@ -1008,7 +1008,7 @@ a.group.flex.flex-col.overflow-hidden.rounded-2xl:hover h4 {
 
 .glass-modal-clean [class~="bg-black/20"],
 .glass-modal-clean [class~="bg-black/15"] {
-  background: #f5edda;
+  background: #fffafa;
 }
 
 .glass-modal-clean [class~="bg-white/10"],
@@ -1030,20 +1030,18 @@ a.group.flex.flex-col.overflow-hidden.rounded-2xl:hover h4 {
 }
 
 footer {
-  background: rgba(228, 233, 233, 0.88);
-  border-top: 1px solid rgba(168, 180, 182, 0.65);
+  background: #101010;
+  border-top: 1px solid #393b43;
   box-shadow: 0 -2px 12px rgba(17, 22, 24, 0.04);
-  color: #544648;
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  color: #c2bec0;
 }
 
 footer.text-slate-300 {
-  color: #62595a;
+  color: #c2bec0;
 }
 
 footer svg[class] {
-  color: #62595a;
+  color: #c2bec0;
   flex-shrink: 0;
   opacity: 1;
   visibility: visible;
@@ -1055,13 +1053,13 @@ footer::before {
 
 footer .text-white,
 footer h4 {
-  color: #453739;
+  color: #fffafa;
 }
 
 footer .text-slate-300,
 footer .text-slate-400,
 footer .text-slate-500 {
-  color: #62595a;
+  color: #c2bec0;
 }
 
 footer a {
@@ -1069,23 +1067,23 @@ footer a {
 }
 
 footer .btn-sponsor-clean {
-  border-color: #c6b7ba;
-  background: #f5edda;
-  color: #800b12;
+  border-color: #d9141d;
+  background: #d9141d;
+  color: #fffafa;
 }
 
 footer .btn-sponsor-clean:hover {
-  border-color: #e5d9d5;
-  background: #fffafa;
-  color: #800b12;
+  border-color: #fffafa;
+  background: #17181c;
+  color: #fffafa;
 }
 
 footer [class*="text-[#ff8c9f]"] {
-  color: #7b464f;
+  color: #ff6b70;
 }
 
 footer a:hover {
-  color: #800b12;
+  color: #ff6b70;
 }
 
 ::-webkit-scrollbar {
@@ -1183,6 +1181,10 @@ html[data-theme="dark"] footer {
   background: rgba(32, 33, 39, 0.94);
   border-color: var(--line);
   color: var(--muted);
+}
+
+html[data-theme="dark"] footer {
+  background: #101010;
 }
 
 html[data-theme="dark"] .glass-nav .text-white,
