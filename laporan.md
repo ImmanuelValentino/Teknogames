@@ -29,6 +29,16 @@
 - **Penyelesaian:** Memperbarui CSS selector di `globals.css` dan komponen terkait, lalu memverifikasi build static page.
 - **File Terdampak:** `src/app/globals.css`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `UPDATE.md`, `laporan.md`
 
+### [2026-11-24 13:59] - [Games] - Pembagian Kartu Langsung ke Semua Pemain Werewolf Online
+- **Kondisi Sebelum:**
+  1. Pemilihan kartu bergiliran 1-by-1 berisiko gagal mengunci kartu bila terjadi konflik CAS saat auto-pick (`autoPickHandledTurnKey` terkunci sebelum retry berhasil), sehingga ada pemain yang tetap tidak mendapat kartu.
+- **Perubahan Sesudah:**
+  1. Mengubah `startOnlineGame()` di `public/games/werewolf/online-supabase.js` agar langsung membagikan 1 kartu acak unik ke setiap pemain saat permainan dimulai.
+  2. `renderOnlineCardPick()` langsung menampilkan kartu peran milik masing-masing pemain (`is-mine`), deskripsi peran, tombol `Saya Siap` dengan penghitung sisa pemain belum siap, dan timer auto-ready 15 detik.
+- **Masalah yang Ditemukan:** Validasi sintaks JS `online-supabase.js` lulus.
+- **Penyelesaian:** Menghilangkan fase rebutan/antrean tulis DB saat pembagian kartu online.
+- **File Terdampak:** `public/games/werewolf/online-supabase.js`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 13:23] - [Games] - Pemilihan Kartu Werewolf Online Bergiliran 1-by-1 (3 Detik/Pemain)
 - **Kondisi Sebelum:**
   1. Seluruh pemain memilih kartu secara bersamaan dengan timer global 30 detik.

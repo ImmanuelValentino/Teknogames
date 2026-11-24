@@ -514,15 +514,21 @@
       [pool[i], pool[j]] = [pool[j], pool[i]];
     }
 
-    state.cards = pool.map((role, idx) => ({
-      id: idx,
-      role: role,
-      picked_by: null
-    }));
+    state.cards = pool.map((role, idx) => {
+      const owner = state.players[idx] || null;
+      if (owner) {
+        owner.card_id = idx;
+        owner.role = role;
+        owner.ready = false;
+      }
+      return {
+        id: idx,
+        role: role,
+        picked_by: owner ? owner.id : null
+      };
+    });
 
     state.phase = 'card_pick';
-    state.card_pick_turn_index = 0;
-    state.card_pick_turn_start_time = Date.now();
     state.card_pick_start_time = Date.now();
 
     await supabaseClient
@@ -566,10 +572,6 @@
 
     const me = state.players.find(p => p.id === myPlayerId);
     const hasPicked = Boolean(me && me.card_id !== null && me.card_id !== undefined);
-    const turnIndex = typeof state.card_pick_turn_index === 'number' ? state.card_pick_turn_index : 0;
-    const activePicker = state.players[turnIndex] || null;
-    const allPicked = !activePicker || state.cards.every(c => c.picked_by !== null);
-    const isMyPickTurn = Boolean(activePicker && activePicker.id === myPlayerId && !hasPicked && !allPicked);
 
     if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
       window.WerewolfApp.setHudRole(hasPicked && me ? me.role : null);
@@ -577,21 +579,8 @@
 
     const headerTitle = document.getElementById('cardPickHeaderTitle');
     const headerDesc = document.getElementById('cardPickHeaderDesc');
-    if (hasPicked) {
-      headerTitle.textContent = t('card_pick_yours_title');
-      headerDesc.textContent = allPicked
-        ? t('card_pick_done_desc')
-        : t('card_pick_wait_turn_title', { name: activePicker.name });
-    } else if (isMyPickTurn) {
-      headerTitle.textContent = t('card_pick_your_turn_title');
-      headerDesc.textContent = t('card_pick_your_turn_desc');
-    } else if (activePicker) {
-      headerTitle.textContent = t('card_pick_wait_turn_title', { name: activePicker.name });
-      headerDesc.textContent = t('card_pick_wait_turn_desc');
-    } else {
-      headerTitle.textContent = t('card_pick_title');
-      headerDesc.textContent = t('card_pick_desc');
-    }
+    headerTitle.textContent = hasPicked ? t('card_pick_yours_title') : t('card_pick_title');
+    headerDesc.textContent = hasPicked ? t('card_pick_yours_desc') : t('card_pick_desc');
 
     const totalCards = state.cards.length;
     const pickedCards = state.cards.filter(c => c.picked_by !== null).length;
@@ -614,40 +603,26 @@
     }
 
     clearCardPickTimer();
-    if (timerBadge) {
-      if (allPicked) {
-        timerBadge.classList.add('hidden');
-      } else {
-        timerBadge.classList.remove('hidden');
-      }
-    }
+    if (timerBadge) timerBadge.classList.remove('hidden');
 
-    if (!allPicked && activePicker) {
-      const turnStartTime = state.card_pick_turn_start_time || state.card_pick_start_time || Date.now();
-      const turnKey = `${turnIndex}:${turnStartTime}`;
-      const updateCardPickTimer = async () => {
-        const elapsed = Math.floor((Date.now() - turnStartTime) / 1000);
-        const remain = Math.max(0, 3 - elapsed);
-        if (timerDigits) timerDigits.textContent = `${remain}s`;
+    const startTime = state.card_pick_start_time || Date.now();
+    const updateReadyTimer = async () => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const remain = Math.max(0, 15 - elapsed);
+      if (timerDigits) timerDigits.textContent = `${remain}s`;
 
-        if (remain <= 0 && autoPickHandledTurnKey !== turnKey) {
-          // Active player auto-picks at 3s; Host acts as fallback at 4s if player lagged/disconnected
-          if (isMyPickTurn || (isHost && elapsed >= 4)) {
-            autoPickHandledTurnKey = turnKey;
-            clearCardPickTimer();
-            const available = state.cards.filter(c => c.picked_by === null);
-            if (available.length > 0) {
-              const randomCard = available[Math.floor(Math.random() * available.length)];
-              await pickCardAtomically(randomCard.id, activePicker.id);
-            }
-          }
+      if (remain <= 0 && autoPickHandledTurnKey !== startTime) {
+        autoPickHandledTurnKey = startTime;
+        clearCardPickTimer();
+        if (me && !me.ready) {
+          await syncPlayerReadyState();
         }
-      };
+      }
+    };
 
-      const initRemain = Math.max(0, 3 - Math.floor((Date.now() - turnStartTime) / 1000));
-      if (timerDigits) timerDigits.textContent = `${initRemain}s`;
-      cardPickCountdownTimer = setInterval(updateCardPickTimer, 500);
-    }
+    const initRemain = Math.max(0, 15 - Math.floor((Date.now() - startTime) / 1000));
+    if (timerDigits) timerDigits.textContent = `${initRemain}s`;
+    cardPickCountdownTimer = setInterval(updateReadyTimer, 1000);
 
     const grid = document.getElementById('cardPickGrid');
     grid.innerHTML = '';
@@ -660,10 +635,6 @@
 
       const cardEl = document.createElement('div');
       cardEl.className = 'card-pick-item' + (isMine ? ' flipped is-mine' : (isTaken ? ' taken' : ''));
-      if (!isMyPickTurn && !isMine && !isTaken) {
-        cardEl.style.cursor = 'not-allowed';
-        cardEl.style.opacity = '0.7';
-      }
 
       const backStatusText = isTaken && !isMine && picker
         ? t('card_taken_by', { name: picker.name })
@@ -681,12 +652,6 @@
         </div>
       `;
 
-      if (isMyPickTurn && !isTaken) {
-        cardEl.onclick = () => {
-          pickCardAtomically(c.id, myPlayerId);
-        };
-      }
-
       grid.appendChild(cardEl);
     });
 
@@ -694,8 +659,8 @@
     const actionBtns = document.getElementById('cardPickActionBtns');
     const btnRandom = document.getElementById('btnCardPickRandom');
 
+    btnRandom.classList.add('hidden');
     if (hasPicked) {
-      btnRandom.classList.add('hidden');
       roleRevealPanel.classList.remove('hidden');
       actionBtns.classList.remove('hidden');
 
@@ -715,25 +680,11 @@
 
       btnConfirm.onclick = async () => {
         window.WerewolfAudio.play('click');
-        me.ready = true;
         await syncPlayerReadyState();
       };
     } else {
       roleRevealPanel.classList.add('hidden');
       actionBtns.classList.add('hidden');
-
-      if (isMyPickTurn) {
-        btnRandom.classList.remove('hidden');
-        btnRandom.disabled = false;
-        btnRandom.onclick = () => {
-          const available = state.cards.filter(c => c.picked_by === null);
-          if (available.length === 0) return;
-          const randomCard = available[Math.floor(Math.random() * available.length)];
-          pickCardAtomically(randomCard.id, myPlayerId);
-        };
-      } else {
-        btnRandom.classList.add('hidden');
-      }
     }
   }
 
