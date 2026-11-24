@@ -8,6 +8,11 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.6] - 2026-11-24
+### Improved (WebP Previews & Lighter Hero GPU Effects)
+- **Preview `.webp` Menyeluruh:** Mengubah `thumbnailUrl` di `games-data.ts` dan sumber gambar di `GameHero.tsx` ke `.webp` (`/games/images/games/<slug>.webp` dengan fallback `.png`).
+- **Pengurangan Beban Blur GPU:** Mengganti `blur-[120px]` di `GameHero.tsx` dengan `radial-gradient` CSS dan menghapus `backdrop-blur` berlapis pada kartu Hero.
+
 ## [3.15.5] - 2026-11-24
 ### Fixed (React Hydration Mismatch pada Head & Hero Game Order)
 - **AdSense Script (`layout.tsx`):** Memindahkan loader AdSense ke `next/script` dengan `strategy="afterInteractive"` agar injeksi skrip Google (`show_ads_impl`) tidak menggeser DOM `<head>` sebelum React hydration selesai.

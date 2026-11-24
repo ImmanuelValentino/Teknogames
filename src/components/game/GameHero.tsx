@@ -38,14 +38,22 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
   return (
     <section className="mb-12">
       <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#1d0c0f] via-[#261014] to-[#2e1116] p-6 sm:p-10 lg:p-12 shadow-2xl">
-        {/* Glow Ambient di Background */}
-        <div className="absolute top-0 right-1/4 -mt-20 h-96 w-96 rounded-full bg-[#f1637b]/15 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 right-10 -mb-20 h-96 w-96 rounded-full bg-[#ec4899]/15 blur-[120px] pointer-events-none" />
+        {/* Glow Ambient di Background (radial-gradient ringan tanpa filter blur GPU) */}
+        <div
+          aria-hidden="true"
+          className="absolute top-0 right-1/4 -mt-20 h-96 w-96 rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(241,99,123,0.18) 0%, transparent 70%)" }}
+        />
+        <div
+          aria-hidden="true"
+          className="absolute bottom-0 right-10 -mb-20 h-96 w-96 rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(236,72,153,0.18) 0%, transparent 70%)" }}
+        />
 
         <div className="relative z-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
           {/* Kolom Kiri: Headline & CTA PlayForge Style */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-950/40 px-3.5 py-1.5 backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-950/60 px-3.5 py-1.5">
               <Sparkles className="h-3.5 w-3.5 text-rose-400" />
               <span className="text-xs font-semibold tracking-wide text-rose-200">
                 {t.hero.badge}
@@ -76,7 +84,7 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
 
               <Link
                 href="#katalog"
-                className="inline-flex min-h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-slate-200 backdrop-blur-md transition-all hover:border-rose-400/50 hover:bg-white/[0.08] hover:text-white"
+                className="inline-flex min-h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-6 py-3 text-sm font-semibold text-slate-200 transition-all hover:border-rose-400/50 hover:bg-white/[0.08] hover:text-white"
               >
                 <span>{t.hero.ctaSecondary}</span>
                 <ArrowDown className="h-4 w-4" />
@@ -101,24 +109,25 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
               }`}
             >
               <img
-                src={`/games/${secondaryHero.slug}/preview.png`}
+                src={`/games/images/games/${secondaryHero.slug}.webp`}
                 alt=""
                 decoding="async"
                 className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
                 onError={(e) => {
                   const el = e.target as HTMLImageElement;
-                  if (!el.src.includes('/games/games/')) {
-                    el.src = `/games/games/${secondaryHero.slug}/preview.png`;
+                  if (el.src.includes('.webp') && !el.dataset.triedFallback) {
+                    el.dataset.triedFallback = '1';
+                    el.src = `/games/${secondaryHero.slug}/preview.png`;
                   }
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 z-0 pointer-events-none" />
 
               <div className="relative z-10 flex items-center justify-between gap-2">
-                <span className="shrink-0 whitespace-nowrap rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-wider leading-none text-white backdrop-blur">
+                <span className="shrink-0 whitespace-nowrap rounded-full border border-white/20 bg-black/65 px-3 py-1 text-[10px] font-bold uppercase tracking-wider leading-none text-white">
                   {t.hero.secondChoiceBadge}
                 </span>
-                <span className="flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md shadow-sm">
+                <span className="flex items-center gap-1.5 rounded-full border border-white/20 bg-black/65 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
                   <CategoryIcon category={secondaryHero.category} variant="dark" />
                   {getLocalizedCategoryLabel(secondaryHero.category, lang)}
                 </span>
@@ -132,7 +141,7 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                   {getInitials(secondaryHero.title)}
                 </span>
               </div>
-              <div className="relative z-10 flex items-center justify-between gap-3 rounded-2xl border border-white/15 bg-black/40 p-3.5 backdrop-blur-md">
+              <div className="relative z-10 flex items-center justify-between gap-3 rounded-2xl border border-white/15 bg-black/65 p-3.5">
                 <div className="min-w-0">
                   <span className="block truncate text-[10px] font-bold uppercase tracking-wider text-rose-200">
                     Tekno Game
@@ -166,15 +175,16 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
             >
               {/* Cover Preview Image */}
               <img
-                src={`/games/${mainHero.slug}/preview.png`}
+                src={`/games/images/games/${mainHero.slug}.webp`}
                 alt=""
                 decoding="async"
                 fetchPriority="high"
                 className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-110"
                 onError={(e) => {
                   const el = e.target as HTMLImageElement;
-                  if (!el.src.includes('/games/games/')) {
-                    el.src = `/games/games/${mainHero.slug}/preview.png`;
+                  if (el.src.includes('.webp') && !el.dataset.triedFallback) {
+                    el.dataset.triedFallback = '1';
+                    el.src = `/games/${mainHero.slug}/preview.png`;
                   }
                 }}
               />
@@ -183,10 +193,10 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
 
               {/* Top Tag & Category Badge */}
               <div className="relative z-10 flex items-center justify-between">
-                <span className="rounded-full bg-black/60 border border-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md shadow-sm">
+                <span className="rounded-full bg-black/70 border border-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
                   {lang === "en" ? "Top Pick" : "Pilihan Utama"}
                 </span>
-                <span className="flex items-center gap-1.5 rounded-full bg-rose-950/70 border border-rose-400/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-rose-200 backdrop-blur-md">
+                <span className="flex items-center gap-1.5 rounded-full bg-rose-950/85 border border-rose-400/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-rose-200">
                   <CategoryIcon category={mainHero.category} variant="dark" />
                   {getLocalizedCategoryLabel(mainHero.category, lang)}
                 </span>
@@ -204,7 +214,7 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
               </div>
 
               {/* Bottom Card Footer */}
-              <div className="relative z-10 rounded-2xl bg-black/60 border border-white/20 p-3.5 backdrop-blur-md flex items-center justify-between gap-3 shadow-lg">
+              <div className="relative z-10 rounded-2xl bg-black/75 border border-white/20 p-3.5 flex items-center justify-between gap-3 shadow-lg">
                 <div className="min-w-0">
                   <span className="text-[10px] uppercase font-bold text-rose-200 tracking-wider block truncate">
                     Tekno Game

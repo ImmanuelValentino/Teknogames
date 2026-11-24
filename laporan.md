@@ -1,3 +1,14 @@
+### [2026-11-24 08:11] - [Frontend] - Konversi Preview ke WebP Menyeluruh & Pengurangan Efek Blur GPU di Hero
+- **Kondisi Sebelum:**
+  1. `GameHero.tsx` dan `thumbnailUrl` di `games-data.ts` masih menggunakan `.png` (`/games/<slug>/preview.png`).
+  2. `GameHero.tsx` memakai dua layer `blur-[120px]` besar serta beberapa `backdrop-blur-md` yang membebani rendering GPU/CPU mobile.
+- **Perubahan Sesudah:**
+  1. Mengarahkan sumber preview di `GameHero.tsx` dan `thumbnailUrl` di `src/lib/games-data.ts` ke `/games/images/games/<slug>.webp` (dengan fallback ke `.png` di `GameHero.tsx`).
+  2. Mengganti dua elemen `blur-[120px]` di `GameHero.tsx` menjadi `radial-gradient` CSS biasa dan menghilangkan `backdrop-blur` berlapis pada badge/footer kartu Hero.
+- **Masalah yang Ditemukan:** `npx tsc --noEmit` lulus tanpa error.
+- **Penyelesaian:** Memverifikasi TypeScript dengan `npx tsc --noEmit` dan melakukan commit sesuai workflow.
+- **File Terdampak:** `src/components/game/GameHero.tsx`, `src/lib/games-data.ts`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 08:05] - [Frontend] - Perbaikan Hydration Mismatch pada Head AdSense & Urutan Game Beranda
 - **Kondisi Sebelum:**
   1. `<script async src="...adsbygoogle.js">` di dalam `<head>` pada `layout.tsx` menyuntikkan skrip `show_ads_impl` sebelum React hydration selesai sehingga memicu *Hydration failed* pada `<head>`.
