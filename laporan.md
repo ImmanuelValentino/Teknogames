@@ -1,3 +1,10 @@
+### [2026-11-24 18:12] - [Frontend] - Gambar Game Peringkat Tertinggi di Papan Rekor
+- **Kondisi Sebelum:** Kartu peringkat pertama menerima URL thumbnail placeholder dari data game sehingga gambar tidak muncul.
+- **Perubahan Sesudah:** URL gambar dibuat dari slug game pada skor tertinggi untuk memuat thumbnail yang sesuai.
+- **Masalah yang Ditemukan:** Metadata thumbnail memiliki path placeholder.
+- **Penyelesaian:** Menggunakan path /images/games/{slug}.webp dari ID/slug game saat menyiapkan skor lokal.
+- **File Terdampak:** `src/app/page.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:02] - [Frontend] - Padding Bagian Papan Rekor
 - **Kondisi Sebelum:** Header papan rekor memiliki garis bawah dan padding lebar sebelum konten skor.
 - **Perubahan Sesudah:** Garis dihapus dan padding serta jarak konten dirapatkan, konsisten dengan bagian permainan favorit.
@@ -422,6 +429,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

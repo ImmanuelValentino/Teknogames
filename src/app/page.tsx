@@ -171,7 +171,7 @@ export default function HomePage() {
             gameId,
             title: game?.title || gameId.replace(/-/g, " "),
             slug: game?.slug || gameId,
-            thumbnailUrl: game?.thumbnailUrl,
+            thumbnailUrl: `/images/games/${game?.slug || gameId}.webp`,
             score,
           };
         })
