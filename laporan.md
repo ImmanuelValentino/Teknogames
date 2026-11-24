@@ -1,3 +1,10 @@
+### [2026-11-24 17:33] - [Frontend] - Penyelarasan Palet Warna Teknotama
+- **Kondisi Sebelum:** Palet website menggunakan abu kemerahan dan aksen pink yang belum mengikuti identitas warna Teknotama.
+- **Perubahan Sesudah:** Mengatur token light/dark, latar, teks, garis, aksen merah #D9141D, hover, serta highlight papan rekor #F5EDDA agar kontras tetap jelas.
+- **Masalah yang Ditemukan:** File game/UPDATE.md belum tersedia pada struktur project.
+- **Penyelesaian:** Menambahkan catatan pembaruan pada UPDATE.md dan membuat game/UPDATE.md sebagai log versi khusus game sesuai workflow.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 09:30] - [Frontend] - Penyesuaian Warna Ikon Kategori di Bawah Game agar Seragam dengan Navbar
 - **Kondisi Sebelum:**
   1. Ikon kategori pada bilah kontrol di bawah iframe game (`GameFrame.tsx`) menggunakan prop `variant="dark"` secara statis.
@@ -380,3 +387,4 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
