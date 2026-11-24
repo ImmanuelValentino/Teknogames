@@ -1,3 +1,14 @@
+### [2026-11-24 08:05] - [Frontend] - Perbaikan Hydration Mismatch pada Head AdSense & Urutan Game Beranda
+- **Kondisi Sebelum:**
+  1. `<script async src="...adsbygoogle.js">` di dalam `<head>` pada `layout.tsx` menyuntikkan skrip `show_ads_impl` sebelum React hydration selesai sehingga memicu *Hydration failed* pada `<head>`.
+  2. `useState` di `src/app/page.tsx` memanggil `getCachedGameOrder()` (`localStorage`) saat render awal sehingga urutan kartu Hero berbeda antara server (`nusantara-runner`) dan client (`werewolf`).
+- **Perubahan Sesudah:**
+  1. Mengganti loader AdSense di `layout.tsx` menggunakan `next/script` (`strategy="afterInteractive"`) di dalam `<body>`.
+  2. Menginisialisasi `games` di `src/app/page.tsx` dengan `INITIAL_GAMES` lalu menerapkan `getCachedGameOrder()` di dalam `useEffect`.
+- **Masalah yang Ditemukan:** `npx tsc --noEmit` lulus tanpa error; `npm run build` di sandbox tetap terkendala jaringan untuk Google Fonts.
+- **Penyelesaian:** Memverifikasi TypeScript dengan `npx tsc --noEmit` dan melakukan commit perubahan.
+- **File Terdampak:** `src/app/layout.tsx`, `src/app/page.tsx`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 08:02] - [Frontend] - Sembunyikan Placeholder Slot Iklan Sementara (Mode Auto Ads)
 - **Kondisi Sebelum:**
   1. Ketika `NEXT_PUBLIC_ADSENSE_CLIENT_ID` dan `NEXT_PUBLIC_ADSENSE_SLOT_*` masih kosong, `GoogleAdSlot.tsx` dan `AdBottomAnchor.tsx` tetap menampilkan kotak placeholder *"Slot Google AdSense"* ke pengunjung.

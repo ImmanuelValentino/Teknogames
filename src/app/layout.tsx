@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Space_Grotesk, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/layout/ClientLayout";
@@ -179,15 +180,15 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://teknotama.com" />
 
-        {/* Google AdSense Official Loader */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3146007647541379"
-          crossOrigin="anonymous"
-        />
       </head>
       <body className="min-h-full text-[#fcf8f9]" suppressHydrationWarning>
         <ClientLayout>{children}</ClientLayout>
+        {/* Google AdSense Official Loader (afterInteractive agar tidak menggeser DOM <head> saat hydration) */}
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3146007647541379"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
       </body>
     </html>
   );

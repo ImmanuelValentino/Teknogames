@@ -130,10 +130,7 @@ function ScoreGameArtwork({
 export default function HomePage() {
   const { lang, t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<GameCategory>("all");
-  const [games, setGames] = useState<Game[]>(() => {
-    const cachedOrder = getCachedGameOrder();
-    return sortGamesByOrder(INITIAL_GAMES, cachedOrder);
-  });
+  const [games, setGames] = useState<Game[]>(INITIAL_GAMES);
   const [topScores, setTopScores] = useState<
     {
       gameId: string;
@@ -145,9 +142,13 @@ export default function HomePage() {
   >([]);
   const [favoriteGames, setFavoriteGames] = useState<Game[]>([]);
 
-  // Sinkronisasi Urutan Game dari Supabase CMS
+  // Sinkronisasi Urutan Game dari Cache & Supabase CMS
   useEffect(() => {
     let isMounted = true;
+    const cachedOrder = getCachedGameOrder();
+    if (cachedOrder.length > 0) {
+      setGames(sortGamesByOrder(INITIAL_GAMES, cachedOrder));
+    }
     fetchGameOrder().then((remoteOrder) => {
       if (isMounted && Array.isArray(remoteOrder) && remoteOrder.length > 0) {
         setGames(sortGamesByOrder(INITIAL_GAMES, remoteOrder));

@@ -8,6 +8,11 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.5] - 2026-11-24
+### Fixed (React Hydration Mismatch pada Head & Hero Game Order)
+- **AdSense Script (`layout.tsx`):** Memindahkan loader AdSense ke `next/script` dengan `strategy="afterInteractive"` agar injeksi skrip Google (`show_ads_impl`) tidak menggeser DOM `<head>` sebelum React hydration selesai.
+- **Urutan Game (`page.tsx`):** Memindahkan pembacaan `getCachedGameOrder()` dari initializer `useState` ke dalam `useEffect` agar render awal server dan client selalu konsisten.
+
 ## [3.15.4] - 2026-11-24
 ### Changed (Hide AdSense Placeholders Until Slot IDs Configured)
 - **Auto Ads Only Mode:** Menyembunyikan placeholder `GoogleAdSlot` dan bar `AdBottomAnchor` saat `NEXT_PUBLIC_ADSENSE_CLIENT_ID` atau `adSlot` belum diisi, sehingga tampilan tetap bersih sambil mengandalkan Google AdSense Auto Ads dari `layout.tsx`.
