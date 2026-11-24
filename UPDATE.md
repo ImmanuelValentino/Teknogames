@@ -10,6 +10,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.42] - 2026-11-24
+### Fixed (Latar Badge Hero Dikembalikan)
+- **Badge hero (GameHero.tsx, globals.css):** Mengembalikan latar dan border badge ke kondisi sebelumnya; hanya teks dan ikon yang memakai merah #D9141D.
+
 ## [3.15.41] - 2026-11-24
 ### Changed (Warna Badge Hero Home)
 - **Badge hero (GameHero.tsx, globals.css):** Mengubah teks dan ikon di samping judul menjadi merah #D9141D dengan latar putih salju untuk menjaga kontras.

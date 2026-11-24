@@ -1,4 +1,8 @@
 # Update Game
+## [3.15.42] - 2026-11-24
+### Fixed (Latar Badge Hero Dikembalikan)
+- Mengembalikan latar badge seperti semula dan mempertahankan warna merah pada teks serta ikon saja.
+
 ## [3.15.41] - 2026-11-24
 ### Changed (Warna Badge Hero Home)
 - Menyamakan warna teks badge dan ikon Sparkles ke merah brand serta menjaga kontras dengan latar putih salju.

@@ -1,3 +1,10 @@
+### [2026-11-24 19:10] - [Frontend] - Kembalikan Latar Badge Hero
+- **Kondisi Sebelum:** Latar badge hero berubah menjadi putih saat warna teks dan ikon disesuaikan ke merah.
+- **Perubahan Sesudah:** Latar dan border kembali seperti semula; teks dan ikon tetap merah #D9141D.
+- **Masalah yang Ditemukan:** Perubahan sebelumnya turut mengubah background di luar permintaan.
+- **Penyelesaian:** Menghapus aturan background/border baru dan mengembalikan class latar sebelumnya.
+- **File Terdampak:** `src/app/globals.css`, `src/components/game/GameHero.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 19:09] - [Frontend] - Warna Badge Hero Home
 - **Kondisi Sebelum:** Teks badge Game Online Gratis Tanpa Download dan ikon Sparkles berwarna rose muda pada latar merah gelap.
 - **Perubahan Sesudah:** Teks serta ikon menjadi #D9141D, dengan latar putih salju dan border merah agar kontras terjaga.
