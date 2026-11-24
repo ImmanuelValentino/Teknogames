@@ -1,4 +1,8 @@
 # Update Game
+## [3.15.35] - 2026-11-24
+### Fixed (Warna Logo Footer Menyamai Navbar)
+- Menyamakan warna teks Game pada logo footer dengan navbar di kedua tema.
+
 ## [3.15.34] - 2026-11-24
 ### Fixed (Warna Logo Navbar dan Tombol Kunjungi Teknotama)
 - Menetapkan warna tema yang berbeda dan kontras untuk aksen Game pada logo navbar serta tombol Kunjungi Teknotama di footer.

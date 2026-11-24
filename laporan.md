@@ -1,3 +1,10 @@
+### [2026-11-24 18:42] - [Frontend] - Warna Logo Footer Menyamai Navbar
+- **Kondisi Sebelum:** Teks Game pada logo footer selalu coral, berbeda dari warna logo navbar pada light mode.
+- **Perubahan Sesudah:** Warna Game footer menjadi #D9141D pada light mode dan #FF6B70 pada dark mode, sama seperti navbar.
+- **Masalah yang Ditemukan:** Aksen logo footer tidak mengikuti warna tema yang digunakan navbar.
+- **Penyelesaian:** Menambahkan class khusus dan aturan warna untuk kedua tema.
+- **File Terdampak:** `src/app/globals.css`, `src/components/layout/Footer.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:41] - [Frontend] - Warna Logo Navbar dan Tombol Kunjungi Teknotama
 - **Kondisi Sebelum:** Warna aksen logo Game dan tombol Kunjungi Teknotama bergantung pada aturan generik sehingga perbedaan warna antar tema tidak konsisten terlihat.
 - **Perubahan Sesudah:** Logo memakai merah #D9141D pada light mode dan coral #FF6B70 pada dark mode. Tombol footer memakai latar merah dengan teks putih pada light mode, lalu coral dengan teks hitam pada dark mode; hover tetap kontras.

@@ -1101,6 +1101,10 @@ footer .footer-random-play:hover {
   color: #fffafa;
 }
 
+footer .footer-brand-accent {
+  color: #d9141d;
+}
+
 footer .btn-sponsor-clean {
   border-color: #d9141d;
   background: #d9141d;
@@ -1524,6 +1528,10 @@ html[data-theme="dark"] footer a:hover {
 }
 
 html[data-theme="dark"] .glass-nav .navbar-brand-accent {
+  color: #ff6b70;
+}
+
+html[data-theme="dark"] footer .footer-brand-accent {
   color: #ff6b70;
 }
 

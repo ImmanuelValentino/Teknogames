@@ -38,7 +38,7 @@ export default function Footer() {
                 <span className="font-heading text-lg font-bold text-white">
                   Tekno
                 </span>
-                <span className="font-heading text-lg font-bold text-[#ff6b70]">
+                <span className="footer-brand-accent font-heading text-lg font-bold">
                   Game
                 </span>
               </div>
