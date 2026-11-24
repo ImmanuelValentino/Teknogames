@@ -1,4 +1,8 @@
 # Update Game
+## [3.15.41] - 2026-11-24
+### Changed (Warna Badge Hero Home)
+- Menyamakan warna teks badge dan ikon Sparkles ke merah brand serta menjaga kontras dengan latar putih salju.
+
 ## [3.15.40] - 2026-11-24
 ### Fixed (Efek Hover Logo Navbar)
 - Menghapus efek latar hover logo navbar dan mempertahankan warna brand pada dark mode.

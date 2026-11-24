@@ -115,6 +115,17 @@ footer h4 {
   letter-spacing: 0.025em;
 }
 
+.home-hero-badge {
+  border: 1px solid rgba(217, 20, 29, 0.3);
+  background: #fffafa;
+  color: #d9141d;
+}
+
+.home-hero-badge svg,
+.home-hero-badge span {
+  color: #d9141d;
+}
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;
@@ -1415,19 +1426,6 @@ html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl h1,
 html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl strong,
 html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl p {
   color: var(--ink);
-}
-
-html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl [class*="lg:col-span-7"] > div:first-child {
-  background: #303139;
-  border-color: var(--line);
-}
-
-html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl [class*="lg:col-span-7"] > div:first-child span {
-  color: #ff6b70;
-}
-
-html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl [class*="lg:col-span-7"] > div:first-child svg {
-  color: #ff6b70;
 }
 
 html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl a[href="#katalog"] {

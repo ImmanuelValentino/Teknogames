@@ -43,9 +43,9 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
         <div className="relative z-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
           {/* Kolom Kiri: Headline & CTA PlayForge Style */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-950/60 px-3.5 py-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-rose-400" />
-              <span className="text-xs font-semibold tracking-wide text-rose-200">
+            <div className="home-hero-badge inline-flex items-center gap-2 rounded-full px-3.5 py-1.5">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span className="text-xs font-semibold tracking-wide">
                 {t.hero.badge}
               </span>
             </div>

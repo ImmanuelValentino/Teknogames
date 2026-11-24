@@ -1,3 +1,10 @@
+### [2026-11-24 19:09] - [Frontend] - Warna Badge Hero Home
+- **Kondisi Sebelum:** Teks badge Game Online Gratis Tanpa Download dan ikon Sparkles berwarna rose muda pada latar merah gelap.
+- **Perubahan Sesudah:** Teks serta ikon menjadi #D9141D, dengan latar putih salju dan border merah agar kontras terjaga.
+- **Masalah yang Ditemukan:** Warna badge tidak sesuai merah brand yang diminta.
+- **Penyelesaian:** Menambahkan class badge khusus dan menghapus override dark mode yang mengganti warnanya.
+- **File Terdampak:** `src/components/game/GameHero.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 19:02] - [Frontend] - Hilangkan Efek Hover Logo Navbar
 - **Kondisi Sebelum:** Hover tautan logo ikut mendapat latar dan warna dari aturan umum navbar; pada dark mode tampil sebagai blok coral.
 - **Perubahan Sesudah:** Hover logo tidak lagi mengubah latar atau warna teks brand.
