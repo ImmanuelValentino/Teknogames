@@ -1,4 +1,8 @@
 # Update Game
+## [3.15.38] - 2026-11-24
+### Fixed (Kontras Ikon Tombol Teknotama Navbar)
+- Ikon tombol teknotama.com di navbar kini mewarisi warna teks tombol pada state normal dan hover di kedua tema.
+
 ## [3.15.37] - 2026-11-24
 ### Fixed (Efek Konsisten pada Tombol Teknotama)
 - Menyamakan tampilan normal dan hover/fokus tombol eksternal Teknotama dengan tombol footer pada light dan dark mode.

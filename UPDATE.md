@@ -10,6 +10,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.38] - 2026-11-24
+### Fixed (Kontras Ikon Tombol Teknotama Navbar)
+- **Navbar (globals.css):** Ikon tombol teknotama.com mengikuti warna teks tombol pada semua state dan tema.
+
 ## [3.15.37] - 2026-11-24
 ### Fixed (Efek Konsisten pada Tombol Teknotama)
 - **CTA eksternal Teknotama (Navbar.tsx, page.tsx, PlayPageView.tsx, Footer.tsx, globals.css):** Menyatukan warna dasar, hover/fokus, dan warna ikon pada tombol yang menuju teknotama.com mengikuti tombol footer di light dan dark mode.

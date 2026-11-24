@@ -148,7 +148,7 @@ input:focus-visible {
 }
 
 header.glass-nav .btn-sponsor svg {
-  color: #fffafa;
+  color: currentColor;
 }
 
 header.glass-nav .btn-sponsor {
@@ -1257,7 +1257,7 @@ html[data-theme="dark"] header.glass-nav .btn-sponsor {
 }
 
 html[data-theme="dark"] header.glass-nav .btn-sponsor svg {
-  color: #fffafa;
+  color: currentColor;
 }
 
 html[data-theme="dark"] .glass-nav [class*="text-[#ff6b70]"] {

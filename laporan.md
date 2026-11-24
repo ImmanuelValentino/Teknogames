@@ -1,3 +1,10 @@
+### [2026-11-24 18:52] - [Frontend] - Ikon Tombol Teknotama Navbar Mengikuti Teks
+- **Kondisi Sebelum:** SVG pada tombol teknotama.com navbar memiliki warna putih tetap sehingga berbeda dari teks tombol, terutama pada dark mode dan hover.
+- **Perubahan Sesudah:** Ikon mewarisi warna teks tombol melalui currentColor.
+- **Masalah yang Ditemukan:** Warna ikon ditentukan terpisah dari warna teks.
+- **Penyelesaian:** Mengubah aturan ikon tombol sponsor navbar agar memakai currentColor di kedua tema.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:47] - [Frontend] - Konsistensi Efek Tombol Teknotama
 - **Kondisi Sebelum:** Tombol menuju teknotama.com di navbar, halaman utama, halaman permainan, dan footer memakai warna serta efek hover yang berbeda.
 - **Perubahan Sesudah:** Semua CTA eksternal memakai merah-putih dengan hover merah tua di light mode, serta coral-hitam dengan hover putih-hitam di dark mode. Ikon mengikuti warna teks.
