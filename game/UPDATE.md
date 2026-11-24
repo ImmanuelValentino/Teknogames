@@ -76,3 +76,8 @@
 ### Fixed (Kontras Hover Switch Navbar)
 - Memperjelas hover/fokus switch tema dan pilihan bahasa tidak aktif; pilihan bahasa aktif dipertahankan.
 
+
+## [3.15.31] - 2026-11-24
+### Fixed (Kontras Tombol Layanan Teknotama)
+- Memperbaiki kontras teks tombol layanan dan menyamakan warna ikon tombol footer dengan teks.
+

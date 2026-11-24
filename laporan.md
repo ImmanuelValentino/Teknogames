@@ -1,3 +1,10 @@
+### [2026-11-24 21:12] - [Frontend] - Kontras Tombol Layanan Teknotama
+- **Kondisi Sebelum:** Tombol layanan atas memakai teks merah gelap pada latar merah; ikon tombol footer berwarna abu, berbeda dari teks.
+- **Perubahan Sesudah:** Tombol atas memakai teks dan ikon putih dengan hover merah gelap; ikon footer mengikuti warna teks tombol.
+- **Masalah yang Ditemukan:** Kontras tombol atas rendah dan ikon footer tidak seragam dengan teks.
+- **Penyelesaian:** Memperbarui token warna tombol layanan serta aturan warna SVG tombol sponsor footer.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 20:55] - [Frontend] - Kontras Hover Switch Navbar
 - **Kondisi Sebelum:** Hover pada switch tema dan bahasa memakai warna umum yang kurang membedakan tombol dari latar.
 - **Perubahan Sesudah:** Switch tema dan pilihan bahasa tidak aktif mendapat latar coral serta ikon/teks gelap; bahasa aktif tetap merah-putih.
@@ -506,6 +513,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

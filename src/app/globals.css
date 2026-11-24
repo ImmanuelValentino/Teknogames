@@ -338,16 +338,16 @@ header > div[class*="lg:hidden"][class*="border-t"] .text-slate-500 {
   /* Ubah nilai-nilai ini untuk mengganti warna tombol layanan mitra. */
   --partner-link-bg: #d9141d;
   --partner-link-border: #d9141d;
-  --partner-link-text: #800b12;
-  --partner-link-hover-bg: #efc1c6;
-  --partner-link-hover-border: #b8616c;
+  --partner-link-text: #fffafa;
+  --partner-link-hover-bg: #a30f17;
+  --partner-link-hover-border: #a30f17;
   background: var(--partner-link-bg);
   border-color: var(--partner-link-border);
   color: var(--partner-link-text);
 }
 
 .partner-service-link svg {
-  color: #101010;
+  color: currentColor;
 }
 
 .partner-service-link:hover {
@@ -1079,6 +1079,10 @@ footer .btn-sponsor-clean {
   border-color: #d9141d;
   background: #d9141d;
   color: #fffafa;
+}
+
+footer .btn-sponsor-clean svg {
+  color: currentColor;
 }
 
 footer .btn-sponsor-clean:hover {
