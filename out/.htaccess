@@ -10,11 +10,10 @@ Options -Indexes
   RewriteCond %{DOCUMENT_ROOT}/games/play/$1.html -f
   RewriteRule ^play/([^/]+)/?$ /games/play/$1.html [L]
 
-  # Jika user membuka URL /play/[slug] tanpa trailing slash
+  # Jika user membuka URL halaman statis (dengan atau tanpa trailing slash) saat folder RSC ikut ada
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{DOCUMENT_ROOT}/games/$1.html -f
-  RewriteRule ^(.*)$ /games/$1.html [L]
+  RewriteRule ^(.+?)/?$ /games/$1.html [L]
 
   # Fallback 404 Custom TeknoGame
   ErrorDocument 404 /games/404.html

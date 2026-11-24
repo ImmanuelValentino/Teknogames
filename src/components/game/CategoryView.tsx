@@ -62,7 +62,7 @@ export default function CategoryView({
           <span>{t.categoryPage.breadcrumbAll}</span>
         </Link>
         <span>/</span>
-        <span className="text-white font-semibold capitalize">
+        <span className="font-semibold capitalize text-slate-900 dark:text-slate-100">
           {catLabel}
         </span>
       </nav>

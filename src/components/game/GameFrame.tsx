@@ -209,10 +209,9 @@ export default function GameFrame({ game, onOpenLeaderboard }: GameFrameProps) {
       {/* Bilah Kontrol Bersih & Alami */}
       <div className="rounded-2xl card-natural p-3 sm:p-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0 text-white">
+          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
             <CategoryIcon
               category={game.category}
-              variant="dark"
               className="h-5 w-5"
             />
           </div>

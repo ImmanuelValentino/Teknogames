@@ -1,5 +1,5 @@
 :HL["/games/_next/static/css/b2afee3be411421c.css","style"]
-:HL["/games/_next/static/css/3b104b1f33c1033b.css","style"]
+:HL["/games/_next/static/css/cf905697aa251c50.css","style"]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"_not-found","h":96,"c":"$Q2"}]]
-0:{"b":"QOZ8ud8chXQS2FWXO5FhL","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"h68Y8CQsHdK5mngAm8nuD","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

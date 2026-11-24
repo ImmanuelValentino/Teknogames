@@ -1,3 +1,34 @@
+### [2026-11-24 09:30] - [Frontend] - Penyesuaian Warna Ikon Kategori di Bawah Game agar Seragam dengan Navbar
+- **Kondisi Sebelum:**
+  1. Ikon kategori pada bilah kontrol di bawah iframe game (`GameFrame.tsx`) menggunakan prop `variant="dark"` secara statis.
+  2. Saat mode terang, ikon tetap berwarna terang/pudar (misalnya hijau mint `#6ee7b7` untuk Adventure) sehingga kontrasnya rendah dan tidak serasi dengan ikon kategori di navbar (`#047857`).
+- **Perubahan Sesudah:**
+  1. Menghapus prop `variant="dark"` pada `CategoryIcon` di `GameFrame.tsx` dan `PlayPageView.tsx`, sehingga warnanya otomatis adaptif sesuai tema: menggunakan `--category-icon-light` saat light mode dan `--category-icon-dark` saat dark mode persis seperti di navbar kategori.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui pemanggilan komponen `CategoryIcon` dan memverifikasi build.
+- **File Terdampak:** `src/components/game/GameFrame.tsx`, `src/components/game/PlayPageView.tsx`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 09:22] - [Frontend] - Penyesuaian Spasi di Atas Permainan Lainnya Untuk Anda
+- **Kondisi Sebelum:**
+  1. Pada halaman gameplay (`/play/[slug]`), terdapat jarak vertikal kosong yang lebar (~40px) di antara kartu gameplay/informasi dan judul "Permainan Lainnya Untuk Anda" / "More Games For You" akibat kombinasi `space-y-6` pada kontainer utama dan padding section.
+- **Perubahan Sesudah:**
+  1. Menggunakan class `.play-page-recommendations` dengan `margin-top: 6px !important` dan `padding-top: 0 !important` serta inline style penjamin pada section di `PlayPageView.tsx` agar margin bawaan `space-y-6` tidak memaksa jarak berlebih.
+  2. Memastikan `GoogleAdSlot` hanya dirender bersyarat jika `adSlot` terisi sehingga tidak menyisakan ruang kosong.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Menambahkan class spesifik di `globals.css` dan memperbarui `PlayPageView.tsx`.
+- **File Terdampak:** `src/components/game/PlayPageView.tsx`, `src/app/globals.css`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 09:00] - [Frontend] - Perbaikan Kontras Teks Judul Breadcrumb pada Dark Mode
+- **Kondisi Sebelum:**
+  1. Pada halaman gameplay (`/play/[slug]`) dan kategori (`/category/[category]`), teks judul terakhir pada jejak navigasi / breadcrumb (misalnya "Nusantara Runner: Escape to Bali", "Kapal Feri", dll.) berwarna hitam (`#161616`) karena aturan statis `main nav[aria-label="Jejak navigasi"] > span:last-child { color: #161616; }` di `globals.css` tanpa override dark mode.
+  2. Saat dark mode aktif dengan background gelap (`#17181c`), teks judul menjadi hitam di atas background hitam sehingga tidak terbaca / tidak terlihat sama sekali.
+- **Perubahan Sesudah:**
+  1. Mengubah aturan di `src/app/globals.css` agar memakai `var(--ink)` untuk light mode, serta menambahkan selector dark mode `html[data-theme="dark"] main nav[aria-label*="navigasi"] > span:last-child` dengan warna terang `#f3f4f6 !important`.
+  2. Memperbarui `PlayPageView.tsx` dan `CategoryView.tsx` dengan class utilitas adaptif `text-slate-900 dark:text-slate-100`.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui CSS selector di `globals.css` dan komponen terkait, lalu memverifikasi build static page.
+- **File Terdampak:** `src/app/globals.css`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 08:20] - [Backend / Server Config] - Perbaikan 403 Forbidden pada /games/manage-games/ di .htaccess
 - **Kondisi Sebelum:**
   1. Next.js static export menghasilkan `manage-games.html` sekaligus folder `manage-games/` (berisi payload RSC tanpa `index.html`).
