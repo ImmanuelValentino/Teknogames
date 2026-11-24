@@ -1,3 +1,10 @@
+### [2026-11-24 17:55] - [Frontend] - Padding Bagian Permainan Favorit
+- **Kondisi Sebelum:** Header favorit memiliki garis bawah dan jarak/padding lebar sebelum daftar game.
+- **Perubahan Sesudah:** Garis dihapus, padding kartu dipersempit, dan jarak antara header dengan konten dirapatkan.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Mengubah kelas styling pada section favorit.
+- **File Terdampak:** `src/app/page.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 17:48] - [Frontend] - Penyamaan Warna Main Acak Footer
 - **Kondisi Sebelum:** Tombol Main Acak mewarisi warna merah gelap berbeda dari aksen tautan footer.
 - **Perubahan Sesudah:** Warna tombol dan hover disamakan dengan aksen footer serta tetap kontras di kedua tema.
@@ -408,6 +415,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

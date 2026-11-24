@@ -413,8 +413,8 @@ export default function HomePage() {
       </section>
 
       {/* 5. Section Favorit Mandiri (id="favorit") */}
-      <section id="favorit" className="mb-4 scroll-mt-24 rounded-2xl card-natural p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 border-b border-white/10 pb-4">
+      <section id="favorit" className="mb-4 scroll-mt-24 rounded-2xl card-natural p-4 sm:p-5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-rose-500/25 bg-rose-400/15">
               <Heart className="h-4 w-4 fill-current text-rose-600" strokeWidth={2.5} />
