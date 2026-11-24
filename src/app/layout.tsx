@@ -166,7 +166,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://teknotama.com" />
 
       </head>
-      <body className="min-h-full text-[#fcf8f9]" suppressHydrationWarning>
+      <body className="min-h-full" suppressHydrationWarning>
         <ClientLayout>{children}</ClientLayout>
         {/* Google AdSense Official Loader (afterInteractive agar tidak menggeser DOM <head> saat hydration) */}
         <Script

@@ -430,7 +430,7 @@ export default function HomePage() {
             <div className="mt-4">
               <Link
                 href="#katalog"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.04] text-xs font-semibold text-slate-200 hover:text-white hover:border-[#ce2541]/40 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.04] text-xs font-semibold text-slate-200 hover:text-white hover:border-[#d9141d]/40 transition-colors"
               >
                 <span>{t.favorites.browseCatalog}</span>
               </Link>
@@ -506,10 +506,10 @@ export default function HomePage() {
               href="https://teknotama.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="partner-service-card group rounded-2xl border border-white/10 bg-white/[0.025] p-4 sm:p-5 transition-all duration-200 hover:border-[#ce2541]/50 hover:bg-white/[0.045] flex flex-col justify-between"
+              className="partner-service-card group rounded-2xl border border-white/10 bg-white/[0.025] p-4 sm:p-5 transition-all duration-200 hover:border-[#d9141d]/50 hover:bg-white/[0.045] flex flex-col justify-between"
             >
               <div>
-                <span className="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-[#ce2541]/25 bg-[#610212]/30 text-[#ff8c9f] transition-colors group-hover:text-white">
+                <span className="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-[#d9141d]/25 bg-[#610212]/30 text-[#ff6b70] transition-colors group-hover:text-white">
                   {service.icon}
                 </span>
                 <span className="block text-sm font-bold text-white">

@@ -10,6 +10,11 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.33] - 2026-11-24
+### Fixed (Audit Kontras dan Konsistensi Warna)
+- **Warna tema (globals.css, layout.tsx, komponen halaman dan navigasi):** Menyatukan aksen merah/coral, memperbaiki keterbacaan teks dan ikon di kedua tema, menjaga ikon Favorit navbar tetap merah dengan latar hover yang kontras, dan menghapus warna teks terang yang dipatok pada elemen body.
+- **Papan skor dan footer:** Mempertahankan palet khusus papan rekor serta menyelaraskan separator dan tautan footer dengan token warna tema.
+
 ## [3.15.32] - 2026-11-24
 ### Fixed (Warna Ikon Favorit Navbar Tetap)
 - **Navbar (Navbar.tsx, globals.css):** Menjaga ikon hati tetap merah saat tautan Favorit di-hover atau mendapat fokus pada dark mode.

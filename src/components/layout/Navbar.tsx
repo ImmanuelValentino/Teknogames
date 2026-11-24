@@ -109,7 +109,7 @@ export default function Navbar() {
                   <span className="font-heading text-xl font-bold tracking-tight text-white sm:text-[1.35rem]">
                     Tekno
                   </span>
-                  <span className="font-heading text-xl font-bold tracking-tight text-[#ff8c9f] sm:text-[1.35rem]">
+                  <span className="font-heading text-xl font-bold tracking-tight text-[#ff6b70] sm:text-[1.35rem]">
                     Game
                   </span>
                 </div>
@@ -207,8 +207,8 @@ export default function Navbar() {
             <div
               className={`flex h-11 items-center rounded-full border p-1 text-xs font-bold transition-colors ${
                 theme === "dark"
-                  ? "border-[#51535c] bg-[#2b2d34]"
-                  : "border-[#b6a8aa] bg-[#e3d3d6]"
+                    ? "border-[#51535c] bg-[#2b2d34]"
+                    : "border-[#e5d9d5] bg-[#fffafa]"
               }`}
               role="group"
               aria-label={t.nav.switchLanguage}
@@ -218,10 +218,10 @@ export default function Navbar() {
                 onClick={() => setLang("id")}
                 className={`h-full px-2.5 rounded-full transition-all text-xs font-bold ${
                   lang === "id"
-                    ? "bg-[#ce2541] text-white shadow-sm"
+                    ? "bg-[#d9141d] text-white shadow-sm"
                     : theme === "dark"
                     ? "text-slate-400 hover:text-white"
-                    : "text-[#5e4b4e] hover:text-[#241b1d]"
+                    : "text-[#62595a] hover:text-[#101010]"
                 }`}
                 aria-pressed={lang === "id"}
                 title="Bahasa Indonesia"
@@ -233,10 +233,10 @@ export default function Navbar() {
                 onClick={() => setLang("en")}
                 className={`h-full px-2.5 rounded-full transition-all text-xs font-bold ${
                   lang === "en"
-                    ? "bg-[#ce2541] text-white shadow-sm"
+                    ? "bg-[#d9141d] text-white shadow-sm"
                     : theme === "dark"
                     ? "text-slate-400 hover:text-white"
-                    : "text-[#5e4b4e] hover:text-[#241b1d]"
+                    : "text-[#62595a] hover:text-[#101010]"
                 }`}
                 aria-pressed={lang === "en"}
                 title="English"
@@ -250,8 +250,8 @@ export default function Navbar() {
               onClick={toggleTheme}
               className={`navbar-theme-toggle flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors ${
                 theme === "dark"
-                  ? "border-[#51535c] bg-[#2b2d34] text-[#f3f4f6]"
-                  : "border-[#b6a8aa] bg-[#e3d3d6] text-[#241b1d]"
+                  ? "border-[#51535c] bg-[#2b2d34] text-[#fffafa]"
+                  : "border-[#e5d9d5] bg-[#fffafa] text-[#101010]"
               }`}
               aria-label={theme === "dark" ? t.nav.themeToggleLight : t.nav.themeToggleDark}
               aria-pressed={theme === "dark"}
@@ -283,13 +283,13 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#ce2541]/10 bg-[#1a0a0d] px-4 py-4 space-y-2 shadow-xl">
+        <div className="lg:hidden border-t border-[#d9141d]/10 bg-[#1a0a0d] px-4 py-4 space-y-2 shadow-xl">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-semibold text-white hover:bg-white/8 transition-colors"
           >
-            <Gamepad2 className="w-4 h-4 text-[#ff8c9f]" />
+            <Gamepad2 className="w-4 h-4 text-[#ff6b70]" />
             <span>{t.nav.home}</span>
           </Link>
 

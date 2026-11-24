@@ -71,7 +71,7 @@ export default function CategoryView({
       <div className="rounded-2xl card-natural p-6 sm:p-8 flex items-center justify-between">
         <div className="space-y-1.5">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl border border-[#ce7c8a] bg-[#e09aa6] flex items-center justify-center shrink-0 shadow-sm">
+            <div className="w-10 h-10 rounded-xl border border-[#d9141d] bg-[#fffafa] text-[#d9141d] flex items-center justify-center shrink-0 shadow-sm">
               {getCategoryHeroIcon(categoryId)}
             </div>
             <h1 className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-white">

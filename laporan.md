@@ -1,3 +1,10 @@
+### [2026-11-24 18:32] - [Frontend] - Audit Kontras dan Konsistensi Warna
+- **Kondisi Sebelum:** Sebagian aksen masih memakai merah muda/merah lama; warna teks dasar body dipatok terang; ikon Favorit navbar pada hover dark mode berhadapan dengan latar coral sehingga kontras rendah; beberapa kontrol/footer menggunakan warna lama.
+- **Perubahan Sesudah:** Aksen utama diseragamkan ke #D9141D dan coral #FF6B70, warna teks dasar mengikuti token light/dark, ikon Favorit tetap merah dengan hover putih salju di dark mode, serta separator dan kontrol memakai warna tema yang konsisten. Palet #F5EDDA pada papan rekor dipertahankan.
+- **Masalah yang Ditemukan:** Kontras rendah pada beberapa teks/icon dan warna komponen yang tidak selaras dengan palet aktif.
+- **Penyelesaian:** Menyesuaikan token/aturan CSS tema dan kelas warna komponen; teks kecil memakai warna dengan kontras lebih kuat pada latarnya.
+- **File Terdampak:** `src/app/globals.css`, `src/app/layout.tsx`, `src/app/not-found.tsx`, `src/app/page.tsx`, `src/components/game/CategoryView.tsx`, `src/components/game/GameGrid.tsx`, `src/components/game/PlayPageView.tsx`, `src/components/layout/ClientLayout.tsx`, `src/components/layout/Footer.tsx`, `src/components/layout/Navbar.tsx`, `src/lib/games-data.ts`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 21:28] - [Frontend] - Warna Ikon Favorit Navbar Tetap
 - **Kondisi Sebelum:** Aturan hover navbar mengubah semua ikon menjadi hitam, termasuk ikon hati Favorit.
 - **Perubahan Sesudah:** Ikon hati tetap merah saat item Favorit di-hover atau difokuskan; warna teks item tetap mengikuti efek navbar.

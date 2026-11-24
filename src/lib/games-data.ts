@@ -3,7 +3,7 @@ import { Game, CategoryInfo, GameCategory } from "@/types/game";
 export const CATEGORIES: CategoryInfo[] = [
   { id: "all", label: "Semua Permainan", icon: "Gamepad2", colorClass: "bg-red-600" },
   { id: "arcade", label: "Arkade", icon: "Gamepad", colorClass: "bg-rose-600" },
-  { id: "adventure", label: "Petualangan", icon: "Compass", colorClass: "bg-[#ce2541]" },
+  { id: "adventure", label: "Petualangan", icon: "Compass", colorClass: "bg-[#d9141d]" },
   { id: "puzzle", label: "Teka-teki", icon: "Puzzle", colorClass: "bg-rose-600" },
   { id: "action", label: "Aksi", icon: "Zap", colorClass: "bg-red-700" },
   { id: "casual", label: "Santai", icon: "Coffee", colorClass: "bg-slate-600" },

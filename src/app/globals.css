@@ -148,13 +148,13 @@ input:focus-visible {
 }
 
 header.glass-nav .btn-sponsor svg {
-  color: #101010;
+  color: #fffafa;
 }
 
 header.glass-nav .btn-sponsor {
   background: #d9141d;
   border-color: #d9141d;
-  color: #101010;
+  color: #fffafa;
 }
 
 header.glass-nav .btn-sponsor:hover {
@@ -169,7 +169,7 @@ header.glass-nav .btn-sponsor:hover {
   color: var(--ink);
 }
 
-.glass-nav [class*="text-[#ff8c9f]"] {
+.glass-nav [class*="text-[#ff6b70]"] {
   color: #d9141d;
 }
 
@@ -189,7 +189,7 @@ header.glass-nav .btn-sponsor:hover {
 html:not([data-theme="dark"]) .glass-nav [role="group"] button[aria-pressed="false"]:hover,
 html:not([data-theme="dark"]) .glass-nav [role="group"] button[aria-pressed="false"]:focus-visible {
   background: #d9141d;
-  color: #101010;
+  color: #fffafa;
 }
 
 .glass-nav .navbar-brand:hover {
@@ -218,7 +218,7 @@ header > div[class*="lg:hidden"][class*="border-t"] .text-slate-500 {
 .glass-modal,
 .glass-modal-clean {
   background: rgba(255, 250, 250, 0.82);
-  border: 1px solid rgba(206, 124, 138, 0.42);
+  border: 1px solid rgba(217, 20, 29, 0.2);
   box-shadow: 0 16px 38px rgba(17, 22, 24, 0.18);
   color: var(--ink);
   -webkit-backdrop-filter: blur(18px);
@@ -279,7 +279,7 @@ header > div[class*="lg:hidden"][class*="border-t"] .text-slate-500 {
 
 .card-glass {
   background: rgba(255, 250, 250, 0.78);
-  border-color: rgba(206, 124, 138, 0.38);
+  border-color: rgba(217, 20, 29, 0.2);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
 }
@@ -389,7 +389,7 @@ section.card-natural.mb-6 {
 }
 
 section.card-natural.mb-6 .section-kicker {
-  color: #d9141d;
+  color: #ff6b70;
 }
 
 section.card-natural.mb-6 .section-heading,
@@ -399,7 +399,7 @@ section.card-natural.mb-6 .text-white {
 
 section.card-natural.mb-6 .section-heading span,
 section.card-natural.mb-6 a {
-  color: #d9141d;
+  color: #ff6b70;
 }
 
 section.card-natural.mb-6 .text-slate-300 {
@@ -418,6 +418,24 @@ section.card-natural.mb-6 .text-slate-300 {
 
 .home-hero::before {
   content: none;
+}
+
+.not-found-page h1 {
+  color: var(--ink);
+}
+
+.not-found-description {
+  color: var(--muted);
+}
+
+.not-found-badge {
+  color: #d9141d;
+}
+
+.not-found-icon {
+  border: 1px solid #d9141d;
+  background: #fffafa;
+  color: #d9141d;
 }
 
 .hero-art {
@@ -576,7 +594,7 @@ aside[aria-label="Iklan Bawah Layar"] svg {
 }
 
 aside[aria-label="Iklan Bawah Layar"] div.border-dashed[class*="bg-white"] {
-  border-color: rgba(206, 124, 138, 0.4);
+  border-color: rgba(217, 20, 29, 0.4);
   background: rgba(255, 250, 250, 0.08);
   color: #fffafa;
 }
@@ -654,13 +672,17 @@ aside[aria-label="Iklan Bawah Layar"] div.border-dashed[class*="bg-white"] [clas
 }
 
 .partner-panel .section-kicker {
-  color: #d9141d;
+  color: #fffafa;
 }
 
 .partner-panel .btn-sponsor-clean {
   background: #d9141d;
   border-color: #d9141d;
-  color: #101010;
+  color: #fffafa;
+}
+
+.partner-panel .btn-sponsor-clean svg {
+  color: currentColor;
 }
 
 .partner-panel .btn-sponsor-clean:hover {
@@ -990,8 +1012,8 @@ a.group.flex.flex-col.overflow-hidden.rounded-2xl:hover h4 {
 }
 
 .card-natural .favorite-toggle[aria-pressed="true"] {
-  background: #ce2541;
-  border-color: #ff8c9f;
+  background: #d9141d;
+  border-color: #ff6b70;
   color: #fffafa;
   box-shadow: 0 0 0 2px rgba(206, 37, 65, 0.18);
 }
@@ -1004,7 +1026,7 @@ a.group.flex.flex-col.overflow-hidden.rounded-2xl:hover h4 {
 .card-natural [class*="bg-[#ce2541]"] {
   background: #d9141d;
   border-color: #d9141d;
-  color: #101010;
+  color: #fffafa;
 }
 
 .glass-modal-clean [class~="bg-black/20"],
@@ -1064,15 +1086,15 @@ footer .text-slate-500 {
 }
 
 footer a {
-  color: #d9141d;
+  color: #ff6b70;
 }
 
 footer .footer-random-play {
-  color: #d9141d;
+  color: #ff6b70;
 }
 
 footer .footer-random-play:hover {
-  color: #ff6b70;
+  color: #fffafa;
 }
 
 footer .btn-sponsor-clean {
@@ -1085,18 +1107,22 @@ footer .btn-sponsor-clean svg {
   color: currentColor;
 }
 
+footer a svg {
+  color: currentColor;
+}
+
 footer .btn-sponsor-clean:hover {
   border-color: #fffafa;
   background: #17181c;
   color: #fffafa;
 }
 
-footer [class*="text-[#ff8c9f]"] {
+footer [class*="text-[#ff6b70]"] {
   color: #ff6b70;
 }
 
 footer a:hover {
-  color: #ff6b70;
+  color: #fffafa;
 }
 
 ::-webkit-scrollbar {
@@ -1180,13 +1206,13 @@ html[data-theme="dark"] .card-natural .section-heading span {
 html[data-theme="dark"] main nav[aria-label="Jejak navigasi"] a:hover,
 html[data-theme="dark"] main nav[aria-label="Breadcrumb"] a:hover,
 html[data-theme="dark"] main nav[aria-label*="navigasi"] a:hover {
-  color: #ff8c9f;
+  color: #ff6b70;
 }
 
 html[data-theme="dark"] main nav[aria-label="Jejak navigasi"] > span:last-child,
 html[data-theme="dark"] main nav[aria-label="Breadcrumb"] > span:last-child,
 html[data-theme="dark"] main nav[aria-label*="navigasi"] > span:last-child {
-  color: #f3f4f6 !important;
+  color: #fffafa !important;
 }
 
 html[data-theme="dark"] .glass-nav,
@@ -1226,6 +1252,10 @@ html[data-theme="dark"] header.glass-nav .btn-sponsor svg {
   color: #fffafa;
 }
 
+html[data-theme="dark"] .glass-nav [class*="text-[#ff6b70]"] {
+  color: #ff6b70;
+}
+
 html[data-theme="dark"] header.glass-nav a:hover,
 html[data-theme="dark"] header.glass-nav a:focus-visible,
 html[data-theme="dark"] header.glass-nav button:not([aria-pressed]):hover,
@@ -1244,6 +1274,12 @@ html[data-theme="dark"] header.glass-nav button:not([aria-pressed]):focus-visibl
 html[data-theme="dark"] header.glass-nav .navbar-favorites-link:hover svg,
 html[data-theme="dark"] header.glass-nav .navbar-favorites-link:focus-visible svg {
   color: #d9141d;
+}
+
+html[data-theme="dark"] header.glass-nav .navbar-favorites-link:hover,
+html[data-theme="dark"] header.glass-nav .navbar-favorites-link:focus-visible {
+  background: #fffafa;
+  color: #101010;
 }
 
 html .glass-nav .navbar-theme-toggle:hover,
@@ -1337,10 +1373,28 @@ html[data-theme="dark"] a.group.flex.flex-col.overflow-hidden.rounded-2xl .text-
   color: var(--ink);
 }
 
+html[data-theme="dark"] .card-natural .text-\[\#d9141d\] {
+  color: #ff6b70;
+}
+
 html[data-theme="dark"] .home-hero,
 html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl {
-  background: #202127;
+  background: #17181c;
   border-color: var(--line);
+}
+
+html[data-theme="dark"] .not-found-description {
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .not-found-badge {
+  color: #ff6b70;
+}
+
+html[data-theme="dark"] .not-found-icon {
+  border-color: #ff6b70;
+  background: #202127;
+  color: #ff6b70;
 }
 
 html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl h1,
@@ -1355,11 +1409,11 @@ html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl [class
 }
 
 html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl [class*="lg:col-span-7"] > div:first-child span {
-  color: #ffd1dc;
+  color: #ff6b70;
 }
 
 html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl [class*="lg:col-span-7"] > div:first-child svg {
-  color: #ff8c9f;
+  color: #ff6b70;
 }
 
 html[data-theme="dark"] .mb-12 > div.relative.overflow-hidden.rounded-3xl a[href="#katalog"] {
@@ -1400,8 +1454,8 @@ html[data-theme="dark"] .glass-modal-clean [class~="bg-white/[0.04]"] {
 }
 
 html[data-theme="dark"] .card-natural .favorite-toggle[aria-pressed="true"] {
-  background: #ce2541;
-  border-color: #ff8c9f;
+  background: #d9141d;
+  border-color: #ff6b70;
   color: #fffafa;
   box-shadow: 0 0 0 2px rgba(206, 37, 65, 0.3);
 }
@@ -1428,7 +1482,7 @@ html[data-theme="dark"] footer h4 {
 }
 
 html[data-theme="dark"] .partner-panel .section-kicker {
-  color: #ffd1dc;
+  color: #fffafa;
 }
 
 html[data-theme="dark"] .partner-panel h3,
@@ -1441,7 +1495,7 @@ html[data-theme="dark"] footer .footer-random-play {
 }
 
 html[data-theme="dark"] footer .footer-random-play:hover {
-  color: #ffd1dc;
+  color: #fffafa;
 }
 
 html[data-theme="dark"] footer a.btn-sponsor-clean {
@@ -1457,8 +1511,12 @@ html[data-theme="dark"] footer a.btn-sponsor-clean:hover {
 }
 
 html[data-theme="dark"] footer a,
-html[data-theme="dark"] footer [class*="text-[#ff8c9f]"] {
+html[data-theme="dark"] footer [class*="text-[#ff6b70]"] {
   color: #ff6b70;
+}
+
+html[data-theme="dark"] footer a:hover {
+  color: #fffafa;
 }
 
 html[data-theme="dark"] ::-webkit-scrollbar-track {

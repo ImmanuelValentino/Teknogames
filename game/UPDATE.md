@@ -1,4 +1,9 @@
 # Update Game
+## [3.15.33] - 2026-11-24
+### Fixed (Audit Kontras dan Konsistensi Warna)
+- Menyatukan aksen merah/coral, memperbaiki kontras teks dan ikon untuk tema terang/gelap, menjaga warna ikon Favorit navbar, dan memastikan warna teks dasar mengikuti tema.
+- Palet khusus papan rekor tetap dipertahankan.
+
 
 ## [3.15.16] - 2026-11-24
 ### Changed (Warna Tombol Main Acak di Footer)
