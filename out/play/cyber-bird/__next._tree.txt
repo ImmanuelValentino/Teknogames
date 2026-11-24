@@ -1,6 +1,6 @@
 :HL["/games/_next/static/css/b2afee3be411421c.css","style"]
-:HL["/games/_next/static/css/cf905697aa251c50.css","style"]
+:HL["/games/_next/static/css/2a4e7cfc4e745ebe.css","style"]
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"d","k":"cyber-bird","s":[]},"h":96,"c":"$Q3"}]]
 1:[["children",{"s":"play","h":96,"c":"$Q2"}]]
-0:{"b":"h68Y8CQsHdK5mngAm8nuD","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"NU3TBBGWOo9EQmJpQ8HWK","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
