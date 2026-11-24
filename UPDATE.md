@@ -8,6 +8,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.7] - 2026-11-24
+### Fixed (403 Forbidden pada /games/manage-games/ dan Rute Trailing Slash)
+- **`.htaccess` Rewrite Rule:** Menghapus syarat `!-d` dan mengabaikan trailing slash (`^(.+?)/?$`) pada rewrite `.html` di `public/.htaccess`, sehingga URL seperti `/games/manage-games/` langsung melayani `manage-games.html` alih-alih terkena `403 Forbidden` dari `Options -Indexes`.
+
 ## [3.15.6] - 2026-11-24
 ### Improved (WebP Previews & Lighter Hero GPU Effects)
 - **Preview `.webp` Menyeluruh:** Mengubah `thumbnailUrl` di `games-data.ts` dan sumber gambar di `GameHero.tsx` ke `.webp` (`/games/images/games/<slug>.webp` dengan fallback `.png`).

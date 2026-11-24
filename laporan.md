@@ -1,3 +1,13 @@
+### [2026-11-24 08:20] - [Backend / Server Config] - Perbaikan 403 Forbidden pada /games/manage-games/ di .htaccess
+- **Kondisi Sebelum:**
+  1. Next.js static export menghasilkan `manage-games.html` sekaligus folder `manage-games/` (berisi payload RSC tanpa `index.html`).
+  2. Di `public/.htaccess`, rule rewrite `.html` memakai `RewriteCond %{REQUEST_FILENAME} !-d`, sehingga saat user membuka `/games/manage-games/` (yang merupakan folder fisik tanpa `index.html`), rewrite dilewati dan `Options -Indexes` memicu `403 Forbidden`.
+- **Perubahan Sesudah:**
+  1. Memperbarui `public/.htaccess` agar me-rewrite `^(.+?)/?$` ke `/games/$1.html` selama bukan file fisik (`!-f`) dan file `$1.html` tersedia.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui rule di `public/.htaccess` dan mencatat agar file `.htaccess` ikut di-upload ulang ke server setelah `npm run build`.
+- **File Terdampak:** `public/.htaccess`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 08:11] - [Frontend] - Konversi Preview ke WebP Menyeluruh & Pengurangan Efek Blur GPU di Hero
 - **Kondisi Sebelum:**
   1. `GameHero.tsx` dan `thumbnailUrl` di `games-data.ts` masih menggunakan `.png` (`/games/<slug>/preview.png`).
