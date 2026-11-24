@@ -10,6 +10,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.40] - 2026-11-24
+### Fixed (Efek Hover Logo Navbar)
+- **Navbar (globals.css):** Menghapus latar dan perubahan warna hover pada tautan logo agar tetap mengikuti warna teks brand.
+
 ## [3.15.39] - 2026-11-24
 ### Fixed (Hover Favorit Navbar Konsisten)
 - **Navbar (globals.css):** Menyamakan latar hover/fokus Favorit dengan item navbar lain pada dark mode, sambil mempertahankan ikon hati merah.

@@ -196,7 +196,7 @@ html:not([data-theme="dark"]) .glass-nav [role="group"] button[aria-pressed="fal
   color: #fffafa;
 }
 
-.glass-nav .navbar-brand:hover {
+header.glass-nav a.navbar-brand:hover {
   background: transparent;
   color: inherit;
 }
@@ -1277,6 +1277,18 @@ html[data-theme="dark"] header.glass-nav a:focus-visible :is(svg, span),
 html[data-theme="dark"] header.glass-nav button:not([aria-pressed]):hover :is(svg, span),
 html[data-theme="dark"] header.glass-nav button:not([aria-pressed]):focus-visible :is(svg, span) {
   color: #101010;
+}
+
+html[data-theme="dark"] header.glass-nav a.navbar-brand:hover {
+  background: transparent;
+}
+
+html[data-theme="dark"] header.glass-nav a.navbar-brand:hover span.text-white {
+  color: #fffafa;
+}
+
+html[data-theme="dark"] header.glass-nav a.navbar-brand:hover span.navbar-brand-accent {
+  color: #ff6b70;
 }
 
 html[data-theme="dark"] header.glass-nav .navbar-favorites-link:hover svg,

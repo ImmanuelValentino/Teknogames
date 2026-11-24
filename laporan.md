@@ -1,3 +1,10 @@
+### [2026-11-24 19:02] - [Frontend] - Hilangkan Efek Hover Logo Navbar
+- **Kondisi Sebelum:** Hover tautan logo ikut mendapat latar dan warna dari aturan umum navbar; pada dark mode tampil sebagai blok coral.
+- **Perubahan Sesudah:** Hover logo tidak lagi mengubah latar atau warna teks brand.
+- **Masalah yang Ditemukan:** Pengecualian sebelumnya kalah prioritas dari aturan hover umum.
+- **Penyelesaian:** Membuat selector khusus tautan logo dengan prioritas lebih tinggi dan mempertahankan warna teks saat dark mode.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:54] - [Frontend] - Hover Favorit Navbar Konsisten
 - **Kondisi Sebelum:** Item Favorit memakai latar putih sendiri saat hover/fokus dark mode, berbeda dari item navbar lain yang memakai coral.
 - **Perubahan Sesudah:** Favorit memakai efek hover/fokus coral yang sama seperti item lain; ikon hati tetap merah.

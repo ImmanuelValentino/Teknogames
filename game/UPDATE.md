@@ -1,4 +1,8 @@
 # Update Game
+## [3.15.40] - 2026-11-24
+### Fixed (Efek Hover Logo Navbar)
+- Menghapus efek latar hover logo navbar dan mempertahankan warna brand pada dark mode.
+
 ## [3.15.39] - 2026-11-24
 ### Fixed (Hover Favorit Navbar Konsisten)
 - Menyamakan efek hover/fokus item Favorit dengan item navbar lain di dark mode tanpa mengubah warna ikon hati.
