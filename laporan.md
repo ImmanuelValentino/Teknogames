@@ -1,3 +1,10 @@
+### [2026-11-24 19:32] - [Frontend] - Kontras Tombol Lihat yang Populer saat Hover
+- **Kondisi Sebelum:** Saat hover di light mode, tombol berubah berlatar putih dan teksnya juga putih sehingga tidak terbaca.
+- **Perubahan Sesudah:** Teks dan ikon tombol memakai warna gelap pada hover light mode; dark mode tetap mengikuti aturan teks terang.
+- **Masalah yang Ditemukan:** Warna hover dari utility text-white bertabrakan dengan latar hover putih.
+- **Penyelesaian:** Menetapkan warna teks eksplisit pada aturan hover tombol hero di light mode.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 19:18] - [Frontend] - Kontras Kotak Isi Light Mode
 - **Kondisi Sebelum:** Kotak informasi pada kartu detail game di light mode menggunakan warna yang sama dengan panel sehingga batas dan isinya kurang terlihat.
 - **Perubahan Sesudah:** Kotak memperoleh tint merah tipis dan garis pembatas lembut; teks tetap gelap untuk kontras.
@@ -464,6 +471,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

@@ -10,6 +10,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.25] - 2026-11-24
+### Fixed (Kontras Tombol Lihat yang Populer saat Hover)
+- **Hero beranda (src/app/globals.css):** Menetapkan teks gelap pada hover tombol di light mode agar terbaca di atas latar putih.
+
 ## [3.15.24] - 2026-11-24
 ### Fixed (Kontras Kotak Informasi pada Light Mode)
 - **Panel informasi game (src/app/globals.css):** Memberi latar tint merah tipis dan garis yang terlihat pada kotak isi di light mode agar terpisah jelas dari panel utama.
@@ -930,6 +934,7 @@ Added (Initial Blueprint & Specification Release)
 Design System (Design.md): Token warna, blueprint navbar 2-tier, aturan slot iklan AdSense / Better Ads Standards, dan grid katalog ala Friv.
 Konsep Game (List-Game.md): Brainstorming 12 konsep game mini bertema wisata, kuliner, dan transportasi nusantara beserta use case dan spesifikasi teknis HTML5.
 Product Requirements Document (PRD.md): Dokumen spesifikasi kebutuhan produk, arsitektur sistem, dan roadmap peluncuran.
+
 
 
 

@@ -46,3 +46,8 @@
 ### Fixed (Kontras Kotak Informasi pada Light Mode)
 - Menambahkan latar merah sangat tipis dan garis pemisah pada kotak informasi agar isi terlihat di light mode.
 
+
+## [3.15.25] - 2026-11-24
+### Fixed (Kontras Tombol Lihat yang Populer saat Hover)
+- Memastikan teks tombol Lihat yang Populer berwarna gelap saat hover di light mode.
+

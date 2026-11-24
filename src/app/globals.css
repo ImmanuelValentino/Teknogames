@@ -834,6 +834,7 @@ html[data-theme="dark"] .category-icon-on-dark {
 .mb-12 > div.relative.overflow-hidden.rounded-3xl [class*="lg:col-span-7"] a[href="#katalog"]:hover {
   background: #fffafa;
   border-color: #d9141d;
+  color: #101010;
 }
 
 .mb-12 > div.relative.overflow-hidden.rounded-3xl div[class*="aspect-[4/5]"] {
