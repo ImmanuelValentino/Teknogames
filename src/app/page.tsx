@@ -258,8 +258,8 @@ export default function HomePage() {
       </div>
 
       {/* 4. Section Papan Skor Mandiri (id="papan-skor") */}
-      <section id="papan-skor" className="mb-4 scroll-mt-24 rounded-2xl card-natural p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 border-b border-white/10 pb-4">
+      <section id="papan-skor" className="mb-4 scroll-mt-24 rounded-2xl card-natural p-4 sm:p-5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
             <div className="score-icon flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
               <Trophy className="h-4 w-4 text-amber-700" strokeWidth={2.5} />

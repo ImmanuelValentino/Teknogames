@@ -10,3 +10,8 @@
 ### Changed (Padding Bagian Permainan Favorit)
 - Menghapus garis bawah judul favorit dan merapatkan padding kartu serta jarak konten.
 
+
+## [3.15.18] - 2026-11-24
+### Changed (Padding Bagian Papan Rekor)
+- Menghapus garis bawah judul papan rekor dan menyempitkan padding serta jarak kontennya agar sama dengan bagian favorit.
+
