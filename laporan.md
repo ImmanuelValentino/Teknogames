@@ -29,6 +29,17 @@
 - **Penyelesaian:** Memperbarui CSS selector di `globals.css` dan komponen terkait, lalu memverifikasi build static page.
 - **File Terdampak:** `src/app/globals.css`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `UPDATE.md`, `laporan.md`
 
+### [2026-11-24 13:23] - [Games] - Pemilihan Kartu Werewolf Online Bergiliran 1-by-1 (3 Detik/Pemain)
+- **Kondisi Sebelum:**
+  1. Seluruh pemain memilih kartu secara bersamaan dengan timer global 30 detik.
+- **Perubahan Sesudah:**
+  1. Mengubah fase `card_pick` di `public/games/werewolf/online-supabase.js` menjadi bergiliran 1-by-1 sesuai urutan pemain masuk room (`card_pick_turn_index`).
+  2. Setiap pemain mendapat timer 3 detik (`card_pick_turn_start_time`); jika melewati 3 detik belum memilih, kartu tersisa otomatis dipilihkan (`auto-pick`) dengan fallback Host pada detik ke-4 agar antrean tidak macet.
+  3. Menambahkan teks status giliran aktif di `public/games/werewolf/index.html` (ID/EN).
+- **Masalah yang Ditemukan:** Validasi sintaks JS `index.html` dan `online-supabase.js` lulus.
+- **Penyelesaian:** Mengelola giliran dan reset timestamp per giliran di dalam `updateRoomStateAtomically`.
+- **File Terdampak:** `public/games/werewolf/online-supabase.js`, `public/games/werewolf/index.html`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 12:38] - [Games] - Popup Peran In-Game, Counter Belum Siap, dan Perbaikan Desync Voting Werewolf
 - **Kondisi Sebelum:**
   1. Badge peran di HUD belum memiliki popup detail deskripsi peran saat diklik.
