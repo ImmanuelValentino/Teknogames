@@ -29,6 +29,19 @@
 - **Penyelesaian:** Memperbarui CSS selector di `globals.css` dan komponen terkait, lalu memverifikasi build static page.
 - **File Terdampak:** `src/app/globals.css`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `UPDATE.md`, `laporan.md`
 
+### [2026-11-24 12:38] - [Games] - Popup Peran In-Game, Counter Belum Siap, dan Perbaikan Desync Voting Werewolf
+- **Kondisi Sebelum:**
+  1. Badge peran di HUD belum memiliki popup detail deskripsi peran saat diklik.
+  2. Status menunggu di fase pilih kartu belum menunjukkan berapa orang lagi yang belum menekan tombol Siap.
+  3. Saat voting, perbedaan kondisi `undefined` vs `null` pada `p.vote`, tidak adanya guard `status !== 'day_voting'`, polling yang hanya mengecek `updated_at`, serta penghapusan room 10 detik setelah Game Over menyebabkan sebagian pemain sudah selesai sementara pemain lain masih tertahan di layar voting.
+- **Perubahan Sesudah:**
+  1. Mengubah `#hudMyRoleBadge` menjadi tombol interaktif yang membuka `#roleInfoModal` (ikon, nama, dan deskripsi peran) sepanjang permainan.
+  2. Menampilkan sisa pemain yang belum siap pada tombol menunggu di `renderOnlineCardPick` (`waiting_other_players_count`) dan sisa pemain yang belum memilih di `renderOnlineDayVoting` (`vote_submitted_count`).
+  3. Menambahkan guard `status !== 'day_voting'` dan `isSubmittingVote` di `submitVoteOnline`, pengecekan ketat `vote !== null && vote !== undefined`, preservasi pilihan target saat polling, pengecekan `room.status !== currentRoomData.status` di `startRoomPolling`, serta menghentikan polling dan menunda `deleteCurrentRoom` menjadi 30 detik sekali jalan di `renderOnlineGameOver`.
+- **Masalah yang Ditemukan:** Validasi sintaks JS seluruh skrip Werewolf lulus.
+- **Penyelesaian:** Menyelaraskan sinkronisasi state voting dan UI popup peran di `index.html`, `app.js`, dan `online-supabase.js`.
+- **File Terdampak:** `public/games/werewolf/index.html`, `public/games/werewolf/app.js`, `public/games/werewolf/online-supabase.js`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 12:24] - [Games] - Perbaikan Seer Auto-Close, Indikator & Timer Pick Card, Rekap Voting, dan Role HUD Werewolf
 - **Kondisi Sebelum:**
   1. Saat giliran Seer, polling 1.2 detik memanggil `renderOnlineNight` berulang kali dan mengosongkan daftar target serta menyembunyikan hasil terawangan Seer.

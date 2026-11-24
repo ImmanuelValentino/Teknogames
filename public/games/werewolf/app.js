@@ -17,12 +17,42 @@
   let currentHudRole = null;
 
   const HUD_ROLE_META = {
-    werewolf: { id: 'Werewolf', en: 'Werewolf', color: 'var(--role-wolf)' },
-    villager: { id: 'Warga Desa', en: 'Villager', color: 'var(--role-villager)' },
-    seer: { id: 'Peramal', en: 'Seer', color: 'var(--role-seer)' },
-    bodyguard: { id: 'Pelindung', en: 'Bodyguard', color: 'var(--role-bodyguard)' },
-    hunter: { id: 'Pemburu', en: 'Hunter', color: 'var(--role-hunter)' }
+    werewolf: { nameKey: 'role_werewolf_name', descKey: 'role_werewolf_desc', color: 'var(--role-wolf)' },
+    villager: { nameKey: 'role_villager_name', descKey: 'role_villager_desc', color: 'var(--role-villager)' },
+    seer: { nameKey: 'role_seer_name', descKey: 'role_seer_desc', color: 'var(--role-seer)' },
+    bodyguard: { nameKey: 'role_bodyguard_name', descKey: 'role_bodyguard_desc', color: 'var(--role-bodyguard)' },
+    hunter: { nameKey: 'role_hunter_name', descKey: 'role_hunter_desc', color: 'var(--role-hunter)' }
   };
+
+  function closeRoleModal() {
+    const modal = document.getElementById('roleInfoModal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.style.display = 'none';
+  }
+
+  function openRoleModal() {
+    if (!currentHudRole || !HUD_ROLE_META[currentHudRole]) return;
+    const modal = document.getElementById('roleInfoModal');
+    const iconEl = document.getElementById('roleModalIcon');
+    const titleEl = document.getElementById('roleModalTitle');
+    const descEl = document.getElementById('roleModalDesc');
+    if (!modal) return;
+
+    const meta = HUD_ROLE_META[currentHudRole];
+    if (iconEl && window.WerewolfIcons) {
+      iconEl.innerHTML = window.WerewolfIcons.get(currentHudRole);
+    }
+    if (titleEl) {
+      titleEl.textContent = t(meta.nameKey);
+      titleEl.style.color = meta.color;
+    }
+    if (descEl) {
+      descEl.textContent = t(meta.descKey);
+    }
+    modal.classList.remove('hidden');
+    modal.style.display = 'flex';
+  }
 
   function setHudRole(role) {
     currentHudRole = role && HUD_ROLE_META[role] ? role : null;
@@ -34,15 +64,15 @@
     if (!currentHudRole) {
       badge.classList.add('hidden');
       badge.style.display = 'none';
+      closeRoleModal();
       return;
     }
 
-    const lang = window.WerewolfI18n ? window.WerewolfI18n.getLang() : 'id';
     const meta = HUD_ROLE_META[currentHudRole];
     if (iconEl && window.WerewolfIcons) {
       iconEl.innerHTML = window.WerewolfIcons.get(currentHudRole);
     }
-    valEl.textContent = lang === 'en' ? meta.en : meta.id;
+    valEl.textContent = t(meta.nameKey);
     valEl.style.color = meta.color;
     badge.classList.remove('hidden');
     badge.style.display = 'inline-flex';
@@ -100,6 +130,27 @@
     if (btnAudio) {
       btnAudio.onclick = () => {
         window.WerewolfAudio.toggleMute();
+      };
+    }
+
+    const hudRoleBtn = document.getElementById('hudMyRoleBadge');
+    if (hudRoleBtn) {
+      hudRoleBtn.onclick = () => {
+        window.WerewolfAudio.play('click');
+        openRoleModal();
+      };
+    }
+    const btnCloseRole = document.getElementById('btnCloseRoleModal');
+    if (btnCloseRole) {
+      btnCloseRole.onclick = () => {
+        window.WerewolfAudio.play('click');
+        closeRoleModal();
+      };
+    }
+    const roleModal = document.getElementById('roleInfoModal');
+    if (roleModal) {
+      roleModal.onclick = (e) => {
+        if (e.target === roleModal) closeRoleModal();
       };
     }
 

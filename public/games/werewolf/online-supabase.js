@@ -259,7 +259,7 @@
           .single();
 
         if (room && room.game_state) {
-          if (!currentRoomData || room.updated_at !== currentRoomData.updated_at) {
+          if (!currentRoomData || room.status !== currentRoomData.status || room.updated_at !== currentRoomData.updated_at) {
             handleRoomStateSync(room);
           }
         }
@@ -678,7 +678,10 @@
       document.getElementById('revealRoleDesc').textContent = def.desc;
 
       const btnConfirm = document.getElementById('btnConfirmCardPick');
-      btnConfirm.textContent = me.ready ? t('waiting_other_players') : t('iam_ready');
+      const notReadyCount = state.players.filter(p => !p.ready).length;
+      btnConfirm.textContent = me.ready
+        ? t('waiting_other_players_count', { count: notReadyCount })
+        : t('iam_ready');
       btnConfirm.disabled = Boolean(me.ready);
 
       btnConfirm.onclick = async () => {
@@ -1296,15 +1299,22 @@
     if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
       window.WerewolfApp.setHudRole(me ? me.role : null);
     }
-    const hasVoted = Boolean(me && me.vote !== null);
+    const hasVoted = Boolean(me && me.vote !== null && me.vote !== undefined);
+    const alivePlayers = state.players.filter(p => p.alive);
+    const remainingVoters = alivePlayers.filter(p => p.vote === null || p.vote === undefined).length;
 
     const list = document.getElementById('votingTargetList');
     list.innerHTML = '';
-    mySelectedVoteTargetId = null;
+    if (hasVoted || !me || !me.alive) {
+      mySelectedVoteTargetId = null;
+    }
 
     state.players.forEach(p => {
       if (!p.alive) return;
       const card = createOnlineTargetCard(p, t('tag_vote_execute'));
+      if (mySelectedVoteTargetId === p.id && !hasVoted) {
+        card.classList.add('selected');
+      }
       if (me && me.alive && !hasVoted) {
         card.onclick = () => {
           list.querySelectorAll('.target-card').forEach(c => c.classList.remove('selected'));
@@ -1323,7 +1333,7 @@
       btnConfirm.textContent = t('you_are_dead');
       btnConfirm.disabled = true;
     } else if (hasVoted) {
-      btnConfirm.textContent = t('vote_submitted');
+      btnConfirm.textContent = t('vote_submitted_count', { count: remainingVoters });
       btnConfirm.disabled = true;
     } else {
       btnConfirm.textContent = t('submit_vote_btn');
@@ -1339,51 +1349,62 @@
     }
   }
 
+  let isSubmittingVote = false;
+
   async function submitVoteOnline(targetId) {
-    await updateRoomStateAtomically((state, status) => {
-      const me = state.players.find(p => p.id === myPlayerId);
-      if (me && me.alive && me.vote === null) {
-        me.vote = targetId;
-      }
-
-      const alivePlayers = state.players.filter(p => p.alive);
-      const allVoted = alivePlayers.every(p => p.vote !== null);
-
-      if (allVoted) {
-        const voteCounts = {};
-        alivePlayers.forEach(p => {
-          voteCounts[p.vote] = (voteCounts[p.vote] || 0) + 1;
-        });
-
-        let highestTargetId = null;
-        let maxVotes = 0;
-        Object.keys(voteCounts).forEach(tid => {
-          if (voteCounts[tid] > maxVotes) {
-            maxVotes = voteCounts[tid];
-            highestTargetId = tid;
-          }
-        });
-
-        const executed = state.players.find(p => p.id === highestTargetId);
-        if (executed) {
-          executed.alive = false;
-          window.WerewolfAudio.play('gavel');
+    if (isSubmittingVote) return;
+    isSubmittingVote = true;
+    try {
+      await updateRoomStateAtomically((state, status) => {
+        if (status !== 'day_voting') {
+          return { abort: 'not_voting' };
+        }
+        const me = state.players.find(p => p.id === myPlayerId);
+        if (me && me.alive && (me.vote === null || me.vote === undefined)) {
+          me.vote = targetId;
         }
 
-        const isWin = checkOnlineWin(state);
-        state.last_vote_result = {
-          counts: voteCounts,
-          executed: executed ? { id: executed.id, name: executed.name, role: executed.role } : null,
-          total_votes: alivePlayers.length,
-          result_start_time: Date.now(),
-          is_win: isWin
-        };
-        state.phase = 'day_vote_result';
-        return { status: 'day_vote_result', state };
-      }
+        const alivePlayers = state.players.filter(p => p.alive);
+        const allVoted = alivePlayers.every(p => p.vote !== null && p.vote !== undefined);
 
-      return { status, state };
-    });
+        if (allVoted) {
+          const voteCounts = {};
+          alivePlayers.forEach(p => {
+            voteCounts[p.vote] = (voteCounts[p.vote] || 0) + 1;
+          });
+
+          let highestTargetId = null;
+          let maxVotes = 0;
+          Object.keys(voteCounts).forEach(tid => {
+            if (voteCounts[tid] > maxVotes) {
+              maxVotes = voteCounts[tid];
+              highestTargetId = tid;
+            }
+          });
+
+          const executed = state.players.find(p => p.id === highestTargetId);
+          if (executed) {
+            executed.alive = false;
+            window.WerewolfAudio.play('gavel');
+          }
+
+          const isWin = checkOnlineWin(state);
+          state.last_vote_result = {
+            counts: voteCounts,
+            executed: executed ? { id: executed.id, name: executed.name, role: executed.role } : null,
+            total_votes: alivePlayers.length,
+            result_start_time: Date.now(),
+            is_win: isWin
+          };
+          state.phase = 'day_vote_result';
+          return { status: 'day_vote_result', state };
+        }
+
+        return { status, state };
+      });
+    } finally {
+      isSubmittingVote = false;
+    }
   }
 
   async function proceedAfterVoteResult() {
@@ -1512,10 +1533,13 @@
   // ==========================================
   // 8. GAME OVER & AUTO-CLEANUP
   // ==========================================
+  let gameOverCleanupRoom = null;
+
   function renderOnlineGameOver(state) {
     lastRenderedNightKey = null;
     clearCardPickTimer();
     clearVoteResultTimer();
+    stopRoomPolling();
     if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
       window.WerewolfApp.setHudRole(null);
     }
@@ -1555,11 +1579,12 @@
       rosterEl.appendChild(row);
     });
 
-    // Auto-delete room di Supabase setelah 10 detik atau saat keluar
-    if (isHost && currentRoomCode) {
+    // Auto-delete room di Supabase setelah 30 detik (sekali saja) agar semua pemain sempat menerima Game Over
+    if (isHost && currentRoomCode && gameOverCleanupRoom !== currentRoomCode) {
+      gameOverCleanupRoom = currentRoomCode;
       setTimeout(() => {
         deleteCurrentRoom();
-      }, 10000);
+      }, 30000);
     }
   }
 
