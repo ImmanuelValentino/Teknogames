@@ -1,3 +1,13 @@
+### [2026-11-24 08:02] - [Frontend] - Sembunyikan Placeholder Slot Iklan Sementara (Mode Auto Ads)
+- **Kondisi Sebelum:**
+  1. Ketika `NEXT_PUBLIC_ADSENSE_CLIENT_ID` dan `NEXT_PUBLIC_ADSENSE_SLOT_*` masih kosong, `GoogleAdSlot.tsx` dan `AdBottomAnchor.tsx` tetap menampilkan kotak placeholder *"Slot Google AdSense"* ke pengunjung.
+- **Perubahan Sesudah:**
+  1. Menambahkan early return `null` di `GoogleAdSlot.tsx` saat `client` atau `slot` kosong, serta di `AdBottomAnchor.tsx` saat `NEXT_PUBLIC_ADSENSE_CLIENT_ID` atau `NEXT_PUBLIC_ADSENSE_SLOT_ANCHOR` kosong.
+  2. Script Google AdSense Auto Ads di `layout.tsx` dan `public/ads.txt` tetap aktif tanpa perubahan.
+- **Masalah yang Ditemukan:** `npx tsc --noEmit` lulus; `npm run build` di sandbox tetap terkendala jaringan untuk Google Fonts (`ENOTFOUND fonts.googleapis.com`).
+- **Penyelesaian:** Memverifikasi TypeScript dengan `npx tsc --noEmit` dan melakukan commit sesuai workflow.
+- **File Terdampak:** `src/components/ads/GoogleAdSlot.tsx`, `src/components/ads/AdBottomAnchor.tsx`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 07:56] - [Frontend] - Implementasi Lazy Loading Selektif untuk Optimasi Performa
 - **Kondisi Sebelum:**
   1. Lazy loading baru diterapkan pada `<img loading="lazy">` di `GameCard.tsx`; komponen iklan di luar viewport awal masih di-bundle secara eager.

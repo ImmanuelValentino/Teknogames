@@ -8,6 +8,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.4] - 2026-11-24
+### Changed (Hide AdSense Placeholders Until Slot IDs Configured)
+- **Auto Ads Only Mode:** Menyembunyikan placeholder `GoogleAdSlot` dan bar `AdBottomAnchor` saat `NEXT_PUBLIC_ADSENSE_CLIENT_ID` atau `adSlot` belum diisi, sehingga tampilan tetap bersih sambil mengandalkan Google AdSense Auto Ads dari `layout.tsx`.
+
 ## [3.15.3] - 2026-11-24
 ### Improved (Lazy Loading & Asset Priority)
 - **Code-Splitting Komponen Sekunder:** Menggunakan `next/dynamic` untuk `AdBottomAnchor`, `AdSkyscraper`, `AdCompanion`, `AdNativeTile`, dan `GoogleAdSlot`.

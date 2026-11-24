@@ -38,6 +38,10 @@ export default function GoogleAdSlot({
     }
   }, [client, slot]);
 
+  if (!client || !slot) {
+    return null;
+  }
+
   // Dimensi terkunci ketat anti-CLS sesuai standar IAB / Google Display Network
   switch (slotType) {
     case "leaderboard-1080x90":
