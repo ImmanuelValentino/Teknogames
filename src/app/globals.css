@@ -1066,6 +1066,14 @@ footer a {
   color: #d9141d;
 }
 
+footer .footer-random-play {
+  color: #d9141d;
+}
+
+footer .footer-random-play:hover {
+  color: #ff6b70;
+}
+
 footer .btn-sponsor-clean {
   border-color: #d9141d;
   background: #d9141d;

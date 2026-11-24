@@ -1,3 +1,10 @@
+### [2026-11-24 17:48] - [Frontend] - Penyamaan Warna Main Acak Footer
+- **Kondisi Sebelum:** Tombol Main Acak mewarisi warna merah gelap berbeda dari aksen tautan footer.
+- **Perubahan Sesudah:** Warna tombol dan hover disamakan dengan aksen footer serta tetap kontras di kedua tema.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Menambahkan aturan CSS khusus footer untuk state normal dan hover.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 17:42] - [Frontend] - Footer Hitam dan Pengurangan Warna Krem
 - **Kondisi Sebelum:** Footer memakai permukaan abu terang dan beberapa state umum memakai warna krem.
 - **Perubahan Sesudah:** Footer memakai #101010 dengan teks #FFFAFA, teks sekunder abu terang, serta tombol dan tautan beraksen merah; warna krem di elemen umum diganti Snow White. Krem tetap dipakai pada papan rekor sesuai palet.
@@ -401,6 +408,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 
