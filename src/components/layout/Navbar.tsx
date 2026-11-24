@@ -172,7 +172,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={handleRandomPlay}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
+              className="navbar-random-play flex items-center gap-1.5 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
             >
               <Dices className="w-4 h-4 text-slate-400" />
               <span>{t.nav.randomPlay}</span>
@@ -315,7 +315,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={handleRandomPlay}
-            className="flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/8"
+            className="navbar-random-play flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/8"
           >
             <Dices className="w-4 h-4" />
             <span>{t.nav.randomPlay}</span>

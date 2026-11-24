@@ -10,6 +10,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.26] - 2026-11-24
+### Fixed (Ikon Main Acak Navbar saat Hover Dark Mode)
+- **Navbar (Navbar.tsx, globals.css):** Menambahkan state hover/fokus coral dengan teks dan ikon hitam pada tombol Main Acak di dark mode.
+
 ## [3.15.25] - 2026-11-24
 ### Fixed (Kontras Tombol Lihat yang Populer saat Hover)
 - **Hero beranda (src/app/globals.css):** Menetapkan teks gelap pada hover tombol di light mode agar terbaca di atas latar putih.
@@ -934,6 +938,7 @@ Added (Initial Blueprint & Specification Release)
 Design System (Design.md): Token warna, blueprint navbar 2-tier, aturan slot iklan AdSense / Better Ads Standards, dan grid katalog ala Friv.
 Konsep Game (List-Game.md): Brainstorming 12 konsep game mini bertema wisata, kuliner, dan transportasi nusantara beserta use case dan spesifikasi teknis HTML5.
 Product Requirements Document (PRD.md): Dokumen spesifikasi kebutuhan produk, arsitektur sistem, dan roadmap peluncuran.
+
 
 
 

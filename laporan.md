@@ -1,3 +1,10 @@
+### [2026-11-24 19:47] - [Frontend] - Kontras Hover Main Acak Navbar
+- **Kondisi Sebelum:** Ikon Main Acak berwarna abu statis dan kurang terlihat saat hover di dark mode.
+- **Perubahan Sesudah:** Tombol memakai latar coral dengan teks serta ikon hitam saat hover dan fokus keyboard di dark mode.
+- **Masalah yang Ditemukan:** Warna ikon statis tidak menyesuaikan warna hover tombol.
+- **Penyelesaian:** Menambahkan class tombol dan aturan tema khusus untuk hover/focus-visible beserta ikon.
+- **File Terdampak:** `src/components/layout/Navbar.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 19:32] - [Frontend] - Kontras Tombol Lihat yang Populer saat Hover
 - **Kondisi Sebelum:** Saat hover di light mode, tombol berubah berlatar putih dan teksnya juga putih sehingga tidak terbaca.
 - **Perubahan Sesudah:** Teks dan ikon tombol memakai warna gelap pada hover light mode; dark mode tetap mengikuti aturan teks terang.
@@ -471,6 +478,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

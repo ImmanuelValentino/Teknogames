@@ -51,3 +51,8 @@
 ### Fixed (Kontras Tombol Lihat yang Populer saat Hover)
 - Memastikan teks tombol Lihat yang Populer berwarna gelap saat hover di light mode.
 
+
+## [3.15.26] - 2026-11-24
+### Fixed (Ikon Main Acak Navbar saat Hover Dark Mode)
+- Menyamakan kontras teks dan ikon Main Acak dengan latar coral terang pada hover/fokus dark mode.
+
