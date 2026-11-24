@@ -10,6 +10,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.34] - 2026-11-24
+### Fixed (Warna Logo Navbar dan Tombol Kunjungi Teknotama)
+- **Navbar dan footer (Navbar.tsx, Footer.tsx, globals.css):** Menambahkan aturan tema eksplisit agar aksen Game pada logo navbar dan tombol Kunjungi Teknotama memakai warna kontras yang berbeda di light dan dark mode.
+
 ## [3.15.33] - 2026-11-24
 ### Fixed (Audit Kontras dan Konsistensi Warna)
 - **Warna tema (globals.css, layout.tsx, komponen halaman dan navigasi):** Menyatukan aksen merah/coral, memperbaiki keterbacaan teks dan ikon di kedua tema, menjaga ikon Favorit navbar tetap merah dengan latar hover yang kontras, dan menghapus warna teks terang yang dipatok pada elemen body.

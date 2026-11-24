@@ -109,7 +109,7 @@ export default function Navbar() {
                   <span className="font-heading text-xl font-bold tracking-tight text-white sm:text-[1.35rem]">
                     Tekno
                   </span>
-                  <span className="font-heading text-xl font-bold tracking-tight text-[#ff6b70] sm:text-[1.35rem]">
+                  <span className="navbar-brand-accent font-heading text-xl font-bold tracking-tight sm:text-[1.35rem]">
                     Game
                   </span>
                 </div>

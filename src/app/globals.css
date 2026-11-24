@@ -173,6 +173,10 @@ header.glass-nav .btn-sponsor:hover {
   color: #d9141d;
 }
 
+.glass-nav .navbar-brand-accent {
+  color: #d9141d;
+}
+
 .glass-nav a:hover,
 .glass-nav button:hover {
   background: #fffafa;
@@ -1517,6 +1521,34 @@ html[data-theme="dark"] footer [class*="text-[#ff6b70]"] {
 
 html[data-theme="dark"] footer a:hover {
   color: #fffafa;
+}
+
+html[data-theme="dark"] .glass-nav .navbar-brand-accent {
+  color: #ff6b70;
+}
+
+footer .footer-visit-link {
+  border-color: #d9141d;
+  background: #d9141d;
+  color: #fffafa;
+}
+
+footer .footer-visit-link:hover {
+  border-color: #800b12;
+  background: #800b12;
+  color: #fffafa;
+}
+
+html[data-theme="dark"] footer .footer-visit-link {
+  border-color: #ff6b70;
+  background: #ff6b70;
+  color: #101010;
+}
+
+html[data-theme="dark"] footer .footer-visit-link:hover {
+  border-color: #fffafa;
+  background: #fffafa;
+  color: #101010;
 }
 
 html[data-theme="dark"] ::-webkit-scrollbar-track {

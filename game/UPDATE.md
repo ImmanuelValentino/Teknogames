@@ -1,4 +1,8 @@
 # Update Game
+## [3.15.34] - 2026-11-24
+### Fixed (Warna Logo Navbar dan Tombol Kunjungi Teknotama)
+- Menetapkan warna tema yang berbeda dan kontras untuk aksen Game pada logo navbar serta tombol Kunjungi Teknotama di footer.
+
 ## [3.15.33] - 2026-11-24
 ### Fixed (Audit Kontras dan Konsistensi Warna)
 - Menyatukan aksen merah/coral, memperbaiki kontras teks dan ikon untuk tema terang/gelap, menjaga warna ikon Favorit navbar, dan memastikan warna teks dasar mengikuti tema.

@@ -1,3 +1,10 @@
+### [2026-11-24 18:41] - [Frontend] - Warna Logo Navbar dan Tombol Kunjungi Teknotama
+- **Kondisi Sebelum:** Warna aksen logo Game dan tombol Kunjungi Teknotama bergantung pada aturan generik sehingga perbedaan warna antar tema tidak konsisten terlihat.
+- **Perubahan Sesudah:** Logo memakai merah #D9141D pada light mode dan coral #FF6B70 pada dark mode. Tombol footer memakai latar merah dengan teks putih pada light mode, lalu coral dengan teks hitam pada dark mode; hover tetap kontras.
+- **Masalah yang Ditemukan:** Aturan generik dan utilitas warna tidak cukup eksplisit untuk kedua elemen.
+- **Penyelesaian:** Menambahkan class khusus dan aturan tema berprioritas tinggi untuk state normal dan hover.
+- **File Terdampak:** `src/app/globals.css`, `src/components/layout/Navbar.tsx`, `src/components/layout/Footer.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:32] - [Frontend] - Audit Kontras dan Konsistensi Warna
 - **Kondisi Sebelum:** Sebagian aksen masih memakai merah muda/merah lama; warna teks dasar body dipatok terang; ikon Favorit navbar pada hover dark mode berhadapan dengan latar coral sehingga kontras rendah; beberapa kontrol/footer menggunakan warna lama.
 - **Perubahan Sesudah:** Aksen utama diseragamkan ke #D9141D dan coral #FF6B70, warna teks dasar mengikuti token light/dark, ikon Favorit tetap merah dengan hover putih salju di dark mode, serta separator dan kontrol memakai warna tema yang konsisten. Palet #F5EDDA pada papan rekor dipertahankan.
@@ -75,7 +82,7 @@
 - **Penyelesaian:** Menambahkan override tema gelap pada tombol sponsor navbar dengan kombinasi merah dan putih yang kontras.
 - **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
 
-### [2026-11-24 18:45] - [Frontend] - Tipografi Website Lebih Jelas dan Konsisten
+### [2026-11-24 18:41] - [Frontend] - Tipografi Website Lebih Jelas dan Konsisten
 - **Kondisi Sebelum:** Judul, isi, dan kontrol memakai kombinasi Space Grotesk, Plus Jakarta Sans, Georgia, serta monospace dengan tracking lebar.
 - **Perubahan Sesudah:** Font sistem Segoe UI/system-ui dipakai pada judul, isi, dan kontrol; monospace hanya tersedia untuk utilitas kode. Judul memakai kapitalisasi normal.
 - **Masalah yang Ditemukan:** Build gagal saat mencoba mengambil Inter dari Google Fonts karena koneksi jaringan ditolak.
