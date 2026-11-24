@@ -59,16 +59,22 @@ main nav[aria-label="Jejak navigasi"] {
   color: #68595c;
 }
 
-main nav[aria-label="Jejak navigasi"] a {
+main nav[aria-label="Jejak navigasi"] a,
+main nav[aria-label="Breadcrumb"] a,
+main nav[aria-label*="navigasi"] a {
   color: #843441;
 }
 
-main nav[aria-label="Jejak navigasi"] a:hover {
+main nav[aria-label="Jejak navigasi"] a:hover,
+main nav[aria-label="Breadcrumb"] a:hover,
+main nav[aria-label*="navigasi"] a:hover {
   color: #642832;
 }
 
-main nav[aria-label="Jejak navigasi"] > span:last-child {
-  color: #161616;
+main nav[aria-label="Jejak navigasi"] > span:last-child,
+main nav[aria-label="Breadcrumb"] > span:last-child,
+main nav[aria-label*="navigasi"] > span:last-child {
+  color: var(--ink);
 }
 
 h1,
@@ -194,6 +200,11 @@ html:not([data-theme="dark"]) .glass-nav [role="group"] button[aria-pressed="fal
 .glass-nav .navbar-brand:hover {
   background: transparent;
   color: inherit;
+}
+
+.play-page-recommendations {
+  margin-top: 6px !important;
+  padding-top: 0 !important;
 }
 
 header > div[class*="lg:hidden"][class*="border-t"] {
@@ -1140,15 +1151,31 @@ html[data-theme="dark"] body {
   color: var(--ink);
 }
 
-html[data-theme="dark"] main nav[aria-label="Jejak navigasi"] {
+html[data-theme="dark"] main nav[aria-label="Jejak navigasi"],
+html[data-theme="dark"] main nav[aria-label="Breadcrumb"],
+html[data-theme="dark"] main nav[aria-label*="navigasi"] {
   color: var(--muted);
 }
 
 html[data-theme="dark"] main nav[aria-label="Jejak navigasi"] a,
+html[data-theme="dark"] main nav[aria-label="Breadcrumb"] a,
+html[data-theme="dark"] main nav[aria-label*="navigasi"] a,
 html[data-theme="dark"] .section-kicker,
 html[data-theme="dark"] .section-heading span,
 html[data-theme="dark"] .card-natural .section-heading span {
   color: #e09aa6;
+}
+
+html[data-theme="dark"] main nav[aria-label="Jejak navigasi"] a:hover,
+html[data-theme="dark"] main nav[aria-label="Breadcrumb"] a:hover,
+html[data-theme="dark"] main nav[aria-label*="navigasi"] a:hover {
+  color: #ff8c9f;
+}
+
+html[data-theme="dark"] main nav[aria-label="Jejak navigasi"] > span:last-child,
+html[data-theme="dark"] main nav[aria-label="Breadcrumb"] > span:last-child,
+html[data-theme="dark"] main nav[aria-label*="navigasi"] > span:last-child {
+  color: #f3f4f6 !important;
 }
 
 html[data-theme="dark"] .glass-nav,

@@ -210,7 +210,7 @@
     }
 
     const gameState = room.game_state;
-    if (gameState.players.length >= 15) {
+    if (gameState.players.length >= 30) {
       alert(t('room_full'));
       return;
     }
@@ -259,7 +259,7 @@
           .single();
 
         if (room && room.game_state) {
-          if (!currentRoomData || room.updated_at !== currentRoomData.updated_at) {
+          if (!currentRoomData || room.status !== currentRoomData.status || room.updated_at !== currentRoomData.updated_at) {
             handleRoomStateSync(room);
           }
         }
@@ -338,6 +338,8 @@
       renderOnlineDayAnnouncement(state);
     } else if (status === 'day_voting') {
       renderOnlineDayVoting(state);
+    } else if (status === 'day_vote_result') {
+      renderOnlineVoteResult(state);
     } else if (status === 'finished') {
       renderOnlineGameOver(state);
     }
@@ -347,6 +349,12 @@
   // 3. TAMPILAN LOBI ONLINE
   // ==========================================
   function renderLobbyScreen(state) {
+    lastRenderedNightKey = null;
+    clearCardPickTimer();
+    clearVoteResultTimer();
+    if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
+      window.WerewolfApp.setHudRole(null);
+    }
     window.WerewolfApp.switchScreen('screenOnlineLobby');
     window.WerewolfApp.setHudStatusKey('hud_lobby_code', { code: state.room_code });
 
@@ -506,13 +514,22 @@
       [pool[i], pool[j]] = [pool[j], pool[i]];
     }
 
-    state.cards = pool.map((role, idx) => ({
-      id: idx,
-      role: role,
-      picked_by: null
-    }));
+    state.cards = pool.map((role, idx) => {
+      const owner = state.players[idx] || null;
+      if (owner) {
+        owner.card_id = idx;
+        owner.role = role;
+        owner.ready = false;
+      }
+      return {
+        id: idx,
+        role: role,
+        picked_by: owner ? owner.id : null
+      };
+    });
 
     state.phase = 'card_pick';
+    state.card_pick_start_time = Date.now();
 
     await supabaseClient
       .from('werewolf_rooms')
@@ -527,17 +544,85 @@
   // ==========================================
   // 5. TAMPILAN PEMILIHAN KARTU ONLINE
   // ==========================================
+  let cardPickCountdownTimer = null;
+  let autoPickHandledTurnKey = null;
+  let lastRenderedNightKey = null;
+  let voteResultCountdownTimer = null;
+  let voteResultTransitionedAt = null;
+
+  function clearCardPickTimer() {
+    if (cardPickCountdownTimer) {
+      clearInterval(cardPickCountdownTimer);
+      cardPickCountdownTimer = null;
+    }
+  }
+
+  function clearVoteResultTimer() {
+    if (voteResultCountdownTimer) {
+      clearInterval(voteResultCountdownTimer);
+      voteResultCountdownTimer = null;
+    }
+  }
+
   function renderOnlineCardPick(state) {
+    lastRenderedNightKey = null;
+    clearVoteResultTimer();
     window.WerewolfApp.switchScreen('screenCardPick');
     window.WerewolfApp.setHudStatusKey('hud_pick_card');
 
     const me = state.players.find(p => p.id === myPlayerId);
-    const hasPicked = Boolean(me && me.card_id !== null);
+    const hasPicked = Boolean(me && me.card_id !== null && me.card_id !== undefined);
 
-    document.getElementById('cardPickHeaderTitle').textContent = hasPicked ? t('card_pick_yours_title') : t('card_pick_title');
-    document.getElementById('cardPickHeaderDesc').textContent = hasPicked
-      ? t('card_pick_yours_desc')
-      : t('card_pick_desc');
+    if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
+      window.WerewolfApp.setHudRole(hasPicked && me ? me.role : null);
+    }
+
+    const headerTitle = document.getElementById('cardPickHeaderTitle');
+    const headerDesc = document.getElementById('cardPickHeaderDesc');
+    headerTitle.textContent = hasPicked ? t('card_pick_yours_title') : t('card_pick_title');
+    headerDesc.textContent = hasPicked ? t('card_pick_yours_desc') : t('card_pick_desc');
+
+    const totalCards = state.cards.length;
+    const pickedCards = state.cards.filter(c => c.picked_by !== null).length;
+    const remainingCards = Math.max(0, totalCards - pickedCards);
+
+    const metaBar = document.getElementById('cardPickMetaBar');
+    const quotaBadge = document.getElementById('cardPickQuotaBadge');
+    const timerBadge = document.getElementById('cardPickTimerBadge');
+    const timerDigits = document.getElementById('cardPickTimerDigits');
+    if (metaBar) {
+      metaBar.classList.remove('hidden');
+      metaBar.style.display = 'flex';
+    }
+    if (quotaBadge) {
+      quotaBadge.textContent = t('card_pick_quota', {
+        picked: pickedCards,
+        total: totalCards,
+        remaining: remainingCards
+      });
+    }
+
+    clearCardPickTimer();
+    if (timerBadge) timerBadge.classList.remove('hidden');
+
+    const startTime = state.card_pick_start_time || Date.now();
+    const updateReadyTimer = async () => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const remain = Math.max(0, 15 - elapsed);
+      if (timerDigits) timerDigits.textContent = `${remain}s`;
+
+      if (remain <= 0 && autoPickHandledTurnKey !== startTime) {
+        autoPickHandledTurnKey = startTime;
+        clearCardPickTimer();
+        if (me && !me.ready) {
+          await syncPlayerReadyState();
+        }
+      }
+    };
+
+    const initRemain = Math.max(0, 15 - Math.floor((Date.now() - startTime) / 1000));
+    if (timerDigits) timerDigits.textContent = `${initRemain}s`;
+    cardPickCountdownTimer = setInterval(updateReadyTimer, 1000);
 
     const grid = document.getElementById('cardPickGrid');
     grid.innerHTML = '';
@@ -545,27 +630,27 @@
     state.cards.forEach((c, idx) => {
       const isTaken = (c.picked_by !== null);
       const isMine = (c.picked_by === myPlayerId);
+      const picker = isTaken ? state.players.find(p => p.id === c.picked_by) : null;
       const cDef = getRoleDef(c.role);
 
       const cardEl = document.createElement('div');
-      cardEl.className = 'card-pick-item' + (isTaken ? ' taken' : '') + (isMine ? ' flipped' : '');
+      cardEl.className = 'card-pick-item' + (isMine ? ' flipped is-mine' : (isTaken ? ' taken' : ''));
+
+      const backStatusText = isTaken && !isMine && picker
+        ? t('card_taken_by', { name: picker.name })
+        : t('card_label', { n: idx + 1 });
 
       cardEl.innerHTML = `
         <div class="card-face card-back">
           <div class="card-back-pattern">${window.WerewolfIcons.get('moon')}</div>
-          <div class="card-back-number">${t('card_label', { n: idx + 1 })}</div>
+          <div class="card-back-number">${backStatusText}</div>
         </div>
         <div class="card-face card-front ${isMine ? cDef.badgeClass : ''}">
           <div class="card-front-icon">${isMine ? window.WerewolfIcons.get(c.role) : ''}</div>
           <div class="card-front-title">${isMine ? cDef.name : t('card_taken')}</div>
+          ${isMine ? `<div class="card-mine-badge">${t('card_mine_badge')}</div>` : ''}
         </div>
       `;
-
-      if (!hasPicked && !isTaken) {
-        cardEl.onclick = () => {
-          pickCardAtomically(c.id);
-        };
-      }
 
       grid.appendChild(cardEl);
     });
@@ -574,8 +659,8 @@
     const actionBtns = document.getElementById('cardPickActionBtns');
     const btnRandom = document.getElementById('btnCardPickRandom');
 
+    btnRandom.classList.add('hidden');
     if (hasPicked) {
-      btnRandom.classList.add('hidden');
       roleRevealPanel.classList.remove('hidden');
       actionBtns.classList.remove('hidden');
 
@@ -587,94 +672,150 @@
       document.getElementById('revealRoleDesc').textContent = def.desc;
 
       const btnConfirm = document.getElementById('btnConfirmCardPick');
-      btnConfirm.textContent = me.ready ? t('waiting_other_players') : t('iam_ready');
+      const notReadyCount = state.players.filter(p => !p.ready).length;
+      btnConfirm.textContent = me.ready
+        ? t('waiting_other_players_count', { count: notReadyCount })
+        : t('iam_ready');
       btnConfirm.disabled = Boolean(me.ready);
 
       btnConfirm.onclick = async () => {
         window.WerewolfAudio.play('click');
-        me.ready = true;
         await syncPlayerReadyState();
       };
     } else {
-      btnRandom.classList.remove('hidden');
       roleRevealPanel.classList.add('hidden');
       actionBtns.classList.add('hidden');
-
-      btnRandom.onclick = () => {
-        const available = state.cards.filter(c => c.picked_by === null);
-        if (available.length === 0) return;
-        const randomCard = available[Math.floor(Math.random() * available.length)];
-        pickCardAtomically(randomCard.id);
-      };
     }
   }
 
-  async function pickCardAtomically(cardId) {
-    if (!currentRoomData) return;
-    const state = currentRoomData.game_state;
-    const card = state.cards.find(c => c.id === cardId);
+  let isPickingCard = false;
 
-    // Mencegah race condition jika kartu baru saja diambil orang lain
-    if (!card || card.picked_by !== null) {
-      alert(t('card_already_taken'));
-      return;
+  async function updateRoomStateAtomically(mutatorFn, maxRetries = 8) {
+    if (!supabaseClient || !currentRoomCode) return { ok: false, reason: 'no_room' };
+
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      const { data: freshRow, error: fetchError } = await supabaseClient
+        .from('werewolf_rooms')
+        .select('room_code, status, game_state, updated_at')
+        .eq('room_code', currentRoomCode)
+        .single();
+
+      if (fetchError || !freshRow || !freshRow.game_state) {
+        return { ok: false, reason: 'fetch_error' };
+      }
+
+      const clonedState = JSON.parse(JSON.stringify(freshRow.game_state));
+      const outcome = mutatorFn(clonedState, freshRow.status);
+      if (outcome && outcome.abort) {
+        handleRoomStateSync(freshRow);
+        return { ok: false, reason: outcome.abort };
+      }
+
+      const nextStatus = (outcome && outcome.status) || freshRow.status;
+      const nextState = (outcome && outcome.state) || clonedState;
+      const nextUpdatedAt = new Date().toISOString();
+
+      const { data: updatedRows, error: updateError } = await supabaseClient
+        .from('werewolf_rooms')
+        .update({
+          status: nextStatus,
+          game_state: nextState,
+          updated_at: nextUpdatedAt
+        })
+        .eq('room_code', currentRoomCode)
+        .eq('updated_at', freshRow.updated_at)
+        .select('room_code, status, game_state, updated_at');
+
+      if (!updateError && Array.isArray(updatedRows) && updatedRows.length > 0) {
+        handleRoomStateSync(updatedRows[0]);
+        return { ok: true, row: updatedRows[0] };
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 45 + Math.floor(Math.random() * 90)));
     }
 
-    card.picked_by = myPlayerId;
-    const me = state.players.find(p => p.id === myPlayerId);
-    if (me) {
-      me.card_id = cardId;
-      me.role = card.role;
+    return { ok: false, reason: 'conflict' };
+  }
+
+  async function pickCardAtomically(cardId, targetPlayerId = myPlayerId) {
+    if (!currentRoomData || isPickingCard) return;
+    isPickingCard = true;
+    try {
+      const res = await updateRoomStateAtomically((state, status) => {
+        if (status !== 'card_pick') return { abort: 'not_card_pick' };
+        const turnIdx = typeof state.card_pick_turn_index === 'number' ? state.card_pick_turn_index : 0;
+        const activePlayer = state.players[turnIdx];
+        if (!activePlayer || activePlayer.id !== targetPlayerId) {
+          return { abort: 'not_your_turn' };
+        }
+        if (activePlayer.card_id !== null && activePlayer.card_id !== undefined) {
+          return { abort: 'already_picked' };
+        }
+
+        const card = state.cards.find(c => c.id === cardId);
+        if (!card || card.picked_by !== null) {
+          return { abort: 'taken' };
+        }
+
+        card.picked_by = targetPlayerId;
+        activePlayer.card_id = cardId;
+        activePlayer.role = card.role;
+        state.card_pick_turn_index = turnIdx + 1;
+        state.card_pick_turn_start_time = Date.now();
+        return { state };
+      });
+
+      if (res.ok && targetPlayerId === myPlayerId) {
+        window.WerewolfAudio.play('flip');
+      } else if (res.reason === 'taken' && targetPlayerId === myPlayerId) {
+        alert(t('card_already_taken'));
+      }
+    } finally {
+      isPickingCard = false;
     }
-
-    window.WerewolfAudio.play('flip');
-
-    await supabaseClient
-      .from('werewolf_rooms')
-      .update({
-        game_state: state,
-        updated_at: new Date().toISOString()
-      })
-      .eq('room_code', currentRoomCode);
   }
 
   async function syncPlayerReadyState() {
     if (!currentRoomData) return;
-    const state = currentRoomData.game_state;
-    const me = state.players.find(p => p.id === myPlayerId);
-    if (me) me.ready = true;
+    await updateRoomStateAtomically((state, status) => {
+      const me = state.players.find(p => p.id === myPlayerId);
+      if (me) me.ready = true;
 
-    // Cek apakah semua pemain sudah ready
-    const allReady = state.players.every(p => p.ready);
-    if (allReady) {
-      state.phase = 'night';
-      state.night_step = 'bodyguard';
-      state.night_step_start_time = Date.now();
-      state.players.forEach(p => p.ready = false);
-
-      await supabaseClient
-        .from('werewolf_rooms')
-        .update({
-          status: 'night',
-          game_state: state,
-          updated_at: new Date().toISOString()
-        })
-        .eq('room_code', currentRoomCode);
-    } else {
-      await supabaseClient
-        .from('werewolf_rooms')
-        .update({
-          game_state: state,
-          updated_at: new Date().toISOString()
-        })
-        .eq('room_code', currentRoomCode);
-    }
+      const allReady = state.players.every(
+        p => p.ready && p.card_id !== null && p.card_id !== undefined
+      );
+      if (allReady) {
+        state.phase = 'night';
+        state.night_step = 'bodyguard';
+        state.night_step_start_time = Date.now();
+        state.players.forEach(p => { p.ready = false; });
+        return { status: 'night', state };
+      }
+      return { status, state };
+    });
   }
 
   // ==========================================
   // 6. SIKLUS MALAM REALTIME
   // ==========================================
   function renderOnlineNight(state) {
+    clearCardPickTimer();
+    clearVoteResultTimer();
+
+    const me = state.players.find(p => p.id === myPlayerId);
+    const currentStep = state.night_step; // 'bodyguard' | 'werewolf' | 'seer' | 'resolving'
+    const isMyTurn = (me && me.alive && me.role === currentStep);
+
+    if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
+      window.WerewolfApp.setHudRole(me ? me.role : null);
+    }
+
+    const nightKey = `${currentStep}:${state.night_step_start_time || 0}:${isMyTurn ? '1' : '0'}`;
+    if (lastRenderedNightKey === nightKey) {
+      return;
+    }
+    lastRenderedNightKey = nightKey;
+
     if (nightStepCountdownTimer) {
       clearInterval(nightStepCountdownTimer);
       nightStepCountdownTimer = null;
@@ -683,13 +824,8 @@
     window.WerewolfApp.switchScreen('screenNightAction');
     window.WerewolfApp.setHudStatusKey('hud_night_time');
 
-    const me = state.players.find(p => p.id === myPlayerId);
-    const currentStep = state.night_step; // 'bodyguard' | 'werewolf' | 'seer' | 'resolving'
-
     const waitingBox = document.getElementById('nightWaitingBox');
     const actionBox = document.getElementById('nightActiveActionBox');
-
-    const isMyTurn = (me && me.alive && me.role === currentStep);
 
     // Hitung sisa waktu 30 detik untuk langkah malam saat ini
     const stepStartTime = state.night_step_start_time || Date.now();
@@ -887,50 +1023,36 @@
 
   async function submitNightAction(role, targetId) {
     if (!currentRoomData) return;
-    const state = currentRoomData.game_state;
-
-    if (role === 'bodyguard') {
-      state.night_actions.protected_id = targetId;
-      const me = state.players.find(p => p.id === myPlayerId);
-      if (me) me.last_protected = targetId;
-    } else if (role === 'werewolf') {
-      state.night_actions.wolf_target_id = targetId;
-    } else if (role === 'seer') {
-      state.night_actions.seer_target_id = targetId;
-    }
-
-    await advanceNightStep();
+    await updateRoomStateAtomically((state, status) => {
+      if (role === 'bodyguard') {
+        state.night_actions.protected_id = targetId;
+        const me = state.players.find(p => p.id === myPlayerId);
+        if (me) me.last_protected = targetId;
+      } else if (role === 'werewolf') {
+        state.night_actions.wolf_target_id = targetId;
+      } else if (role === 'seer') {
+        state.night_actions.seer_target_id = targetId;
+      }
+      return applyAdvanceNightStep(state, status);
+    });
   }
 
-  async function advanceNightStep() {
-    if (!currentRoomData) return;
-    const state = currentRoomData.game_state;
+  function applyAdvanceNightStep(state, status) {
     const steps = ['bodyguard', 'werewolf', 'seer'];
     const currentIdx = steps.indexOf(state.night_step);
 
     if (currentIdx < steps.length - 1) {
       state.night_step = steps[currentIdx + 1];
-      state.night_step_start_time = Date.now(); // Reset timer untuk langkah berikutnya
-      await supabaseClient
-        .from('werewolf_rooms')
-        .update({
-          game_state: state,
-          updated_at: new Date().toISOString()
-        })
-        .eq('room_code', currentRoomCode);
-    } else {
-      // Resolusi malam
-      resolveNightOnline(state);
+      state.night_step_start_time = Date.now();
+      return { status, state };
     }
-  }
 
-  async function resolveNightOnline(state) {
     const wolfTarget = state.players.find(p => p.id === state.night_actions.wolf_target_id);
     let victim = null;
 
     if (wolfTarget && wolfTarget.alive) {
       if (state.night_actions.protected_id === wolfTarget.id) {
-        victim = null; // Selamat
+        victim = null;
       } else {
         wolfTarget.alive = false;
         victim = wolfTarget;
@@ -942,28 +1064,17 @@
     state.night_step = 'bodyguard';
     state.night_actions = { protected_id: null, wolf_target_id: null, seer_target_id: null, hunter_shot_id: null };
 
-    // Cek kemenangan
     if (checkOnlineWin(state)) {
       state.phase = 'finished';
-      await supabaseClient
-        .from('werewolf_rooms')
-        .update({
-          status: 'finished',
-          game_state: state,
-          updated_at: new Date().toISOString()
-        })
-        .eq('room_code', currentRoomCode);
-      return;
+      return { status: 'finished', state };
     }
 
-    await supabaseClient
-      .from('werewolf_rooms')
-      .update({
-        status: 'day_announcement',
-        game_state: state,
-        updated_at: new Date().toISOString()
-      })
-      .eq('room_code', currentRoomCode);
+    return { status: 'day_announcement', state };
+  }
+
+  async function advanceNightStep() {
+    if (!currentRoomData) return;
+    await updateRoomStateAtomically((state, status) => applyAdvanceNightStep(state, status));
   }
 
   // ==========================================
@@ -973,6 +1084,9 @@
   let onlineDiscussionSeconds = 120;
 
   function renderOnlineDayAnnouncement(state) {
+    lastRenderedNightKey = null;
+    clearCardPickTimer();
+    clearVoteResultTimer();
     if (nightStepCountdownTimer) {
       clearInterval(nightStepCountdownTimer);
       nightStepCountdownTimer = null;
@@ -980,6 +1094,11 @@
     if (onlineDiscussionTimer) {
       clearInterval(onlineDiscussionTimer);
       onlineDiscussionTimer = null;
+    }
+
+    const me = state.players.find(p => p.id === myPlayerId);
+    if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
+      window.WerewolfApp.setHudRole(me ? me.role : null);
     }
 
     window.WerewolfApp.switchScreen('screenDayAnnouncement');
@@ -1151,6 +1270,9 @@
   }
 
   function renderOnlineDayVoting(state) {
+    lastRenderedNightKey = null;
+    clearCardPickTimer();
+    clearVoteResultTimer();
     if (onlineDiscussionTimer) {
       clearInterval(onlineDiscussionTimer);
       onlineDiscussionTimer = null;
@@ -1165,15 +1287,25 @@
     window.WerewolfApp.setHudStatusKey('hud_voting');
 
     const me = state.players.find(p => p.id === myPlayerId);
-    const hasVoted = Boolean(me && me.vote !== null);
+    if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
+      window.WerewolfApp.setHudRole(me ? me.role : null);
+    }
+    const hasVoted = Boolean(me && me.vote !== null && me.vote !== undefined);
+    const alivePlayers = state.players.filter(p => p.alive);
+    const remainingVoters = alivePlayers.filter(p => p.vote === null || p.vote === undefined).length;
 
     const list = document.getElementById('votingTargetList');
     list.innerHTML = '';
-    mySelectedVoteTargetId = null;
+    if (hasVoted || !me || !me.alive) {
+      mySelectedVoteTargetId = null;
+    }
 
     state.players.forEach(p => {
       if (!p.alive) return;
       const card = createOnlineTargetCard(p, t('tag_vote_execute'));
+      if (mySelectedVoteTargetId === p.id && !hasVoted) {
+        card.classList.add('selected');
+      }
       if (me && me.alive && !hasVoted) {
         card.onclick = () => {
           list.querySelectorAll('.target-card').forEach(c => c.classList.remove('selected'));
@@ -1192,7 +1324,7 @@
       btnConfirm.textContent = t('you_are_dead');
       btnConfirm.disabled = true;
     } else if (hasVoted) {
-      btnConfirm.textContent = t('vote_submitted');
+      btnConfirm.textContent = t('vote_submitted_count', { count: remainingVoters });
       btnConfirm.disabled = true;
     } else {
       btnConfirm.textContent = t('submit_vote_btn');
@@ -1202,75 +1334,177 @@
           alert(t('must_pick_vote'));
           return;
         }
-        me.vote = mySelectedVoteTargetId;
         window.WerewolfAudio.play('click');
-        await submitVoteOnline(state);
+        await submitVoteOnline(mySelectedVoteTargetId);
       };
     }
   }
 
-  async function submitVoteOnline(state) {
-    // Cek apakah seluruh pemain hidup sudah vote
-    const alivePlayers = state.players.filter(p => p.alive);
-    const allVoted = alivePlayers.every(p => p.vote !== null);
+  let isSubmittingVote = false;
 
-    if (allVoted) {
-      // Rekap suara
-      const voteCounts = {};
-      alivePlayers.forEach(p => {
-        voteCounts[p.vote] = (voteCounts[p.vote] || 0) + 1;
-      });
-
-      let highestTargetId = null;
-      let maxVotes = 0;
-      Object.keys(voteCounts).forEach(targetId => {
-        if (voteCounts[targetId] > maxVotes) {
-          maxVotes = voteCounts[targetId];
-          highestTargetId = targetId;
+  async function submitVoteOnline(targetId) {
+    if (isSubmittingVote) return;
+    isSubmittingVote = true;
+    try {
+      await updateRoomStateAtomically((state, status) => {
+        if (status !== 'day_voting') {
+          return { abort: 'not_voting' };
         }
+        const me = state.players.find(p => p.id === myPlayerId);
+        if (me && me.alive && (me.vote === null || me.vote === undefined)) {
+          me.vote = targetId;
+        }
+
+        const alivePlayers = state.players.filter(p => p.alive);
+        const allVoted = alivePlayers.every(p => p.vote !== null && p.vote !== undefined);
+
+        if (allVoted) {
+          const voteCounts = {};
+          alivePlayers.forEach(p => {
+            voteCounts[p.vote] = (voteCounts[p.vote] || 0) + 1;
+          });
+
+          let highestTargetId = null;
+          let maxVotes = 0;
+          Object.keys(voteCounts).forEach(tid => {
+            if (voteCounts[tid] > maxVotes) {
+              maxVotes = voteCounts[tid];
+              highestTargetId = tid;
+            }
+          });
+
+          const executed = state.players.find(p => p.id === highestTargetId);
+          if (executed) {
+            executed.alive = false;
+            window.WerewolfAudio.play('gavel');
+          }
+
+          const isWin = checkOnlineWin(state);
+          state.last_vote_result = {
+            counts: voteCounts,
+            executed: executed ? { id: executed.id, name: executed.name, role: executed.role } : null,
+            total_votes: alivePlayers.length,
+            result_start_time: Date.now(),
+            is_win: isWin
+          };
+          state.phase = 'day_vote_result';
+          return { status: 'day_vote_result', state };
+        }
+
+        return { status, state };
       });
+    } finally {
+      isSubmittingVote = false;
+    }
+  }
 
-      const executed = state.players.find(p => p.id === highestTargetId);
-      if (executed) {
-        executed.alive = false;
-        window.WerewolfAudio.play('gavel');
+  async function proceedAfterVoteResult() {
+    await updateRoomStateAtomically((state, status) => {
+      if (status !== 'day_vote_result') {
+        return { abort: 'already_advanced' };
       }
-
-      if (checkOnlineWin(state)) {
+      const isWin = checkOnlineWin(state);
+      state.players.forEach(p => { p.vote = null; });
+      if (isWin) {
         state.phase = 'finished';
-        await supabaseClient
-          .from('werewolf_rooms')
-          .update({
-            status: 'finished',
-            game_state: state,
-            updated_at: new Date().toISOString()
-          })
-          .eq('room_code', currentRoomCode);
-        return;
+        return { status: 'finished', state };
       }
-
-      // Lanjut ke malam berikutnya
       state.phase = 'night';
       state.night_step = 'bodyguard';
-      state.players.forEach(p => p.vote = null);
+      state.night_step_start_time = Date.now();
+      return { status: 'night', state };
+    });
+  }
 
-      await supabaseClient
-        .from('werewolf_rooms')
-        .update({
-          status: 'night',
-          game_state: state,
-          updated_at: new Date().toISOString()
-        })
-        .eq('room_code', currentRoomCode);
-    } else {
-      await supabaseClient
-        .from('werewolf_rooms')
-        .update({
-          game_state: state,
-          updated_at: new Date().toISOString()
-        })
-        .eq('room_code', currentRoomCode);
+  function renderOnlineVoteResult(state) {
+    lastRenderedNightKey = null;
+    clearCardPickTimer();
+    clearVoteResultTimer();
+
+    window.WerewolfApp.switchScreen('screenVoteResult');
+    window.WerewolfApp.setHudStatusKey('hud_vote_result');
+
+    const me = state.players.find(p => p.id === myPlayerId);
+    if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
+      window.WerewolfApp.setHudRole(me ? me.role : null);
     }
+
+    const res = state.last_vote_result || { counts: {}, executed: null, result_start_time: Date.now(), is_win: false };
+    const elimEl = document.getElementById('voteResultEliminatedText');
+    if (elimEl) {
+      if (res.executed) {
+        const def = getRoleDef(res.executed.role);
+        elimEl.innerHTML = t('vote_eliminated_html', {
+          name: res.executed.name,
+          color: def.color,
+          role: def.name
+        });
+      } else {
+        elimEl.textContent = t('vote_none_eliminated');
+      }
+    }
+
+    const listEl = document.getElementById('voteResultList');
+    if (listEl) {
+      listEl.innerHTML = '';
+      const counts = res.counts || {};
+      const entries = Object.keys(counts)
+        .map(pid => {
+          const pl = state.players.find(p => p.id === pid);
+          return { id: pid, name: pl ? pl.name : pid, count: counts[pid], isEliminated: Boolean(res.executed && res.executed.id === pid) };
+        })
+        .sort((a, b) => b.count - a.count);
+
+      entries.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'roster-item' + (item.isEliminated ? ' is-me' : '');
+        row.innerHTML = `
+          <div class="roster-name-wrap">
+            <span class="roster-name">${item.name}</span>
+          </div>
+          <span class="roster-status-badge" style="${item.isEliminated ? 'border-color:var(--blood-glow); color:var(--rose-light);' : ''}">
+            ${t('vote_count_badge', { count: item.count })}
+          </span>
+        `;
+        listEl.appendChild(row);
+      });
+    }
+
+    const btnContinue = document.getElementById('btnContinueAfterVote');
+    if (btnContinue) {
+      if (isHost) {
+        btnContinue.classList.remove('hidden');
+        btnContinue.disabled = false;
+        btnContinue.textContent = res.is_win ? t('continue_gameover_btn') : t('continue_night_btn');
+        btnContinue.onclick = async () => {
+          clearVoteResultTimer();
+          await proceedAfterVoteResult();
+        };
+      } else {
+        btnContinue.classList.remove('hidden');
+        btnContinue.disabled = true;
+        btnContinue.textContent = t('waiting_host_btn');
+      }
+    }
+
+    const startTime = res.result_start_time || Date.now();
+    const timerDigits = document.getElementById('voteResultTimerDigits');
+    const updateTimer = async () => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const remain = Math.max(0, 6 - elapsed);
+      if (timerDigits) timerDigits.textContent = `${remain}s`;
+      if (remain <= 0) {
+        clearVoteResultTimer();
+        if (isHost && voteResultTransitionedAt !== startTime) {
+          voteResultTransitionedAt = startTime;
+          await proceedAfterVoteResult();
+        }
+      }
+    };
+
+    const initRemain = Math.max(0, 6 - Math.floor((Date.now() - startTime) / 1000));
+    if (timerDigits) timerDigits.textContent = `${initRemain}s`;
+    voteResultCountdownTimer = setInterval(updateTimer, 1000);
   }
 
   function checkOnlineWin(state) {
@@ -1290,7 +1524,16 @@
   // ==========================================
   // 8. GAME OVER & AUTO-CLEANUP
   // ==========================================
+  let gameOverCleanupRoom = null;
+
   function renderOnlineGameOver(state) {
+    lastRenderedNightKey = null;
+    clearCardPickTimer();
+    clearVoteResultTimer();
+    stopRoomPolling();
+    if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
+      window.WerewolfApp.setHudRole(null);
+    }
     window.WerewolfApp.switchScreen('screenGameOver');
     window.WerewolfAudio.play('victory');
 
@@ -1327,11 +1570,12 @@
       rosterEl.appendChild(row);
     });
 
-    // Auto-delete room di Supabase setelah 10 detik atau saat keluar
-    if (isHost && currentRoomCode) {
+    // Auto-delete room di Supabase setelah 30 detik (sekali saja) agar semua pemain sempat menerima Game Over
+    if (isHost && currentRoomCode && gameOverCleanupRoom !== currentRoomCode) {
+      gameOverCleanupRoom = currentRoomCode;
       setTimeout(() => {
         deleteCurrentRoom();
-      }, 10000);
+      }, 30000);
     }
   }
 

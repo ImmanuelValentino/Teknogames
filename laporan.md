@@ -1,3 +1,105 @@
+### [2026-11-24 09:30] - [Frontend] - Penyesuaian Warna Ikon Kategori di Bawah Game agar Seragam dengan Navbar
+- **Kondisi Sebelum:**
+  1. Ikon kategori pada bilah kontrol di bawah iframe game (`GameFrame.tsx`) menggunakan prop `variant="dark"` secara statis.
+  2. Saat mode terang, ikon tetap berwarna terang/pudar (misalnya hijau mint `#6ee7b7` untuk Adventure) sehingga kontrasnya rendah dan tidak serasi dengan ikon kategori di navbar (`#047857`).
+- **Perubahan Sesudah:**
+  1. Menghapus prop `variant="dark"` pada `CategoryIcon` di `GameFrame.tsx` dan `PlayPageView.tsx`, sehingga warnanya otomatis adaptif sesuai tema: menggunakan `--category-icon-light` saat light mode dan `--category-icon-dark` saat dark mode persis seperti di navbar kategori.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui pemanggilan komponen `CategoryIcon` dan memverifikasi build.
+- **File Terdampak:** `src/components/game/GameFrame.tsx`, `src/components/game/PlayPageView.tsx`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 09:22] - [Frontend] - Penyesuaian Spasi di Atas Permainan Lainnya Untuk Anda
+- **Kondisi Sebelum:**
+  1. Pada halaman gameplay (`/play/[slug]`), terdapat jarak vertikal kosong yang lebar (~40px) di antara kartu gameplay/informasi dan judul "Permainan Lainnya Untuk Anda" / "More Games For You" akibat kombinasi `space-y-6` pada kontainer utama dan padding section.
+- **Perubahan Sesudah:**
+  1. Menggunakan class `.play-page-recommendations` dengan `margin-top: 6px !important` dan `padding-top: 0 !important` serta inline style penjamin pada section di `PlayPageView.tsx` agar margin bawaan `space-y-6` tidak memaksa jarak berlebih.
+  2. Memastikan `GoogleAdSlot` hanya dirender bersyarat jika `adSlot` terisi sehingga tidak menyisakan ruang kosong.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Menambahkan class spesifik di `globals.css` dan memperbarui `PlayPageView.tsx`.
+- **File Terdampak:** `src/components/game/PlayPageView.tsx`, `src/app/globals.css`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 09:00] - [Frontend] - Perbaikan Kontras Teks Judul Breadcrumb pada Dark Mode
+- **Kondisi Sebelum:**
+  1. Pada halaman gameplay (`/play/[slug]`) dan kategori (`/category/[category]`), teks judul terakhir pada jejak navigasi / breadcrumb (misalnya "Nusantara Runner: Escape to Bali", "Kapal Feri", dll.) berwarna hitam (`#161616`) karena aturan statis `main nav[aria-label="Jejak navigasi"] > span:last-child { color: #161616; }` di `globals.css` tanpa override dark mode.
+  2. Saat dark mode aktif dengan background gelap (`#17181c`), teks judul menjadi hitam di atas background hitam sehingga tidak terbaca / tidak terlihat sama sekali.
+- **Perubahan Sesudah:**
+  1. Mengubah aturan di `src/app/globals.css` agar memakai `var(--ink)` untuk light mode, serta menambahkan selector dark mode `html[data-theme="dark"] main nav[aria-label*="navigasi"] > span:last-child` dengan warna terang `#f3f4f6 !important`.
+  2. Memperbarui `PlayPageView.tsx` dan `CategoryView.tsx` dengan class utilitas adaptif `text-slate-900 dark:text-slate-100`.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui CSS selector di `globals.css` dan komponen terkait, lalu memverifikasi build static page.
+- **File Terdampak:** `src/app/globals.css`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 14:02] - [Games] - Responsivitas Badge Role HUD & Peningkatan Kapasitas Room Werewolf ke 30 Pemain
+- **Kondisi Sebelum:**
+  1. `.hud-left` di `public/games/werewolf/styles.css` belum memiliki `flex-wrap: wrap`, sehingga di layar sempit badge `#hudMyRoleBadge` berisiko terpotong.
+  2. Batas maksimal pemain dalam satu room Werewolf adalah 15 orang.
+- **Perubahan Sesudah:**
+  1. Menambahkan `flex-wrap: wrap` pada `.hud-left` dan `flex-shrink: 0` pada `.hud-right` agar badge peran `#hudMyRoleBadge` selalu tampil utuh di layar selama permainan berlangsung.
+  2. Menaikkan batas maksimal pemain dari 15 menjadi 30 pemain pada mode online (`online-supabase.js`), offline (`offline-engine.js`), dan teks UI/i18n (`index.html`).
+- **Masalah yang Ditemukan:** Validasi sintaks JS semua skrip Werewolf lulus.
+- **Penyelesaian:** Menyesuaikan CSS flex-wrap HUD dan konstanta batas maksimal pemain.
+- **File Terdampak:** `public/games/werewolf/styles.css`, `public/games/werewolf/online-supabase.js`, `public/games/werewolf/offline-engine.js`, `public/games/werewolf/index.html`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 13:59] - [Games] - Pembagian Kartu Langsung ke Semua Pemain Werewolf Online
+- **Kondisi Sebelum:**
+  1. Pemilihan kartu bergiliran 1-by-1 berisiko gagal mengunci kartu bila terjadi konflik CAS saat auto-pick (`autoPickHandledTurnKey` terkunci sebelum retry berhasil), sehingga ada pemain yang tetap tidak mendapat kartu.
+- **Perubahan Sesudah:**
+  1. Mengubah `startOnlineGame()` di `public/games/werewolf/online-supabase.js` agar langsung membagikan 1 kartu acak unik ke setiap pemain saat permainan dimulai.
+  2. `renderOnlineCardPick()` langsung menampilkan kartu peran milik masing-masing pemain (`is-mine`), deskripsi peran, tombol `Saya Siap` dengan penghitung sisa pemain belum siap, dan timer auto-ready 15 detik.
+- **Masalah yang Ditemukan:** Validasi sintaks JS `online-supabase.js` lulus.
+- **Penyelesaian:** Menghilangkan fase rebutan/antrean tulis DB saat pembagian kartu online.
+- **File Terdampak:** `public/games/werewolf/online-supabase.js`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 13:23] - [Games] - Pemilihan Kartu Werewolf Online Bergiliran 1-by-1 (3 Detik/Pemain)
+- **Kondisi Sebelum:**
+  1. Seluruh pemain memilih kartu secara bersamaan dengan timer global 30 detik.
+- **Perubahan Sesudah:**
+  1. Mengubah fase `card_pick` di `public/games/werewolf/online-supabase.js` menjadi bergiliran 1-by-1 sesuai urutan pemain masuk room (`card_pick_turn_index`).
+  2. Setiap pemain mendapat timer 3 detik (`card_pick_turn_start_time`); jika melewati 3 detik belum memilih, kartu tersisa otomatis dipilihkan (`auto-pick`) dengan fallback Host pada detik ke-4 agar antrean tidak macet.
+  3. Menambahkan teks status giliran aktif di `public/games/werewolf/index.html` (ID/EN).
+- **Masalah yang Ditemukan:** Validasi sintaks JS `index.html` dan `online-supabase.js` lulus.
+- **Penyelesaian:** Mengelola giliran dan reset timestamp per giliran di dalam `updateRoomStateAtomically`.
+- **File Terdampak:** `public/games/werewolf/online-supabase.js`, `public/games/werewolf/index.html`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 12:38] - [Games] - Popup Peran In-Game, Counter Belum Siap, dan Perbaikan Desync Voting Werewolf
+- **Kondisi Sebelum:**
+  1. Badge peran di HUD belum memiliki popup detail deskripsi peran saat diklik.
+  2. Status menunggu di fase pilih kartu belum menunjukkan berapa orang lagi yang belum menekan tombol Siap.
+  3. Saat voting, perbedaan kondisi `undefined` vs `null` pada `p.vote`, tidak adanya guard `status !== 'day_voting'`, polling yang hanya mengecek `updated_at`, serta penghapusan room 10 detik setelah Game Over menyebabkan sebagian pemain sudah selesai sementara pemain lain masih tertahan di layar voting.
+- **Perubahan Sesudah:**
+  1. Mengubah `#hudMyRoleBadge` menjadi tombol interaktif yang membuka `#roleInfoModal` (ikon, nama, dan deskripsi peran) sepanjang permainan.
+  2. Menampilkan sisa pemain yang belum siap pada tombol menunggu di `renderOnlineCardPick` (`waiting_other_players_count`) dan sisa pemain yang belum memilih di `renderOnlineDayVoting` (`vote_submitted_count`).
+  3. Menambahkan guard `status !== 'day_voting'` dan `isSubmittingVote` di `submitVoteOnline`, pengecekan ketat `vote !== null && vote !== undefined`, preservasi pilihan target saat polling, pengecekan `room.status !== currentRoomData.status` di `startRoomPolling`, serta menghentikan polling dan menunda `deleteCurrentRoom` menjadi 30 detik sekali jalan di `renderOnlineGameOver`.
+- **Masalah yang Ditemukan:** Validasi sintaks JS seluruh skrip Werewolf lulus.
+- **Penyelesaian:** Menyelaraskan sinkronisasi state voting dan UI popup peran di `index.html`, `app.js`, dan `online-supabase.js`.
+- **File Terdampak:** `public/games/werewolf/index.html`, `public/games/werewolf/app.js`, `public/games/werewolf/online-supabase.js`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 12:24] - [Games] - Perbaikan Seer Auto-Close, Indikator & Timer Pick Card, Rekap Voting, dan Role HUD Werewolf
+- **Kondisi Sebelum:**
+  1. Saat giliran Seer, polling 1.2 detik memanggil `renderOnlineNight` berulang kali dan mengosongkan daftar target serta menyembunyikan hasil terawangan Seer.
+  2. Kartu yang sudah diambil pemain memiliki kelas `taken` sehingga tampak redup, dan belum ada tampilan kuota sisa kartu maupun timer auto-pick.
+  3. Setelah semua pemain selesai voting, game langsung lompat ke malam berikutnya tanpa menampilkan jumlah suara tiap pemain dan siapa yang tereliminasi.
+  4. HUD atas belum menampilkan peran pemain selama permainan berlangsung.
+- **Perubahan Sesudah:**
+  1. Menambahkan guard `lastRenderedNightKey` di `renderOnlineNight` serta memigrasikan `submitNightAction` dan `advanceNightStep` ke `updateRoomStateAtomically`.
+  2. Menambahkan kelas `.is-mine` + badge `MILIKMU`/`YOURS`, nama pengambil kartu di bagian belakang kartu terambil, badge kuota terpilih/sisa kartu (`#cardPickQuotaBadge`), serta timer 30 detik dengan auto-pick & auto-ready saat waktu habis.
+  3. Menambahkan layar `#screenVoteResult` (`day_vote_result`) yang menampilkan rekapitulasi suara setiap pemain dan pemain yang tereliminasi sebelum masuk ke malam/game over.
+  4. Menambahkan badge peran `#hudMyRoleBadge` pada HUD atas melalui `WerewolfApp.setHudRole(role)`.
+- **Masalah yang Ditemukan:** Validasi sintaks JS semua skrip Werewolf lulus.
+- **Penyelesaian:** Menyelaraskan state sinkronisasi online dan UI layar baru dalam `index.html`, `styles.css`, `app.js`, `online-supabase.js`, dan `offline-engine.js`.
+- **File Terdampak:** `public/games/werewolf/index.html`, `public/games/werewolf/styles.css`, `public/games/werewolf/app.js`, `public/games/werewolf/online-supabase.js`, `public/games/werewolf/offline-engine.js`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 12:04] - [Games] - Perbaikan Bug Race Condition Pick Card Werewolf Online
+- **Kondisi Sebelum:**
+  1. `pickCardAtomically` dan `syncPlayerReadyState` di `public/games/werewolf/online-supabase.js` langsung menimpa kolom JSONB `game_state` menggunakan cache lokal tanpa membaca state terbaru atau mengecek versi `updated_at`.
+  2. Ketika banyak pemain memilih kartu atau menekan "Saya Siap" hampir bersamaan, update saling menimpa (lost update) sehingga pemain lain kehilangan kartu atau kehabisan kartu yang bisa dipilih.
+- **Perubahan Sesudah:**
+  1. Menambahkan helper `updateRoomStateAtomically` yang membaca `game_state` dan `updated_at` terbaru, memvalidasi ulang ketersediaan kartu/pemain, lalu melakukan update CAS (`.eq('updated_at', freshRow.updated_at)`) dengan retry otomatis jika terjadi konflik.
+  2. Menerapkan `isPickingCard` lock untuk mencegah klik ganda saat memilih kartu, serta memakai `updateRoomStateAtomically` pada `syncPlayerReadyState`.
+- **Masalah yang Ditemukan:** Validasi sintaks JS `online-supabase.js` lulus.
+- **Penyelesaian:** Menyerahkan serialisasi penulisan `game_state` ke CAS `updated_at` di Supabase tanpa perlu perubahan skema SQL.
+- **File Terdampak:** `public/games/werewolf/online-supabase.js`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 08:20] - [Backend / Server Config] - Perbaikan 403 Forbidden pada /games/manage-games/ di .htaccess
 - **Kondisi Sebelum:**
   1. Next.js static export menghasilkan `manage-games.html` sekaligus folder `manage-games/` (berisi payload RSC tanpa `index.html`).

@@ -2,49 +2,176 @@
 
 Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur, dan audit pembersihan visual pada project **Tekno Game** (`https://teknotama.com/games/`) dengan format standar **Semantic Versioning (SemVer: `MAJOR.MINOR.PATCH`)**:
 
-* **MAJOR (`X.0.0`):** Perubahan besar pada arsitektur sistem, desain/redesign total, struktur URL/SEO, atau breaking changes.
-* **MINOR (`0.X.0`):** Penambahan fitur baru, halaman baru, atau pembaruan fungsionalitas yang backward-compatible.
-* **PATCH (`0.0.X`):
+- **MAJOR (`X.0.0`):** Perubahan besar pada arsitektur sistem, desain/redesign total, struktur URL/SEO, atau breaking changes.
+- **MINOR (`0.X.0`):** Penambahan fitur baru, halaman baru, atau pembaruan fungsionalitas yang backward-compatible.
+- \*\*PATCH (`0.0.X`):
+
 ---
-** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
+
+\*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
+
+## [3.15.13] - 2026-11-24
+### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)
+- **Visibilitas Role HUD (`styles.css`):** Menambahkan `flex-wrap: wrap` pada `.hud-left` agar badge peran pemain (`#hudMyRoleBadge`) selalu terlihat jelas dan tidak terpotong di layar mobile.
+- **Kapasitas Pemain (`online-supabase.js`, `offline-engine.js`, `index.html`):** Menaikkan batas maksimal pemain per room dari 15 menjadi 30 pemain.
+
+## [3.15.12] - 2026-11-24
+### Changed (Pembagian Kartu Langsung ke Semua Pemain Werewolf Online)
+- **Instant Card Dealing (`online-supabase.js`):** Saat Host memulai game (`startOnlineGame`), seluruh kartu langsung dibagikan secara acak dan merata ke semua pemain dalam 1 kali write, sehingga setiap pemain langsung menerima kartu perannya tanpa antrean atau risiko kehabisan kartu, disertai timer siap 15 detik otomatis.
+
+## [3.15.11] - 2026-11-24
+### Changed (Giliran Pick Card 1-by-1 3 Detik Sesuai Urutan Masuk Room)
+- **Sequential Card Pick (`online-supabase.js`):** Pemilihan kartu kini bergiliran 1 per 1 sesuai urutan pemain masuk room (`card_pick_turn_index`), masing-masing diberi waktu 3 detik (`card_pick_turn_start_time`) dengan auto-pick otomatis (plus fallback Host di detik ke-4) bila waktu habis.
+
+## [3.15.10] - 2026-11-24
+
+### Fixed (Penyesuaian Warna Ikon Kategori di Bawah Game agar Seragam dengan Navbar)
+
+- **Ikon Kategori Bilah Kontrol Game (`GameFrame.tsx`, `PlayPageView.tsx`):** Menghapus `variant="dark"` yang terpasang statis pada komponen `CategoryIcon` di bawah iframe game dan kotak spesifikasi teknis, sehingga ikon kategori kini secara dinamis mengikuti skema warna tema yang sama dengan dropdown kategori navbar (`--category-icon-light` saat mode terang dan `--category-icon-dark` saat mode gelap).
+
+## [3.15.13] - 2026-11-24
+### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)
+- **Visibilitas Role HUD (`styles.css`):** Menambahkan `flex-wrap: wrap` pada `.hud-left` agar badge peran pemain (`#hudMyRoleBadge`) selalu terlihat jelas dan tidak terpotong di layar mobile.
+- **Kapasitas Pemain (`online-supabase.js`, `offline-engine.js`, `index.html`):** Menaikkan batas maksimal pemain per room dari 15 menjadi 30 pemain.
+
+## [3.15.12] - 2026-11-24
+### Changed (Pembagian Kartu Langsung ke Semua Pemain Werewolf Online)
+- **Instant Card Dealing (`online-supabase.js`):** Saat Host memulai game (`startOnlineGame`), seluruh kartu langsung dibagikan secara acak dan merata ke semua pemain dalam 1 kali write, sehingga setiap pemain langsung menerima kartu perannya tanpa antrean atau risiko kehabisan kartu, disertai timer siap 15 detik otomatis.
+
+## [3.15.11] - 2026-11-24
+### Changed (Giliran Pick Card 1-by-1 3 Detik Sesuai Urutan Masuk Room)
+- **Sequential Card Pick (`online-supabase.js`):** Pemilihan kartu kini bergiliran 1 per 1 sesuai urutan pemain masuk room (`card_pick_turn_index`), masing-masing diberi waktu 3 detik (`card_pick_turn_start_time`) dengan auto-pick otomatis (plus fallback Host di detik ke-4) bila waktu habis.
+
+## [3.15.10] - 2026-11-24
+### Fixed & Added (Role Popup In-Game, Sisa Belum Siap, & Sinkronisasi Voting Werewolf)
+- **Popup Detail Peran In-Game (`#roleInfoModal`):** Badge peran di HUD atas kini bisa diklik sepanjang permainan untuk membuka popup ikon, nama, dan deskripsi peran pemain.
+- **Penghitung Sisa Belum Siap (`renderOnlineCardPick`):** Tombol menunggu kini menampilkan jumlah pemain yang belum menekan tombol Siap (`Sisa {count} orang belum siap`).
+- **Perbaikan Desync Voting & Game Over (`online-supabase.js`):** Menambahkan guard `status !== 'day_voting'` + lock `isSubmittingVote`, pengecekan ketat `vote !== null && vote !== undefined`, mempertahankan pilihan target saat polling, menampilkan sisa pemain belum vote, membandingkan `room.status` saat polling, serta memperpanjang auto-cleanup room ke 30 detik (sekali jalan) agar seluruh pemain menerima status selesai secara serempak.
+
+## [3.15.9] - 2026-11-24
+
+### Improved (Penyesuaian Spasi di Atas Rekomendasi Game / More Games For You)
+
+- **Margin & Padding Rekomendasi (`PlayPageView.tsx`, `globals.css`):** Mempersempit jarak vertikal kosong di atas judul "Permainan Lainnya Untuk Anda" / "More Games For You" dari 40px menjadi 6px menggunakan class `.play-page-recommendations` dengan `margin-top: 6px !important` dan `padding-top: 0 !important`, serta memastikan slot iklan yang tidak aktif tidak menambah margin kosong.
+
+## [3.15.13] - 2026-11-24
+### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)
+- **Visibilitas Role HUD (`styles.css`):** Menambahkan `flex-wrap: wrap` pada `.hud-left` agar badge peran pemain (`#hudMyRoleBadge`) selalu terlihat jelas dan tidak terpotong di layar mobile.
+- **Kapasitas Pemain (`online-supabase.js`, `offline-engine.js`, `index.html`):** Menaikkan batas maksimal pemain per room dari 15 menjadi 30 pemain.
+
+## [3.15.12] - 2026-11-24
+### Changed (Pembagian Kartu Langsung ke Semua Pemain Werewolf Online)
+- **Instant Card Dealing (`online-supabase.js`):** Saat Host memulai game (`startOnlineGame`), seluruh kartu langsung dibagikan secara acak dan merata ke semua pemain dalam 1 kali write, sehingga setiap pemain langsung menerima kartu perannya tanpa antrean atau risiko kehabisan kartu, disertai timer siap 15 detik otomatis.
+
+## [3.15.11] - 2026-11-24
+### Changed (Giliran Pick Card 1-by-1 3 Detik Sesuai Urutan Masuk Room)
+- **Sequential Card Pick (`online-supabase.js`):** Pemilihan kartu kini bergiliran 1 per 1 sesuai urutan pemain masuk room (`card_pick_turn_index`), masing-masing diberi waktu 3 detik (`card_pick_turn_start_time`) dengan auto-pick otomatis (plus fallback Host di detik ke-4) bila waktu habis.
+
+## [3.15.10] - 2026-11-24
+### Fixed & Added (Role Popup In-Game, Sisa Belum Siap, & Sinkronisasi Voting Werewolf)
+- **Popup Detail Peran In-Game (`#roleInfoModal`):** Badge peran di HUD atas kini bisa diklik sepanjang permainan untuk membuka popup ikon, nama, dan deskripsi peran pemain.
+- **Penghitung Sisa Belum Siap (`renderOnlineCardPick`):** Tombol menunggu kini menampilkan jumlah pemain yang belum menekan tombol Siap (`Sisa {count} orang belum siap`).
+- **Perbaikan Desync Voting & Game Over (`online-supabase.js`):** Menambahkan guard `status !== 'day_voting'` + lock `isSubmittingVote`, pengecekan ketat `vote !== null && vote !== undefined`, mempertahankan pilihan target saat polling, menampilkan sisa pemain belum vote, membandingkan `room.status` saat polling, serta memperpanjang auto-cleanup room ke 30 detik (sekali jalan) agar seluruh pemain menerima status selesai secara serempak.
+
+## [3.15.9] - 2026-11-24
+### Fixed & Added (Seer Stability, Card Pick Timer & Quota, Vote Tally, & In-Game Role HUD)
+- **Seer Anti-Reset (`online-supabase.js`):** Mencegah polling 1.2 detik me-render ulang dan menutup hasil penerawangan Seer (`lastRenderedNightKey`), serta memindahkan aksi malam ke `updateRoomStateAtomically`.
+- **Card Pick Visual, Kuota & Timer Auto-Pick:** Menambahkan highlight kartu milik pemain (`MILIKMU`/`YOURS`), label nama pengambil pada kartu yang sudah terambil, badge kuota sisa kartu, serta timer 30 detik dengan auto-pick & auto-ready saat waktu habis.
+- **Layar Hasil Voting (`#screenVoteResult`):** Menampilkan perolehan suara per pemain dan pengumuman pemain yang tereliminasi sebelum lanjut ke fase berikutnya.
+- **Badge Role In-Game HUD (`app.js`):** Menampilkan peran pemain yang sedang aktif di HUD atas agar tidak lupa selama permainan.
+
+## [3.15.8] - 2026-11-24
+
+### Fixed (Kontras Teks Breadcrumb pada Dark Mode)
+
+- **Teks Judul Breadcrumb (`globals.css`):** Memperbaiki aturan CSS `main nav[aria-label="Jejak navigasi"] > span:last-child` agar menggunakan `var(--ink)` (alih-alih `#161616` statis) dan menambahkan override khusus dark mode `color: #f3f4f6 !important`, sehingga teks judul game (seperti "Nusantara Runner: Escape to Bali", "Kapal Feri", dll.) dan kategori terlihat jelas dan kontras saat mode gelap.
+- **Komponen Tampilan (`PlayPageView.tsx`, `CategoryView.tsx`):** Menambahkan class penegas `text-slate-900 dark:text-slate-100` pada elemen span terakhir jejak navigasi.
+
+## [3.15.13] - 2026-11-24
+### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)
+- **Visibilitas Role HUD (`styles.css`):** Menambahkan `flex-wrap: wrap` pada `.hud-left` agar badge peran pemain (`#hudMyRoleBadge`) selalu terlihat jelas dan tidak terpotong di layar mobile.
+- **Kapasitas Pemain (`online-supabase.js`, `offline-engine.js`, `index.html`):** Menaikkan batas maksimal pemain per room dari 15 menjadi 30 pemain.
+
+## [3.15.12] - 2026-11-24
+### Changed (Pembagian Kartu Langsung ke Semua Pemain Werewolf Online)
+- **Instant Card Dealing (`online-supabase.js`):** Saat Host memulai game (`startOnlineGame`), seluruh kartu langsung dibagikan secara acak dan merata ke semua pemain dalam 1 kali write, sehingga setiap pemain langsung menerima kartu perannya tanpa antrean atau risiko kehabisan kartu, disertai timer siap 15 detik otomatis.
+
+## [3.15.11] - 2026-11-24
+### Changed (Giliran Pick Card 1-by-1 3 Detik Sesuai Urutan Masuk Room)
+- **Sequential Card Pick (`online-supabase.js`):** Pemilihan kartu kini bergiliran 1 per 1 sesuai urutan pemain masuk room (`card_pick_turn_index`), masing-masing diberi waktu 3 detik (`card_pick_turn_start_time`) dengan auto-pick otomatis (plus fallback Host di detik ke-4) bila waktu habis.
+
+## [3.15.10] - 2026-11-24
+### Fixed & Added (Role Popup In-Game, Sisa Belum Siap, & Sinkronisasi Voting Werewolf)
+- **Popup Detail Peran In-Game (`#roleInfoModal`):** Badge peran di HUD atas kini bisa diklik sepanjang permainan untuk membuka popup ikon, nama, dan deskripsi peran pemain.
+- **Penghitung Sisa Belum Siap (`renderOnlineCardPick`):** Tombol menunggu kini menampilkan jumlah pemain yang belum menekan tombol Siap (`Sisa {count} orang belum siap`).
+- **Perbaikan Desync Voting & Game Over (`online-supabase.js`):** Menambahkan guard `status !== 'day_voting'` + lock `isSubmittingVote`, pengecekan ketat `vote !== null && vote !== undefined`, mempertahankan pilihan target saat polling, menampilkan sisa pemain belum vote, membandingkan `room.status` saat polling, serta memperpanjang auto-cleanup room ke 30 detik (sekali jalan) agar seluruh pemain menerima status selesai secara serempak.
+
+## [3.15.9] - 2026-11-24
+### Fixed & Added (Seer Stability, Card Pick Timer & Quota, Vote Tally, & In-Game Role HUD)
+- **Seer Anti-Reset (`online-supabase.js`):** Mencegah polling 1.2 detik me-render ulang dan menutup hasil penerawangan Seer (`lastRenderedNightKey`), serta memindahkan aksi malam ke `updateRoomStateAtomically`.
+- **Card Pick Visual, Kuota & Timer Auto-Pick:** Menambahkan highlight kartu milik pemain (`MILIKMU`/`YOURS`), label nama pengambil pada kartu yang sudah terambil, badge kuota sisa kartu, serta timer 30 detik dengan auto-pick & auto-ready saat waktu habis.
+- **Layar Hasil Voting (`#screenVoteResult`):** Menampilkan perolehan suara per pemain dan pengumuman pemain yang tereliminasi sebelum lanjut ke fase berikutnya.
+- **Badge Role In-Game HUD (`app.js`):** Menampilkan peran pemain yang sedang aktif di HUD atas agar tidak lupa selama permainan.
+
+## [3.15.8] - 2026-11-24
+### Fixed (Race Condition Pick Card Werewolf Online)
+- **Optimistic Concurrency Control (`online-supabase.js`):** Menambahkan `updateRoomStateAtomically` (fetch state terbaru + CAS `updated_at` + retry jitter) untuk `pickCardAtomically` dan `syncPlayerReadyState`, serta lock `isPickingCard` agar pemain yang memilih kartu bersamaan tidak saling menimpa `game_state` atau kehabisan kartu.
 
 ## [3.15.7] - 2026-11-24
+
 ### Fixed (403 Forbidden pada /games/manage-games/ dan Rute Trailing Slash)
+
 - **`.htaccess` Rewrite Rule:** Menghapus syarat `!-d` dan mengabaikan trailing slash (`^(.+?)/?$`) pada rewrite `.html` di `public/.htaccess`, sehingga URL seperti `/games/manage-games/` langsung melayani `manage-games.html` alih-alih terkena `403 Forbidden` dari `Options -Indexes`.
 
 ## [3.15.6] - 2026-11-24
+
 ### Improved (WebP Previews & Lighter Hero GPU Effects)
+
 - **Preview `.webp` Menyeluruh:** Mengubah `thumbnailUrl` di `games-data.ts` dan sumber gambar di `GameHero.tsx` ke `.webp` (`/games/images/games/<slug>.webp` dengan fallback `.png`).
 - **Pengurangan Beban Blur GPU:** Mengganti `blur-[120px]` di `GameHero.tsx` dengan `radial-gradient` CSS dan menghapus `backdrop-blur` berlapis pada kartu Hero.
 
 ## [3.15.5] - 2026-11-24
+
 ### Fixed (React Hydration Mismatch pada Head & Hero Game Order)
+
 - **AdSense Script (`layout.tsx`):** Memindahkan loader AdSense ke `next/script` dengan `strategy="afterInteractive"` agar injeksi skrip Google (`show_ads_impl`) tidak menggeser DOM `<head>` sebelum React hydration selesai.
 - **Urutan Game (`page.tsx`):** Memindahkan pembacaan `getCachedGameOrder()` dari initializer `useState` ke dalam `useEffect` agar render awal server dan client selalu konsisten.
 
 ## [3.15.4] - 2026-11-24
+
 ### Changed (Hide AdSense Placeholders Until Slot IDs Configured)
+
 - **Auto Ads Only Mode:** Menyembunyikan placeholder `GoogleAdSlot` dan bar `AdBottomAnchor` saat `NEXT_PUBLIC_ADSENSE_CLIENT_ID` atau `adSlot` belum diisi, sehingga tampilan tetap bersih sambil mengandalkan Google AdSense Auto Ads dari `layout.tsx`.
 
 ## [3.15.3] - 2026-11-24
+
 ### Improved (Lazy Loading & Asset Priority)
+
 - **Code-Splitting Komponen Sekunder:** Menggunakan `next/dynamic` untuk `AdBottomAnchor`, `AdSkyscraper`, `AdCompanion`, `AdNativeTile`, dan `GoogleAdSlot`.
 - **Optimasi Iframe & Gambar:** Menambahkan `loading="lazy"` pada `<iframe>` di `GameFrame.tsx`, `fetchPriority="high"` + `decoding="async"` pada gambar hero di `GameHero.tsx`, serta memprioritaskan `.webp` sebelum `.png` di `GameCard.tsx`.
 
 ## [3.15.2] - 2026-11-23
+
 ### Added, Changed, & Fixed (Dukungan Bahasa ID/EN, Kontras & Ikon Responsif, Notifikasi Skor, & Tombol Tutup Ads)
+
 - **Dukungan Bahasa Indonesia & Bahasa Inggris (ID/EN):**
+
 1. Menambahkan fitur peralihan bahasa Indonesia dan bahasa Inggris pada antarmuka portal.
+
 - **Pembetulan Visualisasi & Ikon Responsif:**
+
 1. Memperbaiki kontras pada sejumlah teks yang kurang terlihat baik saat mode gelap maupun mode terang.
 2. Menyesuaikan warna ikon ketika menu hamburger dibuka pada tampilan responsif di ponsel serta pada ikon kartu.
 
 - **Notifikasi Skor & Posisi Tombol Tutup Google Ads:**
+
 1. Menyesuaikan warna notifikasi perolehan skor/poin saat menang atau kalah permainan agar lebih mudah terlihat.
 2. Memindahkan posisi tombol tutup (X) pada banner Google AdSense ke sisi kanan di dalam area banner iklan.
 
 ## [3.15.1] - 2026-11-21
+
 ### Improved (Readability, Mobile Spacing, & UI Contrast)
+
 - **Readability and contrast:** Improved text and the Teknotama partner link so they remain visible in light and dark themes.
 - **Mobile layout:** Reduced padding in selected mobile sections while preserving desktop spacing.
 - **Icon visibility:** Improved score-related icon visibility without changing category icon colors.
@@ -52,7 +179,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **Files:** [globals.css](src/app/globals.css), [page.tsx](src/app/page.tsx), [AdBottomAnchor.tsx](src/components/ads/AdBottomAnchor.tsx), [GameCard.tsx](src/components/game/GameCard.tsx), [GameFrame.tsx](src/components/game/GameFrame.tsx), [GameGrid.tsx](src/components/game/GameGrid.tsx), [GameHero.tsx](src/components/game/GameHero.tsx), [Footer.tsx](src/components/layout/Footer.tsx), [LayoutWrapper.tsx](src/components/layout/LayoutWrapper.tsx), [Navbar.tsx](src/components/layout/Navbar.tsx)
 
 ## [3.15.0] - 2026-11-21
+
 ### Added & Improved (Content Management System Indexing & Ranking Game di /manage-games)
+
 - **Panel Admin CMS ([src/app/manage-games/page.tsx](src/app/manage-games/page.tsx)):**
   - Rute `/manage-games` terlindungi form verifikasi kata sandi rahasia yang tersimpan di Supabase (`cms_settings`).
   - Antarmuka **Drag-and-Drop** intuitif untuk menggeser susunan game dari posisi #1 hingga terakhir, dilengkapi tombol geser satu posisi (naik/turun) untuk kemudahan di perangkat mobile.
@@ -68,7 +197,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Katalog game di bagian bawah beranda otomatis menampilkan urutan kurasi admin dari Top 1 hingga terakhir.
 
 ## [3.14.2] - 2026-11-20
+
 ### Fixed & Improved (Werewolf Hunter Revenge Isolation, .hidden CSS Rule, & Online Discussion Controls)
+
 - **Perbaikan Kebocoran Panel Pemburu ([public/games/werewolf/styles.css](public/games/werewolf/styles.css), [index.html](public/games/werewolf/index.html)):**
   - Menambahkan aturan CSS global `.hidden { display: none !important; }` pada `styles.css`. Sebelumnya selector hanya `.screen.hidden` sehingga elemen internal seperti `#dayHunterRevengePanel` bocor ke layar dengan teks anomali `PEMBURU () GUGUR!`.
   - Menambahkan fallback proteksi inline style `display: none` pada elemen `#dayHunterRevengePanel`.
@@ -80,7 +211,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Menjalankan sinkronisasi hitung mundur waktu diskusi 120 detik (`#discussionTimerDigits`) dengan auto-trigger voting saat timer habis.
 
 ## [3.14.1] - 2026-11-20
+
 ### Fixed & Improved (Werewolf Seer Single-Lock, 30s Night Turn Timer, & Realtime Lobby Sync)
+
 - **Pembatasan Terawang Seer ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js), [offline-engine.js](public/games/werewolf/offline-engine.js)):**
   - Mengunci pilihan Seer tepat pada klik pertama; seluruh kartu target lainnya langsung dinonaktifkan (`disabled` dan event klik dihapus) sehingga Seer tidak dapat mengintip lebih dari 1 pemain dalam satu malam.
 - **Pembatasan Waktu Giliran Malam 30 Detik & Layar Tunggu Informatif:**
@@ -90,12 +223,14 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Memperbaiki sinkronisasi perubahan penambahan/pengurangan role oleh Room Master sehingga pemain tamu (guest) langsung melihat pembaruan jumlah peran secara instan melalui sistem dual-sync (Supabase Realtime + polling 1.2 detik).
 
 ## [3.14.0] - 2026-11-20
+
 ### Added & Improved (Werewolf Online Multiplayer Supabase & Modular Multi-File Architecture)
+
 - **Mode Online Multiplayer Berbasis Supabase Realtime ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js)):**
   - Pembuatan room dengan **Kode 6 Digit Acak Temporary** untuk mempermudah pemain mabar lintas HP/perangkat.
   - Lobi realtime dengan sinkronisasi daftar pemain (5-15 pemain), badge Host, dan pengaturan peran auto-balance / custom.
   - Pemilihan kartu serentak di HP masing-masing dengan mekanisme **Single Pick Lock** (1 kartu hanya bisa diambil 1 pemain) dan tombol **Pilih Acak (Random)**.
-  - Siklus malam realtime dengan urutan peran terarah (Bodyguard, Werewolf, Seer), aturan target tunggal (*Single-Target Rule*), dan dummy delay saat peran sudah gugur agar tidak terbaca.
+  - Siklus malam realtime dengan urutan peran terarah (Bodyguard, Werewolf, Seer), aturan target tunggal (_Single-Target Rule_), dan dummy delay saat peran sudah gugur agar tidak terbaca.
   - Siklus siang realtime dengan pengumuman fajar, trigger balas dendam Pemburu (Hunter), serta sistem voting sidang rahasia.
   - **Auto-Cleanup & Garbage Collection:** Pembersihan room otomatis saat Game Over (`status: finished`) dan pembersihan room kedaluwarsa (> 2 jam).
 - **Mode Offline Pass-and-Play 1 HP ([public/games/werewolf/offline-engine.js](public/games/werewolf/offline-engine.js)):**
@@ -110,7 +245,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Menambahkan placeholder `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 
 ## [3.5.0] - 2026-11-20
+
 ### Added & Changed (Preferensi Tema, Papan Skor Top 5, dan Kartu Hero Interaktif)
+
 - **Preferensi Tema ([Navbar.tsx](src/components/layout/Navbar.tsx), [layout.tsx](src/app/layout.tsx), [globals.css](src/app/globals.css)):**
   - Menyediakan mode terang dan gelap yang tersimpan di `localStorage` dengan key `teknogame-theme`, serta disinkronkan antar-tab.
   - Menambahkan tombol ikon berbentuk bulat di samping tautan `teknotama.com`; latar mode gelap menggunakan `#17181c`.
@@ -126,7 +263,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **Validasi:** ESLint dan `npx tsc --noEmit` berhasil untuk perubahan komponen hero.
 
 ## [3.13.0] - 2026-11-20
+
 ### Added & Improved (Game Page SEO Content & Rich Snippet Enhancement)
+
 - **Penambahan Konten Teks Faktual & Terstruktur pada Halaman Game (`/play/[slug]`):**
   - Menambahkan bagian **Fitur Utama Permainan** (akses instan browser, penyimpanan rekor lokal, audio sintetis hemat kuota, dukungan lintas perangkat).
   - Menambahkan bagian **Tips Singkat Bermain** (fokus timing/ritme, mode layar penuh, kontrol audio).
@@ -139,7 +278,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Memperbaiki canonical URL menjadi URL absolut penuh.
 
 ## [3.12.0] - 2026-11-20
+
 ### Removed (Permanent Deletion of Kamus Kelana & Ideas)
+
 - **Penghapusan Total Game Kamus Kelana:**
   - Menghapus folder `public/games/kamus-kelana/` beserta seluruh file kode HTML dan aset gambar preview.
   - Menghapus registrasi metadata game `kamus-kelana` dari `src/lib/games-data.ts`.
@@ -151,17 +292,19 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Build statis diekspor ulang via `npm run build` sehingga rute `/play/kamus-kelana` bersih dari folder output `out/`.
 
 ## [3.11.0] - 2026-11-20
+
 ### Added & Changed (Remake Werewolf: 5-15 Players Setup, Interactive Tarot Card Pick & Complete Night/Day Cycle)
+
 - **Setup Pemain Fleksibel & Dinamis (5–15 Pemain):**
   - Input nama dinamis untuk 5 hingga 15 pemain pada satu perangkat dengan tombol tambah/hapus pemain.
-  - Komposisi peran seimbang otomatis (*Auto-Balance*) serta opsi kustomisasi manual sebelum mulai main.
+  - Komposisi peran seimbang otomatis (_Auto-Balance_) serta opsi kustomisasi manual sebelum mulai main.
   - Peran lengkap terintegrasi: Werewolf, Villager, Seer, Bodyguard, dan Hunter.
   - State nama pemain tersimpan otomatis di `localStorage` (`teknogames_werewolf_players`) untuk kemudahan replay langsung.
-- **Mekanisme Pemilihan Kartu Interaktif (*Interactive Card Pick*):**
-  - Papan grid kartu tertutup (*face-down cards*) teracak dengan giliran pemain satu per satu.
+- **Mekanisme Pemilihan Kartu Interaktif (_Interactive Card Pick_):**
+  - Papan grid kartu tertutup (_face-down cards_) teracak dengan giliran pemain satu per satu.
   - Efek 3D flip card saat kartu disentuh, menampilkan ilustrasi SVG per peran dan kartu ringkasan tugas.
-  - Layar Transisi Privasi Aman (*Privacy Screen* "Oper HP ke [Nama Pemain]") di setiap pergantian giliran agar peran tidak diintip pemain lain.
-- **Siklus Malam Berurutan (*Night Phase*):**
+  - Layar Transisi Privasi Aman (_Privacy Screen_ "Oper HP ke [Nama Pemain]") di setiap pergantian giliran agar peran tidak diintip pemain lain.
+- **Siklus Malam Berurutan (_Night Phase_):**
   - **Bodyguard:** Melindungi 1 pemain dari serangan serigala dengan validasi ketat larangan melindungi orang yang sama 2 malam berturut-turut.
   - **Werewolf:** Menampilkan daftar rekan sesama serigala dan memilih 1 target korban mangsa.
   - **Seer:** Menerawang identitas pemain terpilih secara instan ("WEREWOLF" atau "BUKAN WEREWOLF / WARGA").
@@ -169,10 +312,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **Siklus Siang, Skill Pembalasan Hunter & Sidang Voting:**
   - Pengumuman fajar atas peristiwa malam hari (selamat karena terlindungi atau tewas beserta pengungkapan peran).
   - **Skill Trigger Kematian Hunter:** Saat Hunter tereliminasi (diserang serigala semalam maupun digantung di siang hari), muncul kesempatan menembak 1 pemain lain untuk ikut gugur bersamanya.
-  - Timer diskusi interaktif (1 s.d. 3 menit) dilengkapi tombol *Lewati ke Voting*.
+  - Timer diskusi interaktif (1 s.d. 3 menit) dilengkapi tombol _Lewati ke Voting_.
   - Sesi voting eksekusi sidang gantung desa untuk mengeliminasi tersangka perolehan suara terbanyak.
 - **Atmosfer & UI/UX Mutlak Tanpa Emoji:**
-  - Tema *Dark Gothic Midnight Village* yang nyaman dimainkan malam hari dan responsif mobile-first.
+  - Tema _Dark Gothic Midnight Village_ yang nyaman dimainkan malam hari dan responsif mobile-first.
   - Zero-emoji policy lolos 100% menggunakan ikon SVG inline kustom untuk seluruh peran, fase bulan/matahari, status, dan tombol navigasi.
   - Web Audio API synthesizer terintegrasi (lonceng malam, lolongan serigala, mantra penerawang, tembakan pemburu, palu sidang, terompet kemenangan).
 - **Pengujian & Verifikasi Terisolasi:**
@@ -180,19 +323,23 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Seluruh alur (Setup Pemain -> Pemilihan Kartu -> Privacy Screen) terverifikasi berjalan mulus dan tab uji ditutup rapi.
 
 ## [3.10.0] - 2026-11-20
+
 ### Improved & Fixed (Circuit Flow Visuals & Zero-Bug Connection Algorithm)
+
 - **Upgrade Visual Jalur Sirkuit Elektronik (PCB Circuit Trace):**
-  - Mengubah tampilan garis menjadi jejak tembaga sirkuit PCB (*copper trace track* dengan garis inti neon *circuit core*).
-  - Menambahkan animasi aliran pulsa partikel elektron (*flowing electrons pulse*) yang mengalir dinamis di sepanjang jalur aktif.
+  - Mengubah tampilan garis menjadi jejak tembaga sirkuit PCB (_copper trace track_ dengan garis inti neon _circuit core_).
+  - Menambahkan animasi aliran pulsa partikel elektron (_flowing electrons pulse_) yang mengalir dinamis di sepanjang jalur aktif.
   - Mempercantik simpul terminal menjadi PCB via solder pad dengan detil crosshair dan glow interaktif saat terhubung.
 - **Logika Koneksi Bebas Bug (Standar Pou Connect & Backtracking):**
-  - Menerapkan penanganan pemotongan jalur tabrakan (*path overwrite resolution*) sesuai referensi Pou Connect / Flow Free tanpa menyebabkan kebuntuan (*deadlock*).
-  - Menerapkan fitur *smooth backtracking* (memendekkan jalur secara otomatis saat jari/kursor digerakkan mundur).
+  - Menerapkan penanganan pemotongan jalur tabrakan (_path overwrite resolution_) sesuai referensi Pou Connect / Flow Free tanpa menyebabkan kebuntuan (_deadlock_).
+  - Menerapkan fitur _smooth backtracking_ (memendekkan jalur secara otomatis saat jari/kursor digerakkan mundur).
   - Memperbaiki seluruh 9 level sirkuit sehingga terverifikasi 100% solvable menggunakan solver backtracking algoritma Numberlink.
-  - Menambahkan indikator kelistrikan / persentase cakupan papan (*Board Coverage Percentage*) dengan bonus skor 100% full grid.
+  - Menambahkan indikator kelistrikan / persentase cakupan papan (_Board Coverage Percentage_) dengan bonus skor 100% full grid.
 
 ## [3.9.0] - 2026-11-20
+
 ### Removed & Added (Permanent Deletion of Batik Flow & Blacklist Rule)
+
 - **Penghapusan Total Game Batik Flow:**
   - Menghapus direktori `public/games/batik-flow/` beserta seluruh file kode dan aset preview di `public/batik-flow/` dan `public/images/games/batik-flow.*`.
   - Menghapus registrasi metadata game `batik-flow` dari `src/lib/games-data.ts`, `src/components/game/GameCard.tsx`, dan generator preview.
@@ -202,7 +349,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Mengekspor ulang build statis `npm run build` sehingga rute `/play/batik-flow` dan kartu terkait dihapus dari direktori output `out/`.
 
 ## [3.8.0] - 2026-11-20
+
 ### Added & Changed (Remake Batch 4: Lembah Bromo, Pasar Terapung, Kamus Kelana, Werewolf)
+
 - **Remake 4 Permainan Batch 4 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**
   - **`lembah-bromo` ([index.html](public/games/lembah-bromo/index.html)):** Single-file Canvas 2D slope momentum hang glider (Tiny Wings style), visual sunrise kaldera Gunung Bromo & Gunung Batok, fisika luncuran lereng pasir dinamis (tahan tukik di downslope, lepas di upslope untuk lompatan tinggi), pengumpulan kristal embun belerang di udara, badai kabut pasir kawah yang mengejar dari belakang, Web Audio API synthesizer, High Score `localStorage` (`teknogames_lembah-bromo_highscore`), dan `postMessage`.
   - **`pasar-terapung` ([index.html](public/games/pasar-terapung/index.html)):** Arcade river boat fruit catch di Sungai Martapura Lok Baintan Banjarmasin, kemudi perahu jukung tradisional dengan keranjang rotan (panah kiri/kanan, A/D, paddle layar), komoditas buah lokal (Pisang, Durian, Rambutan, Belimbing), rintangan kayu hanyut & batu sungai, sistem 3 hati nyawa SVG, kombo bertingkat (x1 s.d x4), Web Audio API synthesizer, High Score `localStorage` (`teknogames_pasar-terapung_highscore`), dan `postMessage`.
@@ -216,9 +365,11 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Berhasil diekspor via `npm run build` ke direktori statis `out/`.
 
 ## [3.7.0] - 2026-11-20
+
 ### Added & Changed (Remake Batch 3: Candi Stacker, Batik Flow, Layangan Sanur, Kopi Klotok)
+
 - **Remake 4 Permainan Batch 3 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**
-  - **`candi-stacker` ([index.html](public/games/candi-stacker/index.html)):** Single-file Canvas 2D, penyusunan balok batu andesit bertingkat candi Borobudur, pemotongan presisi balok overhang berlebih, bonus sempurna (*Perfect Placement*), scrolling kamera vertikal halus, Web Audio API synthesizer, High Score `localStorage` (`teknogames_candi-stacker_highscore`), dan `postMessage`.
+  - **`candi-stacker` ([index.html](public/games/candi-stacker/index.html)):** Single-file Canvas 2D, penyusunan balok batu andesit bertingkat candi Borobudur, pemotongan presisi balok overhang berlebih, bonus sempurna (_Perfect Placement_), scrolling kamera vertikal halus, Web Audio API synthesizer, High Score `localStorage` (`teknogames_candi-stacker_highscore`), dan `postMessage`.
   - **`batik-flow` ([index.html](public/games/batik-flow/index.html)):** Pipe connection puzzle 16 ubin membatik nusantara (Parang Rusak, Kawung, Mega Mendung), validasi BFS aliran lilin malam cair dari canting tembaga ke mahkota batik, Web Audio API synthesizer, High Score `localStorage` (`teknogames_batik-flow_highscore`), dan `postMessage`.
   - **`layangan-sanur` ([index.html](public/games/layangan-sanur/index.html)):** Aksi adu layangan bebean Bali di langit Pantai Sanur, manajemen tensi benang (tarik menukik vs ulur), pemotongan benang layangan musuh, Web Audio API synthesizer, High Score `localStorage` (`teknogames_layangan-sanur_highscore`), dan `postMessage`.
   - **`kopi-klotok` ([index.html](public/games/kopi-klotok/index.html)):** 3-lane rhythm game seduhan warung kopi klotok Jogja, ketukan presisi tetesan air & biji kopi sangrai menuju cangkir tanah liat, kombo bertingkat (Perfect, Good, Miss), 3 nyawa seduhan, Web Audio API synthesizer, High Score `localStorage` (`teknogames_kopi-klotok_highscore`), dan `postMessage`.
@@ -229,7 +380,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Berhasil diekspor via `npm run build` ke direktori statis `out/`.
 
 ## [3.6.0] - 2026-11-20
+
 ### Added & Changed (Remake Batch 2: Nusantara Runner, Kapal Feri, Packing Master, Becak Drift)
+
 - **Remake 4 Permainan Batch 2 Sesuai Standar Mutlak `game-guide.md` & `AGENTS.md`:**
   - **`nusantara-runner` ([index.html](public/games/nusantara-runner/index.html)):** Single-file pure Canvas 2D, zero-emoji, 3 transisi biome visual (Malioboro, Bromo, Kuta), kontrol lompat & meluncur merunduk (keyboard & tombol virtual sentuh), progressive speed scaling, Web Audio API synthesizer, High Score `localStorage` (`teknogames_nusantara-runner_highscore`), dan `postMessage`.
   - **`kapal-feri` ([index.html](public/games/kapal-feri/index.html)):** Navigasi laut top-down inersia air realistis, rute Selat Sunda 4200 unit dengan progress bar, rintangan karang tajam, koleksi pelampung darurat, dermaga sandar Pelabuhan Bakauheni, Web Audio API klakson feri foghorn, High Score `localStorage` (`teknogames_kapal-feri_highscore`), dan `postMessage`.
@@ -242,7 +395,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Static export `npm run build` sukses 100% mendistribusikan seluruh file ke folder `out/`.
 
 ## [3.5.1] - 2026-11-19
+
 ### Fixed & Improved (Catalog Thumbnail Previews for All 15 Games & Hero Card Cover)
+
 - **Generasi Preview Gambar 600x400 untuk Seluruh 15 Game ([scripts/generate-all-previews.js](scripts/generate-all-previews.js)):**
   - Membuat aset `preview.png` (600x400px, aspect ratio 3:2, ukuran < 50 KB, clean typography, zero emoji) menggunakan Sharp SVG renderer untuk seluruh 15 game.
   - Mendistribusikan file preview ke rute `public/games/<slug>/preview.png` dan fallback ganda `public/<slug>/preview.png`.
@@ -254,7 +409,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Menjalankan static export `npm run build` sehingga seluruh aset dan HTML di folder `out/` ter-generate sempurna.
 
 ## [3.5.0] - 2026-11-19
+
 ### Added & Changed (Remake Batch 1: Cyber Bird, Tekno Memory, Circuit Flow & Cover Preview Card)
+
 - **Remake Game Batch 1 Sesuai Standar Mutlak `game-guide.md`:**
   - **`cyber-bird` ([index.html](public/games/cyber-bird/index.html)):** Single-file pure Canvas 2D, zero-emoji, progressive speed scaling, sistem High Score `localStorage`, tombol audio Web Audio API, dan pengiriman event `postMessage`.
   - **`tekno-memory` ([index.html](public/games/tekno-memory/index.html)):** Single-file pure CSS Grid & SVG, zero-emoji (12 ikon sirkuit teknologi), level scaling Pou-style (2x2 s.d 4x4), countdown timer, bonus sisa waktu, dan High Score `localStorage`.
@@ -266,7 +423,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Memperbarui riwayat rilis pada `game-log.md`.
 
 ## [3.4.2] - 2026-11-19
+
 ### Added (Google AdSense Official Integration & ads.txt Verification)
+
 - **Implementasi Skrip Loader & Konfigurasi AdSense ([layout.tsx](src/app/layout.tsx), [.env.local](.env.local)):**
   - Memasang skrip resmi Google AdSense loader di `<head>` dengan client ID `ca-pub-3146007647541379`.
   - Mendaftarkan entri verifikasi resmi AdSense ke file `public/ads.txt`: `google.com, pub-3146007647541379, DIRECT, f08c47fec0942fa0`.
@@ -274,7 +433,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Menyiapkan integrasi dinamis pada seluruh placeholder (Skyscraper 160x600, Leaderboard 1080x90, dan Anchor Mobile 320x50) agar langsung aktif begitu slot ID diisi.
 
 ## [3.4.1] - 2026-11-19
+
 ### Added (SEO & Social Meta Tags Integration in Layout Header)
+
 - **Implementasi Meta Tags SEO & OpenGraph ([layout.tsx](src/app/layout.tsx)):**
   - Menambahkan title persis: `Game Online Gratis Tanpa Download – TeknoGame`.
   - Menambahkan meta description, robots (`index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1`), dan link canonical `https://www.teknotama.com/games/`.
@@ -284,9 +445,11 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Memverifikasi output build statis di folder `out/` agar seluruh metadata terinjeksi ke file HTML.
 
 ## [3.4.0] - 2026-11-19
+
 ### Redesign Total Frontend (Figma-Driven), Auto-Discovery Game, & Standardisasi Ads (1080 x 90)
 
 #### 1. Rangkuman Perubahan Utama
+
 - **Struktur Halaman Beranda Baru (Split-Hero Modern Sesuai Desain Figma):**
   - Menerapkan layout hero split modern dengan branding Tekno Game, judul utama (`<h1>`), deskripsi portal web HTML5 resmi persembahan PT Teknotama Prakarsa Mulia, CTA jelajahi katalog, dan visual cover perisai GT.
   - Menghapus total blok sorotan tambahan sekunder di bawah Hero (`02 PETUALANGAN` & `03 TEKA-TEKI`).
@@ -294,9 +457,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Menghapus komponen modal/popup mengambang untuk Papan Skor dan Favorit.
 - **Section Mandiri Papan Skor & Favorit:**
   - Menambahkan Section Papan Skor (`#papan-skor`) langsung di dalam halaman beranda yang terhubung dengan menu Navbar (`localStorage` sinkron).
-  - Menambahkan Section Favorit (`#favorit`) langsung di dalam halaman beranda lengkap dengan kondisi kosong (*empty state*) yang estetis.
+  - Menambahkan Section Favorit (`#favorit`) langsung di dalam halaman beranda lengkap dengan kondisi kosong (_empty state_) yang estetis.
 - **Section Tentang Portal & 4 Layanan Teknotama:**
-  - Menampilkan 4 kartu layanan enterprise (*Infrastruktur Jaringan*, *Sistem Awan*, *Keamanan Data*, dan *Perangkat Lunak*) yang mengarah ke website resmi `https://teknotama.com`.
+  - Menampilkan 4 kartu layanan enterprise (_Infrastruktur Jaringan_, _Sistem Awan_, _Keamanan Data_, dan _Perangkat Lunak_) yang mengarah ke website resmi `https://teknotama.com`.
 - **Sistem Auto-Discovery Folder Game (`src/lib/games.ts`):**
   - Modul plug-and-play berbasis Node.js `fs` / `path` yang secara otomatis memindai seluruh sub-direktori di `public/games/` yang memiliki `index.html`.
   - Penambahan game baru ke depan cukup menaruh folder game baru ke dalam `public/games/[slug-game]/` tanpa perlu mengubah kode frontend.
@@ -309,7 +472,9 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
   - Menambahkan tampilan kondisi kosong khusus yang elegan pada kategori Olahraga (dan kategori lain bila belum ada game).
 
 #### 2. Panduan Menambahkan Game Baru (Plug-and-Play)
+
 Untuk menambahkan game HTML5 baru ke dalam Tekno Game:
+
 1. Siapkan folder game Anda, pastikan memiliki file utama `index.html` dan aset-aset pendukungnya.
 2. Tempatkan folder tersebut ke dalam direktori `public/games/[nama-game]/` (contoh: `public/games/balap-karung/index.html`).
 3. Jalankan `npm run build`. Sistem Auto-Discovery secara otomatis akan:
@@ -321,25 +486,33 @@ Untuk menambahkan game HTML5 baru ke dalam Tekno Game:
 ---
 
 ## [3.3.3] - 2026-11-18
+
 ### Mengganti Logo Sorotan dengan Cover Permainan
+
 - Menghapus logo Tekno Game dari area sorotan beranda.
 - Menampilkan cover statis berdasarkan kategori dan judul permainan unggulan; klik cover membuka halaman permainan tanpa memuat iframe di beranda.
 
 ## [3.3.2] - 2026-11-18
+
 ### Optimasi Performa Hero dan Interaksi
+
 - Mengganti chip Three.js dengan logo statis dan menghapus loop render canvas 3D dari hero.
 - Menghapus aura kursor, kemiringan kartu, tarikan tombol, serta animasi masuk dekoratif.
 - Menghapus dependensi Three.js yang tidak lagi digunakan tanpa mengubah navigasi atau fitur permainan.
 - Memperbarui README dan panduan desain agar sesuai dengan perilaku antarmuka yang baru.
 
 ## [3.3.1] - 2026-11-18
+
 ### Pembaruan Logo Tekno Game
+
 - Mengganti aset logo utama dengan logo perisai GT beresolusi tinggi dan latar transparan.
 - Menghapus bingkai dan warna latar di belakang logo pada navigasi dan footer.
 - Memperbarui tampilan logo yang dipakai metadata, ikon tab, dan ilustrasi hero melalui aset kanonis yang sama.
 
 ## [3.3.0] - 2026-11-17
+
 ### Redesain Antarmuka dan SEO Tekno Game
+
 - Menyelaraskan tampilan dengan palet Obsidian, Midnight Navy, Cobalt Blue, dan Burgundy; menghapus motto lama, ticker, animasi pembuka lama, lencana promosi buatan, dan rating visual.
 - Menambahkan panggung chip Three.js, aura kursor, kemiringan kartu, tombol magnetik, serta empat kartu layanan mitra.
 - Melokalkan label kategori dan antarmuka ke Bahasa Indonesia tanpa mengubah data permainan, penyimpanan skor/favorit, atau mesin permainan.
@@ -348,24 +521,28 @@ Untuk menambahkan game HTML5 baru ke dalam Tekno Game:
 
 #### Berkas usang yang dihapus
 
-| Lokasi | Berkas | Alasan |
-|---|---|---|
-| `public/` | `favicon.ico`, `teknogame-banner.png`, `teknogame-icon.png`, `teknogame-logo-horizontal.png`, `teknogame-logo.png`, `teknogame-wordmark.png` | Aset identitas lama atau duplikat; identitas kini memakai `Teknogame_logo_only.png`. |
-| `public/` | `travelista-logo-gram.png`, `travelista-logo-light.png` | Logo proyek lama yang tidak digunakan oleh portal Tekno Game. |
-| `public/` | `file.svg`, `globe.svg`, `next.svg`, `vercel.svg`, `window.svg` | Aset contoh bawaan yang tidak digunakan. |
-| `src/app/` | `favicon.ico`, `icon.png`, `apple-icon.png` | Ikon duplikat yang tidak lagi dipakai; metadata memakai logo kanonis di `public/`. |
-| `src/components/layout/` | `BreakingTicker.tsx` | Ticker dekoratif dan aktivitas yang tidak bersumber telah dihapus dari navigasi. |
-| `src/components/three/` | `IntroAnimation.tsx` | Animasi pembuka lama digantikan panggung chip pada hero. |
+| Lokasi                   | Berkas                                                                                                                                       | Alasan                                                                               |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `public/`                | `favicon.ico`, `teknogame-banner.png`, `teknogame-icon.png`, `teknogame-logo-horizontal.png`, `teknogame-logo.png`, `teknogame-wordmark.png` | Aset identitas lama atau duplikat; identitas kini memakai `Teknogame_logo_only.png`. |
+| `public/`                | `travelista-logo-gram.png`, `travelista-logo-light.png`                                                                                      | Logo proyek lama yang tidak digunakan oleh portal Tekno Game.                        |
+| `public/`                | `file.svg`, `globe.svg`, `next.svg`, `vercel.svg`, `window.svg`                                                                              | Aset contoh bawaan yang tidak digunakan.                                             |
+| `src/app/`               | `favicon.ico`, `icon.png`, `apple-icon.png`                                                                                                  | Ikon duplikat yang tidak lagi dipakai; metadata memakai logo kanonis di `public/`.   |
+| `src/components/layout/` | `BreakingTicker.tsx`                                                                                                                         | Ticker dekoratif dan aktivitas yang tidak bersumber telah dihapus dari navigasi.     |
+| `src/components/three/`  | `IntroAnimation.tsx`                                                                                                                         | Animasi pembuka lama digantikan panggung chip pada hero.                             |
 
 Seluruh berkas di `public/games/` dipertahankan tanpa perubahan.
 
 ## [3.2.1] - 2026-11-17
+
 ### Added Placeholder Ad Slot Component
+
 - Dibuat file `src/components/ads/AdSlotPlaceholder.tsx` sebagai placeholder iklan Google AdSense yang dapat dipasang di semua slot iklan yang belum memiliki ID.
 - Mengganti semua penggunaan `<GoogleAdSlot />` tanpa konfigurasi dengan `<AdSlotPlaceholder />` untuk tampilan visual yang bersih selama pengembangan.
 
 ## [3.2.0] - 2026-11-17
+
 ### Added & Standardized (Google AdSense Ready Display Slots & Clean Structure)
+
 - **Standardisasi Wadah Iklan Google AdSense ([GoogleAdSlot.tsx](src/components/ads/GoogleAdSlot.tsx)):**
   - Mengimplementasikan slot iklan universal Google AdSense yang langsung siap pakai dengan tag `<ins className="adsbygoogle" />`, parameter `data-ad-client` dan `data-ad-slot`, serta dukungan variabel lingkungan (`NEXT_PUBLIC_ADSENSE_CLIENT_ID`).
   - Menampilkan visual slot iklan profesional dengan dimensi terkunci ketat anti-CLS di seluruh titik strategis:
@@ -379,7 +556,9 @@ Seluruh berkas di `public/games/` dipertahankan tanpa perubahan.
 ---
 
 ## [3.1.0] - 2026-11-17
+
 ### Changed & Refined (Natural Gradient, Clean UI/UX, Zero AI Slop & Layout Collision Fix)
+
 - **Implementasi Gradient Halus Sesuai Referensi Pengguna ([globals.css](src/app/globals.css)):**
   - Mengganti latar belakang dengan gradasi diagonal halus dari Navy/Indigo (`#18225e` - `#242e75`) melewati Purple/Violet (`#4c1b54`) menuju Burgundy/Magenta (`#7a1240` - `#961250`).
 - **Eliminasi Total AI Slop & Elemen Buatan:**
@@ -390,29 +569,32 @@ Seluruh berkas di `public/games/` dipertahankan tanpa perubahan.
 - **Penghapusan Marquee / Ticker Bergeser di Bawah Navbar ([ClientLayout.tsx](src/components/layout/ClientLayout.tsx)):**
   - Menghapus komponen `BreakingTicker` ("RADAR TEKNO") sehingga area di bawah navbar bersih, tenang, dan langsung mengalir ke konten utama.
 - **Perbaikan Bentrokan Tata Letak (Layout Collision Fix) ([LayoutWrapper.tsx](src/components/layout/LayoutWrapper.tsx) & [AdSkyscraper.tsx](src/components/ads/AdSkyscraper.tsx)):**
-  - Memperbaiki posisi iklan samping yang sebelumnya menabrak dan menutupi kontainer konten pada layar laptop/desktop 1366px - 1536px. Iklan skyscraper kini hanya aktif di margin luar layar ultra-lebar (`>= 1680px`), menjamin nol tumpang tindih (*zero overlap*) pada seluruh perangkat kerja.
+  - Memperbaiki posisi iklan samping yang sebelumnya menabrak dan menutupi kontainer konten pada layar laptop/desktop 1366px - 1536px. Iklan skyscraper kini hanya aktif di margin luar layar ultra-lebar (`>= 1680px`), menjamin nol tumpang tindih (_zero overlap_) pada seluruh perangkat kerja.
 
 ---
 
 ## [3.0.0] - 2026-11-17
+
 ### Major Redesign Total Frontend (UI/UX) & Technical SEO Sub-Direktori (`teknotama.com/games/`)
 
 #### 1. Audit & Pembersihan Visual Usang (Visual Cleanup)
+
 Daftar lengkap elemen visual lama yang dihapus dari antarmuka:
 
-| No | Elemen Visual / Teks yang Dihapus | Lokasi File Asal | Alasan Penghapusan | Solusi & Elemen Pengganti Baru |
-|---|---|---|---|---|
-| 1 | Motto lama | `src/app/layout.tsx`<br>`src/app/page.tsx`<br>`src/components/layout/Navbar.tsx`<br>`src/components/layout/Footer.tsx` | Tidak lagi sesuai dengan identitas Tekno Game. | Dihapus dari UI, teks, komentar, dan metadata `<head>`. Fokus pada identitas resmi sub-portal PT Teknotama Prakarsa Mulia. |
-| 2 | **Logo Lama & Ikon Usang:** `teknogame-icon.png`, `teknogame-banner.png`, `teknogame-logo.png` | `src/app/layout.tsx`<br>`src/components/layout/Navbar.tsx`<br>`src/components/layout/Footer.tsx`<br>`src/app/icon.png`<br>`src/app/apple-icon.png` | Logo lama tidak menggunakan perisai monogram GT modern. | Diganti dengan ikon perisai monogram GT baru `/Teknogame_logo_only.png` berdampingan horizontal dengan teks modern "Tekno Game". |
-| 3 | **Penulisan Nama Brand Tanpa Spasi:** `"TeknoGame"` | Seluruh file di `src/app/` dan `src/components/` | Menyeragamkan identitas resmi menjadi **"Tekno Game"** (dengan spasi). | Diubah 100% konsisten menjadi **"Tekno Game"** di Navbar, Footer, Hero, Title Tag, Metadata, dan Schema JSON-LD. |
-| 4 | **Karakter Emoji Unicode (Strict No-Emoji Policy):** `🎮`, `🕹️`, `🧭`, `🧩`, `⚡`, `☕`, `⚽`, `🏃‍♂️`, `🚢`, `🧳`, `🛺`, `🛕`, `🎨`, `🪁`, `🪂`, `🛶`, `🗺️`, `🐺`, `🐦`, `🧠`, `🌐`, `🏆`, `🏎️`, `🚀`, `💻`, `⭐` | `src/lib/games-data.ts`<br>`src/components/game/`<br>`src/components/layout/`<br>`src/components/ads/`<br>`src/app/` | Kebijakan ketat bebas emoji untuk estetika modern, profesional, dan konsisten di seluruh browser/OS. | 0 emoji di seluruh kode. Digantikan sepenuhnya dengan ikon vektor presisi dari **Lucide React** (`Gamepad2`, `Compass`, `Puzzle`, `Zap`, `Coffee`, `Trophy`, `Star`, `ShieldCheck`, `Network`, `Cpu`, dll.) dan ornamen SVG murni. |
-| 5 | **Palet Warna Neon Cyan Lama:** (`#00F0FF`, `#070B14`, `#0B1222`) | `src/app/globals.css`<br>Seluruh komponen UI | Desain warna lama digantikan sistem warna proporsional dinamis 60-30-10. | Diperbarui menjadi palet Midnight Navy (`#18225e`), Cobalt/Indigo (`#242e75`), Purple (`#4c1b54`), dan Burgundy/Magenta (`#7a1240` - `#961250`). |
-| 6 | **Tipografi Lama (Geist / Geist Mono):** | `src/app/layout.tsx`<br>`src/app/globals.css` | Mengoptimalkan keterbacaan (*legibility*) dan identitas modern futuristik. | Menggunakan self-hosted Google Fonts (`next/font/google`) dengan `display: 'swap'`:<br>- Heading: **`Space Grotesk`** (600, 700)<br>- Body/UI: **`Plus Jakarta Sans`** (400, 500, 600, 700). |
-| 7 | **Pengalih Bahasa (`ID/EN`):** | `src/components/layout/Navbar.tsx` | Seluruh antarmuka diarahkan 100% Bahasa Indonesia baku. | Dihapus agar Navbar tepat memuat 8 elemen wajib. |
-| 8 | **Grid Kolom Lama (6-8 Kolom Rapat di Desktop & 3 Kolom di HP):** | `src/components/game/GameGrid.tsx`<br>`src/app/play/[slug]/page.tsx` | Mencegah salah klik (*accidental click*) pada Google Ads di layar HP dan menjaga proporsi kartu. | Menerapkan layout responsif 3 ukuran layar:<br>- Mobile (`< 768px`): 2 kolom proporsional (touch target > 44px)<br>- Tablet (`768px - 1023px`): 3 kolom proporsional<br>- Desktop (`>= 1024px`): 4 kolom proporsional dengan zona aman Floating Side Ads. |
-| 9 | **Iklan Samping & Bawah Tanpa Kunci Wadah Anti-CLS:** | `src/components/ads/AdSkyscraper.tsx`<br>`src/components/ads/AdBottomAnchor.tsx` | Menghilangkan risiko pergeseran tata letak (CLS > 0). | Mengunci dimensi wadah iklan via komponen baru `<GoogleAdSlot />`, membuat floating side ads aman di desktop, dan menambahkan tombol "Sembunyikan Iklan" di mobile. |
+| No  | Elemen Visual / Teks yang Dihapus                                                                                                                                                                               | Lokasi File Asal                                                                                                                                   | Alasan Penghapusan                                                                                   | Solusi & Elemen Pengganti Baru                                                                                                                                                                                                                            |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Motto lama                                                                                                                                                                                                      | `src/app/layout.tsx`<br>`src/app/page.tsx`<br>`src/components/layout/Navbar.tsx`<br>`src/components/layout/Footer.tsx`                             | Tidak lagi sesuai dengan identitas Tekno Game.                                                       | Dihapus dari UI, teks, komentar, dan metadata `<head>`. Fokus pada identitas resmi sub-portal PT Teknotama Prakarsa Mulia.                                                                                                                                |
+| 2   | **Logo Lama & Ikon Usang:** `teknogame-icon.png`, `teknogame-banner.png`, `teknogame-logo.png`                                                                                                                  | `src/app/layout.tsx`<br>`src/components/layout/Navbar.tsx`<br>`src/components/layout/Footer.tsx`<br>`src/app/icon.png`<br>`src/app/apple-icon.png` | Logo lama tidak menggunakan perisai monogram GT modern.                                              | Diganti dengan ikon perisai monogram GT baru `/Teknogame_logo_only.png` berdampingan horizontal dengan teks modern "Tekno Game".                                                                                                                          |
+| 3   | **Penulisan Nama Brand Tanpa Spasi:** `"TeknoGame"`                                                                                                                                                             | Seluruh file di `src/app/` dan `src/components/`                                                                                                   | Menyeragamkan identitas resmi menjadi **"Tekno Game"** (dengan spasi).                               | Diubah 100% konsisten menjadi **"Tekno Game"** di Navbar, Footer, Hero, Title Tag, Metadata, dan Schema JSON-LD.                                                                                                                                          |
+| 4   | **Karakter Emoji Unicode (Strict No-Emoji Policy):** `🎮`, `🕹️`, `🧭`, `🧩`, `⚡`, `☕`, `⚽`, `🏃‍♂️`, `🚢`, `🧳`, `🛺`, `🛕`, `🎨`, `🪁`, `🪂`, `🛶`, `🗺️`, `🐺`, `🐦`, `🧠`, `🌐`, `🏆`, `🏎️`, `🚀`, `💻`, `⭐` | `src/lib/games-data.ts`<br>`src/components/game/`<br>`src/components/layout/`<br>`src/components/ads/`<br>`src/app/`                               | Kebijakan ketat bebas emoji untuk estetika modern, profesional, dan konsisten di seluruh browser/OS. | 0 emoji di seluruh kode. Digantikan sepenuhnya dengan ikon vektor presisi dari **Lucide React** (`Gamepad2`, `Compass`, `Puzzle`, `Zap`, `Coffee`, `Trophy`, `Star`, `ShieldCheck`, `Network`, `Cpu`, dll.) dan ornamen SVG murni.                        |
+| 5   | **Palet Warna Neon Cyan Lama:** (`#00F0FF`, `#070B14`, `#0B1222`)                                                                                                                                               | `src/app/globals.css`<br>Seluruh komponen UI                                                                                                       | Desain warna lama digantikan sistem warna proporsional dinamis 60-30-10.                             | Diperbarui menjadi palet Midnight Navy (`#18225e`), Cobalt/Indigo (`#242e75`), Purple (`#4c1b54`), dan Burgundy/Magenta (`#7a1240` - `#961250`).                                                                                                          |
+| 6   | **Tipografi Lama (Geist / Geist Mono):**                                                                                                                                                                        | `src/app/layout.tsx`<br>`src/app/globals.css`                                                                                                      | Mengoptimalkan keterbacaan (_legibility_) dan identitas modern futuristik.                           | Menggunakan self-hosted Google Fonts (`next/font/google`) dengan `display: 'swap'`:<br>- Heading: **`Space Grotesk`** (600, 700)<br>- Body/UI: **`Plus Jakarta Sans`** (400, 500, 600, 700).                                                              |
+| 7   | **Pengalih Bahasa (`ID/EN`):**                                                                                                                                                                                  | `src/components/layout/Navbar.tsx`                                                                                                                 | Seluruh antarmuka diarahkan 100% Bahasa Indonesia baku.                                              | Dihapus agar Navbar tepat memuat 8 elemen wajib.                                                                                                                                                                                                          |
+| 8   | **Grid Kolom Lama (6-8 Kolom Rapat di Desktop & 3 Kolom di HP):**                                                                                                                                               | `src/components/game/GameGrid.tsx`<br>`src/app/play/[slug]/page.tsx`                                                                               | Mencegah salah klik (_accidental click_) pada Google Ads di layar HP dan menjaga proporsi kartu.     | Menerapkan layout responsif 3 ukuran layar:<br>- Mobile (`< 768px`): 2 kolom proporsional (touch target > 44px)<br>- Tablet (`768px - 1023px`): 3 kolom proporsional<br>- Desktop (`>= 1024px`): 4 kolom proporsional dengan zona aman Floating Side Ads. |
+| 9   | **Iklan Samping & Bawah Tanpa Kunci Wadah Anti-CLS:**                                                                                                                                                           | `src/components/ads/AdSkyscraper.tsx`<br>`src/components/ads/AdBottomAnchor.tsx`                                                                   | Menghilangkan risiko pergeseran tata letak (CLS > 0).                                                | Mengunci dimensi wadah iklan via komponen baru `<GoogleAdSlot />`, membuat floating side ads aman di desktop, dan menambahkan tombol "Sembunyikan Iklan" di mobile.                                                                                       |
 
 ---
+
 [2.6.3] - 2026-11-17
 Changed & Deployed (Include out/ Build Folder in Git Tracking)
 Mengaktifkan Git Tracking untuk Folder out/ (.gitignore):

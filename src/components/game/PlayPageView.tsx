@@ -65,7 +65,7 @@ export default function PlayPageView({
           {catLabel}
         </Link>
         <span>/</span>
-        <span className="text-white font-semibold truncate max-w-xs">{game.title}</span>
+        <span className="font-semibold truncate max-w-xs text-slate-900 dark:text-slate-100">{game.title}</span>
       </nav>
 
       {/* Tata Letak Gameplay */}
@@ -188,7 +188,7 @@ export default function PlayPageView({
                 <div className="bg-black/20 p-2.5 rounded-xl border border-white/10">
                   <span className="text-[11px] text-slate-400 block">{t.play.specs.category}</span>
                   <span className="inline-flex items-center gap-1.5 font-semibold text-white capitalize">
-                    <CategoryIcon category={game.category} variant="dark" />
+                    <CategoryIcon category={game.category} />
                     {catLabel}
                   </span>
                 </div>
@@ -263,14 +263,19 @@ export default function PlayPageView({
       </div>
 
       {/* Slot Iklan Horizontal Tengah Ukuran 1080 x 90 */}
-      <GoogleAdSlot
-        slotType="leaderboard-1080x90"
-        adSlot={adSlot}
-      />
+      {adSlot ? (
+        <GoogleAdSlot
+          slotType="leaderboard-1080x90"
+          adSlot={adSlot}
+        />
+      ) : null}
 
       {/* Rekomendasi Game Lainnya */}
-      <section className="pt-4">
-        <h3 className="font-heading text-base sm:text-lg font-bold text-white mb-4">
+      <section
+        className="play-page-recommendations !pt-0 !mt-1.5"
+        style={{ marginTop: "6px", paddingTop: 0 }}
+      >
+        <h3 className="font-heading text-base sm:text-lg font-bold text-white mb-3">
           {t.play.relatedGamesTitle}
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-5">
