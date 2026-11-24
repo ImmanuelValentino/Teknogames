@@ -14,6 +14,39 @@
 
   let currentHudKey = null;
   let currentHudVars = null;
+  let currentHudRole = null;
+
+  const HUD_ROLE_META = {
+    werewolf: { id: 'Werewolf', en: 'Werewolf', color: 'var(--role-wolf)' },
+    villager: { id: 'Warga Desa', en: 'Villager', color: 'var(--role-villager)' },
+    seer: { id: 'Peramal', en: 'Seer', color: 'var(--role-seer)' },
+    bodyguard: { id: 'Pelindung', en: 'Bodyguard', color: 'var(--role-bodyguard)' },
+    hunter: { id: 'Pemburu', en: 'Hunter', color: 'var(--role-hunter)' }
+  };
+
+  function setHudRole(role) {
+    currentHudRole = role && HUD_ROLE_META[role] ? role : null;
+    const badge = document.getElementById('hudMyRoleBadge');
+    const iconEl = document.getElementById('hudMyRoleIcon');
+    const valEl = document.getElementById('hudMyRoleValue');
+    if (!badge || !valEl) return;
+
+    if (!currentHudRole) {
+      badge.classList.add('hidden');
+      badge.style.display = 'none';
+      return;
+    }
+
+    const lang = window.WerewolfI18n ? window.WerewolfI18n.getLang() : 'id';
+    const meta = HUD_ROLE_META[currentHudRole];
+    if (iconEl && window.WerewolfIcons) {
+      iconEl.innerHTML = window.WerewolfIcons.get(currentHudRole);
+    }
+    valEl.textContent = lang === 'en' ? meta.en : meta.id;
+    valEl.style.color = meta.color;
+    badge.classList.remove('hidden');
+    badge.style.display = 'inline-flex';
+  }
 
   function switchScreen(targetScreenId) {
     document.querySelectorAll('.screen').forEach(el => {
@@ -26,6 +59,7 @@
     }
     if (targetScreenId === 'screenMainMenu') {
       setHudStatusKey('hud_main_menu');
+      setHudRole(null);
     }
   }
 
@@ -211,6 +245,9 @@
           const el = document.getElementById('hudStatusText');
           if (el) el.textContent = t(currentHudKey, currentHudVars);
         }
+        if (currentHudRole) {
+          setHudRole(currentHudRole);
+        }
       });
       window.WerewolfI18n.applyLanguage(window.WerewolfI18n.getLang());
     }
@@ -221,6 +258,7 @@
     switchScreen,
     setHudStatus,
     setHudStatusKey,
+    setHudRole,
     showPrivacyScreen
   };
 

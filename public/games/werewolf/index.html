@@ -18,6 +18,11 @@
           <span data-i18n="hud_status_label">STATUS:</span>
           <span id="hudStatusText" class="highlight" data-i18n="hud_main_menu">MENU UTAMA</span>
         </div>
+        <div id="hudMyRoleBadge" class="hud-badge hidden" style="display:inline-flex; align-items:center; gap:6px;">
+          <span id="hudMyRoleIcon" style="width:14px; height:14px; display:inline-flex; align-items:center; justify-content:center;"></span>
+          <span data-i18n="hud_role_label">PERAN:</span>
+          <span id="hudMyRoleValue" class="highlight"></span>
+        </div>
       </div>
       <div class="hud-right">
         <button id="btnAudioToggle" class="btn-icon-hud" title="Audio" data-i18n-title="audio_title">
@@ -269,6 +274,14 @@
           Pilih tepat 1 kartu tertutup di bawah ini atau tekan tombol Pilih Acak.
         </p>
 
+        <div id="cardPickMetaBar" class="hidden" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:12px 0 4px;">
+          <div id="cardPickQuotaBadge" class="hud-badge"></div>
+          <div id="cardPickTimerBadge" class="hud-badge" style="border-color:var(--blood-glow); color:var(--rose-light);">
+            <span data-i18n="card_pick_timer_label">WAKTU:</span>
+            <span id="cardPickTimerDigits" class="highlight">30s</span>
+          </div>
+        </div>
+
         <div id="cardPickGrid" class="cards-grid">
           <!-- Cards rendered dynamically -->
         </div>
@@ -419,6 +432,35 @@
 
         <button id="btnConfirmExecution" class="btn-primary" style="margin-top:12px;">
           <span data-i18n="execute_btn">Eksekusi Pilihan Sidang</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 9B: HASIL VOTING SIANG (VOTE RESULT) -->
+    <section id="screenVoteResult" class="screen hidden">
+      <div class="hero">
+        <div class="hero-icon" data-icon="gavel"></div>
+        <h1 data-i18n="vote_result_title">HASIL VOTING DESA</h1>
+        <p id="voteResultSubtitle" data-i18n="vote_result_subtitle">Rekapitulasi suara warga desa pada sidang hari ini</p>
+      </div>
+
+      <div id="voteResultBanner" class="panel" style="text-align:center; border-color:var(--blood-glow);">
+        <p id="voteResultEliminatedText" style="font-size:15px; font-weight:700; line-height:1.5; color:#fff;"></p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title" data-i18n="vote_tally_title">Perolehan Suara</div>
+        <div id="voteResultList" class="roster-list" style="margin-bottom:12px;">
+          <!-- Vote counts rendered dynamically -->
+        </div>
+        <div class="timer-container" style="margin-bottom:10px;">
+          <div style="font-size:12px; color:var(--text-muted);">
+            <span data-i18n="vote_next_phase_in">Melanjutkan otomatis dalam</span>
+            <strong id="voteResultTimerDigits" style="color:var(--rose-light); margin-left:4px;">6s</strong>
+          </div>
+        </div>
+        <button id="btnContinueAfterVote" class="btn-primary">
+          <span data-i18n="continue_night_btn">Lanjut ke Fase Berikutnya</span>
         </button>
       </div>
     </section>
@@ -626,7 +668,22 @@
           only_host_skip: "Hanya Host ruang yang dapat mempercepat atau melewati waktu diskusi.",
           you_are_dead: "Kamu Telah Gugur (Hanya Menonton)",
           vote_submitted: "Suaramu Telah Dikirim (Menunggu Pemain Lain)",
-          submit_vote_btn: "Kirim Suara Voting"
+          submit_vote_btn: "Kirim Suara Voting",
+          hud_role_label: "PERAN:",
+          hud_vote_result: "HASIL VOTING",
+          card_pick_timer_label: "WAKTU:",
+          card_pick_quota: "Terpilih: {picked} / {total} • Sisa: {remaining}",
+          card_mine_badge: "MILIKMU",
+          card_taken_by: "Diambil: {name}",
+          vote_result_title: "HASIL VOTING DESA",
+          vote_result_subtitle: "Rekapitulasi suara warga desa pada sidang hari ini",
+          vote_tally_title: "Perolehan Suara",
+          vote_next_phase_in: "Melanjutkan otomatis dalam",
+          continue_night_btn: "Lanjut ke Malam",
+          continue_gameover_btn: "Lihat Hasil Akhir",
+          vote_count_badge: "{count} suara",
+          vote_eliminated_html: "<strong style=\"color:var(--blood-red);\">{name}</strong> tereliminasi oleh suara desa! Perannya adalah <strong style=\"color:{color};\">[{role}]</strong>.",
+          vote_none_eliminated: "Tidak ada warga yang tereliminasi pada sidang kali ini."
         },
         en: {
           page_title: "Werewolf: Night & Village - TeknoGame",
@@ -800,7 +857,22 @@
           only_host_skip: "Only the room Host can skip or speed up the discussion timer.",
           you_are_dead: "You Have Fallen (Spectating)",
           vote_submitted: "Your Vote Was Sent (Waiting for Others)",
-          submit_vote_btn: "Submit Vote"
+          submit_vote_btn: "Submit Vote",
+          hud_role_label: "ROLE:",
+          hud_vote_result: "VOTE RESULT",
+          card_pick_timer_label: "TIME:",
+          card_pick_quota: "Picked: {picked} / {total} • Left: {remaining}",
+          card_mine_badge: "YOURS",
+          card_taken_by: "Taken: {name}",
+          vote_result_title: "VILLAGE VOTE RESULT",
+          vote_result_subtitle: "Summary of today's village trial votes",
+          vote_tally_title: "Vote Tally",
+          vote_next_phase_in: "Continuing automatically in",
+          continue_night_btn: "Continue to Night",
+          continue_gameover_btn: "View Final Result",
+          vote_count_badge: "{count} votes",
+          vote_eliminated_html: "<strong style=\"color:var(--blood-red);\">{name}</strong> was eliminated by the village! Their role was <strong style=\"color:{color};\">[{role}]</strong>.",
+          vote_none_eliminated: "No villager was eliminated in this trial."
         }
       };
 

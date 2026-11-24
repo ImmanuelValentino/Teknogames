@@ -254,6 +254,23 @@
     roleRevealPanel.classList.add('hidden');
     actionBtns.classList.add('hidden');
 
+    const metaBar = document.getElementById('cardPickMetaBar');
+    const quotaBadge = document.getElementById('cardPickQuotaBadge');
+    const timerBadge = document.getElementById('cardPickTimerBadge');
+    if (metaBar) {
+      metaBar.classList.remove('hidden');
+      metaBar.style.display = 'flex';
+    }
+    if (timerBadge) timerBadge.classList.add('hidden');
+    if (quotaBadge) {
+      const pickedCount = offlineCards.filter(c => c.takenBy !== null).length;
+      quotaBadge.textContent = t('card_pick_quota', {
+        picked: pickedCount,
+        total: offlineCards.length,
+        remaining: Math.max(0, offlineCards.length - pickedCount)
+      });
+    }
+
     const grid = document.getElementById('cardPickGrid');
     grid.innerHTML = '';
 
@@ -304,7 +321,16 @@
 
     window.WerewolfAudio.play('flip');
     if (cardElement) {
-      cardElement.classList.add('flipped');
+      cardElement.classList.add('flipped', 'is-mine');
+    }
+    const quotaBadge = document.getElementById('cardPickQuotaBadge');
+    if (quotaBadge) {
+      const pickedCount = offlineCards.filter(c => c.takenBy !== null).length;
+      quotaBadge.textContent = t('card_pick_quota', {
+        picked: pickedCount,
+        total: offlineCards.length,
+        remaining: Math.max(0, offlineCards.length - pickedCount)
+      });
     }
 
     // Tampilkan detail peran & tombol konfirmasi tutup kartu

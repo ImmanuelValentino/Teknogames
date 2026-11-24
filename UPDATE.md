@@ -22,12 +22,26 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 - **Margin & Padding Rekomendasi (`PlayPageView.tsx`, `globals.css`):** Mempersempit jarak vertikal kosong di atas judul "Permainan Lainnya Untuk Anda" / "More Games For You" dari 40px menjadi 6px menggunakan class `.play-page-recommendations` dengan `margin-top: 6px !important` dan `padding-top: 0 !important`, serta memastikan slot iklan yang tidak aktif tidak menambah margin kosong.
 
+## [3.15.9] - 2026-11-24
+### Fixed & Added (Seer Stability, Card Pick Timer & Quota, Vote Tally, & In-Game Role HUD)
+- **Seer Anti-Reset (`online-supabase.js`):** Mencegah polling 1.2 detik me-render ulang dan menutup hasil penerawangan Seer (`lastRenderedNightKey`), serta memindahkan aksi malam ke `updateRoomStateAtomically`.
+- **Card Pick Visual, Kuota & Timer Auto-Pick:** Menambahkan highlight kartu milik pemain (`MILIKMU`/`YOURS`), label nama pengambil pada kartu yang sudah terambil, badge kuota sisa kartu, serta timer 30 detik dengan auto-pick & auto-ready saat waktu habis.
+- **Layar Hasil Voting (`#screenVoteResult`):** Menampilkan perolehan suara per pemain dan pengumuman pemain yang tereliminasi sebelum lanjut ke fase berikutnya.
+- **Badge Role In-Game HUD (`app.js`):** Menampilkan peran pemain yang sedang aktif di HUD atas agar tidak lupa selama permainan.
+
 ## [3.15.8] - 2026-11-24
 
 ### Fixed (Kontras Teks Breadcrumb pada Dark Mode)
 
 - **Teks Judul Breadcrumb (`globals.css`):** Memperbaiki aturan CSS `main nav[aria-label="Jejak navigasi"] > span:last-child` agar menggunakan `var(--ink)` (alih-alih `#161616` statis) dan menambahkan override khusus dark mode `color: #f3f4f6 !important`, sehingga teks judul game (seperti "Nusantara Runner: Escape to Bali", "Kapal Feri", dll.) dan kategori terlihat jelas dan kontras saat mode gelap.
 - **Komponen Tampilan (`PlayPageView.tsx`, `CategoryView.tsx`):** Menambahkan class penegas `text-slate-900 dark:text-slate-100` pada elemen span terakhir jejak navigasi.
+
+## [3.15.9] - 2026-11-24
+### Fixed & Added (Seer Stability, Card Pick Timer & Quota, Vote Tally, & In-Game Role HUD)
+- **Seer Anti-Reset (`online-supabase.js`):** Mencegah polling 1.2 detik me-render ulang dan menutup hasil penerawangan Seer (`lastRenderedNightKey`), serta memindahkan aksi malam ke `updateRoomStateAtomically`.
+- **Card Pick Visual, Kuota & Timer Auto-Pick:** Menambahkan highlight kartu milik pemain (`MILIKMU`/`YOURS`), label nama pengambil pada kartu yang sudah terambil, badge kuota sisa kartu, serta timer 30 detik dengan auto-pick & auto-ready saat waktu habis.
+- **Layar Hasil Voting (`#screenVoteResult`):** Menampilkan perolehan suara per pemain dan pengumuman pemain yang tereliminasi sebelum lanjut ke fase berikutnya.
+- **Badge Role In-Game HUD (`app.js`):** Menampilkan peran pemain yang sedang aktif di HUD atas agar tidak lupa selama permainan.
 
 ## [3.15.8] - 2026-11-24
 ### Fixed (Race Condition Pick Card Werewolf Online)

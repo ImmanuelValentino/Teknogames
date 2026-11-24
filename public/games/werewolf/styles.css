@@ -503,9 +503,33 @@ html, body {
 }
 
 .card-pick-item.taken {
-  opacity: 0.35;
-  filter: grayscale(80%);
+  opacity: 0.45;
+  filter: grayscale(65%);
   cursor: not-allowed;
+}
+
+.card-pick-item.is-mine {
+  opacity: 1;
+  filter: none;
+  cursor: default;
+}
+
+.card-pick-item.is-mine .card-front {
+  border: 2px solid #34d399;
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.45);
+}
+
+.card-mine-badge {
+  margin-top: 6px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.25);
+  border: 1px solid #34d399;
+  color: #6ee7b7;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .card-face {

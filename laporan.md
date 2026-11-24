@@ -29,6 +29,21 @@
 - **Penyelesaian:** Memperbarui CSS selector di `globals.css` dan komponen terkait, lalu memverifikasi build static page.
 - **File Terdampak:** `src/app/globals.css`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `UPDATE.md`, `laporan.md`
 
+### [2026-11-24 12:24] - [Games] - Perbaikan Seer Auto-Close, Indikator & Timer Pick Card, Rekap Voting, dan Role HUD Werewolf
+- **Kondisi Sebelum:**
+  1. Saat giliran Seer, polling 1.2 detik memanggil `renderOnlineNight` berulang kali dan mengosongkan daftar target serta menyembunyikan hasil terawangan Seer.
+  2. Kartu yang sudah diambil pemain memiliki kelas `taken` sehingga tampak redup, dan belum ada tampilan kuota sisa kartu maupun timer auto-pick.
+  3. Setelah semua pemain selesai voting, game langsung lompat ke malam berikutnya tanpa menampilkan jumlah suara tiap pemain dan siapa yang tereliminasi.
+  4. HUD atas belum menampilkan peran pemain selama permainan berlangsung.
+- **Perubahan Sesudah:**
+  1. Menambahkan guard `lastRenderedNightKey` di `renderOnlineNight` serta memigrasikan `submitNightAction` dan `advanceNightStep` ke `updateRoomStateAtomically`.
+  2. Menambahkan kelas `.is-mine` + badge `MILIKMU`/`YOURS`, nama pengambil kartu di bagian belakang kartu terambil, badge kuota terpilih/sisa kartu (`#cardPickQuotaBadge`), serta timer 30 detik dengan auto-pick & auto-ready saat waktu habis.
+  3. Menambahkan layar `#screenVoteResult` (`day_vote_result`) yang menampilkan rekapitulasi suara setiap pemain dan pemain yang tereliminasi sebelum masuk ke malam/game over.
+  4. Menambahkan badge peran `#hudMyRoleBadge` pada HUD atas melalui `WerewolfApp.setHudRole(role)`.
+- **Masalah yang Ditemukan:** Validasi sintaks JS semua skrip Werewolf lulus.
+- **Penyelesaian:** Menyelaraskan state sinkronisasi online dan UI layar baru dalam `index.html`, `styles.css`, `app.js`, `online-supabase.js`, dan `offline-engine.js`.
+- **File Terdampak:** `public/games/werewolf/index.html`, `public/games/werewolf/styles.css`, `public/games/werewolf/app.js`, `public/games/werewolf/online-supabase.js`, `public/games/werewolf/offline-engine.js`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 12:04] - [Games] - Perbaikan Bug Race Condition Pick Card Werewolf Online
 - **Kondisi Sebelum:**
   1. `pickCardAtomically` dan `syncPlayerReadyState` di `public/games/werewolf/online-supabase.js` langsung menimpa kolom JSONB `game_state` menggunakan cache lokal tanpa membaca state terbaru atau mengecek versi `updated_at`.
