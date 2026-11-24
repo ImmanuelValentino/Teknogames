@@ -29,6 +29,17 @@
 - **Penyelesaian:** Memperbarui CSS selector di `globals.css` dan komponen terkait, lalu memverifikasi build static page.
 - **File Terdampak:** `src/app/globals.css`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `UPDATE.md`, `laporan.md`
 
+### [2026-11-24 14:02] - [Games] - Responsivitas Badge Role HUD & Peningkatan Kapasitas Room Werewolf ke 30 Pemain
+- **Kondisi Sebelum:**
+  1. `.hud-left` di `public/games/werewolf/styles.css` belum memiliki `flex-wrap: wrap`, sehingga di layar sempit badge `#hudMyRoleBadge` berisiko terpotong.
+  2. Batas maksimal pemain dalam satu room Werewolf adalah 15 orang.
+- **Perubahan Sesudah:**
+  1. Menambahkan `flex-wrap: wrap` pada `.hud-left` dan `flex-shrink: 0` pada `.hud-right` agar badge peran `#hudMyRoleBadge` selalu tampil utuh di layar selama permainan berlangsung.
+  2. Menaikkan batas maksimal pemain dari 15 menjadi 30 pemain pada mode online (`online-supabase.js`), offline (`offline-engine.js`), dan teks UI/i18n (`index.html`).
+- **Masalah yang Ditemukan:** Validasi sintaks JS semua skrip Werewolf lulus.
+- **Penyelesaian:** Menyesuaikan CSS flex-wrap HUD dan konstanta batas maksimal pemain.
+- **File Terdampak:** `public/games/werewolf/styles.css`, `public/games/werewolf/online-supabase.js`, `public/games/werewolf/offline-engine.js`, `public/games/werewolf/index.html`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 13:59] - [Games] - Pembagian Kartu Langsung ke Semua Pemain Werewolf Online
 - **Kondisi Sebelum:**
   1. Pemilihan kartu bergiliran 1-by-1 berisiko gagal mengunci kartu bila terjadi konflik CAS saat auto-pick (`autoPickHandledTurnKey` terkunci sebelum retry berhasil), sehingga ada pemain yang tetap tidak mendapat kartu.

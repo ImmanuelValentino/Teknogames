@@ -76,6 +76,15 @@ html, body {
   gap: 8px;
 }
 
+.hud-left {
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.hud-right {
+  flex-shrink: 0;
+}
+
 .hud-badge {
   background: var(--bg-panel);
   color: var(--text-muted);

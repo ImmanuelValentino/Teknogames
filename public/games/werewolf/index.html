@@ -56,7 +56,7 @@
             <div class="mode-card-icon" data-icon="moon"></div>
             <div class="mode-card-content">
               <h3 data-i18n="mode_offline_title">Main Offline (Pass-and-Play 1 HP)</h3>
-              <p data-i18n="mode_offline_desc">Main bersama 5 hingga 15 pemain secara bergantian menggunakan satu perangkat aman.</p>
+              <p data-i18n="mode_offline_desc">Main bersama 5 hingga 30 pemain secara bergantian menggunakan satu perangkat aman.</p>
             </div>
           </div>
         </div>
@@ -109,7 +109,7 @@
       <div class="panel">
         <div class="panel-title">
           <span data-i18n="player_list">Daftar Pemain</span>
-          <span id="onlinePlayerCountBadge" class="hud-badge">0 / 15 Pemain</span>
+          <span id="onlinePlayerCountBadge" class="hud-badge">0 / 30 Pemain</span>
         </div>
         <div id="onlineLobbyRosterList" class="roster-list">
           <!-- Roster rendered dynamically -->
@@ -193,7 +193,7 @@
     <section id="screenOfflineSetup" class="screen hidden">
       <div class="panel">
         <div class="panel-title">
-          <span data-i18n="player_list_range">Daftar Pemain (5–15)</span>
+          <span data-i18n="player_list_range">Daftar Pemain (5–30)</span>
           <span id="offlinePlayerCountLabel" class="hud-badge">5 Pemain</span>
         </div>
         <div id="offlinePlayerList" class="roster-list">
@@ -526,7 +526,7 @@
           mode_online_title: "Main Online (Multi-Perangkat)",
           mode_online_desc: "Mabar bersama teman menggunakan kode room 6 digit via Supabase Realtime di HP masing-masing.",
           mode_offline_title: "Main Offline (Pass-and-Play 1 HP)",
-          mode_offline_desc: "Main bersama 5 hingga 15 pemain secara bergantian menggunakan satu perangkat aman.",
+          mode_offline_desc: "Main bersama 5 hingga 30 pemain secara bergantian menggunakan satu perangkat aman.",
           online_lobby_title: "LOBI MULTIPLAYER",
           online_lobby_desc: "Hubungkan permainan antar perangkat via Room Kode 6 Digit",
           create_room_title: "Buat Room Baru (Host)",
@@ -543,12 +543,12 @@
           room_code_alert: "Kode Room: {code}",
           confirm_leave_room: "Apakah kamu yakin ingin keluar dari room ini?",
           player_list: "Daftar Pemain",
-          player_count_max: "{count} / 15 Pemain",
+          player_count_max: "{count} / 30 Pemain",
           role_config_host: "KONFIGURASI PERAN (HOST):",
           role_comp_village: "KOMPOSISI PERAN DESA:",
           start_game_btn: "Mulai Permainan",
           leave_room_btn: "Keluar dari Room",
-          player_list_range: "Daftar Pemain (5–15)",
+          player_list_range: "Daftar Pemain (5–30)",
           player_count: "{count} Pemain",
           add_player_btn: "+ Tambah Pemain",
           role_config: "Konfigurasi Peran",
@@ -607,7 +607,7 @@
           player_name_short: "Nama Pemain",
           delete_title: "Hapus",
           min_players_alert: "Minimal 5 pemain untuk bermain Werewolf!",
-          max_players_alert: "Maksimal 15 pemain dalam satu permainan!",
+          max_players_alert: "Maksimal 30 pemain dalam satu permainan!",
           role_sum_mismatch: "Jumlah total peran ({sum}) harus sama dengan total pemain ({total})!",
           turn_player_title: "Giliran: {name}",
           turn_player_desc: "Pegang HP dan pastikan pemain lain tidak mengintip layar!",
@@ -661,7 +661,7 @@
           invalid_room_code: "Masukkan 6 digit kode room yang valid!",
           room_not_found: "Room dengan kode {code} tidak ditemukan atau sudah ditutup.",
           room_already_started: "Permainan di room {code} sudah dimulai!",
-          room_full: "Room ini sudah penuh (maksimal 15 pemain)!",
+          room_full: "Room ini sudah penuh (maksimal 30 pemain)!",
           room_closed: "Room telah ditutup atau selesai.",
           you_tag: "(Kamu)",
           badge_host: "Host",
@@ -725,7 +725,7 @@
           mode_online_title: "Play Online (Multi-Device)",
           mode_online_desc: "Play with friends using a 6-digit room code via Supabase Realtime on your own phones.",
           mode_offline_title: "Play Offline (Pass-and-Play 1 Device)",
-          mode_offline_desc: "Play with 5 to 15 players taking turns on a single shared device.",
+          mode_offline_desc: "Play with 5 to 30 players taking turns on a single shared device.",
           online_lobby_title: "MULTIPLAYER LOBBY",
           online_lobby_desc: "Connect across devices via a 6-Digit Room Code",
           create_room_title: "Create New Room (Host)",
@@ -742,12 +742,12 @@
           room_code_alert: "Room Code: {code}",
           confirm_leave_room: "Are you sure you want to leave this room?",
           player_list: "Player List",
-          player_count_max: "{count} / 15 Players",
+          player_count_max: "{count} / 30 Players",
           role_config_host: "ROLE CONFIGURATION (HOST):",
           role_comp_village: "VILLAGE ROLE COMPOSITION:",
           start_game_btn: "Start Game",
           leave_room_btn: "Leave Room",
-          player_list_range: "Player List (5–15)",
+          player_list_range: "Player List (5–30)",
           player_count: "{count} Players",
           add_player_btn: "+ Add Player",
           role_config: "Role Configuration",
@@ -806,7 +806,7 @@
           player_name_short: "Player Name",
           delete_title: "Delete",
           min_players_alert: "Minimum 5 players required to play Werewolf!",
-          max_players_alert: "Maximum 15 players in a single game!",
+          max_players_alert: "Maximum 30 players in a single game!",
           role_sum_mismatch: "Total roles ({sum}) must equal total players ({total})!",
           turn_player_title: "Turn: {name}",
           turn_player_desc: "Hold the device and make sure other players cannot peek at the screen!",
@@ -860,7 +860,7 @@
           invalid_room_code: "Please enter a valid 6-digit room code!",
           room_not_found: "Room with code {code} was not found or has been closed.",
           room_already_started: "Game in room {code} has already started!",
-          room_full: "This room is full (maximum 15 players)!",
+          room_full: "This room is full (maximum 30 players)!",
           room_closed: "The room has been closed or finished.",
           you_tag: "(You)",
           badge_host: "Host",

@@ -210,7 +210,7 @@
     }
 
     const gameState = room.game_state;
-    if (gameState.players.length >= 15) {
+    if (gameState.players.length >= 30) {
       alert(t('room_full'));
       return;
     }

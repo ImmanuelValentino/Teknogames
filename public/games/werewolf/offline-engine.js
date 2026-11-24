@@ -133,7 +133,7 @@
   }
 
   function addPlayer() {
-    if (players.length >= 15) {
+    if (players.length >= 30) {
       alert(t('max_players_alert'));
       return;
     }
