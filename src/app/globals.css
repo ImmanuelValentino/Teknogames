@@ -1237,6 +1237,25 @@ html[data-theme="dark"] header.glass-nav button:not([aria-pressed]):focus-visibl
   color: #101010;
 }
 
+html .glass-nav .navbar-theme-toggle:hover,
+html .glass-nav .navbar-theme-toggle:focus-visible {
+  background: #ff6b70;
+  border-color: #ff6b70;
+  color: #101010;
+}
+
+html .glass-nav .navbar-theme-toggle:hover svg,
+html .glass-nav .navbar-theme-toggle:focus-visible svg {
+  color: #101010;
+}
+
+.glass-nav [role="group"] button[aria-pressed="false"]:hover,
+.glass-nav [role="group"] button[aria-pressed="false"]:focus-visible {
+  background: #ff6b70;
+  color: #101010;
+  box-shadow: 0 0 0 2px rgba(217, 20, 29, 0.18);
+}
+
 html[data-theme="dark"] .score-icon {
   border-color: #d7bd7d;
   background: #f0e5c7;

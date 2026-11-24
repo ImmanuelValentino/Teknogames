@@ -1,3 +1,10 @@
+### [2026-11-24 20:55] - [Frontend] - Kontras Hover Switch Navbar
+- **Kondisi Sebelum:** Hover pada switch tema dan bahasa memakai warna umum yang kurang membedakan tombol dari latar.
+- **Perubahan Sesudah:** Switch tema dan pilihan bahasa tidak aktif mendapat latar coral serta ikon/teks gelap; bahasa aktif tetap merah-putih.
+- **Masalah yang Ditemukan:** Ikon switch tema dan state bahasa tidak aktif kurang menonjol saat diarahkan kursor.
+- **Penyelesaian:** Menambahkan aturan hover dan focus-visible khusus untuk switch tema serta tombol bahasa tidak aktif.
+- **File Terdampak:** `src/components/layout/Navbar.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 20:38] - [Frontend] - Efek Hover Konsisten pada Navbar
 - **Kondisi Sebelum:** Hanya tombol Main Acak yang punya state hover/fokus coral khusus dark mode; item navbar lain memakai efek berbeda.
 - **Perubahan Sesudah:** Semua tautan dan tombol navbar memakai latar coral serta teks/ikon hitam pada hover/fokus dark mode, kecuali switch tema dan bahasa.
@@ -499,6 +506,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

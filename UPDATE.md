@@ -10,6 +10,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.30] - 2026-11-24
+### Fixed (Kontras Hover Switch Navbar)
+- **Switch tema dan bahasa (Navbar.tsx, globals.css):** Menambahkan hover/fokus coral dengan ikon/teks gelap pada switch tema dan pilihan bahasa tidak aktif; pilihan bahasa aktif tetap merah-putih.
+
 ## [3.15.29] - 2026-11-24
 ### Changed (Efek Hover Konsisten pada Navbar Dark Mode)
 - **Navbar (src/app/globals.css):** Menyamakan latar coral dan warna teks/ikon hitam pada hover serta fokus semua kontrol navbar, selain switch tema dan bahasa.
@@ -950,6 +954,7 @@ Added (Initial Blueprint & Specification Release)
 Design System (Design.md): Token warna, blueprint navbar 2-tier, aturan slot iklan AdSense / Better Ads Standards, dan grid katalog ala Friv.
 Konsep Game (List-Game.md): Brainstorming 12 konsep game mini bertema wisata, kuliner, dan transportasi nusantara beserta use case dan spesifikasi teknis HTML5.
 Product Requirements Document (PRD.md): Dokumen spesifikasi kebutuhan produk, arsitektur sistem, dan roadmap peluncuran.
+
 
 
 

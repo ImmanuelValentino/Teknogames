@@ -248,7 +248,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={toggleTheme}
-              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors ${
+              className={`navbar-theme-toggle flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors ${
                 theme === "dark"
                   ? "border-[#51535c] bg-[#2b2d34] text-[#f3f4f6]"
                   : "border-[#b6a8aa] bg-[#e3d3d6] text-[#241b1d]"
