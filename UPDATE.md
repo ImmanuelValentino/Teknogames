@@ -10,6 +10,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.22] - 2026-11-24
+### Changed (Tipografi Website Lebih Jelas dan Konsisten)
+- **Tipografi (`src/app/layout.tsx`, `src/app/globals.css`):** Menggunakan font sistem Segoe UI/system-ui untuk judul, isi, dan kontrol tanpa unduhan font, mengurangi tracking tombol, serta menghapus transformasi huruf kapital otomatis pada judul.
+
 ## [3.15.21] - 2026-11-24
 ### Changed (Tampilan Ringkas Peringkat 2–5)
 - **Papan rekor (src/app/page.tsx):** Menghapus thumbnail pada peringkat 2–5 dan mengecilkan ukuran angka skor agar informasi peringkat lebih ringkas.
@@ -918,6 +922,10 @@ Added (Initial Blueprint & Specification Release)
 Design System (Design.md): Token warna, blueprint navbar 2-tier, aturan slot iklan AdSense / Better Ads Standards, dan grid katalog ala Friv.
 Konsep Game (List-Game.md): Brainstorming 12 konsep game mini bertema wisata, kuliner, dan transportasi nusantara beserta use case dan spesifikasi teknis HTML5.
 Product Requirements Document (PRD.md): Dokumen spesifikasi kebutuhan produk, arsitektur sistem, dan roadmap peluncuran.
+
+
+
+
 
 
 

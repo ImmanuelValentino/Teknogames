@@ -30,3 +30,9 @@
 ### Changed (Tampilan Ringkas Peringkat 2–5)
 - Menghapus thumbnail pada peringkat 2–5 dan menyesuaikan ukuran font skor agar daftar lebih ringkas.
 
+
+## [3.15.22] - 2026-11-24
+### Changed (Tipografi Website Lebih Jelas dan Konsisten)
+- Menggunakan font sistem Segoe UI/system-ui pada judul, isi, dan kontrol website agar lebih mudah dibaca tanpa mengunduh font eksternal.
+
+

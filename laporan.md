@@ -1,3 +1,10 @@
+### [2026-11-24 18:45] - [Frontend] - Tipografi Website Lebih Jelas dan Konsisten
+- **Kondisi Sebelum:** Judul, isi, dan kontrol memakai kombinasi Space Grotesk, Plus Jakarta Sans, Georgia, serta monospace dengan tracking lebar.
+- **Perubahan Sesudah:** Font sistem Segoe UI/system-ui dipakai pada judul, isi, dan kontrol; monospace hanya tersedia untuk utilitas kode. Judul memakai kapitalisasi normal.
+- **Masalah yang Ditemukan:** Build gagal saat mencoba mengambil Inter dari Google Fonts karena koneksi jaringan ditolak.
+- **Penyelesaian:** Menghapus kebutuhan unduh font dan memakai font sistem lokal agar build bisa berjalan offline; tracking kontrol dikurangi.
+- **File Terdampak:** `src/app/layout.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:32] - [Frontend] - Tampilan Ringkas Peringkat 2–5
 - **Kondisi Sebelum:** Baris peringkat 2–5 menampilkan thumbnail besar dan angka skor dengan ukuran besar.
 - **Perubahan Sesudah:** Thumbnail dihapus, nomor peringkat dan nama game tetap ditampilkan, sementara angka poin diperkecil agar lebih proporsional.
@@ -443,6 +450,8 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
+
 
 
 

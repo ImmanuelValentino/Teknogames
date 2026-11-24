@@ -5,9 +5,9 @@
 @theme {
   --color-black: #101010;
   --color-white: #fffafa;
-  --font-heading: "Bahnschrift SemiCondensed", "Arial Narrow", Impact, sans-serif;
-  --font-sans: Georgia, "Times New Roman", serif;
-  --font-mono: "Cascadia Mono", Consolas, monospace;
+  --font-heading: "Segoe UI", system-ui, Arial, sans-serif;
+  --font-sans: "Segoe UI", system-ui, Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
 
   --color-circuit-bg: #fffafa;
   --color-circuit-surface: #fffafa;
@@ -22,9 +22,9 @@
 
 :root {
   color-scheme: light;
-  --font-heading: "Bahnschrift SemiCondensed", "Arial Narrow", Impact, sans-serif;
-  --font-sans: Georgia, "Times New Roman", serif;
-  --font-mono: "Cascadia Mono", Consolas, monospace;
+  --font-heading: "Segoe UI", system-ui, Arial, sans-serif;
+  --font-sans: "Segoe UI", system-ui, Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
   --page-bg: #fffafa;
   --panel-bg: #fffafa;
   --card-bg: #fffafa;
@@ -89,11 +89,6 @@ h6 {
   letter-spacing: 0.02em;
 }
 
-h1,
-h2 {
-  text-transform: uppercase;
-}
-
 .font-heading {
   font-family: var(--font-heading);
   font-weight: 800 !important;
@@ -116,8 +111,8 @@ button,
 #catalog input,
 #catalog select,
 footer h4 {
-  font-family: var(--font-mono);
-  letter-spacing: 0.07em;
+  font-family: var(--font-sans);
+  letter-spacing: 0.025em;
 }
 
 button,
