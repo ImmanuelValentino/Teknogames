@@ -294,10 +294,11 @@ export default function HomePage() {
           </div>
         ) : (
           <div
-            className={`grid grid-cols-1 gap-3 ${topScores.length > 1
-              ? "lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]"
-              : ""
-              }`}
+            className={`grid grid-cols-1 gap-3 ${
+              topScores.length > 1
+                ? "lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]"
+                : ""
+            }`}
           >
             <article className="flex min-h-[280px] flex-col overflow-hidden rounded-2xl border border-[#d8c99e] bg-[#292a31] lg:min-h-0">
               <div className="relative min-h-[190px] flex-1">
@@ -349,10 +350,11 @@ export default function HomePage() {
 
             {topScores.length > 1 && (
               <div
-                className={`grid content-start gap-2 ${topScores.length === 5
-                  ? "lg:h-full lg:grid-rows-4 lg:content-stretch"
-                  : ""
-                  }`}
+                className={`grid content-start gap-2 ${
+                  topScores.length === 5
+                    ? "lg:h-full lg:grid-rows-4 lg:content-stretch"
+                    : ""
+                }`}
               >
                 {topScores.slice(1).map((item, index) => (
                   <div
