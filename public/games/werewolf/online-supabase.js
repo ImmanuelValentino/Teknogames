@@ -609,66 +609,105 @@
     }
   }
 
+  let isPickingCard = false;
+
+  async function updateRoomStateAtomically(mutatorFn, maxRetries = 8) {
+    if (!supabaseClient || !currentRoomCode) return { ok: false, reason: 'no_room' };
+
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      const { data: freshRow, error: fetchError } = await supabaseClient
+        .from('werewolf_rooms')
+        .select('room_code, status, game_state, updated_at')
+        .eq('room_code', currentRoomCode)
+        .single();
+
+      if (fetchError || !freshRow || !freshRow.game_state) {
+        return { ok: false, reason: 'fetch_error' };
+      }
+
+      const clonedState = JSON.parse(JSON.stringify(freshRow.game_state));
+      const outcome = mutatorFn(clonedState, freshRow.status);
+      if (outcome && outcome.abort) {
+        handleRoomStateSync(freshRow);
+        return { ok: false, reason: outcome.abort };
+      }
+
+      const nextStatus = (outcome && outcome.status) || freshRow.status;
+      const nextState = (outcome && outcome.state) || clonedState;
+      const nextUpdatedAt = new Date().toISOString();
+
+      const { data: updatedRows, error: updateError } = await supabaseClient
+        .from('werewolf_rooms')
+        .update({
+          status: nextStatus,
+          game_state: nextState,
+          updated_at: nextUpdatedAt
+        })
+        .eq('room_code', currentRoomCode)
+        .eq('updated_at', freshRow.updated_at)
+        .select('room_code, status, game_state, updated_at');
+
+      if (!updateError && Array.isArray(updatedRows) && updatedRows.length > 0) {
+        handleRoomStateSync(updatedRows[0]);
+        return { ok: true, row: updatedRows[0] };
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 45 + Math.floor(Math.random() * 90)));
+    }
+
+    return { ok: false, reason: 'conflict' };
+  }
+
   async function pickCardAtomically(cardId) {
-    if (!currentRoomData) return;
-    const state = currentRoomData.game_state;
-    const card = state.cards.find(c => c.id === cardId);
+    if (!currentRoomData || isPickingCard) return;
+    isPickingCard = true;
+    try {
+      const res = await updateRoomStateAtomically((state) => {
+        const me = state.players.find(p => p.id === myPlayerId);
+        if (!me) return { abort: 'no_player' };
+        if (me.card_id !== null && me.card_id !== undefined) {
+          return { abort: 'already_picked' };
+        }
 
-    // Mencegah race condition jika kartu baru saja diambil orang lain
-    if (!card || card.picked_by !== null) {
-      alert(t('card_already_taken'));
-      return;
+        const card = state.cards.find(c => c.id === cardId);
+        if (!card || card.picked_by !== null) {
+          return { abort: 'taken' };
+        }
+
+        card.picked_by = myPlayerId;
+        me.card_id = cardId;
+        me.role = card.role;
+        return { state };
+      });
+
+      if (res.ok) {
+        window.WerewolfAudio.play('flip');
+      } else if (res.reason === 'taken') {
+        alert(t('card_already_taken'));
+      }
+    } finally {
+      isPickingCard = false;
     }
-
-    card.picked_by = myPlayerId;
-    const me = state.players.find(p => p.id === myPlayerId);
-    if (me) {
-      me.card_id = cardId;
-      me.role = card.role;
-    }
-
-    window.WerewolfAudio.play('flip');
-
-    await supabaseClient
-      .from('werewolf_rooms')
-      .update({
-        game_state: state,
-        updated_at: new Date().toISOString()
-      })
-      .eq('room_code', currentRoomCode);
   }
 
   async function syncPlayerReadyState() {
     if (!currentRoomData) return;
-    const state = currentRoomData.game_state;
-    const me = state.players.find(p => p.id === myPlayerId);
-    if (me) me.ready = true;
+    await updateRoomStateAtomically((state, status) => {
+      const me = state.players.find(p => p.id === myPlayerId);
+      if (me) me.ready = true;
 
-    // Cek apakah semua pemain sudah ready
-    const allReady = state.players.every(p => p.ready);
-    if (allReady) {
-      state.phase = 'night';
-      state.night_step = 'bodyguard';
-      state.night_step_start_time = Date.now();
-      state.players.forEach(p => p.ready = false);
-
-      await supabaseClient
-        .from('werewolf_rooms')
-        .update({
-          status: 'night',
-          game_state: state,
-          updated_at: new Date().toISOString()
-        })
-        .eq('room_code', currentRoomCode);
-    } else {
-      await supabaseClient
-        .from('werewolf_rooms')
-        .update({
-          game_state: state,
-          updated_at: new Date().toISOString()
-        })
-        .eq('room_code', currentRoomCode);
-    }
+      const allReady = state.players.every(
+        p => p.ready && p.card_id !== null && p.card_id !== undefined
+      );
+      if (allReady) {
+        state.phase = 'night';
+        state.night_step = 'bodyguard';
+        state.night_step_start_time = Date.now();
+        state.players.forEach(p => { p.ready = false; });
+        return { status: 'night', state };
+      }
+      return { status, state };
+    });
   }
 
   // ==========================================

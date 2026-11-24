@@ -29,6 +29,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **Teks Judul Breadcrumb (`globals.css`):** Memperbaiki aturan CSS `main nav[aria-label="Jejak navigasi"] > span:last-child` agar menggunakan `var(--ink)` (alih-alih `#161616` statis) dan menambahkan override khusus dark mode `color: #f3f4f6 !important`, sehingga teks judul game (seperti "Nusantara Runner: Escape to Bali", "Kapal Feri", dll.) dan kategori terlihat jelas dan kontras saat mode gelap.
 - **Komponen Tampilan (`PlayPageView.tsx`, `CategoryView.tsx`):** Menambahkan class penegas `text-slate-900 dark:text-slate-100` pada elemen span terakhir jejak navigasi.
 
+## [3.15.8] - 2026-11-24
+### Fixed (Race Condition Pick Card Werewolf Online)
+- **Optimistic Concurrency Control (`online-supabase.js`):** Menambahkan `updateRoomStateAtomically` (fetch state terbaru + CAS `updated_at` + retry jitter) untuk `pickCardAtomically` dan `syncPlayerReadyState`, serta lock `isPickingCard` agar pemain yang memilih kartu bersamaan tidak saling menimpa `game_state` atau kehabisan kartu.
+
 ## [3.15.7] - 2026-11-24
 
 ### Fixed (403 Forbidden pada /games/manage-games/ dan Rute Trailing Slash)

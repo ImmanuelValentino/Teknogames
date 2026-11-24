@@ -29,6 +29,17 @@
 - **Penyelesaian:** Memperbarui CSS selector di `globals.css` dan komponen terkait, lalu memverifikasi build static page.
 - **File Terdampak:** `src/app/globals.css`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `UPDATE.md`, `laporan.md`
 
+### [2026-11-24 12:04] - [Games] - Perbaikan Bug Race Condition Pick Card Werewolf Online
+- **Kondisi Sebelum:**
+  1. `pickCardAtomically` dan `syncPlayerReadyState` di `public/games/werewolf/online-supabase.js` langsung menimpa kolom JSONB `game_state` menggunakan cache lokal tanpa membaca state terbaru atau mengecek versi `updated_at`.
+  2. Ketika banyak pemain memilih kartu atau menekan "Saya Siap" hampir bersamaan, update saling menimpa (lost update) sehingga pemain lain kehilangan kartu atau kehabisan kartu yang bisa dipilih.
+- **Perubahan Sesudah:**
+  1. Menambahkan helper `updateRoomStateAtomically` yang membaca `game_state` dan `updated_at` terbaru, memvalidasi ulang ketersediaan kartu/pemain, lalu melakukan update CAS (`.eq('updated_at', freshRow.updated_at)`) dengan retry otomatis jika terjadi konflik.
+  2. Menerapkan `isPickingCard` lock untuk mencegah klik ganda saat memilih kartu, serta memakai `updateRoomStateAtomically` pada `syncPlayerReadyState`.
+- **Masalah yang Ditemukan:** Validasi sintaks JS `online-supabase.js` lulus.
+- **Penyelesaian:** Menyerahkan serialisasi penulisan `game_state` ke CAS `updated_at` di Supabase tanpa perlu perubahan skema SQL.
+- **File Terdampak:** `public/games/werewolf/online-supabase.js`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 08:20] - [Backend / Server Config] - Perbaikan 403 Forbidden pada /games/manage-games/ di .htaccess
 - **Kondisi Sebelum:**
   1. Next.js static export menghasilkan `manage-games.html` sekaligus folder `manage-games/` (berisi payload RSC tanpa `index.html`).
