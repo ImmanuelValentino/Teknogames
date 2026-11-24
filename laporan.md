@@ -1,3 +1,10 @@
+### [2026-11-24 19:05] - [Frontend] - Warna Tautan Teknotama di Navbar Dark Mode
+- **Kondisi Sebelum:** Teks dan ikon pada tombol teknotama.com tetap gelap di light dan dark mode.
+- **Perubahan Sesudah:** Saat dark mode, latar tombol merah dan teks serta ikon menjadi Snow White; light mode mempertahankan teks gelap.
+- **Masalah yang Ditemukan:** Warna teks pada tautan tidak berbeda antartema.
+- **Penyelesaian:** Menambahkan override tema gelap pada tombol sponsor navbar dengan kombinasi merah dan putih yang kontras.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:45] - [Frontend] - Tipografi Website Lebih Jelas dan Konsisten
 - **Kondisi Sebelum:** Judul, isi, dan kontrol memakai kombinasi Space Grotesk, Plus Jakarta Sans, Georgia, serta monospace dengan tracking lebar.
 - **Perubahan Sesudah:** Font sistem Segoe UI/system-ui dipakai pada judul, isi, dan kontrol; monospace hanya tersedia untuk utilitas kode. Judul memakai kapitalisasi normal.
@@ -450,6 +457,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

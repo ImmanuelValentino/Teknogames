@@ -36,3 +36,8 @@
 - Menggunakan font sistem Segoe UI/system-ui pada judul, isi, dan kontrol website agar lebih mudah dibaca tanpa mengunduh font eksternal.
 
 
+
+## [3.15.23] - 2026-11-24
+### Fixed (Kontras Tautan Teknotama di Navbar Dark Mode)
+- Mengubah warna teks dan ikon link teknotama.com menjadi putih salju pada latar merah saat dark mode.
+

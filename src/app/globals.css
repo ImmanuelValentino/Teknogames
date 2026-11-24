@@ -1207,9 +1207,13 @@ html[data-theme="dark"] footer h4 {
 }
 
 html[data-theme="dark"] header.glass-nav .btn-sponsor {
-  background: #ff6b70;
-  border-color: #ff6b70;
-  color: #17181c;
+  background: #d9141d;
+  border-color: #d9141d;
+  color: #fffafa;
+}
+
+html[data-theme="dark"] header.glass-nav .btn-sponsor svg {
+  color: #fffafa;
 }
 
 html[data-theme="dark"] .score-icon {
