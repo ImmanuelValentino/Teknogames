@@ -81,3 +81,8 @@
 ### Fixed (Kontras Tombol Layanan Teknotama)
 - Memperbaiki kontras teks tombol layanan dan menyamakan warna ikon tombol footer dengan teks.
 
+
+## [3.15.32] - 2026-11-24
+### Fixed (Warna Ikon Favorit Navbar Tetap)
+- Menjaga ikon hati Favorit tetap merah pada hover/fokus dark mode.
+

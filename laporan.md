@@ -1,3 +1,10 @@
+### [2026-11-24 21:28] - [Frontend] - Warna Ikon Favorit Navbar Tetap
+- **Kondisi Sebelum:** Aturan hover navbar mengubah semua ikon menjadi hitam, termasuk ikon hati Favorit.
+- **Perubahan Sesudah:** Ikon hati tetap merah saat item Favorit di-hover atau difokuskan; warna teks item tetap mengikuti efek navbar.
+- **Masalah yang Ditemukan:** Warna ikon hati berubah dari merah ke hitam saat hover.
+- **Penyelesaian:** Menambahkan class khusus pada tautan Favorit dan override warna SVG dengan prioritas tema.
+- **File Terdampak:** `src/components/layout/Navbar.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 21:12] - [Frontend] - Kontras Tombol Layanan Teknotama
 - **Kondisi Sebelum:** Tombol layanan atas memakai teks merah gelap pada latar merah; ikon tombol footer berwarna abu, berbeda dari teks.
 - **Perubahan Sesudah:** Tombol atas memakai teks dan ikon putih dengan hover merah gelap; ikon footer mengikuti warna teks tombol.
@@ -513,6 +520,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

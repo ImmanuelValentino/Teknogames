@@ -192,7 +192,7 @@ export default function Navbar() {
             {/* Favorit (Direct Smooth Scroll Anchor) */}
             <Link
               href="/#favorit"
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
+              className="navbar-favorites-link flex items-center gap-1.5 px-3.5 py-2 rounded-xl hover:text-white hover:bg-white/8 transition-colors cursor-pointer"
             >
               <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/25 bg-rose-400/15">
                 <Heart className="h-4 w-4 fill-current text-rose-600" strokeWidth={2.5} />
@@ -335,7 +335,7 @@ export default function Navbar() {
           <Link
             href="/#favorit"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/8"
+            className="navbar-favorites-link flex min-h-11 w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/8"
           >
             <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/25 bg-rose-400/15">
               <Heart className="h-4 w-4 fill-current text-rose-600" strokeWidth={2.5} />

@@ -1241,6 +1241,11 @@ html[data-theme="dark"] header.glass-nav button:not([aria-pressed]):focus-visibl
   color: #101010;
 }
 
+html[data-theme="dark"] header.glass-nav .navbar-favorites-link:hover svg,
+html[data-theme="dark"] header.glass-nav .navbar-favorites-link:focus-visible svg {
+  color: #d9141d;
+}
+
 html .glass-nav .navbar-theme-toggle:hover,
 html .glass-nav .navbar-theme-toggle:focus-visible {
   background: #ff6b70;
