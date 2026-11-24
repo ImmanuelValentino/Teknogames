@@ -6,43 +6,27 @@
 (function() {
   'use strict';
 
-  const ROLE_DEFS = {
-    werewolf: {
-      name: 'Werewolf',
-      team: 'werewolf',
-      color: '#ef4444',
-      badgeClass: 'role-werewolf',
-      desc: 'Bangkit saat malam tiba dan mangsa warga desa bersama kawananmu. Sembunyikan identitasmu saat fajar.'
-    },
-    villager: {
-      name: 'Warga Biasa',
-      team: 'villager',
-      color: '#38bdf8',
-      badgeClass: 'role-villager',
-      desc: 'Warga desa tak bersalah. Gunakan deduksi dan insting tajammu saat voting siang untuk membasmi serigala.'
-    },
-    seer: {
-      name: 'Penerawang (Seer)',
-      team: 'villager',
-      color: '#c084fc',
-      badgeClass: 'role-seer',
-      desc: 'Setiap malam, terawang satu warga untuk mengungkap apakah ia bagian dari kawanan Werewolf.'
-    },
-    bodyguard: {
-      name: 'Pelindung (Bodyguard)',
-      team: 'villager',
-      color: '#fbbf24',
-      badgeClass: 'role-bodyguard',
-      desc: 'Lindungi satu warga dari terkaman malam. Kamu tidak boleh melindungi orang yang sama 2 malam berturut-turut.'
-    },
-    hunter: {
-      name: 'Pemburu (Hunter)',
-      team: 'villager',
-      color: '#34d399',
-      badgeClass: 'role-hunter',
-      desc: 'Jika kamu tereliminasi (malam atau siang), kamu berhak menembak mati 1 pemain lain sebelum menghembuskan napas terakhir.'
-    }
+  function t(key, vars) {
+    return window.WerewolfI18n ? window.WerewolfI18n.t(key, vars) : key;
+  }
+
+  const ROLE_META = {
+    werewolf: { team: 'werewolf', color: '#ef4444', badgeClass: 'role-werewolf' },
+    villager: { team: 'villager', color: '#38bdf8', badgeClass: 'role-villager' },
+    seer: { team: 'villager', color: '#c084fc', badgeClass: 'role-seer' },
+    bodyguard: { team: 'villager', color: '#fbbf24', badgeClass: 'role-bodyguard' },
+    hunter: { team: 'villager', color: '#34d399', badgeClass: 'role-hunter' }
   };
+
+  function getRoleDef(role) {
+    const meta = ROLE_META[role];
+    if (!meta) return { name: '?', color: '#fff', badgeClass: '', desc: '' };
+    return {
+      ...meta,
+      name: t('role_' + role + '_name'),
+      desc: t('role_' + role + '_desc')
+    };
+  }
 
   // State
   let players = [];
@@ -91,17 +75,17 @@
 
     // Default 5 pemain awal
     players = [
-      { id: 1, name: 'Pemain 1', alive: true, role: null },
-      { id: 2, name: 'Pemain 2', alive: true, role: null },
-      { id: 3, name: 'Pemain 3', alive: true, role: null },
-      { id: 4, name: 'Pemain 4', alive: true, role: null },
-      { id: 5, name: 'Pemain 5', alive: true, role: null }
+      { id: 1, name: t('default_player', { n: 1 }), alive: true, role: null },
+      { id: 2, name: t('default_player', { n: 2 }), alive: true, role: null },
+      { id: 3, name: t('default_player', { n: 3 }), alive: true, role: null },
+      { id: 4, name: t('default_player', { n: 4 }), alive: true, role: null },
+      { id: 5, name: t('default_player', { n: 5 }), alive: true, role: null }
     ];
   }
 
   function savePlayers() {
     try {
-      const names = players.map(p => p.name.trim() || `Pemain ${p.id}`);
+      const names = players.map(p => p.name.trim() || t('default_player', { n: p.id }));
       localStorage.setItem('teknogames_werewolf_offline_players', JSON.stringify(names));
     } catch (e) {}
   }
@@ -116,22 +100,22 @@
       row.className = 'roster-item';
       row.innerHTML = `
         <span style="font-size:12px; font-weight:800; color:var(--text-muted); width:20px;">#${idx + 1}</span>
-        <input type="text" class="input-text-dark" style="margin:0 8px; flex:1; padding:8px 10px;" value="${p.name}" data-idx="${idx}" maxlength="15" placeholder="Nama Pemain">
-        <button class="btn-icon-hud btn-del-player" data-idx="${idx}" style="width:30px; height:30px; color:#ef4444;" title="Hapus">
+        <input type="text" class="input-text-dark" style="margin:0 8px; flex:1; padding:8px 10px;" value="${p.name}" data-idx="${idx}" maxlength="15" placeholder="${t('player_name_short')}">
+        <button class="btn-icon-hud btn-del-player" data-idx="${idx}" style="width:30px; height:30px; color:#ef4444;" title="${t('delete_title')}">
           ${window.WerewolfIcons.get('cross')}
         </button>
       `;
 
       const input = row.querySelector('input');
       input.addEventListener('input', (e) => {
-        players[idx].name = e.target.value.trim() || `Pemain ${idx + 1}`;
+        players[idx].name = e.target.value.trim() || t('default_player', { n: idx + 1 });
         savePlayers();
       });
 
       const delBtn = row.querySelector('.btn-del-player');
       delBtn.addEventListener('click', () => {
         if (players.length <= 5) {
-          alert('Minimal 5 pemain untuk bermain Werewolf!');
+          alert(t('min_players_alert'));
           return;
         }
         players.splice(idx, 1);
@@ -145,16 +129,16 @@
     });
 
     const countLabel = document.getElementById('offlinePlayerCountLabel');
-    if (countLabel) countLabel.textContent = `${players.length} Pemain`;
+    if (countLabel) countLabel.textContent = t('player_count', { count: players.length });
   }
 
   function addPlayer() {
     if (players.length >= 15) {
-      alert('Maksimal 15 pemain dalam satu permainan!');
+      alert(t('max_players_alert'));
       return;
     }
     const newId = players.length + 1;
-    players.push({ id: newId, name: `Pemain ${newId}`, alive: true, role: null });
+    players.push({ id: newId, name: t('default_player', { n: newId }), alive: true, role: null });
     savePlayers();
     renderPlayerInputs();
     updateAutoBalanceRoles();
@@ -217,7 +201,7 @@
   function startCardPickPhase() {
     const sum = Object.values(roleConfig).reduce((a, b) => a + b, 0);
     if (sum !== players.length) {
-      alert(`Jumlah total peran (${sum}) harus sama dengan total pemain (${players.length})!`);
+      alert(t('role_sum_mismatch', { sum, total: players.length }));
       return;
     }
 
@@ -248,9 +232,9 @@
   function showPrivacyScreenForCardPick() {
     const currentPlayer = players[currentCardPickIndex];
     window.WerewolfApp.showPrivacyScreen(
-      `Giliran: ${currentPlayer.name}`,
-      'Pegang HP dan pastikan pemain lain tidak mengintip layar!',
-      'Saya Siap, Buka Kartu',
+      t('turn_player_title', { name: currentPlayer.name }),
+      t('turn_player_desc'),
+      t('turn_player_btn'),
       () => {
         renderCardPickScreenForCurrentPlayer();
       }
@@ -262,8 +246,8 @@
     window.WerewolfApp.switchScreen('screenCardPick');
     currentPickedCardId = null;
 
-    document.getElementById('cardPickHeaderTitle').textContent = `Pilih Kartu: ${currentPlayer.name}`;
-    document.getElementById('cardPickHeaderDesc').textContent = 'Pilih tepat 1 kartu tertutup di bawah ini atau tekan tombol Pilih Acak.';
+    document.getElementById('cardPickHeaderTitle').textContent = t('card_pick_player_title', { name: currentPlayer.name });
+    document.getElementById('cardPickHeaderDesc').textContent = t('card_pick_desc');
     
     const roleRevealPanel = document.getElementById('cardPickRoleReveal');
     const actionBtns = document.getElementById('cardPickActionBtns');
@@ -280,14 +264,15 @@
         cardEl.classList.add('taken');
       }
 
+      const def = getRoleDef(c.role);
       cardEl.innerHTML = `
         <div class="card-face card-back">
           <div class="card-back-pattern">${window.WerewolfIcons.get('moon')}</div>
-          <div class="card-back-number">KARTU ${idx + 1}</div>
+          <div class="card-back-number">${t('card_label', { n: idx + 1 })}</div>
         </div>
-        <div class="card-face card-front ${ROLE_DEFS[c.role].badgeClass}">
+        <div class="card-face card-front ${def.badgeClass}">
           <div class="card-front-icon">${window.WerewolfIcons.get(c.role)}</div>
-          <div class="card-front-title">${ROLE_DEFS[c.role].name}</div>
+          <div class="card-front-title">${def.name}</div>
         </div>
       `;
 
@@ -329,7 +314,7 @@
     const roleDescWrap = document.getElementById('revealRoleDesc');
     const actionBtns = document.getElementById('cardPickActionBtns');
 
-    const def = ROLE_DEFS[card.role];
+    const def = getRoleDef(card.role);
     roleIconWrap.innerHTML = window.WerewolfIcons.get(card.role);
     roleTitleWrap.textContent = def.name;
     roleTitleWrap.style.color = def.color;
@@ -347,9 +332,9 @@
       } else {
         // Semua pemain sudah dapat kartu! Masuk ke Malam Pertama
         window.WerewolfApp.showPrivacyScreen(
-          'Semua Kartu Telah Terbagi',
-          'Malam pertama segera dimulai. Seluruh warga desa diminta menutup mata!',
-          'Mulai Malam Pertama',
+          t('all_cards_dealt_title'),
+          t('all_cards_dealt_desc'),
+          t('all_cards_dealt_btn'),
           () => {
             startNightCycle();
           }
@@ -363,7 +348,7 @@
   // ==========================================
   function startNightCycle() {
     window.WerewolfAudio.play('howl');
-    window.WerewolfApp.setHudStatus('MALAM TIBA');
+    window.WerewolfApp.setHudStatusKey('hud_night_fallen');
     
     nightDecisions = { protectedId: null, wolfTargetId: null, seerTargetId: null };
     nightQueue = ['bodyguard', 'werewolf', 'seer'];
@@ -384,9 +369,9 @@
     if (rolePlayers.length === 0) {
       // Role sudah mati atau tidak ada di game ini -> Tampilkan dummy screen jeda singkat
       window.WerewolfApp.showPrivacyScreen(
-        `Fase Malam: ${ROLE_DEFS[currentRole].name}`,
-        'Malam hening... Angin berhembus melalui celah jendela rumah warga.',
-        'Lanjut',
+        t('night_phase_role', { role: getRoleDef(currentRole).name }),
+        t('night_quiet_desc'),
+        t('continue_btn'),
         () => {
           setTimeout(() => {
             currentNightActionIdx++;
@@ -400,9 +385,9 @@
     // Role hidup -> Tampilkan privacy screen untuk role tersebut
     const names = rolePlayers.map(p => p.name).join(', ');
     window.WerewolfApp.showPrivacyScreen(
-      `Giliran: ${ROLE_DEFS[currentRole].name}`,
-      `Pegang HP untuk ${names}. Pastikan pemain lain menutup mata rapat-rapat!`,
-      'Buka Aksi Malam',
+      t('night_turn_role', { role: getRoleDef(currentRole).name }),
+      t('night_turn_role_desc', { names }),
+      t('open_night_action'),
       () => {
         renderNightActionScreen(currentRole, rolePlayers);
       }
@@ -421,22 +406,23 @@
     const seerResultBox = document.getElementById('seerResultBox');
     const btnConfirm = document.getElementById('btnConfirmNightAction');
 
+    const roleDef = getRoleDef(role);
     iconWrap.innerHTML = window.WerewolfIcons.get(role);
-    titleWrap.textContent = ROLE_DEFS[role].name;
-    titleWrap.style.color = ROLE_DEFS[role].color;
+    titleWrap.textContent = roleDef.name;
+    titleWrap.style.color = roleDef.color;
     seerResultBox.classList.add('hidden');
     teammateWrap.classList.add('hidden');
 
     targetList.innerHTML = '';
 
     if (role === 'bodyguard') {
-      promptWrap.textContent = 'Pilih 1 pemain hidup untuk dilindungi malam ini (tidak boleh orang yang sama berturut-turut):';
+      promptWrap.textContent = t('prompt_bodyguard');
       window.WerewolfAudio.play('shield');
 
       players.forEach(p => {
         if (!p.alive) return;
         const isDisallowed = (p.id === previousProtectedId);
-        const card = createTargetCard(p, isDisallowed ? 'Telah dilindungi semalam' : 'Lindungi', isDisallowed);
+        const card = createTargetCard(p, isDisallowed ? t('tag_protected_last') : t('tag_protect'), isDisallowed);
 
         if (!isDisallowed) {
           card.onclick = () => {
@@ -450,19 +436,19 @@
       });
     } 
     else if (role === 'werewolf') {
-      promptWrap.textContent = 'Pilih 1 target mangsa warga untuk dihabisi malam ini:';
+      promptWrap.textContent = t('prompt_werewolf');
       window.WerewolfAudio.play('howl');
 
       // Tampilkan info sesama Werewolf jika lebih dari 1
       if (rolePlayers.length > 1) {
         teammateWrap.classList.remove('hidden');
-        teammateWrap.innerHTML = `<strong>Kawan Serigalamu:</strong> ${rolePlayers.map(p => p.name).join(', ')}`;
+        teammateWrap.innerHTML = `<strong>${t('fellow_wolves')}</strong> ${rolePlayers.map(p => p.name).join(', ')}`;
       }
 
       players.forEach(p => {
         if (!p.alive) return;
         const isWolf = (p.role === 'werewolf');
-        const card = createTargetCard(p, isWolf ? 'Sesama Werewolf' : 'Mangsa', isWolf);
+        const card = createTargetCard(p, isWolf ? t('tag_fellow_wolf') : t('tag_prey'), isWolf);
 
         if (!isWolf) {
           card.onclick = () => {
@@ -476,12 +462,12 @@
       });
     } 
     else if (role === 'seer') {
-      promptWrap.textContent = 'Pilih 1 pemain hidup untuk diterawang identitas aslinya (hanya 1 kali per malam):';
+      promptWrap.textContent = t('prompt_seer');
       window.WerewolfAudio.play('seer');
 
       players.forEach(p => {
         if (!p.alive || p.role === 'seer') return;
-        const card = createTargetCard(p, 'Terawang');
+        const card = createTargetCard(p, t('tag_inspect'));
         card.onclick = () => {
           if (selectedNightChoiceId !== null) return; // Batasi hanya tepat 1 kali klik!
           selectedNightChoiceId = p.id;
@@ -500,15 +486,11 @@
           // Tampilkan hasil terawang seketika
           const isWolf = (p.role === 'werewolf');
           seerResultBox.classList.remove('hidden');
-          seerResultBox.innerHTML = `
-            Hasil Penerawangan untuk <strong>${p.name}</strong>:<br>
-            <span style="font-size:16px; font-weight:900; color:${isWolf ? 'var(--role-wolf)' : 'var(--role-villager)'};">
-              ${isWolf ? 'WEREWOLF !' : 'BUKAN WEREWOLF (Warga Desa)'}
-            </span>
-            <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">
-              Penerawangan selesai untuk malam ini. Klik 'Kunci Aksi Malam Ini' di bawah.
-            </div>
-          `;
+          seerResultBox.innerHTML = t('seer_result_html', {
+            name: p.name,
+            color: isWolf ? 'var(--role-wolf)' : 'var(--role-villager)',
+            verdict: isWolf ? t('seer_is_wolf') : t('seer_not_wolf')
+          });
         };
         targetList.appendChild(card);
       });
@@ -516,7 +498,7 @@
 
     btnConfirm.onclick = () => {
       if (selectedNightChoiceId === null) {
-        alert('Kamu harus memilih tepat 1 sasaran!');
+        alert(t('must_pick_target'));
         return;
       }
 
@@ -528,9 +510,9 @@
       currentNightActionIdx++;
 
       window.WerewolfApp.showPrivacyScreen(
-        'Aksi Telah Disimpan',
-        'Tutup mata kembali dan oper perangkat ke giliran berikutnya atau moderator.',
-        'Lanjut',
+        t('action_saved_title'),
+        t('action_saved_desc'),
+        t('continue_btn'),
         () => {
           runNextNightStep();
         }
@@ -573,7 +555,7 @@
   // ==========================================
   function startDayCycle(nightVictim) {
     window.WerewolfAudio.play('bell');
-    window.WerewolfApp.setHudStatus('FASE SIANG');
+    window.WerewolfApp.setHudStatusKey('hud_day_phase');
     window.WerewolfApp.switchScreen('screenDayAnnouncement');
 
     const newsText = document.getElementById('dayNewsText');
@@ -582,19 +564,19 @@
     hunterPanel.style.display = 'none';
 
     if (nightVictim) {
-      newsText.innerHTML = `
-        Kabar duka menyelimuti desa! <strong style="color:var(--blood-red);">${nightVictim.name}</strong> ditemukan tewas semalam diserang Werewolf.<br>
-        Perannya adalah <strong style="color:${ROLE_DEFS[nightVictim.role].color};">[${ROLE_DEFS[nightVictim.role].name}]</strong>.
-      `;
+      const vDef = getRoleDef(nightVictim.role);
+      newsText.innerHTML = t('night_victim_html', {
+        name: nightVictim.name,
+        color: vDef.color,
+        role: vDef.name
+      });
 
       if (nightVictim.role === 'hunter') {
         triggerHunterRevenge(nightVictim);
         return;
       }
     } else {
-      newsText.innerHTML = `
-        <strong style="color:var(--role-hunter);">Malam yang damai!</strong> Tidak ada korban jiwa semalam berkat kesigapan pelindung desa.
-      `;
+      newsText.innerHTML = t('night_peaceful_html');
     }
 
     if (checkWinCondition()) return;
@@ -615,7 +597,7 @@
 
     players.forEach(p => {
       if (!p.alive) return;
-      const card = createTargetCard(p, 'Tembak');
+      const card = createTargetCard(p, t('tag_shoot'));
       card.onclick = () => {
         targetList.querySelectorAll('.target-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
@@ -627,14 +609,14 @@
 
     document.getElementById('btnHunterConfirmShoot').onclick = () => {
       if (selectedHunterShotId === null) {
-        alert('Pemburu harus memilih tepat 1 sasaran tembak pembalasan!');
+        alert(t('hunter_must_pick'));
         return;
       }
       const target = players.find(p => p.id === selectedHunterShotId);
       target.alive = false;
       window.WerewolfAudio.play('gunshot');
 
-      alert(`DOR! ${hunter.name} melepaskan tembakan terakhir ke ${target.name}! ${target.name} gugur dan perannya adalah [${ROLE_DEFS[target.role].name}].`);
+      alert(t('hunter_shot_alert', { hunter: hunter.name, target: target.name, role: getRoleDef(target.role).name }));
       panel.classList.add('hidden');
       panel.style.display = 'none';
 
@@ -695,7 +677,7 @@
 
     players.forEach(p => {
       if (!p.alive) return;
-      const card = createTargetCard(p, 'Pilih untuk Digantung');
+      const card = createTargetCard(p, t('tag_vote_execute'));
       card.onclick = () => {
         list.querySelectorAll('.target-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
@@ -707,7 +689,7 @@
 
     document.getElementById('btnConfirmExecution').onclick = () => {
       if (selectedVoteTargetId === null) {
-        alert('Pilih 1 warga untuk dieksekusi gantung!');
+        alert(t('must_pick_vote'));
         return;
       }
 
@@ -715,7 +697,7 @@
       executed.alive = false;
       window.WerewolfAudio.play('gavel');
 
-      alert(`Hasil voting desa memutuskan: ${executed.name} dieksekusi gantung! Perannya adalah [${ROLE_DEFS[executed.role].name}].`);
+      alert(t('vote_result_alert', { name: executed.name, role: getRoleDef(executed.role).name }));
 
       if (executed.role === 'hunter') {
         triggerHunterRevenge(executed);
@@ -726,9 +708,9 @@
 
       // Kembali ke siklus malam
       window.WerewolfApp.showPrivacyScreen(
-        'Sidang Desa Telah Selesai',
-        'Matahari telah terbenam. Malam kembali tiba menyelimuti desa...',
-        'Masuk ke Malam Berikutnya',
+        t('trial_done_title'),
+        t('trial_done_desc'),
+        t('enter_next_night'),
         () => {
           startNightCycle();
         }
@@ -763,25 +745,25 @@
     const rosterEl = document.getElementById('gameOverRoster');
 
     if (winner === 'villager') {
-      titleEl.textContent = 'WARGA DESA MENANG!';
+      titleEl.textContent = t('villager_win_title');
       titleEl.style.color = 'var(--role-villager)';
-      descEl.textContent = 'Seluruh kawanan Werewolf telah berhasil dieliminasi. Kedamaian kembali ke desa!';
+      descEl.textContent = t('villager_win_desc');
     } else {
-      titleEl.textContent = 'WEREWOLF MENANG!';
+      titleEl.textContent = t('wolf_win_title');
       titleEl.style.color = 'var(--role-wolf)';
-      descEl.textContent = 'Kawanan Werewolf berhasil menguasai desa dan menaklukkan para warga!';
+      descEl.textContent = t('wolf_win_desc');
     }
 
     rosterEl.innerHTML = '';
     players.forEach(p => {
       const row = document.createElement('div');
       row.className = 'roster-item';
-      const def = ROLE_DEFS[p.role] || { name: '?', color: '#fff' };
+      const def = getRoleDef(p.role);
       row.innerHTML = `
         <div class="roster-name-wrap">
           <span class="roster-name">${p.name}</span>
           <span style="font-size:11px; color:${p.alive ? 'var(--role-hunter)' : 'var(--text-muted)'}; font-weight:700;">
-            (${p.alive ? 'Selamat' : 'Gugur'})
+            (${p.alive ? t('status_alive') : t('status_dead')})
           </span>
         </div>
         <span class="roster-status-badge" style="color:${def.color}; border:1px solid ${def.color}; background:rgba(0,0,0,0.5);">

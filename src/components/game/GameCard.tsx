@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import { Game } from "@/types/game";
 import { Play } from "lucide-react";
-import { getCategoryLabel } from "@/lib/games-data";
 import CategoryIcon from "./CategoryIcon";
 import { useTranslation, getLocalizedCategoryLabel, getLocalizedGame } from "@/lib/i18n";
 
@@ -63,11 +62,11 @@ export default function GameCard({ game }: GameCardProps) {
   const { lang } = useTranslation();
   const localized = getLocalizedGame(game, lang);
   const candidateSources = React.useMemo(() => [
+    `/games/images/games/${game.slug}.webp`,
+    `/images/games/${game.slug}.webp`,
     `/games/${game.slug}/preview.png`,
     `/games/games/${game.slug}/preview.png`,
     `/${game.slug}/preview.png`,
-    `/images/games/${game.slug}.webp`,
-    `/games/images/games/${game.slug}.webp`,
   ], [game.slug]);
 
   const [srcIndex, setSrcIndex] = React.useState(0);

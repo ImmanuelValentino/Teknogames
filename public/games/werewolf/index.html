@@ -15,12 +15,12 @@
     <header class="hud">
       <div class="hud-left">
         <div class="hud-badge">
-          <span>STATUS:</span>
-          <span id="hudStatusText" class="highlight">MENU UTAMA</span>
+          <span data-i18n="hud_status_label">STATUS:</span>
+          <span id="hudStatusText" class="highlight" data-i18n="hud_main_menu">MENU UTAMA</span>
         </div>
       </div>
       <div class="hud-right">
-        <button id="btnAudioToggle" class="btn-icon-hud" title="Audio">
+        <button id="btnAudioToggle" class="btn-icon-hud" title="Audio" data-i18n-title="audio_title">
           <span data-icon="audioOn"></span>
         </button>
       </div>
@@ -31,18 +31,18 @@
       <div class="hero">
         <div class="hero-icon" data-icon="werewolf"></div>
         <h1>WEREWOLF</h1>
-        <p>Malam & Desa — Permainan Deduksi Sosial Misteri</p>
+        <p data-i18n="hero_subtitle">Malam & Desa — Permainan Deduksi Sosial Misteri</p>
       </div>
 
       <div class="panel">
-        <div class="panel-title">Pilih Mode Permainan</div>
+        <div class="panel-title" data-i18n="choose_mode">Pilih Mode Permainan</div>
         <div class="mode-card-grid">
           <!-- Mode Online -->
           <div id="btnChooseOnlineMode" class="mode-card">
             <div class="mode-card-icon" data-icon="users"></div>
             <div class="mode-card-content">
-              <h3>Main Online (Multi-Perangkat)</h3>
-              <p>Mabar bersama teman menggunakan kode room 6 digit via Supabase Realtime di HP masing-masing.</p>
+              <h3 data-i18n="mode_online_title">Main Online (Multi-Perangkat)</h3>
+              <p data-i18n="mode_online_desc">Mabar bersama teman menggunakan kode room 6 digit via Supabase Realtime di HP masing-masing.</p>
             </div>
           </div>
 
@@ -50,8 +50,8 @@
           <div id="btnChooseOfflineMode" class="mode-card">
             <div class="mode-card-icon" data-icon="moon"></div>
             <div class="mode-card-content">
-              <h3>Main Offline (Pass-and-Play 1 HP)</h3>
-              <p>Main bersama 5 hingga 15 pemain secara bergantian menggunakan satu perangkat aman.</p>
+              <h3 data-i18n="mode_offline_title">Main Offline (Pass-and-Play 1 HP)</h3>
+              <p data-i18n="mode_offline_desc">Main bersama 5 hingga 15 pemain secara bergantian menggunakan satu perangkat aman.</p>
             </div>
           </div>
         </div>
@@ -62,48 +62,48 @@
     <section id="screenOnlineAuth" class="screen hidden">
       <div class="hero">
         <div class="hero-icon" data-icon="users"></div>
-        <h1>LOBI MULTIPLAYER</h1>
-        <p>Hubungkan permainan antar perangkat via Room Kode 6 Digit</p>
+        <h1 data-i18n="online_lobby_title">LOBI MULTIPLAYER</h1>
+        <p data-i18n="online_lobby_desc">Hubungkan permainan antar perangkat via Room Kode 6 Digit</p>
       </div>
 
       <div class="panel">
-        <div class="panel-title">Buat Room Baru (Host)</div>
-        <input type="text" id="inputHostName" class="input-text-dark" placeholder="Nama Host..." maxlength="15">
+        <div class="panel-title" data-i18n="create_room_title">Buat Room Baru (Host)</div>
+        <input type="text" id="inputHostName" class="input-text-dark" placeholder="Nama Host..." data-i18n-placeholder="host_name_ph" maxlength="15">
         <button id="btnCreateRoomSubmit" class="btn-primary">
           <span data-icon="crown"></span>
-          <span>Buat Room Baru</span>
+          <span data-i18n="create_room_btn">Buat Room Baru</span>
         </button>
       </div>
 
       <div class="panel">
-        <div class="panel-title">Gabung Room yang Sudah Ada</div>
-        <input type="text" id="inputJoinPlayerName" class="input-text-dark" placeholder="Nama Pemain..." maxlength="15">
-        <input type="text" id="inputJoinRoomCode" class="input-text-dark input-code-center" placeholder="6 DIGIT KODE" maxlength="6">
+        <div class="panel-title" data-i18n="join_room_title">Gabung Room yang Sudah Ada</div>
+        <input type="text" id="inputJoinPlayerName" class="input-text-dark" placeholder="Nama Pemain..." data-i18n-placeholder="player_name_ph" maxlength="15">
+        <input type="text" id="inputJoinRoomCode" class="input-text-dark input-code-center" placeholder="6 DIGIT KODE" data-i18n-placeholder="room_code_ph" maxlength="6">
         <button id="btnJoinRoomSubmit" class="btn-secondary">
-          <span>Gabung ke Room</span>
+          <span data-i18n="join_room_btn">Gabung ke Room</span>
         </button>
       </div>
 
       <button id="btnBackFromOnlineAuth" class="btn-secondary" style="margin-top:auto;">
         <span data-icon="arrowLeft"></span>
-        <span>Kembali ke Menu Utama</span>
+        <span data-i18n="back_main_menu">Kembali ke Menu Utama</span>
       </button>
     </section>
 
     <!-- SCREEN 3: ONLINE LOBBY ROOM -->
     <section id="screenOnlineLobby" class="screen hidden">
       <div class="room-code-display-wrap">
-        <div class="room-code-label">Kode Room Pemain (6 Digit)</div>
+        <div class="room-code-label" data-i18n="room_code_label">Kode Room Pemain (6 Digit)</div>
         <div id="onlineRoomCodeDisplay" class="room-code-number">------</div>
         <button id="btnCopyRoomCode" class="btn-copy-code">
           <span data-icon="copy"></span>
-          <span>Salin Kode</span>
+          <span data-i18n="copy_code">Salin Kode</span>
         </button>
       </div>
 
       <div class="panel">
         <div class="panel-title">
-          <span>Daftar Pemain</span>
+          <span data-i18n="player_list">Daftar Pemain</span>
           <span id="onlinePlayerCountBadge" class="hud-badge">0 / 15 Pemain</span>
         </div>
         <div id="onlineLobbyRosterList" class="roster-list">
@@ -113,13 +113,13 @@
         <!-- Host Role Config Controls -->
         <div id="onlineHostRoleControls" class="hidden" style="margin-top:14px; border-top:1px solid var(--border-subtle); padding-top:12px;">
           <div style="font-size:12px; font-weight:800; color:var(--rose-light); margin-bottom:8px; display:flex; justify-content:space-between;">
-            <span>KONFIGURASI PERAN (HOST):</span>
+            <span data-i18n="role_config_host">KONFIGURASI PERAN (HOST):</span>
             <span id="onlineRoleTotalSum" style="font-weight:900;">0 / 0</span>
           </div>
           
           <div style="display:flex; flex-direction:column; gap:6px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:12px; color:var(--role-wolf); font-weight:700;">Werewolf</span>
+              <span style="font-size:12px; color:var(--role-wolf); font-weight:700;" data-i18n="role_werewolf_name">Werewolf</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 <button id="btnOnlineRoleMinus_werewolf" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
                 <span id="onlineRoleCount_werewolf" style="font-weight:800; min-width:16px; text-align:center;">1</span>
@@ -127,7 +127,7 @@
               </div>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:12px; color:var(--role-villager); font-weight:700;">Warga Biasa</span>
+              <span style="font-size:12px; color:var(--role-villager); font-weight:700;" data-i18n="role_villager_name">Warga Biasa</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 <button id="btnOnlineRoleMinus_villager" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
                 <span id="onlineRoleCount_villager" style="font-weight:800; min-width:16px; text-align:center;">2</span>
@@ -135,7 +135,7 @@
               </div>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:12px; color:var(--role-seer); font-weight:700;">Penerawang (Seer)</span>
+              <span style="font-size:12px; color:var(--role-seer); font-weight:700;" data-i18n="role_seer_name">Penerawang (Seer)</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 <button id="btnOnlineRoleMinus_seer" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
                 <span id="onlineRoleCount_seer" style="font-weight:800; min-width:16px; text-align:center;">1</span>
@@ -143,7 +143,7 @@
               </div>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:12px; color:var(--role-guard); font-weight:700;">Pelindung (Bodyguard)</span>
+              <span style="font-size:12px; color:var(--role-guard); font-weight:700;" data-i18n="role_bodyguard_name">Pelindung (Bodyguard)</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 <button id="btnOnlineRoleMinus_bodyguard" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
                 <span id="onlineRoleCount_bodyguard" style="font-weight:800; min-width:16px; text-align:center;">1</span>
@@ -151,7 +151,7 @@
               </div>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:12px; color:var(--role-hunter); font-weight:700;">Pemburu (Hunter)</span>
+              <span style="font-size:12px; color:var(--role-hunter); font-weight:700;" data-i18n="role_hunter_name">Pemburu (Hunter)</span>
               <div style="display:flex; align-items:center; gap:8px;">
                 <button id="btnOnlineRoleMinus_hunter" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
                 <span id="onlineRoleCount_hunter" style="font-weight:800; min-width:16px; text-align:center;">0</span>
@@ -164,7 +164,7 @@
         <!-- Guest Role Summary -->
         <div id="onlineGuestRoleSummary" class="hidden" style="margin-top:14px; border-top:1px solid var(--border-subtle); padding-top:12px;">
           <div style="font-size:12px; font-weight:800; color:var(--rose-light); margin-bottom:8px; display:flex; justify-content:space-between;">
-            <span>KOMPOSISI PERAN DESA:</span>
+            <span data-i18n="role_comp_village">KOMPOSISI PERAN DESA:</span>
             <span id="onlineGuestRoleTotalSum" style="font-weight:900;">0 / 0</span>
           </div>
           <div id="onlineGuestRoleList" style="display:flex; flex-direction:column; gap:6px;">
@@ -176,10 +176,10 @@
       <div style="width:100%; display:flex; flex-direction:column; gap:10px; margin-top:auto;">
         <button id="btnStartOnlineGame" class="btn-primary hidden">
           <span data-icon="moon"></span>
-          <span>Mulai Permainan</span>
+          <span data-i18n="start_game_btn">Mulai Permainan</span>
         </button>
         <button id="btnLeaveOnlineRoom" class="btn-secondary btn-danger">
-          <span>Keluar dari Room</span>
+          <span data-i18n="leave_room_btn">Keluar dari Room</span>
         </button>
       </div>
     </section>
@@ -188,26 +188,26 @@
     <section id="screenOfflineSetup" class="screen hidden">
       <div class="panel">
         <div class="panel-title">
-          <span>Daftar Pemain (5–15)</span>
+          <span data-i18n="player_list_range">Daftar Pemain (5–15)</span>
           <span id="offlinePlayerCountLabel" class="hud-badge">5 Pemain</span>
         </div>
         <div id="offlinePlayerList" class="roster-list">
           <!-- Rendered dynamically -->
         </div>
         <button id="btnAddOfflinePlayer" class="btn-secondary" style="margin-top:4px;">
-          <span>+ Tambah Pemain</span>
+          <span data-i18n="add_player_btn">+ Tambah Pemain</span>
         </button>
       </div>
 
       <div class="panel">
         <div class="panel-title">
-          <span>Konfigurasi Peran</span>
+          <span data-i18n="role_config">Konfigurasi Peran</span>
           <span id="offlineRoleTotalSum" style="font-weight:900;">5 / 5</span>
         </div>
         
         <div style="display:flex; flex-direction:column; gap:6px;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:12px; color:var(--role-wolf); font-weight:700;">Werewolf</span>
+            <span style="font-size:12px; color:var(--role-wolf); font-weight:700;" data-i18n="role_werewolf_name">Werewolf</span>
             <div style="display:flex; align-items:center; gap:8px;">
               <button id="btnOfflineRoleMinus_werewolf" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
               <span id="offlineRoleCount_werewolf" style="font-weight:800; min-width:16px; text-align:center;">1</span>
@@ -215,7 +215,7 @@
             </div>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:12px; color:var(--role-villager); font-weight:700;">Warga Biasa</span>
+            <span style="font-size:12px; color:var(--role-villager); font-weight:700;" data-i18n="role_villager_name">Warga Biasa</span>
             <div style="display:flex; align-items:center; gap:8px;">
               <button id="btnOfflineRoleMinus_villager" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
               <span id="offlineRoleCount_villager" style="font-weight:800; min-width:16px; text-align:center;">2</span>
@@ -223,7 +223,7 @@
             </div>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:12px; color:var(--role-seer); font-weight:700;">Penerawang (Seer)</span>
+            <span style="font-size:12px; color:var(--role-seer); font-weight:700;" data-i18n="role_seer_name">Penerawang (Seer)</span>
             <div style="display:flex; align-items:center; gap:8px;">
               <button id="btnOfflineRoleMinus_seer" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
               <span id="offlineRoleCount_seer" style="font-weight:800; min-width:16px; text-align:center;">1</span>
@@ -231,7 +231,7 @@
             </div>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:12px; color:var(--role-guard); font-weight:700;">Pelindung (Bodyguard)</span>
+            <span style="font-size:12px; color:var(--role-guard); font-weight:700;" data-i18n="role_bodyguard_name">Pelindung (Bodyguard)</span>
             <div style="display:flex; align-items:center; gap:8px;">
               <button id="btnOfflineRoleMinus_bodyguard" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
               <span id="offlineRoleCount_bodyguard" style="font-weight:800; min-width:16px; text-align:center;">1</span>
@@ -239,7 +239,7 @@
             </div>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:12px; color:var(--role-hunter); font-weight:700;">Pemburu (Hunter)</span>
+            <span style="font-size:12px; color:var(--role-hunter); font-weight:700;" data-i18n="role_hunter_name">Pemburu (Hunter)</span>
             <div style="display:flex; align-items:center; gap:8px;">
               <button id="btnOfflineRoleMinus_hunter" class="btn-icon-hud" style="width:26px; height:26px;">-</button>
               <span id="offlineRoleCount_hunter" style="font-weight:800; min-width:16px; text-align:center;">0</span>
@@ -252,11 +252,11 @@
       <div style="width:100%; display:flex; flex-direction:column; gap:10px; margin-top:auto;">
         <button id="btnStartOfflineGame" class="btn-primary">
           <span data-icon="moon"></span>
-          <span>Bagi Kartu & Mulai Game</span>
+          <span data-i18n="deal_and_start">Bagi Kartu & Mulai Game</span>
         </button>
         <button id="btnBackFromOfflineSetup" class="btn-secondary">
           <span data-icon="arrowLeft"></span>
-          <span>Kembali</span>
+          <span data-i18n="back_btn">Kembali</span>
         </button>
       </div>
     </section>
@@ -264,8 +264,8 @@
     <!-- SCREEN 5: PEMILIHAN KARTU (CARD PICK GRID) -->
     <section id="screenCardPick" class="screen hidden">
       <div class="card-pick-container">
-        <h2 id="cardPickHeaderTitle" style="font-size:18px; font-weight:800; color:#fff; text-align:center;">Pilih 1 Kartu Rahasiamu</h2>
-        <p id="cardPickHeaderDesc" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:4px;">
+        <h2 id="cardPickHeaderTitle" style="font-size:18px; font-weight:800; color:#fff; text-align:center;" data-i18n="card_pick_title">Pilih 1 Kartu Rahasiamu</h2>
+        <p id="cardPickHeaderDesc" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:4px;" data-i18n="card_pick_desc">
           Pilih tepat 1 kartu tertutup di bawah ini atau tekan tombol Pilih Acak.
         </p>
 
@@ -275,7 +275,7 @@
 
         <button id="btnCardPickRandom" class="btn-secondary" style="margin-bottom:14px;">
           <span data-icon="shuffle"></span>
-          <span>Pilih Acak (Random)</span>
+          <span data-i18n="pick_random_btn">Pilih Acak (Random)</span>
         </button>
 
         <!-- Role Reveal Detail Panel -->
@@ -287,7 +287,7 @@
 
         <div id="cardPickActionBtns" class="hidden" style="width:100%; margin-top:10px;">
           <button id="btnConfirmCardPick" class="btn-primary">
-            <span>Paham & Tutup Kartu</span>
+            <span data-i18n="confirm_card_btn">Paham & Tutup Kartu</span>
           </button>
         </div>
       </div>
@@ -296,12 +296,12 @@
     <!-- SCREEN 6: PRIVACY TRANSITION SCREEN -->
     <section id="screenPrivacy" class="screen hidden" style="justify-content:center; text-align:center; padding:40px 16px;">
       <div style="width:64px; height:64px; color:var(--blood-glow); margin:0 auto 16px;" data-icon="moon"></div>
-      <h2 id="privacyScreenTitle" style="font-size:22px; font-weight:900; color:#fff; margin-bottom:8px;">Layar Transisi Aman</h2>
-      <p id="privacyScreenDesc" style="font-size:14px; color:var(--text-muted); line-height:1.5; max-width:400px; margin:0 auto 28px;">
+      <h2 id="privacyScreenTitle" style="font-size:22px; font-weight:900; color:#fff; margin-bottom:8px;" data-i18n="privacy_title">Layar Transisi Aman</h2>
+      <p id="privacyScreenDesc" style="font-size:14px; color:var(--text-muted); line-height:1.5; max-width:400px; margin:0 auto 28px;" data-i18n="privacy_desc">
         Pastikan hanya pemain yang bersangkutan yang melihat layar ini sebelum menekan tombol buka.
       </p>
       <button id="btnPrivacyConfirm" class="btn-primary" style="max-width:320px; margin:0 auto;">
-        <span>Saya Siap, Buka Layar</span>
+        <span data-i18n="privacy_btn">Saya Siap, Buka Layar</span>
       </button>
     </section>
 
@@ -310,13 +310,13 @@
       <!-- Layar Tunggu (Jika bukan gilirannya) -->
       <div id="nightWaitingBox" class="waiting-box hidden">
         <div id="nightWaitingIcon" class="waiting-pulse-icon" data-icon="moon"></div>
-        <h2 id="nightWaitingTitle" style="font-size:20px; font-weight:900; color:#fff; margin-bottom:8px;">Malam Telah Tiba</h2>
-        <p id="nightWaitingDesc" style="font-size:13px; color:var(--text-muted); line-height:1.5; max-width:440px; margin:0 auto 14px;">
+        <h2 id="nightWaitingTitle" style="font-size:20px; font-weight:900; color:#fff; margin-bottom:8px;" data-i18n="night_fallen">Malam Telah Tiba</h2>
+        <p id="nightWaitingDesc" style="font-size:13px; color:var(--text-muted); line-height:1.5; max-width:440px; margin:0 auto 14px;" data-i18n="night_waiting_desc">
           Seluruh warga desa tertidur lelap... Menunggu peran yang berhak beraksi dalam kegelapan.
         </p>
         <div class="hud-badge" style="display:inline-flex; border-color:var(--border-strong); margin:0 auto;">
           <span data-icon="clock" style="display:inline-flex; width:14px; height:14px;"></span>
-          <span>Sisa Waktu Giliran: <strong id="nightWaitingTimerDigits" style="color:var(--blood-glow); font-family:monospace;">30</strong> detik</span>
+          <span><span data-i18n="turn_time_left">Sisa Waktu Giliran:</span> <strong id="nightWaitingTimerDigits" style="color:var(--blood-glow); font-family:monospace;">30</strong> <span data-i18n="sec_unit">detik</span></span>
         </div>
       </div>
 
@@ -327,7 +327,7 @@
             <div style="display:flex; align-items:center; gap:10px;">
               <div id="nightRoleIcon" style="width:36px; height:36px;"></div>
               <div>
-                <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Giliran Beraksi:</div>
+                <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase;" data-i18n="action_turn_label">Giliran Beraksi:</div>
                 <h3 id="nightRoleTitle" style="font-size:17px; font-weight:900;">Nama Peran</h3>
               </div>
             </div>
@@ -337,7 +337,7 @@
             </div>
           </div>
 
-          <p id="nightActionPrompt" style="font-size:13px; color:var(--rose-light); margin-bottom:10px; font-weight:600;">
+          <p id="nightActionPrompt" style="font-size:13px; color:var(--rose-light); margin-bottom:10px; font-weight:600;" data-i18n="night_action_prompt">
             Pilih 1 sasaran tindakanmu:
           </p>
 
@@ -350,7 +350,7 @@
           </div>
 
           <button id="btnConfirmNightAction" class="btn-primary" style="margin-top:12px;">
-            <span>Kunci Aksi Malam Ini</span>
+            <span data-i18n="lock_night_action">Kunci Aksi Malam Ini</span>
           </button>
         </div>
       </div>
@@ -360,44 +360,44 @@
     <section id="screenDayAnnouncement" class="screen hidden">
       <div class="hero">
         <div class="hero-icon" data-icon="sun" style="color:#f59e0b;"></div>
-        <h1 style="background:linear-gradient(135deg, #fff 20%, #f59e0b 70%, #d97706 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">FAJAR MENYINGSING</h1>
-        <p>Matahari terbit mengungkap peristiwa yang terjadi tadi malam</p>
+        <h1 style="background:linear-gradient(135deg, #fff 20%, #f59e0b 70%, #d97706 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;" data-i18n="dawn_title">FAJAR MENYINGSING</h1>
+        <p data-i18n="dawn_desc">Matahari terbit mengungkap peristiwa yang terjadi tadi malam</p>
       </div>
 
       <div class="panel">
-        <div class="panel-title">Pengumuman Desa</div>
-        <p id="dayNewsText" style="font-size:14px; line-height:1.5; color:#fff;">
+        <div class="panel-title" data-i18n="village_announcement">Pengumuman Desa</div>
+        <p id="dayNewsText" style="font-size:14px; line-height:1.5; color:#fff;" data-i18n="loading_night_news">
           Memuat kabar malam...
         </p>
 
         <!-- Hunter Revenge Panel -->
         <div id="dayHunterRevengePanel" class="hidden" style="display:none; margin-top:14px; border-top:1px solid var(--border-subtle); padding-top:12px;">
           <div style="font-size:13px; font-weight:800; color:var(--role-hunter); margin-bottom:6px;">
-            PEMBURU (<span id="hunterRevengeName"></span>) GUGUR!
+            <span data-i18n="hunter_fallen_prefix">PEMBURU</span> (<span id="hunterRevengeName"></span>) <span data-i18n="hunter_fallen_suffix">GUGUR!</span>
           </div>
-          <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;" data-i18n="hunter_revenge_desc">
             Sebelum menghembuskan napas terakhir, Pemburu wajib memilih 1 sasaran tembak pembalasan:
           </p>
           <div id="hunterTargetList" class="target-list"></div>
           <button id="btnHunterConfirmShoot" class="btn-primary" style="background:linear-gradient(135deg, #059669 0%, #047857 100%);">
-            <span>Lepaskan Tembakan Terakhir</span>
+            <span data-i18n="fire_final_shot">Lepaskan Tembakan Terakhir</span>
           </button>
         </div>
       </div>
 
       <!-- Timer Diskusi -->
       <div class="panel">
-        <div class="panel-title">Waktu Diskusi Terbuka</div>
+        <div class="panel-title" data-i18n="discussion_time_title">Waktu Diskusi Terbuka</div>
         <div class="timer-container">
           <div id="discussionTimerDigits" class="timer-digits">02:00</div>
-          <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">Diskusikan siapa yang mencurigakan sebelum voting!</p>
+          <p style="font-size:11px; color:var(--text-muted); margin-top:4px;" data-i18n="discussion_hint">Diskusikan siapa yang mencurigakan sebelum voting!</p>
         </div>
         <div style="display:flex; gap:8px; margin-top:8px;">
           <button id="btnSkipDiscussion" class="btn-secondary" style="flex:1;">
-            <span>Lewati Diskusi</span>
+            <span data-i18n="skip_discussion">Lewati Diskusi</span>
           </button>
           <button id="btnProceedToVoting" class="btn-primary" style="flex:1;">
-            <span>Lanjut ke Voting</span>
+            <span data-i18n="proceed_voting">Lanjut ke Voting</span>
           </button>
         </div>
       </div>
@@ -407,18 +407,18 @@
     <section id="screenDayVoting" class="screen hidden">
       <div class="hero">
         <div class="hero-icon" data-icon="skull"></div>
-        <h1>SIDANG EKSEKUSI DESA</h1>
-        <p>Pilih 1 tersangka yang dicurigai sebagai Werewolf untuk digantung</p>
+        <h1 data-i18n="voting_title">SIDANG EKSEKUSI DESA</h1>
+        <p data-i18n="voting_desc">Pilih 1 tersangka yang dicurigai sebagai Werewolf untuk digantung</p>
       </div>
 
       <div class="panel">
-        <div class="panel-title">Pilih Warga untuk Digantung</div>
+        <div class="panel-title" data-i18n="voting_panel_title">Pilih Warga untuk Digantung</div>
         <div id="votingTargetList" class="target-list">
           <!-- Target list rendered dynamically -->
         </div>
 
         <button id="btnConfirmExecution" class="btn-primary" style="margin-top:12px;">
-          <span>Eksekusi Pilihan Sidang</span>
+          <span data-i18n="execute_btn">Eksekusi Pilihan Sidang</span>
         </button>
       </div>
     </section>
@@ -427,25 +427,436 @@
     <section id="screenGameOver" class="screen hidden">
       <div class="hero">
         <div class="hero-icon" data-icon="werewolf"></div>
-        <h1 id="gameOverTitle">PERMAINAN SELESAI</h1>
-        <p id="gameOverDesc">Ringkasan hasil akhir permainan</p>
+        <h1 id="gameOverTitle" data-i18n="gameover_title">PERMAINAN SELESAI</h1>
+        <p id="gameOverDesc" data-i18n="gameover_desc">Ringkasan hasil akhir permainan</p>
       </div>
 
       <div class="panel">
-        <div class="panel-title">Daftar Peran Seluruh Pemain</div>
+        <div class="panel-title" data-i18n="gameover_roster_title">Daftar Peran Seluruh Pemain</div>
         <div id="gameOverRoster" class="roster-list">
           <!-- Final roster rendered dynamically -->
         </div>
       </div>
 
       <button id="btnRestartGame" class="btn-primary" style="margin-top:auto;">
-        <span>Kembali ke Menu Utama</span>
+        <span data-i18n="back_main_menu">Kembali ke Menu Utama</span>
       </button>
     </section>
 
   </div>
 
   <!-- Scripts Modular -->
+  <script>
+    (function () {
+      let currentLang = "id";
+      try {
+        if (localStorage.getItem("teknogame-lang") === "en") currentLang = "en";
+      } catch {}
+
+      const I18N = {
+        id: {
+          page_title: "Werewolf: Malam & Desa - TeknoGame",
+          hud_status_label: "STATUS:",
+          hud_main_menu: "MENU UTAMA",
+          hud_offline_setup: "SETUP OFFLINE",
+          hud_night_fallen: "MALAM TIBA",
+          hud_night_time: "MALAM HARI",
+          hud_day_phase: "FASE SIANG",
+          hud_pick_card: "PILIH KARTU",
+          hud_voting: "VOTING EKSEKUSI",
+          hud_lobby_code: "LOBI: {code}",
+          audio_title: "Audio",
+          hero_subtitle: "Malam & Desa — Permainan Deduksi Sosial Misteri",
+          choose_mode: "Pilih Mode Permainan",
+          mode_online_title: "Main Online (Multi-Perangkat)",
+          mode_online_desc: "Mabar bersama teman menggunakan kode room 6 digit via Supabase Realtime di HP masing-masing.",
+          mode_offline_title: "Main Offline (Pass-and-Play 1 HP)",
+          mode_offline_desc: "Main bersama 5 hingga 15 pemain secara bergantian menggunakan satu perangkat aman.",
+          online_lobby_title: "LOBI MULTIPLAYER",
+          online_lobby_desc: "Hubungkan permainan antar perangkat via Room Kode 6 Digit",
+          create_room_title: "Buat Room Baru (Host)",
+          host_name_ph: "Nama Host...",
+          create_room_btn: "Buat Room Baru",
+          join_room_title: "Gabung Room yang Sudah Ada",
+          player_name_ph: "Nama Pemain...",
+          room_code_ph: "6 DIGIT KODE",
+          join_room_btn: "Gabung ke Room",
+          back_main_menu: "Kembali ke Menu Utama",
+          room_code_label: "Kode Room Pemain (6 Digit)",
+          copy_code: "Salin Kode",
+          copied_code: "Tersalin!",
+          room_code_alert: "Kode Room: {code}",
+          confirm_leave_room: "Apakah kamu yakin ingin keluar dari room ini?",
+          player_list: "Daftar Pemain",
+          player_count_max: "{count} / 15 Pemain",
+          role_config_host: "KONFIGURASI PERAN (HOST):",
+          role_comp_village: "KOMPOSISI PERAN DESA:",
+          start_game_btn: "Mulai Permainan",
+          leave_room_btn: "Keluar dari Room",
+          player_list_range: "Daftar Pemain (5–15)",
+          player_count: "{count} Pemain",
+          add_player_btn: "+ Tambah Pemain",
+          role_config: "Konfigurasi Peran",
+          deal_and_start: "Bagi Kartu & Mulai Game",
+          back_btn: "Kembali",
+          card_pick_title: "Pilih 1 Kartu Rahasiamu",
+          card_pick_desc: "Pilih tepat 1 kartu tertutup di bawah ini atau tekan tombol Pilih Acak.",
+          card_pick_yours_title: "Kartu Peranmu",
+          card_pick_yours_desc: "Hafalkan peran dan tugasmu. Tekan tombol Siap untuk melanjutkan.",
+          card_pick_player_title: "Pilih Kartu: {name}",
+          pick_random_btn: "Pilih Acak (Random)",
+          confirm_card_btn: "Paham & Tutup Kartu",
+          privacy_title: "Layar Transisi Aman",
+          privacy_desc: "Pastikan hanya pemain yang bersangkutan yang melihat layar ini sebelum menekan tombol buka.",
+          privacy_btn: "Saya Siap, Buka Layar",
+          privacy_open_btn: "Buka Layar",
+          night_fallen: "Malam Telah Tiba",
+          night_waiting_desc: "Seluruh warga desa tertidur lelap... Menunggu peran yang berhak beraksi dalam kegelapan.",
+          turn_time_left: "Sisa Waktu Giliran:",
+          sec_unit: "detik",
+          action_turn_label: "Giliran Beraksi:",
+          night_action_prompt: "Pilih 1 sasaran tindakanmu:",
+          lock_night_action: "Kunci Aksi Malam Ini",
+          dawn_title: "FAJAR MENYINGSING",
+          dawn_desc: "Matahari terbit mengungkap peristiwa yang terjadi tadi malam",
+          village_announcement: "Pengumuman Desa",
+          loading_night_news: "Memuat kabar malam...",
+          hunter_fallen_prefix: "PEMBURU",
+          hunter_fallen_suffix: "GUGUR!",
+          hunter_revenge_desc: "Sebelum menghembuskan napas terakhir, Pemburu wajib memilih 1 sasaran tembak pembalasan:",
+          fire_final_shot: "Lepaskan Tembakan Terakhir",
+          discussion_time_title: "Waktu Diskusi Terbuka",
+          discussion_hint: "Diskusikan siapa yang mencurigakan sebelum voting!",
+          skip_discussion: "Lewati Diskusi",
+          proceed_voting: "Lanjut ke Voting",
+          voting_title: "SIDANG EKSEKUSI DESA",
+          voting_desc: "Pilih 1 tersangka yang dicurigai sebagai Werewolf untuk digantung",
+          voting_panel_title: "Pilih Warga untuk Digantung",
+          execute_btn: "Eksekusi Pilihan Sidang",
+          gameover_title: "PERMAINAN SELESAI",
+          gameover_desc: "Ringkasan hasil akhir permainan",
+          gameover_roster_title: "Daftar Peran Seluruh Pemain",
+
+          role_werewolf_name: "Werewolf",
+          role_werewolf_desc: "Bangkit saat malam tiba dan mangsa warga desa bersama kawananmu. Sembunyikan identitasmu saat fajar.",
+          role_villager_name: "Warga Biasa",
+          role_villager_desc: "Warga desa tak bersalah. Gunakan deduksi dan insting tajammu saat voting siang untuk membasmi serigala.",
+          role_seer_name: "Penerawang (Seer)",
+          role_seer_desc: "Setiap malam, terawang satu warga untuk mengungkap apakah ia bagian dari kawanan Werewolf.",
+          role_bodyguard_name: "Pelindung (Bodyguard)",
+          role_bodyguard_desc: "Lindungi satu warga dari terkaman malam. Kamu tidak boleh melindungi orang yang sama 2 malam berturut-turut.",
+          role_hunter_name: "Pemburu (Hunter)",
+          role_hunter_desc: "Jika kamu tereliminasi (malam atau siang), kamu berhak menembak mati 1 pemain lain sebelum menghembuskan napas terakhir.",
+
+          default_player: "Pemain {n}",
+          player_name_short: "Nama Pemain",
+          delete_title: "Hapus",
+          min_players_alert: "Minimal 5 pemain untuk bermain Werewolf!",
+          max_players_alert: "Maksimal 15 pemain dalam satu permainan!",
+          role_sum_mismatch: "Jumlah total peran ({sum}) harus sama dengan total pemain ({total})!",
+          turn_player_title: "Giliran: {name}",
+          turn_player_desc: "Pegang HP dan pastikan pemain lain tidak mengintip layar!",
+          turn_player_btn: "Saya Siap, Buka Kartu",
+          card_label: "KARTU {n}",
+          card_taken: "DIAMBIL",
+          all_cards_dealt_title: "Semua Kartu Telah Terbagi",
+          all_cards_dealt_desc: "Malam pertama segera dimulai. Seluruh warga desa diminta menutup mata!",
+          all_cards_dealt_btn: "Mulai Malam Pertama",
+          night_phase_role: "Fase Malam: {role}",
+          night_quiet_desc: "Malam hening... Angin berhembus melalui celah jendela rumah warga.",
+          continue_btn: "Lanjut",
+          night_turn_role: "Giliran: {role}",
+          night_turn_role_desc: "Pegang HP untuk {names}. Pastikan pemain lain menutup mata rapat-rapat!",
+          open_night_action: "Buka Aksi Malam",
+          prompt_bodyguard: "Pilih 1 pemain hidup untuk dilindungi malam ini (tidak boleh orang yang sama berturut-turut):",
+          tag_protected_last: "Telah dilindungi semalam",
+          tag_protect: "Lindungi",
+          prompt_werewolf: "Pilih 1 target mangsa warga untuk dihabisi malam ini:",
+          fellow_wolves: "Kawan Serigalamu:",
+          tag_fellow_wolf: "Sesama Werewolf",
+          tag_prey: "Mangsa",
+          prompt_seer: "Pilih 1 pemain hidup untuk diterawang identitas aslinya (hanya 1 kali per malam):",
+          tag_inspect: "Terawang",
+          seer_result_html: "Hasil Penerawangan untuk <strong>{name}</strong>:<br><span style=\"font-size:16px; font-weight:900; color:{color};\">{verdict}</span><div style=\"font-size:11px; color:var(--text-muted); margin-top:6px;\">Penerawangan selesai untuk malam ini. Klik 'Kunci Aksi Malam Ini' di bawah.</div>",
+          seer_is_wolf: "WEREWOLF !",
+          seer_not_wolf: "BUKAN WEREWOLF (Warga Desa)",
+          must_pick_target: "Kamu harus memilih tepat 1 sasaran!",
+          action_saved_title: "Aksi Telah Disimpan",
+          action_saved_desc: "Tutup mata kembali dan oper perangkat ke giliran berikutnya atau moderator.",
+          night_victim_html: "Kabar duka menyelimuti desa! <strong style=\"color:var(--blood-red);\">{name}</strong> ditemukan tewas semalam diserang Werewolf.<br>Perannya adalah <strong style=\"color:{color};\">[{role}]</strong>.",
+          night_peaceful_html: "<strong style=\"color:var(--role-hunter);\">Malam yang damai!</strong> Tidak ada korban jiwa semalam berkat kesigapan pelindung desa.",
+          tag_shoot: "Tembak",
+          hunter_must_pick: "Pemburu harus memilih tepat 1 sasaran tembak pembalasan!",
+          hunter_shot_alert: "DOR! {hunter} melepaskan tembakan terakhir ke {target}! {target} gugur dan perannya adalah [{role}].",
+          tag_vote_execute: "Pilih untuk Digantung",
+          must_pick_vote: "Pilih 1 warga untuk dieksekusi gantung!",
+          vote_result_alert: "Hasil voting desa memutuskan: {name} dieksekusi gantung! Perannya adalah [{role}].",
+          trial_done_title: "Sidang Desa Telah Selesai",
+          trial_done_desc: "Matahari telah terbenam. Malam kembali tiba menyelimuti desa...",
+          enter_next_night: "Masuk ke Malam Berikutnya",
+          villager_win_title: "WARGA DESA MENANG!",
+          villager_win_desc: "Seluruh kawanan Werewolf telah berhasil dieliminasi. Kedamaian kembali ke desa!",
+          wolf_win_title: "WEREWOLF MENANG!",
+          wolf_win_desc: "Kawanan Werewolf berhasil menguasai desa dan menaklukkan para warga!",
+          status_alive: "Selamat",
+          status_dead: "Gugur",
+
+          supabase_error: "Tidak dapat terhubung ke server Supabase. Pastikan koneksi internet aktif.",
+          create_room_err: "Gagal membuat room di Supabase: {msg}",
+          invalid_room_code: "Masukkan 6 digit kode room yang valid!",
+          room_not_found: "Room dengan kode {code} tidak ditemukan atau sudah ditutup.",
+          room_already_started: "Permainan di room {code} sudah dimulai!",
+          room_full: "Room ini sudah penuh (maksimal 15 pemain)!",
+          room_closed: "Room telah ditutup atau selesai.",
+          you_tag: "(Kamu)",
+          badge_host: "Host",
+          badge_ready: "Siap",
+          badge_waiting: "Menunggu",
+          waiting_other_players: "Menunggu Pemain Lain...",
+          iam_ready: "Saya Siap",
+          card_already_taken: "Kartu tersebut baru saja diambil oleh pemain lain. Silakan pilih kartu lain!",
+          online_night_title: "Malam Hari: {role}",
+          waiting_bodyguard: "Pelindung (Bodyguard) sedang memilih 1 warga untuk dilindungi malam ini...",
+          waiting_werewolf: "Kawanan Werewolf sedang berdiskusi menentukan sasaran mangsa di desa...",
+          waiting_seer: "Penerawang (Seer) sedang menerawang tabir identitas warga...",
+          waiting_default: "Malam hening menyelimuti desa... Menunggu fajar tiba.",
+          waiting_hunter_shot: "Menunggu tembakan pembalasan Pemburu ({name})...",
+          start_voting_btn: "Mulai Sesi Voting",
+          waiting_host_btn: "Menunggu Host...",
+          only_host_skip: "Hanya Host ruang yang dapat mempercepat atau melewati waktu diskusi.",
+          you_are_dead: "Kamu Telah Gugur (Hanya Menonton)",
+          vote_submitted: "Suaramu Telah Dikirim (Menunggu Pemain Lain)",
+          submit_vote_btn: "Kirim Suara Voting"
+        },
+        en: {
+          page_title: "Werewolf: Night & Village - TeknoGame",
+          hud_status_label: "STATUS:",
+          hud_main_menu: "MAIN MENU",
+          hud_offline_setup: "OFFLINE SETUP",
+          hud_night_fallen: "NIGHT FALLS",
+          hud_night_time: "NIGHT TIME",
+          hud_day_phase: "DAY PHASE",
+          hud_pick_card: "PICK CARD",
+          hud_voting: "EXECUTION VOTE",
+          hud_lobby_code: "LOBBY: {code}",
+          audio_title: "Audio",
+          hero_subtitle: "Night & Village — Social Deduction Mystery Game",
+          choose_mode: "Select Game Mode",
+          mode_online_title: "Play Online (Multi-Device)",
+          mode_online_desc: "Play with friends using a 6-digit room code via Supabase Realtime on your own phones.",
+          mode_offline_title: "Play Offline (Pass-and-Play 1 Device)",
+          mode_offline_desc: "Play with 5 to 15 players taking turns on a single shared device.",
+          online_lobby_title: "MULTIPLAYER LOBBY",
+          online_lobby_desc: "Connect across devices via a 6-Digit Room Code",
+          create_room_title: "Create New Room (Host)",
+          host_name_ph: "Host Name...",
+          create_room_btn: "Create New Room",
+          join_room_title: "Join Existing Room",
+          player_name_ph: "Player Name...",
+          room_code_ph: "6-DIGIT CODE",
+          join_room_btn: "Join Room",
+          back_main_menu: "Back to Main Menu",
+          room_code_label: "Player Room Code (6 Digits)",
+          copy_code: "Copy Code",
+          copied_code: "Copied!",
+          room_code_alert: "Room Code: {code}",
+          confirm_leave_room: "Are you sure you want to leave this room?",
+          player_list: "Player List",
+          player_count_max: "{count} / 15 Players",
+          role_config_host: "ROLE CONFIGURATION (HOST):",
+          role_comp_village: "VILLAGE ROLE COMPOSITION:",
+          start_game_btn: "Start Game",
+          leave_room_btn: "Leave Room",
+          player_list_range: "Player List (5–15)",
+          player_count: "{count} Players",
+          add_player_btn: "+ Add Player",
+          role_config: "Role Configuration",
+          deal_and_start: "Deal Cards & Start Game",
+          back_btn: "Back",
+          card_pick_title: "Pick Your Secret Card",
+          card_pick_desc: "Pick 1 face-down card below or press Pick Random.",
+          card_pick_yours_title: "Your Role Card",
+          card_pick_yours_desc: "Memorize your role and task. Press Ready to continue.",
+          card_pick_player_title: "Pick Card: {name}",
+          pick_random_btn: "Pick Random",
+          confirm_card_btn: "Got It & Hide Card",
+          privacy_title: "Privacy Transition Screen",
+          privacy_desc: "Make sure only the intended player is looking at the screen before pressing open.",
+          privacy_btn: "I'm Ready, Open Screen",
+          privacy_open_btn: "Open Screen",
+          night_fallen: "Night Has Fallen",
+          night_waiting_desc: "All villagers are fast asleep... Waiting for night roles to act in the dark.",
+          turn_time_left: "Turn Time Left:",
+          sec_unit: "sec",
+          action_turn_label: "Action Turn:",
+          night_action_prompt: "Choose 1 target for your action:",
+          lock_night_action: "Lock In Night Action",
+          dawn_title: "DAWN BREAKS",
+          dawn_desc: "The rising sun reveals what happened last night",
+          village_announcement: "Village Announcement",
+          loading_night_news: "Loading night news...",
+          hunter_fallen_prefix: "HUNTER",
+          hunter_fallen_suffix: "HAS FALLEN!",
+          hunter_revenge_desc: "Before taking their final breath, the Hunter must choose 1 revenge target:",
+          fire_final_shot: "Fire Final Shot",
+          discussion_time_title: "Open Discussion Time",
+          discussion_hint: "Discuss who seems suspicious before voting!",
+          skip_discussion: "Skip Discussion",
+          proceed_voting: "Proceed to Voting",
+          voting_title: "VILLAGE EXECUTION TRIAL",
+          voting_desc: "Choose 1 suspect believed to be a Werewolf to execute",
+          voting_panel_title: "Select Villager to Execute",
+          execute_btn: "Execute Trial Choice",
+          gameover_title: "GAME OVER",
+          gameover_desc: "Final game summary",
+          gameover_roster_title: "All Players' Roles",
+
+          role_werewolf_name: "Werewolf",
+          role_werewolf_desc: "Awaken at night and hunt villagers with your pack. Hide your identity when dawn breaks.",
+          role_villager_name: "Villager",
+          role_villager_desc: "An innocent villager. Use deduction and sharp instincts during day voting to eliminate the wolves.",
+          role_seer_name: "Seer",
+          role_seer_desc: "Each night, inspect one villager to uncover whether they belong to the Werewolf pack.",
+          role_bodyguard_name: "Bodyguard",
+          role_bodyguard_desc: "Protect one villager from the night attack. You cannot protect the same person 2 nights in a row.",
+          role_hunter_name: "Hunter",
+          role_hunter_desc: "If you are eliminated (day or night), you may shoot 1 other player before taking your final breath.",
+
+          default_player: "Player {n}",
+          player_name_short: "Player Name",
+          delete_title: "Delete",
+          min_players_alert: "Minimum 5 players required to play Werewolf!",
+          max_players_alert: "Maximum 15 players in a single game!",
+          role_sum_mismatch: "Total roles ({sum}) must equal total players ({total})!",
+          turn_player_title: "Turn: {name}",
+          turn_player_desc: "Hold the device and make sure other players cannot peek at the screen!",
+          turn_player_btn: "I'm Ready, Reveal Card",
+          card_label: "CARD {n}",
+          card_taken: "TAKEN",
+          all_cards_dealt_title: "All Cards Have Been Dealt",
+          all_cards_dealt_desc: "The first night is about to begin. All villagers must close their eyes!",
+          all_cards_dealt_btn: "Start First Night",
+          night_phase_role: "Night Phase: {role}",
+          night_quiet_desc: "The night is quiet... Wind blows softly through the village windows.",
+          continue_btn: "Continue",
+          night_turn_role: "Turn: {role}",
+          night_turn_role_desc: "Pass the device to {names}. Make sure everyone else keeps their eyes closed!",
+          open_night_action: "Open Night Action",
+          prompt_bodyguard: "Choose 1 living player to protect tonight (cannot be the same person twice in a row):",
+          tag_protected_last: "Protected last night",
+          tag_protect: "Protect",
+          prompt_werewolf: "Choose 1 villager target to hunt tonight:",
+          fellow_wolves: "Fellow Wolves:",
+          tag_fellow_wolf: "Fellow Werewolf",
+          tag_prey: "Hunt",
+          prompt_seer: "Choose 1 living player to inspect their true identity (once per night):",
+          tag_inspect: "Inspect",
+          seer_result_html: "Inspection result for <strong>{name}</strong>:<br><span style=\"font-size:16px; font-weight:900; color:{color};\">{verdict}</span><div style=\"font-size:11px; color:var(--text-muted); margin-top:6px;\">Inspection complete for tonight. Click 'Lock In Night Action' below.</div>",
+          seer_is_wolf: "WEREWOLF !",
+          seer_not_wolf: "NOT A WEREWOLF (Villager)",
+          must_pick_target: "You must select exactly 1 target!",
+          action_saved_title: "Action Saved",
+          action_saved_desc: "Close your eyes again and pass the device to the next turn or moderator.",
+          night_victim_html: "Tragic news! <strong style=\"color:var(--blood-red);\">{name}</strong> was found dead last night, attacked by a Werewolf.<br>Their role was <strong style=\"color:{color};\">[{role}]</strong>.",
+          night_peaceful_html: "<strong style=\"color:var(--role-hunter);\">A peaceful night!</strong> No one died last night thanks to the village protector.",
+          tag_shoot: "Shoot",
+          hunter_must_pick: "The Hunter must choose exactly 1 revenge target!",
+          hunter_shot_alert: "BANG! {hunter} fired a final shot at {target}! {target} fell and their role was [{role}].",
+          tag_vote_execute: "Vote to Execute",
+          must_pick_vote: "Choose 1 villager to execute!",
+          vote_result_alert: "Village vote result: {name} is executed! Their role was [{role}].",
+          trial_done_title: "Village Trial Ended",
+          trial_done_desc: "The sun has set. Night falls over the village once more...",
+          enter_next_night: "Enter Next Night",
+          villager_win_title: "VILLAGERS WIN!",
+          villager_win_desc: "All Werewolves have been eliminated. Peace returns to the village!",
+          wolf_win_title: "WEREWOLVES WIN!",
+          wolf_win_desc: "The Werewolf pack has taken over the village and conquered the villagers!",
+          status_alive: "Alive",
+          status_dead: "Fallen",
+
+          supabase_error: "Cannot connect to Supabase server. Make sure your internet connection is active.",
+          create_room_err: "Failed to create room in Supabase: {msg}",
+          invalid_room_code: "Please enter a valid 6-digit room code!",
+          room_not_found: "Room with code {code} was not found or has been closed.",
+          room_already_started: "Game in room {code} has already started!",
+          room_full: "This room is full (maximum 15 players)!",
+          room_closed: "The room has been closed or finished.",
+          you_tag: "(You)",
+          badge_host: "Host",
+          badge_ready: "Ready",
+          badge_waiting: "Waiting",
+          waiting_other_players: "Waiting for Other Players...",
+          iam_ready: "I'm Ready",
+          card_already_taken: "That card was just taken by another player. Please pick another card!",
+          online_night_title: "Night Time: {role}",
+          waiting_bodyguard: "The Bodyguard is choosing 1 villager to protect tonight...",
+          waiting_werewolf: "The Werewolf pack is discussing their target in the village...",
+          waiting_seer: "The Seer is inspecting a villager's true identity...",
+          waiting_default: "A quiet night blankets the village... Waiting for dawn.",
+          waiting_hunter_shot: "Waiting for Hunter ({name})'s revenge shot...",
+          start_voting_btn: "Start Voting Session",
+          waiting_host_btn: "Waiting for Host...",
+          only_host_skip: "Only the room Host can skip or speed up the discussion timer.",
+          you_are_dead: "You Have Fallen (Spectating)",
+          vote_submitted: "Your Vote Was Sent (Waiting for Others)",
+          submit_vote_btn: "Submit Vote"
+        }
+      };
+
+      function t(key, vars) {
+        const dict = I18N[currentLang] || I18N.id;
+        let str = dict[key] !== undefined ? dict[key] : (I18N.id[key] !== undefined ? I18N.id[key] : key);
+        if (vars) {
+          for (const k in vars) {
+            str = str.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]);
+          }
+        }
+        return str;
+      }
+
+      const listeners = [];
+      function onLangChange(fn) {
+        if (typeof fn === "function") listeners.push(fn);
+      }
+
+      function applyLanguage(lang) {
+        currentLang = lang === "en" ? "en" : "id";
+        document.documentElement.lang = currentLang;
+        document.title = t("page_title");
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          el.textContent = t(el.getAttribute("data-i18n"));
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+          el.setAttribute("placeholder", t(el.getAttribute("data-i18n-placeholder")));
+        });
+        document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+          el.setAttribute("title", t(el.getAttribute("data-i18n-title")));
+        });
+        listeners.forEach((fn) => {
+          try { fn(currentLang); } catch {}
+        });
+      }
+
+      window.WerewolfI18n = {
+        t,
+        applyLanguage,
+        getLang: () => currentLang,
+        onLangChange
+      };
+
+      window.addEventListener("message", (e) => {
+        if (e.data && e.data.type === "LANG_CHANGE" && (e.data.lang === "id" || e.data.lang === "en")) {
+          applyLanguage(e.data.lang);
+        }
+      });
+      window.addEventListener("storage", (e) => {
+        if (e.key === "teknogame-lang") {
+          applyLanguage(e.newValue === "en" ? "en" : "id");
+        }
+      });
+    })();
+  </script>
   <script src="svg-icons.js"></script>
   <script src="config.js"></script>
   <script src="audio.js"></script>

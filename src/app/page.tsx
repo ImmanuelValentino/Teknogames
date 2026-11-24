@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -16,7 +17,10 @@ import {
 import GameHero from "@/components/game/GameHero";
 import GameGrid from "@/components/game/GameGrid";
 import GameCard from "@/components/game/GameCard";
-import GoogleAdSlot from "@/components/ads/GoogleAdSlot";
+
+const GoogleAdSlot = dynamic(() => import("@/components/ads/GoogleAdSlot"), {
+  ssr: false,
+});
 import { CATEGORIES, INITIAL_GAMES } from "@/lib/games-data";
 import { GameCategory, Game } from "@/types/game";
 import { getLocalScores, getLocalFavorites } from "@/lib/local-storage";

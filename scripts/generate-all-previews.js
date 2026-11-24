@@ -308,10 +308,6 @@ async function generateAll() {
         <line x1="450" y1="0" x2="450" y2="400" />
       </g>
 
-      <!-- Badge Category -->
-      <rect x="30" y="26" width="90" height="24" rx="12" fill="rgba(255, 255, 255, 0.12)" stroke="${cfg.primary}" stroke-width="1" />
-      <text x="75" y="42" fill="${cfg.primary}" font-family="sans-serif" font-size="10" font-weight="900" text-anchor="middle" letter-spacing="1">${cfg.category}</text>
-
       <!-- Central Game Visual Artwork -->
       ${cfg.iconSvg}
 

@@ -8,6 +8,13 @@
 
   let currentScreenId = 'screenMainMenu';
 
+  function t(key, vars) {
+    return window.WerewolfI18n ? window.WerewolfI18n.t(key, vars) : key;
+  }
+
+  let currentHudKey = null;
+  let currentHudVars = null;
+
   function switchScreen(targetScreenId) {
     document.querySelectorAll('.screen').forEach(el => {
       el.classList.add('hidden');
@@ -17,11 +24,23 @@
       target.classList.remove('hidden');
       currentScreenId = targetScreenId;
     }
+    if (targetScreenId === 'screenMainMenu') {
+      setHudStatusKey('hud_main_menu');
+    }
   }
 
   function setHudStatus(text) {
+    currentHudKey = null;
+    currentHudVars = null;
     const el = document.getElementById('hudStatusText');
     if (el) el.textContent = text;
+  }
+
+  function setHudStatusKey(key, vars) {
+    currentHudKey = key;
+    currentHudVars = vars || null;
+    const el = document.getElementById('hudStatusText');
+    if (el) el.textContent = t(key, vars);
   }
 
   // Layar Privasi Aman (Privacy Screen)
@@ -31,7 +50,7 @@
     document.getElementById('privacyScreenDesc').textContent = desc;
 
     const btn = document.getElementById('btnPrivacyConfirm');
-    btn.textContent = btnText || 'Buka Layar';
+    btn.textContent = btnText || t('privacy_open_btn');
     btn.onclick = () => {
       window.WerewolfAudio.play('click');
       if (typeof onConfirmCallback === 'function') {
@@ -65,7 +84,7 @@
         window.WerewolfAudio.play('click');
         window.WerewolfOfflineEngine.init();
         switchScreen('screenOfflineSetup');
-        setHudStatus('SETUP OFFLINE');
+        setHudStatusKey('hud_offline_setup');
       };
     }
 
@@ -104,12 +123,12 @@
         const code = document.getElementById('onlineRoomCodeDisplay').textContent;
         navigator.clipboard.writeText(code).then(() => {
           window.WerewolfAudio.play('click');
-          btnCopyRoomCode.innerHTML = `${window.WerewolfIcons.get('check')} Tersalin!`;
+          btnCopyRoomCode.innerHTML = `${window.WerewolfIcons.get('check')} ${t('copied_code')}`;
           setTimeout(() => {
-            btnCopyRoomCode.innerHTML = `${window.WerewolfIcons.get('copy')} Salin Kode`;
+            btnCopyRoomCode.innerHTML = `${window.WerewolfIcons.get('copy')} ${t('copy_code')}`;
           }, 2000);
         }).catch(() => {
-          alert('Kode Room: ' + code);
+          alert(t('room_code_alert', { code }));
         });
       };
     }
@@ -118,7 +137,7 @@
     const btnLeaveOnlineRoom = document.getElementById('btnLeaveOnlineRoom');
     if (btnLeaveOnlineRoom) {
       btnLeaveOnlineRoom.onclick = () => {
-        if (confirm('Apakah kamu yakin ingin keluar dari room ini?')) {
+        if (confirm(t('confirm_leave_room'))) {
           window.WerewolfOnlineEngine.leaveRoom(true);
         }
       };
@@ -185,12 +204,23 @@
       const iconName = el.getAttribute('data-icon');
       el.innerHTML = window.WerewolfIcons.get(iconName);
     });
+
+    if (window.WerewolfI18n) {
+      window.WerewolfI18n.onLangChange(() => {
+        if (currentHudKey) {
+          const el = document.getElementById('hudStatusText');
+          if (el) el.textContent = t(currentHudKey, currentHudVars);
+        }
+      });
+      window.WerewolfI18n.applyLanguage(window.WerewolfI18n.getLang());
+    }
   }
 
   window.WerewolfApp = {
     init: initApp,
     switchScreen,
     setHudStatus,
+    setHudStatusKey,
     showPrivacyScreen
   };
 

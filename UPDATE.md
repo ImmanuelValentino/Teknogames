@@ -8,6 +8,11 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ---
 ** Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.15.3] - 2026-11-24
+### Improved (Lazy Loading & Asset Priority)
+- **Code-Splitting Komponen Sekunder:** Menggunakan `next/dynamic` untuk `AdBottomAnchor`, `AdSkyscraper`, `AdCompanion`, `AdNativeTile`, dan `GoogleAdSlot`.
+- **Optimasi Iframe & Gambar:** Menambahkan `loading="lazy"` pada `<iframe>` di `GameFrame.tsx`, `fetchPriority="high"` + `decoding="async"` pada gambar hero di `GameHero.tsx`, serta memprioritaskan `.webp` sebelum `.png` di `GameCard.tsx`.
+
 ## [3.15.2] - 2026-11-23
 ### Added, Changed, & Fixed (Dukungan Bahasa ID/EN, Kontras & Ikon Responsif, Notifikasi Skor, & Tombol Tutup Ads)
 - **Dukungan Bahasa Indonesia & Bahasa Inggris (ID/EN):**

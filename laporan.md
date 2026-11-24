@@ -1,3 +1,25 @@
+### [2026-11-24 07:56] - [Frontend] - Implementasi Lazy Loading Selektif untuk Optimasi Performa
+- **Kondisi Sebelum:**
+  1. Lazy loading baru diterapkan pada `<img loading="lazy">` di `GameCard.tsx`; komponen iklan di luar viewport awal masih di-bundle secara eager.
+  2. `<iframe>` di `GameFrame.tsx` belum memiliki `loading="lazy"`, gambar hero belum memakai `fetchPriority="high"`, dan `GameCard.tsx` masih memuat `.png` lebih dulu sebelum `.webp`.
+- **Perubahan Sesudah:**
+  1. Menerapkan `next/dynamic` pada `AdBottomAnchor`, `AdSkyscraper`, `AdCompanion`, `AdNativeTile`, dan `GoogleAdSlot` tanpa mengubah struktur slot iklan.
+  2. Menambahkan `loading="lazy"` pada `<iframe>` di `GameFrame.tsx`, `fetchPriority="high"` + `decoding="async"` pada gambar hero di `GameHero.tsx`, serta memprioritaskan format `.webp` di `GameCard.tsx`.
+- **Masalah yang Ditemukan:** `npx tsc --noEmit` lulus tanpa error; `npm run build` di lingkungan sandbox tanpa internet gagal saat mengunduh Google Fonts (`ENOTFOUND fonts.googleapis.com`).
+- **Penyelesaian:** Memverifikasi tipe TypeScript dengan `npx tsc --noEmit` dan menyertakan catatan agar `npm run build` dijalankan di lingkungan dengan akses jaringan untuk menghasilkan `out/`.
+- **File Terdampak:** `src/components/layout/ClientLayout.tsx`, `src/components/layout/LayoutWrapper.tsx`, `src/app/page.tsx`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `src/components/game/GameGrid.tsx`, `src/components/game/GameFrame.tsx`, `src/components/game/GameHero.tsx`, `src/components/game/GameCard.tsx`, `UPDATE.md`, `laporan.md`
+
+### [2026-11-24 07:45] - [Games & Frontend] - Sinkronisasi Bahasa (ID/EN) pada 13 Game HTML5 & Pembersihan Badge Genre di Preview Gambar
+- **Kondisi Sebelum:**
+  1. Tombol pergantian bahasa (ID/EN) di Navbar hanya mengubah tampilan antarmuka portal Next.js, sedangkan 13 game HTML5 di dalam `<iframe>` tetap berbahasa Indonesia.
+  2. Gambar preview (`preview.png` / `.webp`) hasil generator masih memiliki badge genre bawaan (`ARKADE`, `STRATEGI`, `PETUALANGAN`, dll.) di pojok kiri atas sehingga menumpuk dengan badge genre dinamis di kartu beranda.
+- **Perubahan Sesudah:**
+  1. Menambahkan sinkronisasi `postMessage` (`{ type: "LANG_CHANGE", lang }`) di `src/components/game/GameFrame.tsx` saat bahasa berubah maupun saat `iframe` selesai dimuat (`onLoad`).
+  2. Menambahkan dukungan dwibahasa ID/EN (`localStorage` `teknogame-lang`, listener `message` dan `storage`, kamus `I18N`, serta fungsi `applyLanguage`) di seluruh 13 game (`becak-drift`, `candi-stacker`, `circuit-flow`, `cyber-bird`, `kapal-feri`, `kopi-klotok`, `layangan-sanur`, `lembah-bromo`, `nusantara-runner`, `packing-master`, `pasar-terapung`, `tekno-memory`, dan `werewolf` beserta skrip modularnya).
+  3. Menghapus badge kategori bawaan dari `scripts/generate-all-previews.js` dan meng-generate ulang seluruh preview gambar game agar tampil bersih, sambil tetap mempertahankan badge genre dinamis ID/EN di `src/components/game/GameCard.tsx`.
+- **Masalah yang Ditemukan:** Validasi `npx tsc --noEmit` dan sintaks JS seluruh 13 game lulus; `npm run build` di sandbox gagal hanya karena keterbatasan jaringan (`ENOTFOUND fonts.googleapis.com` untuk Google Fonts).
+- **File Terdampak:** `src/components/game/GameFrame.tsx`, `src/components/game/GameCard.tsx`, `scripts/generate-all-previews.js`, `public/games/*`, `public/*/preview.png`, `public/images/games/*`, `game-log.md`, `laporan.md`
+
 ### [2026-11-23 23:52] - [Frontend] - Multi-language (ID/EN), Perbaikan Kontras & Responsivitas UI, serta Posisi Tombol Tutup Iklan
 - **Kondisi Sebelum:**
 1. Antarmuka portal belum memiliki dukungan peralihan Bahasa Indonesia dan Bahasa Inggris.

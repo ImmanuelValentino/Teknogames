@@ -73,6 +73,24 @@ export default function GameFrame({ game, onOpenLeaderboard }: GameFrameProps) {
     return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
+  const syncIframeLanguage = React.useCallback(
+    (targetLang: "id" | "en") => {
+      try {
+        iframeRef.current?.contentWindow?.postMessage(
+          { type: "LANG_CHANGE", lang: targetLang },
+          window.location.origin
+        );
+      } catch {
+        // Ignore cross-origin or unmounted iframe errors
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    syncIframeLanguage(lang);
+  }, [lang, syncIframeLanguage]);
+
   const handleToggleFavorite = () => {
     const next = toggleLocalFavorite(game.id);
     setIsFavorite(next);
@@ -141,6 +159,8 @@ export default function GameFrame({ game, onOpenLeaderboard }: GameFrameProps) {
           ref={iframeRef}
           src={gameSrc}
           title={game.title}
+          loading="lazy"
+          onLoad={() => syncIframeLanguage(lang)}
           className="w-full h-full border-0 select-none"
           allow="autoplay; fullscreen; pointer-lock"
           sandbox="allow-scripts allow-same-origin allow-pointer-lock"

@@ -103,6 +103,7 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
               <img
                 src={`/games/${secondaryHero.slug}/preview.png`}
                 alt=""
+                decoding="async"
                 className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
                 onError={(e) => {
                   const el = e.target as HTMLImageElement;
@@ -167,6 +168,8 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
               <img
                 src={`/games/${mainHero.slug}/preview.png`}
                 alt=""
+                decoding="async"
+                fetchPriority="high"
                 className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-110"
                 onError={(e) => {
                   const el = e.target as HTMLImageElement;

@@ -1,5 +1,7 @@
 import React from "react";
-import AdSkyscraper from "../ads/AdSkyscraper";
+import dynamic from "next/dynamic";
+
+const AdSkyscraper = dynamic(() => import("../ads/AdSkyscraper"));
 
 interface LayoutWrapperProps {
   children: React.ReactNode;
