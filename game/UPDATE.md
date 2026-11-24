@@ -41,3 +41,8 @@
 ### Fixed (Kontras Tautan Teknotama di Navbar Dark Mode)
 - Mengubah warna teks dan ikon link teknotama.com menjadi putih salju pada latar merah saat dark mode.
 
+
+## [3.15.24] - 2026-11-24
+### Fixed (Kontras Kotak Informasi pada Light Mode)
+- Menambahkan latar merah sangat tipis dan garis pemisah pada kotak informasi agar isi terlihat di light mode.
+

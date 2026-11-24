@@ -1,3 +1,10 @@
+### [2026-11-24 19:18] - [Frontend] - Kontras Kotak Isi Light Mode
+- **Kondisi Sebelum:** Kotak informasi pada kartu detail game di light mode menggunakan warna yang sama dengan panel sehingga batas dan isinya kurang terlihat.
+- **Perubahan Sesudah:** Kotak memperoleh tint merah tipis dan garis pembatas lembut; teks tetap gelap untuk kontras.
+- **Masalah yang Ditemukan:** Aturan tema terang menimpa latar g-black/20 dengan Snow White.
+- **Penyelesaian:** Memisahkan aturan kotak isi dari aturan tombol dan memberi latar merah transparan khusus untuk kotak tersebut.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 19:05] - [Frontend] - Warna Tautan Teknotama di Navbar Dark Mode
 - **Kondisi Sebelum:** Teks dan ikon pada tombol teknotama.com tetap gelap di light dan dark mode.
 - **Perubahan Sesudah:** Saat dark mode, latar tombol merah dan teks serta ikon menjadi Snow White; light mode mempertahankan teks gelap.
@@ -457,6 +464,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

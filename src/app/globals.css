@@ -962,10 +962,15 @@ a.group.flex.flex-col.overflow-hidden.rounded-2xl:hover h4 {
 }
 
 .card-natural button:not(.btn-primary-clean),
-.card-natural [class~="bg-black/20"],
 .card-natural [class~="bg-white/10"] {
   background: #fffafa;
   border-color: #e5d9d5;
+  color: #101010;
+}
+
+.card-natural [class~="bg-black/20"] {
+  background: rgba(217, 20, 29, 0.06);
+  border-color: #edc6c7;
   color: #101010;
 }
 
