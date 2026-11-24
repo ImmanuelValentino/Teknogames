@@ -1,3 +1,10 @@
+### [2026-11-24 18:22] - [Frontend] - Samakan Sumber Gambar Papan Rekor dengan Katalog
+- **Kondisi Sebelum:** Kartu peringkat pertama hanya mencoba satu URL thumbnail dan berakhir pada artwork fallback ketika URL tidak tersedia.
+- **Perubahan Sesudah:** Papan rekor memakai urutan kandidat gambar dan fallback yang sama seperti kartu katalog, mencakup file WebP dan preview PNG.
+- **Masalah yang Ditemukan:** URL thumbnail tunggal tidak cocok dengan aset yang berhasil dipakai katalog.
+- **Penyelesaian:** Menambahkan fallback URL berdasarkan slug di komponen artwork papan rekor untuk peringkat pertama dan daftar peringkat.
+- **File Terdampak:** `src/app/page.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 18:12] - [Frontend] - Gambar Game Peringkat Tertinggi di Papan Rekor
 - **Kondisi Sebelum:** Kartu peringkat pertama menerima URL thumbnail placeholder dari data game sehingga gambar tidak muncul.
 - **Perubahan Sesudah:** URL gambar dibuat dari slug game pada skor tertinggi untuk memuat thumbnail yang sesuai.
@@ -429,6 +436,7 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
 
 
 

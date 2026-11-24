@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import Image from "next/image";
 import {
   Cloud,
   Code2,
@@ -55,17 +54,23 @@ function sortGamesByOrder(baseGames: Game[], orderSlugs: string[]): Game[] {
 
 interface ScoreGameArtworkProps {
   title: string;
-  thumbnailUrl?: string;
+  slug: string;
   className: string;
-  sizes: string;
 }
 
 function ScoreGameArtwork({
   title,
-  thumbnailUrl,
+  slug,
   className,
-  sizes,
 }: ScoreGameArtworkProps) {
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const imageSources = [
+    `/games/images/games/${slug}.webp`,
+    `/images/games/${slug}.webp`,
+    `/games/${slug}/preview.png`,
+    `/games/games/${slug}/preview.png`,
+    `/${slug}/preview.png`,
+  ];
   const initials = title
     .split(":")[0]
     .trim()
@@ -111,18 +116,12 @@ function ScoreGameArtwork({
       >
         {initials}
       </span>
-      {thumbnailUrl && (
-        <Image
-          alt=""
-          fill
-          sizes={sizes}
-          src={thumbnailUrl}
-          className="object-cover"
-          onError={(event) => {
-            event.currentTarget.style.display = "none";
-          }}
-        />
-      )}
+      <img
+        alt=""
+        src={imageSources[sourceIndex]}
+        className="absolute inset-0 h-full w-full object-cover"
+        onError={() => setSourceIndex((index) => Math.min(index + 1, imageSources.length - 1))}
+      />
     </div>
   );
 }
@@ -304,9 +303,8 @@ export default function HomePage() {
               <div className="relative min-h-[190px] flex-1">
                 <ScoreGameArtwork
                   title={topScores[0].title}
-                  thumbnailUrl={topScores[0].thumbnailUrl}
+                  slug={topScores[0].slug}
                   className="absolute inset-0"
-                  sizes="(min-width: 1024px) 40vw, 100vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#292a31] via-[#292a31]/25 to-transparent" />
                 <div className="absolute inset-x-4 bottom-4">
@@ -364,9 +362,8 @@ export default function HomePage() {
                     <div className="flex min-w-0 items-center gap-3">
                       <ScoreGameArtwork
                         title={item.title}
-                        thumbnailUrl={item.thumbnailUrl}
+                        slug={item.slug}
                         className="h-12 w-16 shrink-0 rounded-lg"
-                        sizes="64px"
                       />
                       <div className="min-w-0">
                         <span

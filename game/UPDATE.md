@@ -20,3 +20,8 @@
 ### Fixed (Gambar Game Peringkat Tertinggi di Papan Rekor)
 - Mengambil thumbnail dari slug game agar peringkat pertama menampilkan gambar permainan dengan skor tertinggi.
 
+
+## [3.15.20] - 2026-11-24
+### Fixed (Sumber Gambar Papan Rekor Disamakan dengan Katalog)
+- Menggunakan urutan sumber gambar dan fallback kartu katalog di area papan rekor, termasuk gambar peringkat tertinggi.
+
