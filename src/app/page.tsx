@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import Image from "next/image";
 import {
   Cloud,
   Code2,
@@ -54,27 +53,22 @@ function sortGamesByOrder(baseGames: Game[], orderSlugs: string[]): Game[] {
 }
 
 interface ScoreGameArtworkProps {
-  title: string;
-  thumbnailUrl?: string;
+  slug: string;
   className: string;
-  sizes: string;
 }
 
 function ScoreGameArtwork({
-  title,
-  thumbnailUrl,
+  slug,
   className,
-  sizes,
 }: ScoreGameArtworkProps) {
-  const initials = title
-    .split(":")[0]
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase();
-
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const imageSources = [
+    `/games/images/games/${slug}.webp`,
+    `/images/games/${slug}.webp`,
+    `/games/${slug}/preview.png`,
+    `/games/games/${slug}/preview.png`,
+    `/${slug}/preview.png`,
+  ];
   return (
     <div
       className={`relative isolate overflow-hidden bg-gradient-to-br from-rose-900 via-[#252432] to-[#292a31] ${className}`}
@@ -104,25 +98,12 @@ function ScoreGameArtwork({
           strokeWidth="2"
         />
       </svg>
-      <span
-        aria-hidden="true"
-        className="absolute inset-0 grid place-items-center font-heading text-6xl font-black text-white/20"
-        style={{ color: "rgba(255,255,255,0.2)" }}
-      >
-        {initials}
-      </span>
-      {thumbnailUrl && (
-        <Image
-          alt=""
-          fill
-          sizes={sizes}
-          src={thumbnailUrl}
-          className="object-cover"
-          onError={(event) => {
-            event.currentTarget.style.display = "none";
-          }}
-        />
-      )}
+      <img
+        alt=""
+        src={imageSources[sourceIndex]}
+        className="absolute inset-0 h-full w-full object-cover"
+        onError={() => setSourceIndex((index) => Math.min(index + 1, imageSources.length - 1))}
+      />
     </div>
   );
 }
@@ -171,7 +152,7 @@ export default function HomePage() {
             gameId,
             title: game?.title || gameId.replace(/-/g, " "),
             slug: game?.slug || gameId,
-            thumbnailUrl: game?.thumbnailUrl,
+            thumbnailUrl: `/images/games/${game?.slug || gameId}.webp`,
             score,
           };
         })
@@ -258,8 +239,8 @@ export default function HomePage() {
       </div>
 
       {/* 4. Section Papan Skor Mandiri (id="papan-skor") */}
-      <section id="papan-skor" className="mb-4 scroll-mt-24 rounded-2xl card-natural p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 border-b border-white/10 pb-4">
+      <section id="papan-skor" className="mb-4 scroll-mt-24 rounded-2xl card-natural p-4 sm:p-5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
             <div className="score-icon flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-400/20">
               <Trophy className="h-4 w-4 text-amber-700" strokeWidth={2.5} />
@@ -303,10 +284,8 @@ export default function HomePage() {
             <article className="flex min-h-[280px] flex-col overflow-hidden rounded-2xl border border-[#d8c99e] bg-[#292a31] lg:min-h-0">
               <div className="relative min-h-[190px] flex-1">
                 <ScoreGameArtwork
-                  title={topScores[0].title}
-                  thumbnailUrl={topScores[0].thumbnailUrl}
+                  slug={topScores[0].slug}
                   className="absolute inset-0"
-                  sizes="(min-width: 1024px) 40vw, 100vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#292a31] via-[#292a31]/25 to-transparent" />
                 <div className="absolute inset-x-4 bottom-4">
@@ -361,20 +340,14 @@ export default function HomePage() {
                     key={item.gameId}
                     className="flex min-w-0 items-center justify-between gap-2 rounded-xl border border-[#d8c99e] bg-[#f5edda] p-2.5 sm:gap-3 sm:p-3"
                   >
-                    <div className="flex min-w-0 items-center gap-3">
-                      <ScoreGameArtwork
-                        title={item.title}
-                        thumbnailUrl={item.thumbnailUrl}
-                        className="h-12 w-16 shrink-0 rounded-lg"
-                        sizes="64px"
-                      />
+                    <div className="min-w-0">
+                      <span
+                        className="block text-[10px] font-bold uppercase tracking-wider"
+                        style={{ color: "#765b2c" }}
+                      >
+                        {t.leaderboard.rankPrefix} {index + 2}
+                      </span>
                       <div className="min-w-0">
-                        <span
-                          className="block text-[9px] font-bold uppercase tracking-wider"
-                          style={{ color: "#765b2c" }}
-                        >
-                          {t.leaderboard.rankPrefix} {index + 2}
-                        </span>
                         <h4
                           className="truncate text-xs font-semibold sm:text-sm"
                           style={{ color: "#241b1d" }}
@@ -386,7 +359,7 @@ export default function HomePage() {
                     <div className="flex shrink-0 items-center gap-2">
                       <div className="flex items-baseline gap-1.5 rounded-lg bg-[#303139] px-2 py-1.5">
                         <span
-                          className="text-xl font-bold tracking-tight sm:text-2xl"
+                          className="text-base font-bold tracking-tight sm:text-lg"
                           style={{ color: "#ffd166" }}
                         >
                           {item.score.toLocaleString(lang === "en" ? "en-US" : "id-ID")}
@@ -413,8 +386,8 @@ export default function HomePage() {
       </section>
 
       {/* 5. Section Favorit Mandiri (id="favorit") */}
-      <section id="favorit" className="mb-4 scroll-mt-24 rounded-2xl card-natural p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 border-b border-white/10 pb-4">
+      <section id="favorit" className="mb-4 scroll-mt-24 rounded-2xl card-natural p-4 sm:p-5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-rose-500/25 bg-rose-400/15">
               <Heart className="h-4 w-4 fill-current text-rose-600" strokeWidth={2.5} />
@@ -438,7 +411,7 @@ export default function HomePage() {
             <div className="mt-4">
               <Link
                 href="#katalog"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.04] text-xs font-semibold text-slate-200 hover:text-white hover:border-[#ce2541]/40 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.04] text-xs font-semibold text-slate-200 hover:text-white hover:border-[#d9141d]/40 transition-colors"
               >
                 <span>{t.favorites.browseCatalog}</span>
               </Link>
@@ -447,7 +420,7 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-2 gap-3.5 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
             {favoriteGames.map((game) => (
-              <GameCard key={game.id} game={game} />
+              <GameCard key={game.id} game={game} showInitials={false} />
             ))}
           </div>
         )}
@@ -480,7 +453,7 @@ export default function HomePage() {
             href="https://teknotama.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="partner-service-link inline-flex min-h-11 items-center gap-2 rounded-full border px-3 sm:px-4 text-xs font-semibold transition-colors"
+            className="teknotama-cta partner-service-link inline-flex min-h-11 items-center gap-2 rounded-full border px-3 sm:px-4 text-xs font-semibold transition-colors"
           >
             <span>{t.about.partnerButton}</span>
             <ExternalLink className="h-3.5 w-3.5" />
@@ -514,10 +487,10 @@ export default function HomePage() {
               href="https://teknotama.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="partner-service-card group rounded-2xl border border-white/10 bg-white/[0.025] p-4 sm:p-5 transition-all duration-200 hover:border-[#ce2541]/50 hover:bg-white/[0.045] flex flex-col justify-between"
+              className="partner-service-card group rounded-2xl border border-white/10 bg-white/[0.025] p-4 sm:p-5 transition-all duration-200 hover:border-[#d9141d]/50 hover:bg-white/[0.045] flex flex-col justify-between"
             >
               <div>
-                <span className="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-[#ce2541]/25 bg-[#610212]/30 text-[#ff8c9f] transition-colors group-hover:text-white">
+                <span className="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-[#d9141d]/25 bg-[#610212]/30 text-[#ff6b70] transition-colors group-hover:text-white">
                   {service.icon}
                 </span>
                 <span className="block text-sm font-bold text-white">
@@ -550,7 +523,7 @@ export default function HomePage() {
             href="https://teknotama.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold btn-sponsor-clean md:w-auto shadow-md"
+            className="teknotama-cta inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold btn-sponsor-clean md:w-auto shadow-md"
           >
             <span>{t.about.partnerPanelButton}</span>
             <ExternalLink className="w-4 h-4" />

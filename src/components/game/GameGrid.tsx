@@ -97,7 +97,7 @@ export default function GameGrid({
         {/* Pencarian dan dropdown filter kategori */}
         {categories.length > 0 && onSelectCategory && (
           <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-            <label className="relative flex min-h-11 min-w-0 items-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-3 text-sm text-slate-300 transition-colors focus-within:border-[#ce2541]/60 sm:w-64">
+            <label className="relative flex min-h-11 min-w-0 items-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-3 text-sm text-slate-300 transition-colors focus-within:border-[#d9141d]/60 sm:w-64">
               <Search className="h-4 w-4 shrink-0 text-slate-400" aria-hidden="true" />
               <input
                 type="search"
@@ -152,7 +152,7 @@ export default function GameGrid({
                 >
                   {categories.map((category, index) => (
                     <React.Fragment key={category.id}>
-                      {index === 1 && <div className="my-1 h-px bg-[#b6a8aa]" />}
+                      {index === 1 && <div className="my-1 h-px bg-[var(--line)]" />}
                       <button
                         ref={(element) => {
                           categoryOptionRefs.current[index] = element;

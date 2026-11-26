@@ -16,7 +16,7 @@ interface ClientLayoutProps {
 
 export default function ClientLayout({ children }: ClientLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col selection:bg-[#ce2541]/30 selection:text-white">
+    <div className="min-h-screen flex flex-col selection:bg-[#d9141d]/30 selection:text-white">
       {/* Navbar Resmi */}
       <Navbar />
 

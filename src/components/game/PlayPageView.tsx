@@ -78,7 +78,7 @@ export default function PlayPageView({
             {/* Bagian 1: Tentang Permainan */}
             <div>
               <h3 className="font-heading text-base font-bold text-white flex items-center gap-2">
-                <Info className="w-4 h-4 text-[#ff8c9f]" />
+                <Info className="w-4 h-4 text-[#d9141d]" />
                 <span>
                   {t.play.aboutTitle} {game.title}
                 </span>
@@ -238,7 +238,7 @@ export default function PlayPageView({
           <AdCompanion />
 
           <div className="w-[300px] rounded-2xl card-natural p-5 space-y-2.5">
-            <span className="text-[10px] uppercase font-semibold text-[#ff8c9f] tracking-wider">
+            <span className="text-[10px] uppercase font-semibold text-[#d9141d] tracking-wider">
               {t.play.sponsorBadge}
             </span>
             <h4 className="font-heading text-sm font-bold text-white leading-snug">
@@ -252,7 +252,7 @@ export default function PlayPageView({
                 href="https://teknotama.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block min-h-11 w-full rounded-full py-3 text-center btn-sponsor-clean text-xs font-semibold shadow-sm"
+                className="teknotama-cta block min-h-11 w-full rounded-full py-3 text-center btn-sponsor-clean text-xs font-semibold shadow-sm"
               >
                 <span>{t.play.sponsorButton}</span>
                 <ExternalLink className="w-3.5 h-3.5 inline ml-1" />

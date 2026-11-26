@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Space_Grotesk, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/layout/ClientLayout";
 import {
@@ -8,20 +7,6 @@ import {
   getGamePortalUrl,
   SITE_URL,
 } from "@/lib/site";
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  weight: ["600", "700"],
-  display: "swap",
-});
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -108,7 +93,7 @@ export default function RootLayout({
     <html
       lang="id"
       suppressHydrationWarning
-      className={`${spaceGrotesk.variable} ${plusJakartaSans.variable} antialiased dark`}
+      className="antialiased dark"
     >
       <head>
         <script
@@ -181,7 +166,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://teknotama.com" />
 
       </head>
-      <body className="min-h-full text-[#fcf8f9]" suppressHydrationWarning>
+      <body className="min-h-full" suppressHydrationWarning>
         <ClientLayout>{children}</ClientLayout>
         {/* Google AdSense Official Loader (afterInteractive agar tidak menggeser DOM <head> saat hydration) */}
         <Script

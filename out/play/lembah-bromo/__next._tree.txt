@@ -1,6 +1,5 @@
-:HL["/games/_next/static/css/b2afee3be411421c.css","style"]
-:HL["/games/_next/static/css/2a4e7cfc4e745ebe.css","style"]
+:HL["/games/_next/static/css/e48c835ba2153eff.css","style"]
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"d","k":"lembah-bromo","s":[]},"h":96,"c":"$Q3"}]]
 1:[["children",{"s":"play","h":96,"c":"$Q2"}]]
-0:{"b":"3CZLsp23K9_gnakD-H6W3","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"3JfxA2JEQ8wF10LEGXK_5","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

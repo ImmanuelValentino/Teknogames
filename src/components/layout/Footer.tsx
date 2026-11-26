@@ -21,7 +21,7 @@ export default function Footer() {
   return (
     <footer className="mt-2 pt-3 sm:pt-4 pb-8 text-xs">
       <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-6 border-b border-[#b6a8aa] pb-6 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.85fr_0.85fr_1.2fr]">
+        <div className="grid grid-cols-1 gap-6 border-b border-[#393b43] pb-6 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.85fr_0.85fr_1.2fr]">
           {/* Kolom 1: Identitas */}
           <div className="space-y-2">
             <Link href="/" className="inline-flex items-center gap-2.5 group select-none">
@@ -38,7 +38,7 @@ export default function Footer() {
                 <span className="font-heading text-lg font-bold text-white">
                   Tekno
                 </span>
-                <span className="font-heading text-lg font-bold text-[#ff8c9f]">
+                <span className="footer-brand-accent font-heading text-lg font-bold">
                   Game
                 </span>
               </div>
@@ -87,7 +87,7 @@ export default function Footer() {
                 <button
                   type="button"
                   onClick={handleRandomPlay}
-                  className="footer-random-play border-0 bg-transparent p-0 text-left font-sans tracking-normal text-[#843441] transition-colors hover:text-[#642832]"
+                  className="footer-random-play border-0 bg-transparent p-0 text-left font-sans tracking-normal text-[#ff6b70] transition-colors hover:text-white"
                 >
                   {t.footer.randomPlay}
                 </button>
@@ -118,7 +118,7 @@ export default function Footer() {
                 href="https://teknotama.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 py-1.5 btn-sponsor-clean text-xs font-medium shadow-sm"
+                className="teknotama-cta footer-visit-link inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 py-1.5 btn-sponsor-clean text-xs font-medium shadow-sm"
               >
                 <span>{t.footer.visitButton}</span>
                 <ExternalLink className="w-3 h-3" />
@@ -135,7 +135,7 @@ export default function Footer() {
               href="https://teknotama.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-[#ff8c9f] hover:text-white transition-colors"
+              className="flex items-center gap-1 text-[#ff6b70] hover:text-white transition-colors"
             >
               <span>PT Teknotama Prakarsa Mulia</span>
               <ExternalLink className="w-3 h-3" />

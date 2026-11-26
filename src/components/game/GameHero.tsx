@@ -25,16 +25,6 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
   const mainHero = featuredGames[0];
   const secondaryHero = featuredGames[1] || featuredGames[0];
 
-  // Inisial untuk kartu monogram PlayForge style
-  const getInitials = (title: string) => {
-    const clean = title.split(":")[0].trim();
-    const parts = clean.split(" ");
-    if (parts.length >= 2) {
-      return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-    return clean.slice(0, 2).toUpperCase();
-  };
-
   return (
     <section className="mb-12">
       <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#1d0c0f] via-[#261014] to-[#2e1116] p-6 sm:p-10 lg:p-12 shadow-2xl">
@@ -53,9 +43,9 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
         <div className="relative z-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
           {/* Kolom Kiri: Headline & CTA PlayForge Style */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-950/60 px-3.5 py-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-rose-400" />
-              <span className="text-xs font-semibold tracking-wide text-rose-200">
+            <div className="home-hero-badge inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-950/60 px-3.5 py-1.5">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span className="text-xs font-semibold tracking-wide">
                 {t.hero.badge}
               </span>
             </div>
@@ -132,15 +122,6 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                   {getLocalizedCategoryLabel(secondaryHero.category, lang)}
                 </span>
               </div>
-              <div className="relative z-10 my-auto flex flex-col items-center justify-center text-center">
-                <span
-                  className={`font-heading text-6xl font-black tracking-tighter text-white/90 drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)] ${
-                    secondaryOnTop ? "transition-transform duration-300 group-hover:scale-110" : ""
-                  }`}
-                >
-                  {getInitials(secondaryHero.title)}
-                </span>
-              </div>
               <div className="relative z-10 flex items-center justify-between gap-3 rounded-2xl border border-white/15 bg-black/65 p-3.5">
                 <div className="min-w-0">
                   <span className="block truncate text-[10px] font-bold uppercase tracking-wider text-rose-200">
@@ -199,17 +180,6 @@ export default function GameHero({ featuredGames }: GameHeroProps) {
                 <span className="flex items-center gap-1.5 rounded-full bg-rose-950/85 border border-rose-400/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-rose-200">
                   <CategoryIcon category={mainHero.category} variant="dark" />
                   {getLocalizedCategoryLabel(mainHero.category, lang)}
-                </span>
-              </div>
-
-              {/* Center Monogram Typography Visual */}
-              <div className="relative z-10 my-auto flex flex-col items-center justify-center text-center">
-                <span
-                  className={`font-heading text-7xl font-black tracking-tighter text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)] ${
-                    secondaryOnTop ? "" : "transition-transform duration-300 group-hover:scale-110"
-                  }`}
-                >
-                  {getInitials(mainHero.title)}
                 </span>
               </div>
 

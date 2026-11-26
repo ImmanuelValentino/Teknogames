@@ -1,3 +1,213 @@
+### [2026-11-24 19:10] - [Frontend] - Kembalikan Latar Badge Hero
+- **Kondisi Sebelum:** Latar badge hero berubah menjadi putih saat warna teks dan ikon disesuaikan ke merah.
+- **Perubahan Sesudah:** Latar dan border kembali seperti semula; teks dan ikon tetap merah #D9141D.
+- **Masalah yang Ditemukan:** Perubahan sebelumnya turut mengubah background di luar permintaan.
+- **Penyelesaian:** Menghapus aturan background/border baru dan mengembalikan class latar sebelumnya.
+- **File Terdampak:** `src/app/globals.css`, `src/components/game/GameHero.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 19:09] - [Frontend] - Warna Badge Hero Home
+- **Kondisi Sebelum:** Teks badge Game Online Gratis Tanpa Download dan ikon Sparkles berwarna rose muda pada latar merah gelap.
+- **Perubahan Sesudah:** Teks serta ikon menjadi #D9141D, dengan latar putih salju dan border merah agar kontras terjaga.
+- **Masalah yang Ditemukan:** Warna badge tidak sesuai merah brand yang diminta.
+- **Penyelesaian:** Menambahkan class badge khusus dan menghapus override dark mode yang mengganti warnanya.
+- **File Terdampak:** `src/components/game/GameHero.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 19:02] - [Frontend] - Hilangkan Efek Hover Logo Navbar
+- **Kondisi Sebelum:** Hover tautan logo ikut mendapat latar dan warna dari aturan umum navbar; pada dark mode tampil sebagai blok coral.
+- **Perubahan Sesudah:** Hover logo tidak lagi mengubah latar atau warna teks brand.
+- **Masalah yang Ditemukan:** Pengecualian sebelumnya kalah prioritas dari aturan hover umum.
+- **Penyelesaian:** Membuat selector khusus tautan logo dengan prioritas lebih tinggi dan mempertahankan warna teks saat dark mode.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:54] - [Frontend] - Hover Favorit Navbar Konsisten
+- **Kondisi Sebelum:** Item Favorit memakai latar putih sendiri saat hover/fokus dark mode, berbeda dari item navbar lain yang memakai coral.
+- **Perubahan Sesudah:** Favorit memakai efek hover/fokus coral yang sama seperti item lain; ikon hati tetap merah.
+- **Masalah yang Ditemukan:** Latar hover Favorit tidak konsisten dengan navbar.
+- **Penyelesaian:** Menghapus override latar putih khusus Favorit dan memakai aturan hover navbar bersama.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:52] - [Frontend] - Ikon Tombol Teknotama Navbar Mengikuti Teks
+- **Kondisi Sebelum:** SVG pada tombol teknotama.com navbar memiliki warna putih tetap sehingga berbeda dari teks tombol, terutama pada dark mode dan hover.
+- **Perubahan Sesudah:** Ikon mewarisi warna teks tombol melalui currentColor.
+- **Masalah yang Ditemukan:** Warna ikon ditentukan terpisah dari warna teks.
+- **Penyelesaian:** Mengubah aturan ikon tombol sponsor navbar agar memakai currentColor di kedua tema.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:47] - [Frontend] - Konsistensi Efek Tombol Teknotama
+- **Kondisi Sebelum:** Tombol menuju teknotama.com di navbar, halaman utama, halaman permainan, dan footer memakai warna serta efek hover yang berbeda.
+- **Perubahan Sesudah:** Semua CTA eksternal memakai merah-putih dengan hover merah tua di light mode, serta coral-hitam dengan hover putih-hitam di dark mode. Ikon mengikuti warna teks.
+- **Masalah yang Ditemukan:** Efek tombol partner dan navbar tidak konsisten dengan tombol footer.
+- **Penyelesaian:** Menambahkan class bersama dan aturan tema/state yang mengatasi aturan khusus komponen.
+- **File Terdampak:** `src/app/globals.css`, `src/app/page.tsx`, `src/components/game/PlayPageView.tsx`, `src/components/layout/Footer.tsx`, `src/components/layout/Navbar.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:45] - [Frontend] - Hapus Inisial dari Kartu Home
+- **Kondisi Sebelum:** Kartu pilihan, favorit, hero, dan papan skor di halaman utama menampilkan huruf inisial dari judul permainan di atas gambar atau latar fallback.
+- **Perubahan Sesudah:** Teks inisial dihilangkan dari kartu pada home page; gambar permainan, badge, judul, dan latar fallback tetap dipakai.
+- **Masalah yang Ditemukan:** Inisial judul tampil sebagai teks dekoratif pada kartu.
+- **Penyelesaian:** Menghapus elemen inisial home-only dan menonaktifkan monogram untuk GameCard yang dipakai di home page.
+- **File Terdampak:** `src/app/page.tsx`, `src/components/game/GameHero.tsx`, `src/components/game/GameCard.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:42] - [Frontend] - Warna Logo Footer Menyamai Navbar
+- **Kondisi Sebelum:** Teks Game pada logo footer selalu coral, berbeda dari warna logo navbar pada light mode.
+- **Perubahan Sesudah:** Warna Game footer menjadi #D9141D pada light mode dan #FF6B70 pada dark mode, sama seperti navbar.
+- **Masalah yang Ditemukan:** Aksen logo footer tidak mengikuti warna tema yang digunakan navbar.
+- **Penyelesaian:** Menambahkan class khusus dan aturan warna untuk kedua tema.
+- **File Terdampak:** `src/app/globals.css`, `src/components/layout/Footer.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:41] - [Frontend] - Warna Logo Navbar dan Tombol Kunjungi Teknotama
+- **Kondisi Sebelum:** Warna aksen logo Game dan tombol Kunjungi Teknotama bergantung pada aturan generik sehingga perbedaan warna antar tema tidak konsisten terlihat.
+- **Perubahan Sesudah:** Logo memakai merah #D9141D pada light mode dan coral #FF6B70 pada dark mode. Tombol footer memakai latar merah dengan teks putih pada light mode, lalu coral dengan teks hitam pada dark mode; hover tetap kontras.
+- **Masalah yang Ditemukan:** Aturan generik dan utilitas warna tidak cukup eksplisit untuk kedua elemen.
+- **Penyelesaian:** Menambahkan class khusus dan aturan tema berprioritas tinggi untuk state normal dan hover.
+- **File Terdampak:** `src/app/globals.css`, `src/components/layout/Navbar.tsx`, `src/components/layout/Footer.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:32] - [Frontend] - Audit Kontras dan Konsistensi Warna
+- **Kondisi Sebelum:** Sebagian aksen masih memakai merah muda/merah lama; warna teks dasar body dipatok terang; ikon Favorit navbar pada hover dark mode berhadapan dengan latar coral sehingga kontras rendah; beberapa kontrol/footer menggunakan warna lama.
+- **Perubahan Sesudah:** Aksen utama diseragamkan ke #D9141D dan coral #FF6B70, warna teks dasar mengikuti token light/dark, ikon Favorit tetap merah dengan hover putih salju di dark mode, serta separator dan kontrol memakai warna tema yang konsisten. Palet #F5EDDA pada papan rekor dipertahankan.
+- **Masalah yang Ditemukan:** Kontras rendah pada beberapa teks/icon dan warna komponen yang tidak selaras dengan palet aktif.
+- **Penyelesaian:** Menyesuaikan token/aturan CSS tema dan kelas warna komponen; teks kecil memakai warna dengan kontras lebih kuat pada latarnya.
+- **File Terdampak:** `src/app/globals.css`, `src/app/layout.tsx`, `src/app/not-found.tsx`, `src/app/page.tsx`, `src/components/game/CategoryView.tsx`, `src/components/game/GameGrid.tsx`, `src/components/game/PlayPageView.tsx`, `src/components/layout/ClientLayout.tsx`, `src/components/layout/Footer.tsx`, `src/components/layout/Navbar.tsx`, `src/lib/games-data.ts`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 21:28] - [Frontend] - Warna Ikon Favorit Navbar Tetap
+- **Kondisi Sebelum:** Aturan hover navbar mengubah semua ikon menjadi hitam, termasuk ikon hati Favorit.
+- **Perubahan Sesudah:** Ikon hati tetap merah saat item Favorit di-hover atau difokuskan; warna teks item tetap mengikuti efek navbar.
+- **Masalah yang Ditemukan:** Warna ikon hati berubah dari merah ke hitam saat hover.
+- **Penyelesaian:** Menambahkan class khusus pada tautan Favorit dan override warna SVG dengan prioritas tema.
+- **File Terdampak:** `src/components/layout/Navbar.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 21:12] - [Frontend] - Kontras Tombol Layanan Teknotama
+- **Kondisi Sebelum:** Tombol layanan atas memakai teks merah gelap pada latar merah; ikon tombol footer berwarna abu, berbeda dari teks.
+- **Perubahan Sesudah:** Tombol atas memakai teks dan ikon putih dengan hover merah gelap; ikon footer mengikuti warna teks tombol.
+- **Masalah yang Ditemukan:** Kontras tombol atas rendah dan ikon footer tidak seragam dengan teks.
+- **Penyelesaian:** Memperbarui token warna tombol layanan serta aturan warna SVG tombol sponsor footer.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 20:55] - [Frontend] - Kontras Hover Switch Navbar
+- **Kondisi Sebelum:** Hover pada switch tema dan bahasa memakai warna umum yang kurang membedakan tombol dari latar.
+- **Perubahan Sesudah:** Switch tema dan pilihan bahasa tidak aktif mendapat latar coral serta ikon/teks gelap; bahasa aktif tetap merah-putih.
+- **Masalah yang Ditemukan:** Ikon switch tema dan state bahasa tidak aktif kurang menonjol saat diarahkan kursor.
+- **Penyelesaian:** Menambahkan aturan hover dan focus-visible khusus untuk switch tema serta tombol bahasa tidak aktif.
+- **File Terdampak:** `src/components/layout/Navbar.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 20:38] - [Frontend] - Efek Hover Konsisten pada Navbar
+- **Kondisi Sebelum:** Hanya tombol Main Acak yang punya state hover/fokus coral khusus dark mode; item navbar lain memakai efek berbeda.
+- **Perubahan Sesudah:** Semua tautan dan tombol navbar memakai latar coral serta teks/ikon hitam pada hover/fokus dark mode, kecuali switch tema dan bahasa.
+- **Masalah yang Ditemukan:** Efek kursor tidak seragam dan ikon beberapa item kurang terlihat.
+- **Penyelesaian:** Memperluas selector dark mode untuk interaksi navbar dan mengecualikan kontrol beratribut aria-pressed.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 20:22] - [Frontend] - Warna Teks Dimulai Di Sini Konsisten
+- **Kondisi Sebelum:** Highlight teks memakai warna putih di atas latar merah.
+- **Perubahan Sesudah:** Teks memakai warna #D9141D secara konsisten di light dan dark mode tanpa latar highlight.
+- **Masalah yang Ditemukan:** Gaya sebelumnya tidak sesuai warna yang diminta.
+- **Penyelesaian:** Mengatur warna foreground dan text fill pada selector hero yang sama untuk kedua tema.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 20:05] - [Frontend] - Warna Konsisten Frasa Dimulai Di Sini
+- **Kondisi Sebelum:** Frasa pada judul hero berganti dari merah gelap ke coral antara light dan dark mode.
+- **Perubahan Sesudah:** Frasa memakai Snow White di atas highlight merah Teknotama yang konsisten pada kedua tema.
+- **Masalah yang Ditemukan:** Warna tema sebelumnya berubah saat berganti mode.
+- **Penyelesaian:** Menetapkan warna teks dan latar highlight di rule bersama serta menghapus override dark mode khusus.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 19:47] - [Frontend] - Kontras Hover Main Acak Navbar
+- **Kondisi Sebelum:** Ikon Main Acak berwarna abu statis dan kurang terlihat saat hover di dark mode.
+- **Perubahan Sesudah:** Tombol memakai latar coral dengan teks serta ikon hitam saat hover dan fokus keyboard di dark mode.
+- **Masalah yang Ditemukan:** Warna ikon statis tidak menyesuaikan warna hover tombol.
+- **Penyelesaian:** Menambahkan class tombol dan aturan tema khusus untuk hover/focus-visible beserta ikon.
+- **File Terdampak:** `src/components/layout/Navbar.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 19:32] - [Frontend] - Kontras Tombol Lihat yang Populer saat Hover
+- **Kondisi Sebelum:** Saat hover di light mode, tombol berubah berlatar putih dan teksnya juga putih sehingga tidak terbaca.
+- **Perubahan Sesudah:** Teks dan ikon tombol memakai warna gelap pada hover light mode; dark mode tetap mengikuti aturan teks terang.
+- **Masalah yang Ditemukan:** Warna hover dari utility text-white bertabrakan dengan latar hover putih.
+- **Penyelesaian:** Menetapkan warna teks eksplisit pada aturan hover tombol hero di light mode.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 19:18] - [Frontend] - Kontras Kotak Isi Light Mode
+- **Kondisi Sebelum:** Kotak informasi pada kartu detail game di light mode menggunakan warna yang sama dengan panel sehingga batas dan isinya kurang terlihat.
+- **Perubahan Sesudah:** Kotak memperoleh tint merah tipis dan garis pembatas lembut; teks tetap gelap untuk kontras.
+- **Masalah yang Ditemukan:** Aturan tema terang menimpa latar g-black/20 dengan Snow White.
+- **Penyelesaian:** Memisahkan aturan kotak isi dari aturan tombol dan memberi latar merah transparan khusus untuk kotak tersebut.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 19:05] - [Frontend] - Warna Tautan Teknotama di Navbar Dark Mode
+- **Kondisi Sebelum:** Teks dan ikon pada tombol teknotama.com tetap gelap di light dan dark mode.
+- **Perubahan Sesudah:** Saat dark mode, latar tombol merah dan teks serta ikon menjadi Snow White; light mode mempertahankan teks gelap.
+- **Masalah yang Ditemukan:** Warna teks pada tautan tidak berbeda antartema.
+- **Penyelesaian:** Menambahkan override tema gelap pada tombol sponsor navbar dengan kombinasi merah dan putih yang kontras.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:41] - [Frontend] - Tipografi Website Lebih Jelas dan Konsisten
+- **Kondisi Sebelum:** Judul, isi, dan kontrol memakai kombinasi Space Grotesk, Plus Jakarta Sans, Georgia, serta monospace dengan tracking lebar.
+- **Perubahan Sesudah:** Font sistem Segoe UI/system-ui dipakai pada judul, isi, dan kontrol; monospace hanya tersedia untuk utilitas kode. Judul memakai kapitalisasi normal.
+- **Masalah yang Ditemukan:** Build gagal saat mencoba mengambil Inter dari Google Fonts karena koneksi jaringan ditolak.
+- **Penyelesaian:** Menghapus kebutuhan unduh font dan memakai font sistem lokal agar build bisa berjalan offline; tracking kontrol dikurangi.
+- **File Terdampak:** `src/app/layout.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:32] - [Frontend] - Tampilan Ringkas Peringkat 2–5
+- **Kondisi Sebelum:** Baris peringkat 2–5 menampilkan thumbnail besar dan angka skor dengan ukuran besar.
+- **Perubahan Sesudah:** Thumbnail dihapus, nomor peringkat dan nama game tetap ditampilkan, sementara angka poin diperkecil agar lebih proporsional.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Merapikan layout daftar skor pada section papan rekor.
+- **File Terdampak:** `src/app/page.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:22] - [Frontend] - Samakan Sumber Gambar Papan Rekor dengan Katalog
+- **Kondisi Sebelum:** Kartu peringkat pertama hanya mencoba satu URL thumbnail dan berakhir pada artwork fallback ketika URL tidak tersedia.
+- **Perubahan Sesudah:** Papan rekor memakai urutan kandidat gambar dan fallback yang sama seperti kartu katalog, mencakup file WebP dan preview PNG.
+- **Masalah yang Ditemukan:** URL thumbnail tunggal tidak cocok dengan aset yang berhasil dipakai katalog.
+- **Penyelesaian:** Menambahkan fallback URL berdasarkan slug di komponen artwork papan rekor untuk peringkat pertama dan daftar peringkat.
+- **File Terdampak:** `src/app/page.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:12] - [Frontend] - Gambar Game Peringkat Tertinggi di Papan Rekor
+- **Kondisi Sebelum:** Kartu peringkat pertama menerima URL thumbnail placeholder dari data game sehingga gambar tidak muncul.
+- **Perubahan Sesudah:** URL gambar dibuat dari slug game pada skor tertinggi untuk memuat thumbnail yang sesuai.
+- **Masalah yang Ditemukan:** Metadata thumbnail memiliki path placeholder.
+- **Penyelesaian:** Menggunakan path /images/games/{slug}.webp dari ID/slug game saat menyiapkan skor lokal.
+- **File Terdampak:** `src/app/page.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 18:02] - [Frontend] - Padding Bagian Papan Rekor
+- **Kondisi Sebelum:** Header papan rekor memiliki garis bawah dan padding lebar sebelum konten skor.
+- **Perubahan Sesudah:** Garis dihapus dan padding serta jarak konten dirapatkan, konsisten dengan bagian permainan favorit.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Menyamakan kelas styling section papan rekor dengan section favorit.
+- **File Terdampak:** `src/app/page.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 17:55] - [Frontend] - Padding Bagian Permainan Favorit
+- **Kondisi Sebelum:** Header favorit memiliki garis bawah dan jarak/padding lebar sebelum daftar game.
+- **Perubahan Sesudah:** Garis dihapus, padding kartu dipersempit, dan jarak antara header dengan konten dirapatkan.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Mengubah kelas styling pada section favorit.
+- **File Terdampak:** `src/app/page.tsx`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 17:48] - [Frontend] - Penyamaan Warna Main Acak Footer
+- **Kondisi Sebelum:** Tombol Main Acak mewarisi warna merah gelap berbeda dari aksen tautan footer.
+- **Perubahan Sesudah:** Warna tombol dan hover disamakan dengan aksen footer serta tetap kontras di kedua tema.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Menambahkan aturan CSS khusus footer untuk state normal dan hover.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 17:42] - [Frontend] - Footer Hitam dan Pengurangan Warna Krem
+- **Kondisi Sebelum:** Footer memakai permukaan abu terang dan beberapa state umum memakai warna krem.
+- **Perubahan Sesudah:** Footer memakai #101010 dengan teks #FFFAFA, teks sekunder abu terang, serta tombol dan tautan beraksen merah; warna krem di elemen umum diganti Snow White. Krem tetap dipakai pada papan rekor sesuai palet.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui token dan aturan CSS footer untuk kedua tema serta warna permukaan state interaksi.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 17:42] - [Frontend] - Footer Hitam dan Pengurangan Warna Krem
+- **Kondisi Sebelum:** Footer memakai permukaan abu terang dan beberapa state umum memakai warna krem.
+- **Perubahan Sesudah:** Footer memakai #101010 dengan teks #FFFAFA, teks sekunder abu terang, serta tombol dan tautan beraksen merah; warna krem di elemen umum diganti Snow White. Krem tetap dipakai pada papan rekor sesuai palet.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui token dan aturan CSS footer untuk kedua tema serta warna permukaan state interaksi.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
+### [2026-11-24 17:33] - [Frontend] - Penyelarasan Palet Warna Teknotama
+- **Kondisi Sebelum:** Palet website menggunakan abu kemerahan dan aksen pink yang belum mengikuti identitas warna Teknotama.
+- **Perubahan Sesudah:** Mengatur token light/dark, latar, teks, garis, aksen merah #D9141D, hover, serta highlight papan rekor #F5EDDA agar kontras tetap jelas.
+- **Masalah yang Ditemukan:** File game/UPDATE.md belum tersedia pada struktur project.
+- **Penyelesaian:** Menambahkan catatan pembaruan pada UPDATE.md dan membuat game/UPDATE.md sebagai log versi khusus game sesuai workflow.
+- **File Terdampak:** `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 09:30] - [Frontend] - Penyesuaian Warna Ikon Kategori di Bawah Game agar Seragam dengan Navbar
 - **Kondisi Sebelum:**
   1. Ikon kategori pada bilah kontrol di bawah iframe game (`GameFrame.tsx`) menggunakan prop `variant="dark"` secara statis.
@@ -394,3 +604,24 @@
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Build statis `npm run build` berjalan sukses dan `ads.txt` serta skrip header otomatis terdistribusi ke folder `out/`.
 - **File Terdampak:** `src/app/layout.tsx`, `public/ads.txt`, `.env.local`, `.env.example`, `UPDATE.md`, `laporan.md`, `out/*`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
