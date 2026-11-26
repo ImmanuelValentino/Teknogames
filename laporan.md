@@ -239,6 +239,20 @@
 - **Penyelesaian:** Memperbarui CSS selector di `globals.css` dan komponen terkait, lalu memverifikasi build static page.
 - **File Terdampak:** `src/app/globals.css`, `src/components/game/PlayPageView.tsx`, `src/components/game/CategoryView.tsx`, `UPDATE.md`, `laporan.md`
 
+### [2026-11-26 10:36] - [Games & Backend] - Revisi Arsitektur Werewolf: Auto-Shuffle, Room Chat Broadcast, Hemat Query, Session IP, & Keluar Room
+- **Kondisi Sebelum:**
+  1. Mode online/offline masih menampilkan grid kartu tertutup sebelum reveal peran, dan engine online masih menjalankan polling `SELECT` setiap 1.2 detik.
+  2. Belum tersedia fitur Room Chat diskusi, auto-restore sesi berbasis IP saat refresh, serta tombol keluar room di HUD selama permainan aktif.
+- **Perubahan Sesudah:**
+  1. Menghapus grid kartu tertutup di `index.html`, `online-supabase.js`, dan `offline-engine.js`; saat Host mulai game (`status: 'playing'`), role langsung diacak dan dibagikan ke masing-masing pemain.
+  2. Menambahkan Room Chat berbasis Supabase Realtime Broadcast (`#roomChatDrawer`, toggle Host `chat_enabled`, badge unread, serta pemisahan Dead Chat untuk pemain gugur) dan ikon SVG baru di `svg-icons.js` (0 emoji).
+  3. Menghapus polling `roomPollingInterval`, menerapkan `SELECT` tunggal saat gabung/restore, CAS optimistik berbasis memori lokal, dan debounce 300ms pada pengaturan role.
+  4. Menambahkan `getClientIdentityKey()` (IP publik via `api.ipify.org` dengan cache 24 jam + fallback Device ID) dan `restoreSessionOnLoad()` untuk auto-reconnect saat refresh.
+  5. Mengaktifkan `#btnHudLeaveRoom` di HUD dengan transfer Host otomatis, `DELETE` room bila kosong, pembersihan `localStorage`, dan `removeChannel` Realtime.
+- **Masalah yang Ditemukan:** Validasi sintaks JS semua modul Werewolf lulus (`OK`).
+- **Penyelesaian:** Menggabungkan seluruh perubahan secara modular di `public/games/werewolf/*` dan mendokumentasikannya di `game-log.md`, `UPDATE.md`, dan `laporan.md`.
+- **File Terdampak:** `public/games/werewolf/index.html`, `public/games/werewolf/styles.css`, `public/games/werewolf/app.js`, `public/games/werewolf/online-supabase.js`, `public/games/werewolf/offline-engine.js`, `public/games/werewolf/svg-icons.js`, `game-log.md`, `UPDATE.md`, `laporan.md`
+
 ### [2026-11-24 14:02] - [Games] - Responsivitas Badge Role HUD & Peningkatan Kapasitas Room Werewolf ke 30 Pemain
 - **Kondisi Sebelum:**
   1. `.hud-left` di `public/games/werewolf/styles.css` belum memiliki `flex-wrap: wrap`, sehingga di layar sempit badge `#hudMyRoleBadge` berisiko terpotong.

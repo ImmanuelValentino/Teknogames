@@ -10,114 +10,7 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
-## [3.15.42] - 2026-11-24
-### Fixed (Latar Badge Hero Dikembalikan)
-- **Badge hero (GameHero.tsx, globals.css):** Mengembalikan latar dan border badge ke kondisi sebelumnya; hanya teks dan ikon yang memakai merah #D9141D.
 
-## [3.15.41] - 2026-11-24
-### Changed (Warna Badge Hero Home)
-- **Badge hero (GameHero.tsx, globals.css):** Mengubah teks dan ikon di samping judul menjadi merah #D9141D dengan latar putih salju untuk menjaga kontras.
-
-## [3.15.40] - 2026-11-24
-### Fixed (Efek Hover Logo Navbar)
-- **Navbar (globals.css):** Menghapus latar dan perubahan warna hover pada tautan logo agar tetap mengikuti warna teks brand.
-
-## [3.15.39] - 2026-11-24
-### Fixed (Hover Favorit Navbar Konsisten)
-- **Navbar (globals.css):** Menyamakan latar hover/fokus Favorit dengan item navbar lain pada dark mode, sambil mempertahankan ikon hati merah.
-
-## [3.15.38] - 2026-11-24
-### Fixed (Kontras Ikon Tombol Teknotama Navbar)
-- **Navbar (globals.css):** Ikon tombol teknotama.com mengikuti warna teks tombol pada semua state dan tema.
-
-## [3.15.37] - 2026-11-24
-### Fixed (Efek Konsisten pada Tombol Teknotama)
-- **CTA eksternal Teknotama (Navbar.tsx, page.tsx, PlayPageView.tsx, Footer.tsx, globals.css):** Menyatukan warna dasar, hover/fokus, dan warna ikon pada tombol yang menuju teknotama.com mengikuti tombol footer di light dan dark mode.
-
-## [3.15.36] - 2026-11-24
-### Changed (Menghapus Inisial pada Kartu Home)
-- **Kartu game home (page.tsx, GameHero.tsx, GameCard.tsx):** Menghapus huruf inisial dekoratif pada kartu pilihan, favorit, dan papan skor di halaman utama; gambar permainan dan latar kartu tetap tampil.
-
-## [3.15.35] - 2026-11-24
-### Fixed (Warna Logo Footer Menyamai Navbar)
-- **Footer (Footer.tsx, globals.css):** Menyamakan warna teks Game pada logo footer dengan navbar: merah #D9141D di light mode dan coral di dark mode.
-
-## [3.15.34] - 2026-11-24
-### Fixed (Warna Logo Navbar dan Tombol Kunjungi Teknotama)
-- **Navbar dan footer (Navbar.tsx, Footer.tsx, globals.css):** Menambahkan aturan tema eksplisit agar aksen Game pada logo navbar dan tombol Kunjungi Teknotama memakai warna kontras yang berbeda di light dan dark mode.
-
-## [3.15.33] - 2026-11-24
-### Fixed (Audit Kontras dan Konsistensi Warna)
-- **Warna tema (globals.css, layout.tsx, komponen halaman dan navigasi):** Menyatukan aksen merah/coral, memperbaiki keterbacaan teks dan ikon di kedua tema, menjaga ikon Favorit navbar tetap merah dengan latar hover yang kontras, dan menghapus warna teks terang yang dipatok pada elemen body.
-- **Papan skor dan footer:** Mempertahankan palet khusus papan rekor serta menyelaraskan separator dan tautan footer dengan token warna tema.
-
-## [3.15.32] - 2026-11-24
-### Fixed (Warna Ikon Favorit Navbar Tetap)
-- **Navbar (Navbar.tsx, globals.css):** Menjaga ikon hati tetap merah saat tautan Favorit di-hover atau mendapat fokus pada dark mode.
-
-## [3.15.31] - 2026-11-24
-### Fixed (Kontras Tombol Layanan Teknotama)
-- **Tombol layanan dan footer (src/app/globals.css):** Meningkatkan kontras teks tombol layanan atas dan menyamakan warna ikon tautan di footer dengan warna teks tombol.
-
-## [3.15.30] - 2026-11-24
-### Fixed (Kontras Hover Switch Navbar)
-- **Switch tema dan bahasa (Navbar.tsx, globals.css):** Menambahkan hover/fokus coral dengan ikon/teks gelap pada switch tema dan pilihan bahasa tidak aktif; pilihan bahasa aktif tetap merah-putih.
-
-## [3.15.29] - 2026-11-24
-### Changed (Efek Hover Konsisten pada Navbar Dark Mode)
-- **Navbar (src/app/globals.css):** Menyamakan latar coral dan warna teks/ikon hitam pada hover serta fokus semua kontrol navbar, selain switch tema dan bahasa.
-
-## [3.15.28] - 2026-11-24
-### Fixed (Warna Teks Dimulai Di Sini Konsisten)
-- **Hero beranda (src/app/globals.css):** Memastikan teks Dimulai Di Sini selalu berwarna #D9141D pada light dan dark mode.
-
-## [3.15.27] - 2026-11-24
-### Changed (Warna Konsisten untuk Frasa Dimulai Di Sini)
-- **Hero beranda (src/app/globals.css):** Menjaga frasa Dimulai Di Sini memakai teks putih dengan highlight merah Teknotama yang sama di light dan dark mode.
-
-## [3.15.26] - 2026-11-24
-### Fixed (Ikon Main Acak Navbar saat Hover Dark Mode)
-- **Navbar (Navbar.tsx, globals.css):** Menambahkan state hover/fokus coral dengan teks dan ikon hitam pada tombol Main Acak di dark mode.
-
-## [3.15.25] - 2026-11-24
-### Fixed (Kontras Tombol Lihat yang Populer saat Hover)
-- **Hero beranda (src/app/globals.css):** Menetapkan teks gelap pada hover tombol di light mode agar terbaca di atas latar putih.
-
-## [3.15.24] - 2026-11-24
-### Fixed (Kontras Kotak Informasi pada Light Mode)
-- **Panel informasi game (src/app/globals.css):** Memberi latar tint merah tipis dan garis yang terlihat pada kotak isi di light mode agar terpisah jelas dari panel utama.
-
-## [3.15.23] - 2026-11-24
-### Fixed (Kontras Tautan Teknotama di Navbar Dark Mode)
-- **Navbar (src/app/globals.css):** Mengubah teks dan ikon tautan teknotama.com menjadi Snow White pada latar merah di dark mode agar perubahan tema jelas dan tetap terbaca.
-
-## [3.15.22] - 2026-11-24
-### Changed (Tipografi Website Lebih Jelas dan Konsisten)
-- **Tipografi (`src/app/layout.tsx`, `src/app/globals.css`):** Menggunakan font sistem Segoe UI/system-ui untuk judul, isi, dan kontrol tanpa unduhan font, mengurangi tracking tombol, serta menghapus transformasi huruf kapital otomatis pada judul.
-
-## [3.15.21] - 2026-11-24
-### Changed (Tampilan Ringkas Peringkat 2–5)
-- **Papan rekor (src/app/page.tsx):** Menghapus thumbnail pada peringkat 2–5 dan mengecilkan ukuran angka skor agar informasi peringkat lebih ringkas.
-
-## [3.15.20] - 2026-11-24
-### Fixed (Sumber Gambar Papan Rekor Disamakan dengan Katalog)
-- **Papan rekor (src/app/page.tsx):** Menggunakan urutan sumber gambar dan fallback yang sama dengan kartu katalog agar thumbnail game peringkat tertinggi dimuat dari aset yang tersedia.
-
-## [3.15.19] - 2026-11-24
-### Fixed (Gambar Game Peringkat Tertinggi di Papan Rekor)
-- **Papan rekor (src/app/page.tsx):** Menggunakan thumbnail berdasarkan slug game agar gambar pada peringkat pertama sesuai game dengan skor tertinggi.
-
-## [3.15.18] - 2026-11-24
-### Changed (Padding Bagian Papan Rekor)
-- **Bagian papan rekor (src/app/page.tsx):** Menghapus garis bawah judul dan menyamakan padding serta jarak konten dengan bagian favorit.
-
-## [3.15.17] - 2026-11-24
-### Changed (Padding Bagian Permainan Favorit)
-- **Bagian favorit (src/app/page.tsx):** Menghapus garis bawah judul dan mempersempit padding kartu serta jarak menuju daftar permainan.
-
-## [3.15.16] - 2026-11-24
-### Fixed (Warna Tombol Main Acak di Footer)
-- **Tema website (src/app/globals.css):** Menyamakan warna tombol Main Acak dengan aksen tautan footer pada light dan dark mode.
 
 ## [3.15.13] - 2026-11-24
 ### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)
@@ -138,29 +31,7 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 - **Ikon Kategori Bilah Kontrol Game (`GameFrame.tsx`, `PlayPageView.tsx`):** Menghapus `variant="dark"` yang terpasang statis pada komponen `CategoryIcon` di bawah iframe game dan kotak spesifikasi teknis, sehingga ikon kategori kini secara dinamis mengikuti skema warna tema yang sama dengan dropdown kategori navbar (`--category-icon-light` saat mode terang dan `--category-icon-dark` saat mode gelap).
 
-## [3.15.21] - 2026-11-24
-### Changed (Tampilan Ringkas Peringkat 2–5)
-- **Papan rekor (src/app/page.tsx):** Menghapus thumbnail pada peringkat 2–5 dan mengecilkan ukuran angka skor agar informasi peringkat lebih ringkas.
 
-## [3.15.20] - 2026-11-24
-### Fixed (Sumber Gambar Papan Rekor Disamakan dengan Katalog)
-- **Papan rekor (src/app/page.tsx):** Menggunakan urutan sumber gambar dan fallback yang sama dengan kartu katalog agar thumbnail game peringkat tertinggi dimuat dari aset yang tersedia.
-
-## [3.15.19] - 2026-11-24
-### Fixed (Gambar Game Peringkat Tertinggi di Papan Rekor)
-- **Papan rekor (src/app/page.tsx):** Menggunakan thumbnail berdasarkan slug game agar gambar pada peringkat pertama sesuai game dengan skor tertinggi.
-
-## [3.15.18] - 2026-11-24
-### Changed (Padding Bagian Papan Rekor)
-- **Bagian papan rekor (src/app/page.tsx):** Menghapus garis bawah judul dan menyamakan padding serta jarak konten dengan bagian favorit.
-
-## [3.15.17] - 2026-11-24
-### Changed (Padding Bagian Permainan Favorit)
-- **Bagian favorit (src/app/page.tsx):** Menghapus garis bawah judul dan mempersempit padding kartu serta jarak menuju daftar permainan.
-
-## [3.15.16] - 2026-11-24
-### Fixed (Warna Tombol Main Acak di Footer)
-- **Tema website (src/app/globals.css):** Menyamakan warna tombol Main Acak dengan aksen tautan footer pada light dan dark mode.
 
 ## [3.15.13] - 2026-11-24
 ### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)
@@ -187,29 +58,7 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 - **Margin & Padding Rekomendasi (`PlayPageView.tsx`, `globals.css`):** Mempersempit jarak vertikal kosong di atas judul "Permainan Lainnya Untuk Anda" / "More Games For You" dari 40px menjadi 6px menggunakan class `.play-page-recommendations` dengan `margin-top: 6px !important` dan `padding-top: 0 !important`, serta memastikan slot iklan yang tidak aktif tidak menambah margin kosong.
 
-## [3.15.21] - 2026-11-24
-### Changed (Tampilan Ringkas Peringkat 2–5)
-- **Papan rekor (src/app/page.tsx):** Menghapus thumbnail pada peringkat 2–5 dan mengecilkan ukuran angka skor agar informasi peringkat lebih ringkas.
 
-## [3.15.20] - 2026-11-24
-### Fixed (Sumber Gambar Papan Rekor Disamakan dengan Katalog)
-- **Papan rekor (src/app/page.tsx):** Menggunakan urutan sumber gambar dan fallback yang sama dengan kartu katalog agar thumbnail game peringkat tertinggi dimuat dari aset yang tersedia.
-
-## [3.15.19] - 2026-11-24
-### Fixed (Gambar Game Peringkat Tertinggi di Papan Rekor)
-- **Papan rekor (src/app/page.tsx):** Menggunakan thumbnail berdasarkan slug game agar gambar pada peringkat pertama sesuai game dengan skor tertinggi.
-
-## [3.15.18] - 2026-11-24
-### Changed (Padding Bagian Papan Rekor)
-- **Bagian papan rekor (src/app/page.tsx):** Menghapus garis bawah judul dan menyamakan padding serta jarak konten dengan bagian favorit.
-
-## [3.15.17] - 2026-11-24
-### Changed (Padding Bagian Permainan Favorit)
-- **Bagian favorit (src/app/page.tsx):** Menghapus garis bawah judul dan mempersempit padding kartu serta jarak menuju daftar permainan.
-
-## [3.15.16] - 2026-11-24
-### Fixed (Warna Tombol Main Acak di Footer)
-- **Tema website (src/app/globals.css):** Menyamakan warna tombol Main Acak dengan aksen tautan footer pada light dan dark mode.
 
 ## [3.15.13] - 2026-11-24
 ### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)
@@ -244,29 +93,7 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **Teks Judul Breadcrumb (`globals.css`):** Memperbaiki aturan CSS `main nav[aria-label="Jejak navigasi"] > span:last-child` agar menggunakan `var(--ink)` (alih-alih `#161616` statis) dan menambahkan override khusus dark mode `color: #f3f4f6 !important`, sehingga teks judul game (seperti "Nusantara Runner: Escape to Bali", "Kapal Feri", dll.) dan kategori terlihat jelas dan kontras saat mode gelap.
 - **Komponen Tampilan (`PlayPageView.tsx`, `CategoryView.tsx`):** Menambahkan class penegas `text-slate-900 dark:text-slate-100` pada elemen span terakhir jejak navigasi.
 
-## [3.15.21] - 2026-11-24
-### Changed (Tampilan Ringkas Peringkat 2–5)
-- **Papan rekor (src/app/page.tsx):** Menghapus thumbnail pada peringkat 2–5 dan mengecilkan ukuran angka skor agar informasi peringkat lebih ringkas.
 
-## [3.15.20] - 2026-11-24
-### Fixed (Sumber Gambar Papan Rekor Disamakan dengan Katalog)
-- **Papan rekor (src/app/page.tsx):** Menggunakan urutan sumber gambar dan fallback yang sama dengan kartu katalog agar thumbnail game peringkat tertinggi dimuat dari aset yang tersedia.
-
-## [3.15.19] - 2026-11-24
-### Fixed (Gambar Game Peringkat Tertinggi di Papan Rekor)
-- **Papan rekor (src/app/page.tsx):** Menggunakan thumbnail berdasarkan slug game agar gambar pada peringkat pertama sesuai game dengan skor tertinggi.
-
-## [3.15.18] - 2026-11-24
-### Changed (Padding Bagian Papan Rekor)
-- **Bagian papan rekor (src/app/page.tsx):** Menghapus garis bawah judul dan menyamakan padding serta jarak konten dengan bagian favorit.
-
-## [3.15.17] - 2026-11-24
-### Changed (Padding Bagian Permainan Favorit)
-- **Bagian favorit (src/app/page.tsx):** Menghapus garis bawah judul dan mempersempit padding kartu serta jarak menuju daftar permainan.
-
-## [3.15.16] - 2026-11-24
-### Fixed (Warna Tombol Main Acak di Footer)
-- **Tema website (src/app/globals.css):** Menyamakan warna tombol Main Acak dengan aksen tautan footer pada light dan dark mode.
 
 ## [3.15.13] - 2026-11-24
 ### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)

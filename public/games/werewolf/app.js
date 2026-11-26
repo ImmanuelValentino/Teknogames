@@ -218,14 +218,19 @@
       };
     }
 
-    // Tombol Keluar Room Online
+    // Tombol Keluar Room Online (Lobby & HUD)
+    const handleLeaveOnlineClick = () => {
+      if (confirm(t('confirm_leave_room'))) {
+        window.WerewolfOnlineEngine.leaveRoom(true);
+      }
+    };
     const btnLeaveOnlineRoom = document.getElementById('btnLeaveOnlineRoom');
     if (btnLeaveOnlineRoom) {
-      btnLeaveOnlineRoom.onclick = () => {
-        if (confirm(t('confirm_leave_room'))) {
-          window.WerewolfOnlineEngine.leaveRoom(true);
-        }
-      };
+      btnLeaveOnlineRoom.onclick = handleLeaveOnlineClick;
+    }
+    const btnHudLeaveRoom = document.getElementById('btnHudLeaveRoom');
+    if (btnHudLeaveRoom) {
+      btnHudLeaveRoom.onclick = handleLeaveOnlineClick;
     }
 
     // Host Mulai Game Online
@@ -280,7 +285,11 @@
     if (btnRestartGame) {
       btnRestartGame.onclick = () => {
         window.WerewolfAudio.play('click');
-        switchScreen('screenMainMenu');
+        if (window.WerewolfOnlineEngine && window.WerewolfOnlineEngine.isInRoom && window.WerewolfOnlineEngine.isInRoom()) {
+          window.WerewolfOnlineEngine.leaveRoom(false);
+        } else {
+          switchScreen('screenMainMenu');
+        }
       };
     }
 
@@ -301,6 +310,10 @@
         }
       });
       window.WerewolfI18n.applyLanguage(window.WerewolfI18n.getLang());
+    }
+
+    if (window.WerewolfOnlineEngine && window.WerewolfOnlineEngine.restoreSessionOnLoad) {
+      window.WerewolfOnlineEngine.restoreSessionOnLoad();
     }
   }
 

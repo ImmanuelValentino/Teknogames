@@ -39,13 +39,139 @@
   let isHost = false;
 
   // Selection states
-  let mySelectedCardId = null;
   let mySelectedNightTargetId = null;
   let mySelectedVoteTargetId = null;
   let mySelectedHunterShotId = null;
-  let onlineDiscussionInterval = null;
-  let roomPollingInterval = null;
   let nightStepCountdownTimer = null;
+
+  // Session & Identity Cache Keys
+  const DEVICE_ID_KEY = 'teknogame_werewolf_device_id';
+  const IP_CACHE_KEY = 'teknogame_werewolf_ip_cache';
+  const SESSION_CACHE_KEY = 'teknogame_werewolf_session';
+
+  // Ephemeral Broadcast Chat State
+  let chatMessages = [];
+  let chatUnreadCount = 0;
+  let isChatOpen = false;
+  let chatUIInitialized = false;
+  let roleAdjustDebounceTimer = null;
+  let isLeavingRoom = false;
+
+  function getOrCreateDeviceId() {
+    try {
+      let devId = localStorage.getItem(DEVICE_ID_KEY);
+      if (!devId) {
+        devId = 'dev_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+        localStorage.setItem(DEVICE_ID_KEY, devId);
+      }
+      return devId;
+    } catch {
+      return 'dev_' + Math.random().toString(36).substring(2, 10);
+    }
+  }
+
+  async function getClientIdentityKey() {
+    const fallbackId = getOrCreateDeviceId();
+    try {
+      const rawCache = localStorage.getItem(IP_CACHE_KEY);
+      if (rawCache) {
+        const parsed = JSON.parse(rawCache);
+        if (parsed && parsed.ip && Date.now() - (parsed.ts || 0) < 24 * 60 * 60 * 1000) {
+          return `ip_${parsed.ip}`;
+        }
+      }
+    } catch {
+      // ignore storage error
+    }
+
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 1800);
+      const res = await fetch('https://api.ipify.org?format=json', { signal: controller.signal });
+      clearTimeout(timer);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.ip) {
+          try {
+            localStorage.setItem(IP_CACHE_KEY, JSON.stringify({ ip: data.ip, ts: Date.now() }));
+          } catch {}
+          return `ip_${data.ip}`;
+        }
+      }
+    } catch {
+      // Network/CORS blocked: fallback to persistent device ID
+    }
+    return fallbackId;
+  }
+
+  function saveSessionCache(roomCode, playerId, playerName, ipKey) {
+    try {
+      localStorage.setItem(SESSION_CACHE_KEY, JSON.stringify({
+        room_code: roomCode,
+        player_id: playerId,
+        player_name: playerName,
+        ip_key: ipKey,
+        saved_at: Date.now()
+      }));
+    } catch {}
+  }
+
+  function clearSessionCache() {
+    try {
+      localStorage.removeItem(SESSION_CACHE_KEY);
+    } catch {}
+  }
+
+  async function restoreSessionOnLoad() {
+    let session = null;
+    try {
+      const raw = localStorage.getItem(SESSION_CACHE_KEY);
+      if (raw) session = JSON.parse(raw);
+    } catch {}
+
+    if (!session || !session.room_code || !session.player_id) return false;
+
+    const client = initClient();
+    if (!client) return false;
+
+    const ipKey = session.ip_key || await getClientIdentityKey();
+
+    try {
+      // 1x SELECT saat restore session
+      const { data: room, error } = await client
+        .from('werewolf_rooms')
+        .select('*')
+        .eq('room_code', session.room_code)
+        .single();
+
+      if (error || !room || !room.game_state || room.status === 'finished') {
+        clearSessionCache();
+        return false;
+      }
+
+      const players = room.game_state.players || [];
+      const matched = players.find(
+        p => p.id === session.player_id || (ipKey && p.player_ip === ipKey)
+      );
+
+      if (!matched) {
+        clearSessionCache();
+        return false;
+      }
+
+      myPlayerId = matched.id;
+      myPlayerName = matched.name;
+      currentRoomCode = room.room_code;
+      isHost = Boolean(matched.is_host);
+      saveSessionCache(currentRoomCode, myPlayerId, myPlayerName, ipKey);
+
+      subscribeToRoom(currentRoomCode);
+      handleRoomStateSync(room);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   function initClient() {
     if (supabaseClient) return supabaseClient;
@@ -96,6 +222,7 @@
     }
 
     hostName = hostName.trim() || 'Host';
+    const ipKey = await getClientIdentityKey();
     myPlayerId = generateUUID();
     myPlayerName = hostName;
     isHost = true;
@@ -124,6 +251,7 @@
       room_code: code,
       host_id: myPlayerId,
       phase: 'lobby',
+      chat_enabled: true,
       role_config: {
         werewolf: 1,
         villager: 2,
@@ -135,6 +263,7 @@
         {
           id: myPlayerId,
           name: hostName,
+          player_ip: ipKey,
           is_host: true,
           alive: true,
           role: null,
@@ -157,22 +286,28 @@
       discussion_end_time: null
     };
 
-    const { error } = await client.from('werewolf_rooms').insert([
-      {
-        room_code: code,
-        status: 'lobby',
-        game_state: initialGameState,
-        updated_at: new Date().toISOString()
-      }
-    ]);
+    const { data: insertedRoom, error } = await client
+      .from('werewolf_rooms')
+      .insert([
+        {
+          room_code: code,
+          status: 'lobby',
+          game_state: initialGameState,
+          updated_at: new Date().toISOString()
+        }
+      ])
+      .select('*')
+      .single();
 
     if (error) {
       alert(t('create_room_err', { msg: error.message }));
       return;
     }
 
+    currentRoomData = insertedRoom || { room_code: code, status: 'lobby', game_state: initialGameState };
+    saveSessionCache(code, myPlayerId, hostName, ipKey);
     subscribeToRoom(code);
-    renderLobbyScreen(initialGameState);
+    handleRoomStateSync(currentRoomData);
   }
 
   // ==========================================
@@ -210,6 +345,22 @@
     }
 
     const gameState = room.game_state;
+    const ipKey = await getClientIdentityKey();
+
+    // Auto-rejoin jika IP sama dengan pemain yang sudah ada di lobi
+    const existingByIp = gameState.players.find(p => p.player_ip && p.player_ip === ipKey);
+    if (existingByIp) {
+      myPlayerId = existingByIp.id;
+      myPlayerName = existingByIp.name;
+      isHost = Boolean(existingByIp.is_host);
+      currentRoomCode = roomCode;
+      currentRoomData = room;
+      saveSessionCache(roomCode, myPlayerId, myPlayerName, ipKey);
+      subscribeToRoom(roomCode);
+      handleRoomStateSync(room);
+      return;
+    }
+
     if (gameState.players.length >= 30) {
       alert(t('room_full'));
       return;
@@ -223,6 +374,7 @@
     gameState.players.push({
       id: myPlayerId,
       name: playerName,
+      player_ip: ipKey,
       is_host: false,
       alive: true,
       role: null,
@@ -235,50 +387,225 @@
     // Otomatis seimbangkan role jika Host mengizinkan
     autoBalanceOnlineRoles(gameState);
 
-    await client
+    const { data: updatedRoom } = await client
       .from('werewolf_rooms')
       .update({
         game_state: gameState,
         updated_at: new Date().toISOString()
       })
-      .eq('room_code', roomCode);
+      .eq('room_code', roomCode)
+      .select('*')
+      .single();
 
+    currentRoomData = updatedRoom || { ...room, game_state: gameState };
+    saveSessionCache(roomCode, myPlayerId, myPlayerName, ipKey);
     subscribeToRoom(roomCode);
-    renderLobbyScreen(gameState);
+    handleRoomStateSync(currentRoomData);
   }
 
-  function startRoomPolling(roomCode) {
-    stopRoomPolling();
-    roomPollingInterval = setInterval(async () => {
-      if (!currentRoomCode || !supabaseClient) return;
-      try {
-        const { data: room } = await supabaseClient
-          .from('werewolf_rooms')
-          .select('*')
-          .eq('room_code', currentRoomCode)
-          .single();
+  // ==========================================
+  // REALTIME SUBSCRIPTION & BROADCAST CHAT
+  // ==========================================
+  function initChatUI() {
+    if (chatUIInitialized) return;
+    chatUIInitialized = true;
 
-        if (room && room.game_state) {
-          if (!currentRoomData || room.status !== currentRoomData.status || room.updated_at !== currentRoomData.updated_at) {
-            handleRoomStateSync(room);
-          }
+    const btnOpen = document.getElementById('btnOpenRoomChat');
+    const btnClose = document.getElementById('btnCloseRoomChat');
+    const drawer = document.getElementById('roomChatDrawer');
+    const form = document.getElementById('roomChatForm');
+    const input = document.getElementById('inputRoomChat');
+
+    if (btnOpen) {
+      btnOpen.onclick = () => {
+        window.WerewolfAudio.play('click');
+        isChatOpen = true;
+        chatUnreadCount = 0;
+        updateChatBadge();
+        if (drawer) {
+          drawer.classList.remove('hidden');
+          drawer.style.display = 'flex';
         }
-      } catch (err) {
-        // Abaikan network jitter
-      }
-    }, 1200);
-  }
+        renderChatMessages();
+        if (input) input.focus();
+      };
+    }
 
-  function stopRoomPolling() {
-    if (roomPollingInterval) {
-      clearInterval(roomPollingInterval);
-      roomPollingInterval = null;
+    const closeDrawer = () => {
+      isChatOpen = false;
+      if (drawer) {
+        drawer.classList.add('hidden');
+        drawer.style.display = 'none';
+      }
+    };
+
+    if (btnClose) btnClose.onclick = closeDrawer;
+    if (drawer) {
+      drawer.onclick = (e) => {
+        if (e.target === drawer) closeDrawer();
+      };
+    }
+
+    if (form && input) {
+      form.onsubmit = (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = '';
+        sendChatMessage(text);
+      };
     }
   }
 
-  // ==========================================
-  // REALTIME SUBSCRIPTION
-  // ==========================================
+  function updateChatBadge() {
+    const badge = document.getElementById('chatUnreadBadge');
+    if (!badge) return;
+    if (chatUnreadCount > 0) {
+      badge.textContent = chatUnreadCount > 99 ? '99+' : String(chatUnreadCount);
+      badge.classList.remove('hidden');
+      badge.style.display = 'inline-flex';
+    } else {
+      badge.classList.add('hidden');
+      badge.style.display = 'none';
+    }
+  }
+
+  function renderChatMessages() {
+    const listEl = document.getElementById('roomChatMessages');
+    if (!listEl) return;
+
+    const state = currentRoomData ? currentRoomData.game_state : null;
+    const me = state && state.players ? state.players.find(p => p.id === myPlayerId) : null;
+    const isAlive = !me || me.alive !== false;
+
+    const channelBadge = document.getElementById('roomChatChannelBadge');
+    const deadNotice = document.getElementById('roomChatReadOnlyNotice');
+    if (channelBadge) {
+      channelBadge.textContent = isAlive ? t('chat_channel_public') : t('chat_channel_dead');
+      channelBadge.style.color = isAlive ? 'var(--rose-light)' : 'var(--text-muted)';
+    }
+    if (deadNotice) {
+      if (isAlive) {
+        deadNotice.classList.add('hidden');
+      } else {
+        deadNotice.classList.remove('hidden');
+      }
+    }
+
+    const visibleMsgs = chatMessages.filter(m => isAlive ? m.channel === 'alive' : true);
+    listEl.innerHTML = '';
+
+    if (visibleMsgs.length === 0) {
+      const emptyEl = document.createElement('div');
+      emptyEl.style.cssText = 'text-align:center; font-size:12px; color:var(--text-muted); margin:auto 0;';
+      emptyEl.textContent = t('chat_empty');
+      listEl.appendChild(emptyEl);
+      return;
+    }
+
+    visibleMsgs.forEach(m => {
+      const row = document.createElement('div');
+      const isMine = m.senderId === myPlayerId;
+      row.className = 'chat-msg' + (isMine ? ' is-mine' : '') + (m.channel === 'dead' ? ' is-dead' : '');
+      const senderTag = document.createElement('div');
+      senderTag.style.cssText = 'font-size:10px; font-weight:800; margin-bottom:2px; color:' + (m.channel === 'dead' ? 'var(--text-muted)' : 'var(--rose-light)') + ';';
+      senderTag.textContent = m.senderName + (m.channel === 'dead' ? ` (${t('chat_channel_dead')})` : '');
+      const body = document.createElement('div');
+      body.style.color = '#fff';
+      body.textContent = m.text;
+      row.appendChild(senderTag);
+      row.appendChild(body);
+      listEl.appendChild(row);
+    });
+
+    listEl.scrollTop = listEl.scrollHeight;
+  }
+
+  function handleIncomingChat(payload) {
+    if (!payload || !payload.text) return;
+    const state = currentRoomData ? currentRoomData.game_state : null;
+    const me = state && state.players ? state.players.find(p => p.id === myPlayerId) : null;
+    const isAlive = !me || me.alive !== false;
+
+    // Pemain hidup tidak boleh menerima Dead/Spectator Chat
+    if (payload.channel === 'dead' && isAlive) return;
+
+    chatMessages.push(payload);
+    if (chatMessages.length > 80) {
+      chatMessages = chatMessages.slice(-80);
+    }
+
+    if (isChatOpen) {
+      renderChatMessages();
+    } else if (payload.senderId !== myPlayerId) {
+      chatUnreadCount++;
+      updateChatBadge();
+    }
+  }
+
+  function sendChatMessage(text) {
+    if (!activeChannel || !currentRoomCode) return;
+    const state = currentRoomData ? currentRoomData.game_state : null;
+    if (state && state.chat_enabled === false) return;
+
+    const me = state && state.players ? state.players.find(p => p.id === myPlayerId) : null;
+    const channelType = (me && me.alive === false) ? 'dead' : 'alive';
+
+    // Ephemeral Realtime Broadcast (0 DB writes)
+    activeChannel.send({
+      type: 'broadcast',
+      event: 'room_chat',
+      payload: {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        senderId: myPlayerId,
+        senderName: myPlayerName,
+        text: text,
+        channel: channelType,
+        ts: Date.now()
+      }
+    });
+  }
+
+  function updateHudRoomControls(status, state) {
+    initChatUI();
+    const btnLeave = document.getElementById('btnHudLeaveRoom');
+    const btnChat = document.getElementById('btnOpenRoomChat');
+    const drawer = document.getElementById('roomChatDrawer');
+
+    if (btnLeave) {
+      if (currentRoomCode) {
+        btnLeave.classList.remove('hidden');
+        btnLeave.style.display = 'flex';
+      } else {
+        btnLeave.classList.add('hidden');
+        btnLeave.style.display = 'none';
+      }
+    }
+
+    const chatAllowedPhase = (
+      status === 'lobby' ||
+      status === 'day_announcement' ||
+      status === 'day_voting' ||
+      status === 'day_vote_result'
+    );
+    const chatEnabled = !state || state.chat_enabled !== false;
+
+    if (btnChat) {
+      if (currentRoomCode && chatEnabled && chatAllowedPhase) {
+        btnChat.classList.remove('hidden');
+        btnChat.style.display = 'flex';
+      } else {
+        btnChat.classList.add('hidden');
+        btnChat.style.display = 'none';
+        isChatOpen = false;
+        if (drawer) {
+          drawer.classList.add('hidden');
+          drawer.style.display = 'none';
+        }
+      }
+    }
+  }
+
   function subscribeToRoom(roomCode) {
     const client = initClient();
     if (!client) return;
@@ -287,10 +614,12 @@
       supabaseClient.removeChannel(activeChannel);
     }
 
-    startRoomPolling(roomCode);
-
     activeChannel = client
-      .channel('werewolf_room_' + roomCode)
+      .channel('werewolf_room_' + roomCode, {
+        config: {
+          broadcast: { self: true }
+        }
+      })
       .on(
         'postgres_changes',
         {
@@ -310,11 +639,10 @@
           }
         }
       )
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('Realtime tersambung ke room:', roomCode);
-        }
-      });
+      .on('broadcast', { event: 'room_chat' }, ({ payload }) => {
+        handleIncomingChat(payload);
+      })
+      .subscribe();
   }
 
   function handleRoomStateSync(roomRecord) {
@@ -328,10 +656,12 @@
       isHost = Boolean(me.is_host);
     }
 
+    updateHudRoomControls(status, state);
+
     if (status === 'lobby') {
       renderLobbyScreen(state);
-    } else if (status === 'card_pick') {
-      renderOnlineCardPick(state);
+    } else if (status === 'playing' || status === 'card_pick') {
+      renderOnlineRoleReveal(state);
     } else if (status === 'night') {
       renderOnlineNight(state);
     } else if (status === 'day_announcement') {
@@ -403,10 +733,31 @@
       }
 
       btnStartGame.disabled = (state.players.length < 5 || totalRoles !== state.players.length);
+
+      const btnToggleChat = document.getElementById('btnToggleRoomChat');
+      if (btnToggleChat) {
+        const enabled = state.chat_enabled !== false;
+        btnToggleChat.textContent = enabled ? t('chat_status_on') : t('chat_status_off');
+        btnToggleChat.style.color = enabled ? 'var(--role-hunter)' : 'var(--text-muted)';
+        btnToggleChat.onclick = async () => {
+          window.WerewolfAudio.play('click');
+          await updateRoomStateAtomically((s, st) => {
+            s.chat_enabled = (s.chat_enabled === false);
+            return { status: st, state: s };
+          });
+        };
+      }
     } else {
       hostRoleControls.classList.add('hidden');
       guestRoleSummary.classList.remove('hidden');
       btnStartGame.classList.add('hidden');
+
+      const guestChatStatus = document.getElementById('onlineGuestChatStatus');
+      if (guestChatStatus) {
+        const enabled = state.chat_enabled !== false;
+        guestChatStatus.textContent = enabled ? t('chat_status_on') : t('chat_status_off');
+        guestChatStatus.style.color = enabled ? 'var(--role-hunter)' : 'var(--text-muted)';
+      }
 
       const guestList = document.getElementById('onlineGuestRoleList');
       if (guestList) {
@@ -468,7 +819,7 @@
     };
   }
 
-  async function adjustOnlineRole(role, delta) {
+  function adjustOnlineRole(role, delta) {
     if (!isHost || !currentRoomData) return;
     const state = currentRoomData.game_state;
     const current = state.role_config[role] || 0;
@@ -479,66 +830,71 @@
     state.role_config[role] = nextVal;
     renderLobbyScreen(state); // Update optimistik di layar Host
 
-    await supabaseClient
-      .from('werewolf_rooms')
-      .update({
-        game_state: state,
-        updated_at: new Date().toISOString()
-      })
-      .eq('room_code', currentRoomCode);
+    if (roleAdjustDebounceTimer) clearTimeout(roleAdjustDebounceTimer);
+    const snapshotConfig = { ...state.role_config };
+    roleAdjustDebounceTimer = setTimeout(async () => {
+      roleAdjustDebounceTimer = null;
+      await updateRoomStateAtomically((freshState, st) => {
+        if (st !== 'lobby') return { abort: 'not_lobby' };
+        freshState.role_config = snapshotConfig;
+        return { status: st, state: freshState };
+      });
+    }, 300);
   }
 
   // ==========================================
-  // 4. MULAI PERMAINAN (CARD PICK FASE)
+  // 4. MULAI PERMAINAN (AUTO-SHUFFLE & ROLE REVEAL)
   // ==========================================
+  let isStartingGame = false;
+
   async function startOnlineGame() {
-    if (!isHost || !currentRoomData) return;
-    const state = currentRoomData.game_state;
-
-    const totalRoles = Object.values(state.role_config).reduce((a, b) => a + b, 0);
-    if (totalRoles !== state.players.length) {
-      alert(t('role_sum_mismatch', { sum: totalRoles, total: state.players.length }));
-      return;
-    }
-
-    // Bangun dan acak kartu
-    const pool = [];
-    Object.keys(state.role_config).forEach(role => {
-      for (let i = 0; i < state.role_config[role]; i++) {
-        pool.push(role);
+    if (!isHost || !currentRoomData || isStartingGame) return;
+    isStartingGame = true;
+    try {
+      const state = currentRoomData.game_state;
+      const totalRoles = Object.values(state.role_config).reduce((a, b) => a + b, 0);
+      if (totalRoles !== state.players.length) {
+        alert(t('role_sum_mismatch', { sum: totalRoles, total: state.players.length }));
+        return;
       }
-    });
 
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [pool[i], pool[j]] = [pool[j], pool[i]];
+      await updateRoomStateAtomically((freshState, st) => {
+        if (st !== 'lobby') return { abort: 'already_started' };
+        const pool = [];
+        Object.keys(freshState.role_config).forEach(role => {
+          for (let i = 0; i < freshState.role_config[role]; i++) {
+            pool.push(role);
+          }
+        });
+
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+
+        freshState.cards = pool.map((role, idx) => {
+          const owner = freshState.players[idx] || null;
+          if (owner) {
+            owner.card_id = idx;
+            owner.role = role;
+            owner.ready = false;
+          }
+          return {
+            id: idx,
+            role: role,
+            picked_by: owner ? owner.id : null
+          };
+        });
+
+        freshState.phase = 'playing';
+        freshState.sub_phase = 'role_reveal';
+        freshState.role_reveal_start_time = Date.now();
+        freshState.card_pick_start_time = freshState.role_reveal_start_time;
+        return { status: 'playing', state: freshState };
+      });
+    } finally {
+      isStartingGame = false;
     }
-
-    state.cards = pool.map((role, idx) => {
-      const owner = state.players[idx] || null;
-      if (owner) {
-        owner.card_id = idx;
-        owner.role = role;
-        owner.ready = false;
-      }
-      return {
-        id: idx,
-        role: role,
-        picked_by: owner ? owner.id : null
-      };
-    });
-
-    state.phase = 'card_pick';
-    state.card_pick_start_time = Date.now();
-
-    await supabaseClient
-      .from('werewolf_rooms')
-      .update({
-        status: 'card_pick',
-        game_state: state,
-        updated_at: new Date().toISOString()
-      })
-      .eq('room_code', currentRoomCode);
   }
 
   // ==========================================
@@ -564,48 +920,35 @@
     }
   }
 
-  function renderOnlineCardPick(state) {
+  function renderOnlineRoleReveal(state) {
     lastRenderedNightKey = null;
     clearVoteResultTimer();
     window.WerewolfApp.switchScreen('screenCardPick');
     window.WerewolfApp.setHudStatusKey('hud_pick_card');
 
     const me = state.players.find(p => p.id === myPlayerId);
-    const hasPicked = Boolean(me && me.card_id !== null && me.card_id !== undefined);
+    const hasRole = Boolean(me && me.role);
 
     if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
-      window.WerewolfApp.setHudRole(hasPicked && me ? me.role : null);
+      window.WerewolfApp.setHudRole(hasRole ? me.role : null);
     }
 
     const headerTitle = document.getElementById('cardPickHeaderTitle');
     const headerDesc = document.getElementById('cardPickHeaderDesc');
-    headerTitle.textContent = hasPicked ? t('card_pick_yours_title') : t('card_pick_title');
-    headerDesc.textContent = hasPicked ? t('card_pick_yours_desc') : t('card_pick_desc');
-
-    const totalCards = state.cards.length;
-    const pickedCards = state.cards.filter(c => c.picked_by !== null).length;
-    const remainingCards = Math.max(0, totalCards - pickedCards);
+    headerTitle.textContent = t('card_pick_yours_title');
+    headerDesc.textContent = t('card_pick_yours_desc');
 
     const metaBar = document.getElementById('cardPickMetaBar');
-    const quotaBadge = document.getElementById('cardPickQuotaBadge');
     const timerBadge = document.getElementById('cardPickTimerBadge');
     const timerDigits = document.getElementById('cardPickTimerDigits');
     if (metaBar) {
       metaBar.classList.remove('hidden');
       metaBar.style.display = 'flex';
     }
-    if (quotaBadge) {
-      quotaBadge.textContent = t('card_pick_quota', {
-        picked: pickedCards,
-        total: totalCards,
-        remaining: remainingCards
-      });
-    }
-
-    clearCardPickTimer();
     if (timerBadge) timerBadge.classList.remove('hidden');
 
-    const startTime = state.card_pick_start_time || Date.now();
+    clearCardPickTimer();
+    const startTime = state.role_reveal_start_time || state.card_pick_start_time || Date.now();
     const updateReadyTimer = async () => {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
       const remain = Math.max(0, 15 - elapsed);
@@ -624,43 +967,10 @@
     if (timerDigits) timerDigits.textContent = `${initRemain}s`;
     cardPickCountdownTimer = setInterval(updateReadyTimer, 1000);
 
-    const grid = document.getElementById('cardPickGrid');
-    grid.innerHTML = '';
-
-    state.cards.forEach((c, idx) => {
-      const isTaken = (c.picked_by !== null);
-      const isMine = (c.picked_by === myPlayerId);
-      const picker = isTaken ? state.players.find(p => p.id === c.picked_by) : null;
-      const cDef = getRoleDef(c.role);
-
-      const cardEl = document.createElement('div');
-      cardEl.className = 'card-pick-item' + (isMine ? ' flipped is-mine' : (isTaken ? ' taken' : ''));
-
-      const backStatusText = isTaken && !isMine && picker
-        ? t('card_taken_by', { name: picker.name })
-        : t('card_label', { n: idx + 1 });
-
-      cardEl.innerHTML = `
-        <div class="card-face card-back">
-          <div class="card-back-pattern">${window.WerewolfIcons.get('moon')}</div>
-          <div class="card-back-number">${backStatusText}</div>
-        </div>
-        <div class="card-face card-front ${isMine ? cDef.badgeClass : ''}">
-          <div class="card-front-icon">${isMine ? window.WerewolfIcons.get(c.role) : ''}</div>
-          <div class="card-front-title">${isMine ? cDef.name : t('card_taken')}</div>
-          ${isMine ? `<div class="card-mine-badge">${t('card_mine_badge')}</div>` : ''}
-        </div>
-      `;
-
-      grid.appendChild(cardEl);
-    });
-
     const roleRevealPanel = document.getElementById('cardPickRoleReveal');
     const actionBtns = document.getElementById('cardPickActionBtns');
-    const btnRandom = document.getElementById('btnCardPickRandom');
 
-    btnRandom.classList.add('hidden');
-    if (hasPicked) {
+    if (hasRole) {
       roleRevealPanel.classList.remove('hidden');
       actionBtns.classList.remove('hidden');
 
@@ -680,6 +990,7 @@
 
       btnConfirm.onclick = async () => {
         window.WerewolfAudio.play('click');
+        btnConfirm.disabled = true;
         await syncPlayerReadyState();
       };
     } else {
@@ -688,30 +999,36 @@
     }
   }
 
-  let isPickingCard = false;
+  let isReadySubmitting = false;
 
   async function updateRoomStateAtomically(mutatorFn, maxRetries = 8) {
     if (!supabaseClient || !currentRoomCode) return { ok: false, reason: 'no_room' };
 
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-      const { data: freshRow, error: fetchError } = await supabaseClient
-        .from('werewolf_rooms')
-        .select('room_code, status, game_state, updated_at')
-        .eq('room_code', currentRoomCode)
-        .single();
+    // Gunakan state memori lokal dulu agar hemat 1x SELECT bila tidak ada konflik
+    let baseRow = currentRoomData && currentRoomData.updated_at ? currentRoomData : null;
 
-      if (fetchError || !freshRow || !freshRow.game_state) {
-        return { ok: false, reason: 'fetch_error' };
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      if (!baseRow) {
+        const { data: freshRow, error: fetchError } = await supabaseClient
+          .from('werewolf_rooms')
+          .select('room_code, status, game_state, updated_at')
+          .eq('room_code', currentRoomCode)
+          .single();
+
+        if (fetchError || !freshRow || !freshRow.game_state) {
+          return { ok: false, reason: 'fetch_error' };
+        }
+        baseRow = freshRow;
       }
 
-      const clonedState = JSON.parse(JSON.stringify(freshRow.game_state));
-      const outcome = mutatorFn(clonedState, freshRow.status);
+      const clonedState = JSON.parse(JSON.stringify(baseRow.game_state));
+      const outcome = mutatorFn(clonedState, baseRow.status);
       if (outcome && outcome.abort) {
-        handleRoomStateSync(freshRow);
+        handleRoomStateSync(baseRow);
         return { ok: false, reason: outcome.abort };
       }
 
-      const nextStatus = (outcome && outcome.status) || freshRow.status;
+      const nextStatus = (outcome && outcome.status) || baseRow.status;
       const nextState = (outcome && outcome.state) || clonedState;
       const nextUpdatedAt = new Date().toISOString();
 
@@ -723,7 +1040,7 @@
           updated_at: nextUpdatedAt
         })
         .eq('room_code', currentRoomCode)
-        .eq('updated_at', freshRow.updated_at)
+        .eq('updated_at', baseRow.updated_at)
         .select('room_code, status, game_state, updated_at');
 
       if (!updateError && Array.isArray(updatedRows) && updatedRows.length > 0) {
@@ -731,68 +1048,39 @@
         return { ok: true, row: updatedRows[0] };
       }
 
+      // Konflik CAS: reset baseRow agar iterasi berikut fetch data terbaru dari DB
+      baseRow = null;
       await new Promise(resolve => setTimeout(resolve, 45 + Math.floor(Math.random() * 90)));
     }
 
     return { ok: false, reason: 'conflict' };
   }
 
-  async function pickCardAtomically(cardId, targetPlayerId = myPlayerId) {
-    if (!currentRoomData || isPickingCard) return;
-    isPickingCard = true;
-    try {
-      const res = await updateRoomStateAtomically((state, status) => {
-        if (status !== 'card_pick') return { abort: 'not_card_pick' };
-        const turnIdx = typeof state.card_pick_turn_index === 'number' ? state.card_pick_turn_index : 0;
-        const activePlayer = state.players[turnIdx];
-        if (!activePlayer || activePlayer.id !== targetPlayerId) {
-          return { abort: 'not_your_turn' };
-        }
-        if (activePlayer.card_id !== null && activePlayer.card_id !== undefined) {
-          return { abort: 'already_picked' };
-        }
-
-        const card = state.cards.find(c => c.id === cardId);
-        if (!card || card.picked_by !== null) {
-          return { abort: 'taken' };
-        }
-
-        card.picked_by = targetPlayerId;
-        activePlayer.card_id = cardId;
-        activePlayer.role = card.role;
-        state.card_pick_turn_index = turnIdx + 1;
-        state.card_pick_turn_start_time = Date.now();
-        return { state };
-      });
-
-      if (res.ok && targetPlayerId === myPlayerId) {
-        window.WerewolfAudio.play('flip');
-      } else if (res.reason === 'taken' && targetPlayerId === myPlayerId) {
-        alert(t('card_already_taken'));
-      }
-    } finally {
-      isPickingCard = false;
-    }
-  }
-
   async function syncPlayerReadyState() {
-    if (!currentRoomData) return;
-    await updateRoomStateAtomically((state, status) => {
-      const me = state.players.find(p => p.id === myPlayerId);
-      if (me) me.ready = true;
+    if (!currentRoomData || isReadySubmitting) return;
+    isReadySubmitting = true;
+    try {
+      await updateRoomStateAtomically((state, status) => {
+        if (status !== 'playing' && status !== 'card_pick') {
+          return { abort: 'already_started' };
+        }
+        const me = state.players.find(p => p.id === myPlayerId);
+        if (me) me.ready = true;
 
-      const allReady = state.players.every(
-        p => p.ready && p.card_id !== null && p.card_id !== undefined
-      );
-      if (allReady) {
-        state.phase = 'night';
-        state.night_step = 'bodyguard';
-        state.night_step_start_time = Date.now();
-        state.players.forEach(p => { p.ready = false; });
-        return { status: 'night', state };
-      }
-      return { status, state };
-    });
+        const allReady = state.players.every(p => p.ready && Boolean(p.role));
+        if (allReady) {
+          state.phase = 'night';
+          state.sub_phase = null;
+          state.night_step = 'bodyguard';
+          state.night_step_start_time = Date.now();
+          state.players.forEach(p => { p.ready = false; });
+          return { status: 'night', state };
+        }
+        return { status, state };
+      });
+    } finally {
+      isReadySubmitting = false;
+    }
   }
 
   // ==========================================
@@ -1530,7 +1818,7 @@
     lastRenderedNightKey = null;
     clearCardPickTimer();
     clearVoteResultTimer();
-    stopRoomPolling();
+    clearSessionCache();
     if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
       window.WerewolfApp.setHudRole(null);
     }
@@ -1591,22 +1879,102 @@
     }
   }
 
-  function leaveRoom(shouldDelete = true) {
-    stopRoomPolling();
-    if (nightStepCountdownTimer) {
-      clearInterval(nightStepCountdownTimer);
-      nightStepCountdownTimer = null;
+  async function leaveRoom(shouldSync = true) {
+    if (isLeavingRoom) return;
+    isLeavingRoom = true;
+    try {
+      clearCardPickTimer();
+      clearVoteResultTimer();
+      if (roleAdjustDebounceTimer) {
+        clearTimeout(roleAdjustDebounceTimer);
+        roleAdjustDebounceTimer = null;
+      }
+      if (nightStepCountdownTimer) {
+        clearInterval(nightStepCountdownTimer);
+        nightStepCountdownTimer = null;
+      }
+      if (onlineDiscussionTimer) {
+        clearInterval(onlineDiscussionTimer);
+        onlineDiscussionTimer = null;
+      }
+
+      const leavingRoomCode = currentRoomCode;
+      const leavingPlayerId = myPlayerId;
+      const client = initClient();
+
+      if (shouldSync && leavingRoomCode && leavingPlayerId && client) {
+        try {
+          const { data: freshRow } = await client
+            .from('werewolf_rooms')
+            .select('room_code, status, game_state, updated_at')
+            .eq('room_code', leavingRoomCode)
+            .single();
+
+          if (freshRow && freshRow.game_state) {
+            const state = freshRow.game_state;
+            const idx = state.players.findIndex(p => p.id === leavingPlayerId);
+            if (idx !== -1) {
+              const wasHost = Boolean(state.players[idx].is_host);
+              state.players.splice(idx, 1);
+
+              if (state.players.length === 0) {
+                await client.from('werewolf_rooms').delete().eq('room_code', leavingRoomCode);
+              } else {
+                if (wasHost) {
+                  state.players[0].is_host = true;
+                  state.host_id = state.players[0].id;
+                }
+                let nextStatus = freshRow.status;
+                if (freshRow.status !== 'lobby' && freshRow.status !== 'finished') {
+                  if (checkOnlineWin(state)) {
+                    state.phase = 'finished';
+                    nextStatus = 'finished';
+                  }
+                }
+                await client
+                  .from('werewolf_rooms')
+                  .update({
+                    status: nextStatus,
+                    game_state: state,
+                    updated_at: new Date().toISOString()
+                  })
+                  .eq('room_code', leavingRoomCode);
+              }
+            }
+          }
+        } catch (err) {
+          console.warn('Leave room sync notice:', err);
+        }
+      }
+
+      clearSessionCache();
+
+      if (activeChannel && supabaseClient) {
+        try {
+          await supabaseClient.removeChannel(activeChannel);
+        } catch {}
+        activeChannel = null;
+      }
+
+      currentRoomCode = null;
+      currentRoomData = null;
+      myPlayerId = null;
+      myPlayerName = '';
+      isHost = false;
+      lastRenderedNightKey = null;
+      chatMessages = [];
+      chatUnreadCount = 0;
+      isChatOpen = false;
+      updateChatBadge();
+      updateHudRoomControls(null, null);
+
+      if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
+        window.WerewolfApp.setHudRole(null);
+      }
+      window.WerewolfApp.switchScreen('screenMainMenu');
+    } finally {
+      isLeavingRoom = false;
     }
-    if (shouldDelete && isHost && currentRoomCode) {
-      deleteCurrentRoom();
-    }
-    if (activeChannel && supabaseClient) {
-      supabaseClient.removeChannel(activeChannel);
-      activeChannel = null;
-    }
-    currentRoomCode = null;
-    currentRoomData = null;
-    window.WerewolfApp.switchScreen('screenMainMenu');
   }
 
   function createOnlineTargetCard(player, tagText, isDisabled = false) {
@@ -1627,6 +1995,8 @@
     joinRoom,
     adjustOnlineRole,
     startOnlineGame,
-    leaveRoom
+    leaveRoom,
+    restoreSessionOnLoad,
+    isInRoom: () => Boolean(currentRoomCode)
   };
 })();
