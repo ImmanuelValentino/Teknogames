@@ -10,6 +10,14 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 \*\* Perbaikan bug, hotfix styling, optimasi performa, atau perbaikan minor.
 
+## [3.16.0] - 2026-11-26
+### Added, Changed, & Fixed (Revisi & Optimasi Arsitektur Werewolf Multiplayer)
+- **Auto-Shuffle & Role Reveal Langsung:** Menghapus fase grid kartu tertutup di mode online maupun offline; role langsung diacak dan dibagikan otomatis saat game dimulai (`status: 'playing'`), lalu pemain melihat kartu perannya dan menekan Siap.
+- **Room Chat Diskusi (Realtime Broadcast):** Menambahkan drawer Room Chat di Lobi & Fase Siang dengan badge unread, toggle aktif/nonaktif oleh Host, dan pemisahan Dead/Spectator Chat tanpa menulis riwayat chat ke database.
+- **Optimasi Query Supabase:** Menghapus interval polling, memakai `SELECT` tunggal saat gabung/restore, memprioritaskan CAS lokal sebelum re-fetch, serta menambahkan debounce & lock tombol aksi.
+- **Session Cache Berbasis IP:** Menyimpan `ip_key` (IP publik + fallback Device ID) dan sesi room di `localStorage` untuk auto-reconnect saat browser di-refresh.
+- **Tombol Keluar Room Persisten:** Menambahkan tombol keluar room di HUD yang menghapus pemain dari room, memindahkan Host otomatis (atau menghapus room bila kosong), membersihkan sesi lokal, dan unsubscribe channel Realtime.
+
 ## [3.15.13] - 2026-11-24
 ### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)
 - **Visibilitas Role HUD (`styles.css`):** Menambahkan `flex-wrap: wrap` pada `.hud-left` agar badge peran pemain (`#hudMyRoleBadge`) selalu terlihat jelas dan tidak terpotong di layar mobile.
@@ -28,6 +36,14 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ### Fixed (Penyesuaian Warna Ikon Kategori di Bawah Game agar Seragam dengan Navbar)
 
 - **Ikon Kategori Bilah Kontrol Game (`GameFrame.tsx`, `PlayPageView.tsx`):** Menghapus `variant="dark"` yang terpasang statis pada komponen `CategoryIcon` di bawah iframe game dan kotak spesifikasi teknis, sehingga ikon kategori kini secara dinamis mengikuti skema warna tema yang sama dengan dropdown kategori navbar (`--category-icon-light` saat mode terang dan `--category-icon-dark` saat mode gelap).
+
+## [3.16.0] - 2026-11-26
+### Added, Changed, & Fixed (Revisi & Optimasi Arsitektur Werewolf Multiplayer)
+- **Auto-Shuffle & Role Reveal Langsung:** Menghapus fase grid kartu tertutup di mode online maupun offline; role langsung diacak dan dibagikan otomatis saat game dimulai (`status: 'playing'`), lalu pemain melihat kartu perannya dan menekan Siap.
+- **Room Chat Diskusi (Realtime Broadcast):** Menambahkan drawer Room Chat di Lobi & Fase Siang dengan badge unread, toggle aktif/nonaktif oleh Host, dan pemisahan Dead/Spectator Chat tanpa menulis riwayat chat ke database.
+- **Optimasi Query Supabase:** Menghapus interval polling, memakai `SELECT` tunggal saat gabung/restore, memprioritaskan CAS lokal sebelum re-fetch, serta menambahkan debounce & lock tombol aksi.
+- **Session Cache Berbasis IP:** Menyimpan `ip_key` (IP publik + fallback Device ID) dan sesi room di `localStorage` untuk auto-reconnect saat browser di-refresh.
+- **Tombol Keluar Room Persisten:** Menambahkan tombol keluar room di HUD yang menghapus pemain dari room, memindahkan Host otomatis (atau menghapus room bila kosong), membersihkan sesi lokal, dan unsubscribe channel Realtime.
 
 ## [3.15.13] - 2026-11-24
 ### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)
@@ -53,6 +69,14 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 ### Improved (Penyesuaian Spasi di Atas Rekomendasi Game / More Games For You)
 
 - **Margin & Padding Rekomendasi (`PlayPageView.tsx`, `globals.css`):** Mempersempit jarak vertikal kosong di atas judul "Permainan Lainnya Untuk Anda" / "More Games For You" dari 40px menjadi 6px menggunakan class `.play-page-recommendations` dengan `margin-top: 6px !important` dan `padding-top: 0 !important`, serta memastikan slot iklan yang tidak aktif tidak menambah margin kosong.
+
+## [3.16.0] - 2026-11-26
+### Added, Changed, & Fixed (Revisi & Optimasi Arsitektur Werewolf Multiplayer)
+- **Auto-Shuffle & Role Reveal Langsung:** Menghapus fase grid kartu tertutup di mode online maupun offline; role langsung diacak dan dibagikan otomatis saat game dimulai (`status: 'playing'`), lalu pemain melihat kartu perannya dan menekan Siap.
+- **Room Chat Diskusi (Realtime Broadcast):** Menambahkan drawer Room Chat di Lobi & Fase Siang dengan badge unread, toggle aktif/nonaktif oleh Host, dan pemisahan Dead/Spectator Chat tanpa menulis riwayat chat ke database.
+- **Optimasi Query Supabase:** Menghapus interval polling, memakai `SELECT` tunggal saat gabung/restore, memprioritaskan CAS lokal sebelum re-fetch, serta menambahkan debounce & lock tombol aksi.
+- **Session Cache Berbasis IP:** Menyimpan `ip_key` (IP publik + fallback Device ID) dan sesi room di `localStorage` untuk auto-reconnect saat browser di-refresh.
+- **Tombol Keluar Room Persisten:** Menambahkan tombol keluar room di HUD yang menghapus pemain dari room, memindahkan Host otomatis (atau menghapus room bila kosong), membersihkan sesi lokal, dan unsubscribe channel Realtime.
 
 ## [3.15.13] - 2026-11-24
 ### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)
@@ -86,6 +110,14 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 - **Teks Judul Breadcrumb (`globals.css`):** Memperbaiki aturan CSS `main nav[aria-label="Jejak navigasi"] > span:last-child` agar menggunakan `var(--ink)` (alih-alih `#161616` statis) dan menambahkan override khusus dark mode `color: #f3f4f6 !important`, sehingga teks judul game (seperti "Nusantara Runner: Escape to Bali", "Kapal Feri", dll.) dan kategori terlihat jelas dan kontras saat mode gelap.
 - **Komponen Tampilan (`PlayPageView.tsx`, `CategoryView.tsx`):** Menambahkan class penegas `text-slate-900 dark:text-slate-100` pada elemen span terakhir jejak navigasi.
+
+## [3.16.0] - 2026-11-26
+### Added, Changed, & Fixed (Revisi & Optimasi Arsitektur Werewolf Multiplayer)
+- **Auto-Shuffle & Role Reveal Langsung:** Menghapus fase grid kartu tertutup di mode online maupun offline; role langsung diacak dan dibagikan otomatis saat game dimulai (`status: 'playing'`), lalu pemain melihat kartu perannya dan menekan Siap.
+- **Room Chat Diskusi (Realtime Broadcast):** Menambahkan drawer Room Chat di Lobi & Fase Siang dengan badge unread, toggle aktif/nonaktif oleh Host, dan pemisahan Dead/Spectator Chat tanpa menulis riwayat chat ke database.
+- **Optimasi Query Supabase:** Menghapus interval polling, memakai `SELECT` tunggal saat gabung/restore, memprioritaskan CAS lokal sebelum re-fetch, serta menambahkan debounce & lock tombol aksi.
+- **Session Cache Berbasis IP:** Menyimpan `ip_key` (IP publik + fallback Device ID) dan sesi room di `localStorage` untuk auto-reconnect saat browser di-refresh.
+- **Tombol Keluar Room Persisten:** Menambahkan tombol keluar room di HUD yang menghapus pemain dari room, memindahkan Host otomatis (atau menghapus room bila kosong), membersihkan sesi lokal, dan unsubscribe channel Realtime.
 
 ## [3.15.13] - 2026-11-24
 ### Improved (HUD Role Responsive Wrap & Maksimal 30 Pemain Werewolf)

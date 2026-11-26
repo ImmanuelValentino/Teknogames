@@ -118,6 +118,28 @@
     cross: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <line x1="18" y1="6" x2="6" y2="18" />
       <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>`,
+
+    chat: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>`,
+
+    send: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="22" y1="2" x2="11" y2="13" />
+      <polygon points="22 2 15 22 11 13 2 9 22 2" />
+    </svg>`,
+
+    logOut: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" y1="12" x2="9" y2="12" />
+    </svg>`,
+
+    wifi: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+      <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+      <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+      <line x1="12" y1="20" x2="12.01" y2="20" />
     </svg>`
   };
 

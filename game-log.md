@@ -1,3 +1,15 @@
+### 2026-11-26 - Werewolf: Auto-Shuffle Role, Room Chat Broadcast, Hemat Query Supabase, Session IP Auto-Restore, & Keluar Room
+- **Folder Game:** `public/games/werewolf`
+- **Deskripsi:** Revisi dan optimasi besar pada game Werewolf: menghapus fase pilih kartu manual di mode online & offline (role langsung diacak dan dibagikan otomatis saat game mulai), menambahkan Room Chat diskusi berbasis Supabase Realtime Broadcast (dengan toggle Host dan pemisahan Dead/Spectator Chat), menghentikan polling 1.2 detik agar hemat query Supabase, menambahkan auto-restore sesi berbasis IP publik + fallback Device ID di `localStorage`, serta mengaktifkan tombol Keluar Room persisten di HUD dengan transfer Host otomatis dan pembersihan room kosong.
+- **Fitur Utama:**
+  - [x] Auto-Shuffle & Distribusi Role Langsung (`status: 'playing'`, `sub_phase: 'role_reveal'`) tanpa grid kartu tertutup
+  - [x] Room Chat Diskusi Ephemeral via Supabase Realtime Broadcast + Dead/Spectator Chat + Toggle Host
+  - [x] Zero Polling + CAS State Lokal (`updateRoomStateAtomically`) + Debounce Role Config 300ms
+  - [x] Session Cache Berbasis IP Publik + Fallback Device ID untuk Auto-Reconnect Saat Refresh
+  - [x] Tombol Keluar Room Persisten di HUD dengan Transfer Host & Cleanup Room Kosong
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
+
 ### 2026-11-24 - Sinkronisasi Fitur 2 Bahasa (ID / EN) ke Seluruh 13 Game HTML5
 - **Folder Game:** `src/components/game/GameFrame.tsx`, `public/games/*` (seluruh 13 game)
 - **Deskripsi:** Menghubungkan sistem pergantian bahasa portal (`teknogame-lang` di `localStorage`, event `storage`, dan `postMessage` `{ type: "LANG_CHANGE", lang }` dari `GameFrame.tsx`) ke seluruh 13 game HTML5 (`becak-drift`, `candi-stacker`, `circuit-flow`, `cyber-bird`, `kapal-feri`, `kopi-klotok`, `layangan-sanur`, `lembah-bromo`, `nusantara-runner`, `packing-master`, `pasar-terapung`, `tekno-memory`, `werewolf`). Setiap game otomatis mengikuti bahasa aktif saat dimuat maupun saat tombol ID/EN di Navbar diklik secara langsung tanpa perlu reload.

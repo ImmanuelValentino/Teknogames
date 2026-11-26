@@ -213,17 +213,20 @@
       }
     });
 
-    // Acak kartu (Fisher-Yates)
+    // Acak kartu (Fisher-Yates) & langsung bagikan ke masing-masing pemain
     for (let i = cardPool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [cardPool[i], cardPool[j]] = [cardPool[j], cardPool[i]];
     }
 
-    offlineCards = cardPool.map((role, idx) => ({
-      id: idx,
-      role: role,
-      takenBy: null
-    }));
+    offlineCards = cardPool.map((role, idx) => {
+      players[idx].role = role;
+      return {
+        id: idx,
+        role: role,
+        takenBy: players[idx].id
+      };
+    });
 
     currentCardPickIndex = 0;
     showPrivacyScreenForCardPick();
@@ -244,104 +247,27 @@
   function renderCardPickScreenForCurrentPlayer() {
     const currentPlayer = players[currentCardPickIndex];
     window.WerewolfApp.switchScreen('screenCardPick');
-    currentPickedCardId = null;
+    currentPickedCardId = currentCardPickIndex;
 
     document.getElementById('cardPickHeaderTitle').textContent = t('card_pick_player_title', { name: currentPlayer.name });
-    document.getElementById('cardPickHeaderDesc').textContent = t('card_pick_desc');
-    
-    const roleRevealPanel = document.getElementById('cardPickRoleReveal');
-    const actionBtns = document.getElementById('cardPickActionBtns');
-    roleRevealPanel.classList.add('hidden');
-    actionBtns.classList.add('hidden');
+    document.getElementById('cardPickHeaderDesc').textContent = t('card_pick_yours_desc');
 
     const metaBar = document.getElementById('cardPickMetaBar');
-    const quotaBadge = document.getElementById('cardPickQuotaBadge');
-    const timerBadge = document.getElementById('cardPickTimerBadge');
     if (metaBar) {
-      metaBar.classList.remove('hidden');
-      metaBar.style.display = 'flex';
+      metaBar.classList.add('hidden');
+      metaBar.style.display = 'none';
     }
-    if (timerBadge) timerBadge.classList.add('hidden');
-    if (quotaBadge) {
-      const pickedCount = offlineCards.filter(c => c.takenBy !== null).length;
-      quotaBadge.textContent = t('card_pick_quota', {
-        picked: pickedCount,
-        total: offlineCards.length,
-        remaining: Math.max(0, offlineCards.length - pickedCount)
-      });
-    }
-
-    const grid = document.getElementById('cardPickGrid');
-    grid.innerHTML = '';
-
-    offlineCards.forEach((c, idx) => {
-      const cardEl = document.createElement('div');
-      cardEl.className = 'card-pick-item';
-      if (c.takenBy !== null) {
-        cardEl.classList.add('taken');
-      }
-
-      const def = getRoleDef(c.role);
-      cardEl.innerHTML = `
-        <div class="card-face card-back">
-          <div class="card-back-pattern">${window.WerewolfIcons.get('moon')}</div>
-          <div class="card-back-number">${t('card_label', { n: idx + 1 })}</div>
-        </div>
-        <div class="card-face card-front ${def.badgeClass}">
-          <div class="card-front-icon">${window.WerewolfIcons.get(c.role)}</div>
-          <div class="card-front-title">${def.name}</div>
-        </div>
-      `;
-
-      cardEl.addEventListener('click', () => {
-        if (c.takenBy !== null || currentPickedCardId !== null) return;
-        selectCardForCurrentPlayer(c.id, cardEl);
-      });
-
-      grid.appendChild(cardEl);
-    });
-
-    // Setup tombol Pilih Acak
-    const btnRandom = document.getElementById('btnCardPickRandom');
-    btnRandom.onclick = () => {
-      if (currentPickedCardId !== null) return;
-      const availableCards = offlineCards.filter(c => c.takenBy === null);
-      if (availableCards.length === 0) return;
-      const randomChoice = availableCards[Math.floor(Math.random() * availableCards.length)];
-      const cardItems = grid.querySelectorAll('.card-pick-item');
-      selectCardForCurrentPlayer(randomChoice.id, cardItems[randomChoice.id]);
-    };
-  }
-
-  function selectCardForCurrentPlayer(cardId, cardElement) {
-    currentPickedCardId = cardId;
-    const card = offlineCards.find(c => c.id === cardId);
-    card.takenBy = players[currentCardPickIndex].id;
-    players[currentCardPickIndex].role = card.role;
 
     window.WerewolfAudio.play('flip');
-    if (cardElement) {
-      cardElement.classList.add('flipped', 'is-mine');
-    }
-    const quotaBadge = document.getElementById('cardPickQuotaBadge');
-    if (quotaBadge) {
-      const pickedCount = offlineCards.filter(c => c.takenBy !== null).length;
-      quotaBadge.textContent = t('card_pick_quota', {
-        picked: pickedCount,
-        total: offlineCards.length,
-        remaining: Math.max(0, offlineCards.length - pickedCount)
-      });
-    }
 
-    // Tampilkan detail peran & tombol konfirmasi tutup kartu
     const roleRevealPanel = document.getElementById('cardPickRoleReveal');
     const roleIconWrap = document.getElementById('revealRoleIcon');
     const roleTitleWrap = document.getElementById('revealRoleTitle');
     const roleDescWrap = document.getElementById('revealRoleDesc');
     const actionBtns = document.getElementById('cardPickActionBtns');
 
-    const def = getRoleDef(card.role);
-    roleIconWrap.innerHTML = window.WerewolfIcons.get(card.role);
+    const def = getRoleDef(currentPlayer.role);
+    roleIconWrap.innerHTML = window.WerewolfIcons.get(currentPlayer.role);
     roleTitleWrap.textContent = def.name;
     roleTitleWrap.style.color = def.color;
     roleDescWrap.textContent = def.desc;
@@ -356,7 +282,6 @@
       if (currentCardPickIndex < players.length) {
         showPrivacyScreenForCardPick();
       } else {
-        // Semua pemain sudah dapat kartu! Masuk ke Malam Pertama
         window.WerewolfApp.showPrivacyScreen(
           t('all_cards_dealt_title'),
           t('all_cards_dealt_desc'),

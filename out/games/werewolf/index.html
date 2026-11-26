@@ -25,8 +25,15 @@
         </button>
       </div>
       <div class="hud-right">
+        <button id="btnOpenRoomChat" type="button" class="btn-icon-hud hidden" style="display:none;" title="Room Chat" data-i18n-title="room_chat_title">
+          <span data-icon="chat"></span>
+          <span id="chatUnreadBadge" class="chat-unread-badge hidden" style="display:none;">0</span>
+        </button>
         <button id="btnAudioToggle" class="btn-icon-hud" title="Audio" data-i18n-title="audio_title">
           <span data-icon="audioOn"></span>
+        </button>
+        <button id="btnHudLeaveRoom" type="button" class="btn-icon-hud btn-hud-danger hidden" style="display:none;" title="Keluar Room" data-i18n-title="leave_room_btn">
+          <span data-icon="logOut"></span>
         </button>
       </div>
     </header>
@@ -163,6 +170,10 @@
                 <button id="btnOnlineRolePlus_hunter" class="btn-icon-hud" style="width:26px; height:26px;">+</button>
               </div>
             </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px; padding-top:8px; border-top:1px solid var(--border-subtle);">
+              <span style="font-size:12px; color:#fff; font-weight:700;" data-i18n="room_chat_toggle_label">Room Chat Diskusi</span>
+              <button id="btnToggleRoomChat" type="button" class="hud-badge" style="cursor:pointer; border-color:var(--border-strong);" data-i18n="chat_status_on">Aktif</button>
+            </div>
           </div>
         </div>
 
@@ -174,6 +185,10 @@
           </div>
           <div id="onlineGuestRoleList" style="display:flex; flex-direction:column; gap:6px;">
             <!-- Rendered dynamically -->
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:8px; border-top:1px solid var(--border-subtle);">
+            <span style="font-size:12px; color:var(--text-muted); font-weight:700;" data-i18n="room_chat_toggle_label">Room Chat Diskusi</span>
+            <span id="onlineGuestChatStatus" class="hud-badge" data-i18n="chat_status_on">Aktif</span>
           </div>
         </div>
       </div>
@@ -266,39 +281,29 @@
       </div>
     </section>
 
-    <!-- SCREEN 5: PEMILIHAN KARTU (CARD PICK GRID) -->
+    <!-- SCREEN 5: ROLE REVEAL (AUTO-SHUFFLED) -->
     <section id="screenCardPick" class="screen hidden">
       <div class="card-pick-container">
-        <h2 id="cardPickHeaderTitle" style="font-size:18px; font-weight:800; color:#fff; text-align:center;" data-i18n="card_pick_title">Pilih 1 Kartu Rahasiamu</h2>
-        <p id="cardPickHeaderDesc" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:4px;" data-i18n="card_pick_desc">
-          Pilih tepat 1 kartu tertutup di bawah ini atau tekan tombol Pilih Acak.
+        <h2 id="cardPickHeaderTitle" style="font-size:18px; font-weight:800; color:#fff; text-align:center;" data-i18n="card_pick_yours_title">Kartu Peranmu</h2>
+        <p id="cardPickHeaderDesc" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:4px;" data-i18n="card_pick_yours_desc">
+          Hafalkan peran dan tugasmu. Tekan tombol Siap untuk melanjutkan.
         </p>
 
-        <div id="cardPickMetaBar" class="hidden" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:12px 0 4px;">
-          <div id="cardPickQuotaBadge" class="hud-badge"></div>
+        <div id="cardPickMetaBar" class="hidden" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:12px 0 8px;">
           <div id="cardPickTimerBadge" class="hud-badge" style="border-color:var(--blood-glow); color:var(--rose-light);">
             <span data-i18n="card_pick_timer_label">WAKTU:</span>
-            <span id="cardPickTimerDigits" class="highlight">30s</span>
+            <span id="cardPickTimerDigits" class="highlight">15s</span>
           </div>
         </div>
 
-        <div id="cardPickGrid" class="cards-grid">
-          <!-- Cards rendered dynamically -->
-        </div>
-
-        <button id="btnCardPickRandom" class="btn-secondary" style="margin-bottom:14px;">
-          <span data-icon="shuffle"></span>
-          <span data-i18n="pick_random_btn">Pilih Acak (Random)</span>
-        </button>
-
         <!-- Role Reveal Detail Panel -->
-        <div id="cardPickRoleReveal" class="panel hidden" style="text-align:center;">
-          <div id="revealRoleIcon" style="width:48px; height:48px; margin:0 auto 8px;"></div>
-          <h3 id="revealRoleTitle" style="font-size:18px; font-weight:900;">Role</h3>
-          <p id="revealRoleDesc" style="font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.4;">Deskripsi tugas peran</p>
+        <div id="cardPickRoleReveal" class="panel hidden" style="text-align:center; border-color:var(--border-strong); box-shadow:0 0 24px rgba(225,29,72,0.22);">
+          <div id="revealRoleIcon" style="width:56px; height:56px; margin:0 auto 10px;"></div>
+          <h3 id="revealRoleTitle" style="font-size:20px; font-weight:900;">Role</h3>
+          <p id="revealRoleDesc" style="font-size:13px; color:var(--text-muted); margin-top:8px; line-height:1.5;">Deskripsi tugas peran</p>
         </div>
 
-        <div id="cardPickActionBtns" class="hidden" style="width:100%; margin-top:10px;">
+        <div id="cardPickActionBtns" class="hidden" style="width:100%; margin-top:12px;">
           <button id="btnConfirmCardPick" class="btn-primary">
             <span data-i18n="confirm_card_btn">Paham & Tutup Kartu</span>
           </button>
@@ -495,6 +500,37 @@
         <button id="btnCloseRoleModal" type="button" class="btn-primary">
           <span data-i18n="close_btn">Tutup</span>
         </button>
+      </div>
+    </div>
+
+    <!-- DRAWER ROOM CHAT DISKUSI (EPHEMERAL REALTIME BROADCAST) -->
+    <div id="roomChatDrawer" class="chat-drawer-backdrop hidden" style="display:none;">
+      <div class="chat-drawer-panel">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border-subtle); background:rgba(255,255,255,0.03);">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="width:18px; height:18px; color:var(--rose-light); display:inline-flex;" data-icon="chat"></span>
+            <strong style="font-size:13px; color:#fff;" data-i18n="room_chat_title">Room Chat</strong>
+            <span id="roomChatChannelBadge" class="hud-badge" style="padding:3px 8px; font-size:10px;">Umum</span>
+          </div>
+          <button id="btnCloseRoomChat" type="button" class="btn-icon-hud" style="width:30px; height:30px;" aria-label="Tutup">
+            <span data-icon="cross"></span>
+          </button>
+        </div>
+
+        <div id="roomChatMessages" class="chat-messages-list">
+          <!-- Messages rendered dynamically -->
+        </div>
+
+        <div id="roomChatReadOnlyNotice" class="hidden" style="padding:8px 12px; font-size:11px; color:var(--text-muted); border-top:1px solid var(--border-subtle); text-align:center;" data-i18n="chat_dead_notice">
+          Mode Penonton / Dead Chat: pesanmu hanya terlihat oleh pemain yang sudah gugur.
+        </div>
+
+        <form id="roomChatForm" style="display:flex; gap:8px; padding:10px 12px; border-top:1px solid var(--border-subtle); background:rgba(0,0,0,0.25);">
+          <input id="inputRoomChat" type="text" class="input-text-dark" style="margin:0; flex:1; padding:8px 10px;" maxlength="180" placeholder="Tulis pesan..." data-i18n-placeholder="chat_input_ph" autocomplete="off">
+          <button id="btnSendRoomChat" type="submit" class="btn-icon-hud" style="width:38px; height:38px; flex-shrink:0;" aria-label="Kirim">
+            <span data-icon="send"></span>
+          </button>
+        </form>
       </div>
     </div>
 
@@ -706,7 +742,16 @@
           card_pick_your_turn_desc: "Pilih 1 kartu tertutup sekarang sebelum waktu habis!",
           card_pick_wait_turn_title: "Giliran: {name} Memilih Kartu...",
           card_pick_wait_turn_desc: "Pemilihan kartu bergiliran sesuai urutan masuk room.",
-          card_pick_done_desc: "Semua kartu sudah terambil. Tekan Saya Siap untuk mulai!"
+          card_pick_done_desc: "Semua kartu sudah terambil. Tekan Saya Siap untuk mulai!",
+          room_chat_toggle_label: "Room Chat Diskusi",
+          chat_status_on: "Aktif",
+          chat_status_off: "Nonaktif",
+          room_chat_title: "Room Chat",
+          chat_channel_public: "Chat Umum",
+          chat_channel_dead: "Dead Chat",
+          chat_dead_notice: "Mode Penonton / Dead Chat: pesanmu hanya terlihat oleh pemain yang sudah gugur.",
+          chat_input_ph: "Tulis pesan...",
+          chat_empty: "Belum ada pesan di ruang chat."
         },
         en: {
           page_title: "Werewolf: Night & Village - TeknoGame",
@@ -905,7 +950,16 @@
           card_pick_your_turn_desc: "Pick 1 face-down card now before time runs out!",
           card_pick_wait_turn_title: "Turn: {name} is Picking...",
           card_pick_wait_turn_desc: "Players pick cards 1-by-1 in the order they joined the room.",
-          card_pick_done_desc: "All cards are picked. Press I'm Ready to begin!"
+          card_pick_done_desc: "All cards are picked. Press I'm Ready to begin!",
+          room_chat_toggle_label: "Discussion Room Chat",
+          chat_status_on: "Enabled",
+          chat_status_off: "Disabled",
+          room_chat_title: "Room Chat",
+          chat_channel_public: "Public Chat",
+          chat_channel_dead: "Dead Chat",
+          chat_dead_notice: "Spectator / Dead Chat: your messages are only visible to eliminated players.",
+          chat_input_ph: "Type a message...",
+          chat_empty: "No messages yet."
         }
       };
 
