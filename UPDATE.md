@@ -176,6 +176,17 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 1. Menyesuaikan warna notifikasi perolehan skor/poin saat menang atau kalah permainan agar lebih mudah terlihat.
 2. Memindahkan posisi tombol tutup (X) pada banner Google AdSense ke sisi kanan di dalam area banner iklan.
 
+## [3.15.2] - 2026-11-28
+### Added & Fixed (Werewolf Max Players, Voting Timer, Role Privacy, Vote Result Pause & Dead Target Fix)
+- **Custom Max Players Room ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js), [index.html](public/games/werewolf/index.html)):**
+  - Menambahkan stepper max_players (5-30, default 15) khusus Host di lobi, indikator kuota {count} / {max}, penolakan join jika penuh, dan validasi tombol Mulai Game.
+- **Countdown Otomatis Fase Voting & Jeda Rekap Hasil Voting ([online-supabase.js](public/games/werewolf/online-supabase.js), [offline-engine.js](public/games/werewolf/offline-engine.js), [styles.css](public/games/werewolf/styles.css)):**
+  - Menambahkan timer hitung mundur 45 detik berbasis phase_ends_at saat day_voting dengan auto-advance aman (isSubmittingVote + OCC) saat waktu habis.
+  - Menambahkan progress bar #voteResultProgressBar pada jeda rekap voting 6 detik di #screenVoteResult untuk Mode Online maupun Mode Offline.
+- **Toggle Hide/Unhide Personal Role ([app.js](public/games/werewolf/app.js), [svg-icons.js](public/games/werewolf/svg-icons.js), [index.html](public/games/werewolf/index.html)):**
+  - Menambahkan tombol toggle ikon eye/eyeOff SVG di HUD dan modal detail peran untuk menyamarkan/menampilkan peran secara instan di memori lokal.
+- **Perbaikan Bug Target Mati Malam Berikutnya ([online-supabase.js](public/games/werewolf/online-supabase.js), [offline-engine.js](public/games/werewolf/offline-engine.js)):**
+  - Memastikan setiap eliminasi (Malam, Hunter, Voting) menyetel live = false dan status = 'dead', serta memfilter dan memvalidasi target aksi malam secara ketat (live === true && status !== 'dead').
 ## [3.15.1] - 2026-11-21
 
 ### Improved (Readability, Mobile Spacing, & UI Contrast)
@@ -186,6 +197,17 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **About Portal card:** Matched its dark background to the Papan Skor Saya rank card (`#292a31`).
 - **Files:** [globals.css](src/app/globals.css), [page.tsx](src/app/page.tsx), [AdBottomAnchor.tsx](src/components/ads/AdBottomAnchor.tsx), [GameCard.tsx](src/components/game/GameCard.tsx), [GameFrame.tsx](src/components/game/GameFrame.tsx), [GameGrid.tsx](src/components/game/GameGrid.tsx), [GameHero.tsx](src/components/game/GameHero.tsx), [Footer.tsx](src/components/layout/Footer.tsx), [LayoutWrapper.tsx](src/components/layout/LayoutWrapper.tsx), [Navbar.tsx](src/components/layout/Navbar.tsx)
 
+## [3.15.2] - 2026-11-28
+### Added & Fixed (Werewolf Max Players, Voting Timer, Role Privacy, Vote Result Pause & Dead Target Fix)
+- **Custom Max Players Room ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js), [index.html](public/games/werewolf/index.html)):**
+  - Menambahkan stepper max_players (5-30, default 15) khusus Host di lobi, indikator kuota {count} / {max}, penolakan join jika penuh, dan validasi tombol Mulai Game.
+- **Countdown Otomatis Fase Voting & Jeda Rekap Hasil Voting ([online-supabase.js](public/games/werewolf/online-supabase.js), [offline-engine.js](public/games/werewolf/offline-engine.js), [styles.css](public/games/werewolf/styles.css)):**
+  - Menambahkan timer hitung mundur 45 detik berbasis phase_ends_at saat day_voting dengan auto-advance aman (isSubmittingVote + OCC) saat waktu habis.
+  - Menambahkan progress bar #voteResultProgressBar pada jeda rekap voting 6 detik di #screenVoteResult untuk Mode Online maupun Mode Offline.
+- **Toggle Hide/Unhide Personal Role ([app.js](public/games/werewolf/app.js), [svg-icons.js](public/games/werewolf/svg-icons.js), [index.html](public/games/werewolf/index.html)):**
+  - Menambahkan tombol toggle ikon eye/eyeOff SVG di HUD dan modal detail peran untuk menyamarkan/menampilkan peran secara instan di memori lokal.
+- **Perbaikan Bug Target Mati Malam Berikutnya ([online-supabase.js](public/games/werewolf/online-supabase.js), [offline-engine.js](public/games/werewolf/offline-engine.js)):**
+  - Memastikan setiap eliminasi (Malam, Hunter, Voting) menyetel live = false dan status = 'dead', serta memfilter dan memvalidasi target aksi malam secara ketat (live === true && status !== 'dead').
 ## [3.15.1] - 2026-11-28
 ### Changed & Added (Google AdSense Auto Ads Header Integration)
 - **Layout Utama ([src/app/layout.tsx](src/app/layout.tsx)):**

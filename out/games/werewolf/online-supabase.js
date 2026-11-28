@@ -10,6 +10,16 @@
     return window.WerewolfI18n ? window.WerewolfI18n.t(key, vars) : key;
   }
 
+  function getMaxPlayers(state) {
+    const val = Number(state && state.max_players);
+    if (!Number.isFinite(val)) return 15;
+    return Math.min(30, Math.max(5, Math.floor(val)));
+  }
+
+  function isPlayerAlive(p) {
+    return Boolean(p && p.alive === true && p.status !== 'dead');
+  }
+
   const ROLE_META = {
     werewolf: { team: 'werewolf', color: '#ef4444', badgeClass: 'role-werewolf' },
     villager: { team: 'villager', color: '#38bdf8', badgeClass: 'role-villager' },
@@ -251,6 +261,7 @@
       room_code: code,
       host_id: myPlayerId,
       phase: 'lobby',
+      max_players: 15,
       chat_enabled: true,
       role_config: {
         werewolf: 1,
@@ -361,8 +372,9 @@
       return;
     }
 
-    if (gameState.players.length >= 30) {
-      alert(t('room_full'));
+    const maxPlayers = getMaxPlayers(gameState);
+    if (gameState.players.length >= maxPlayers) {
+      alert(t('room_full', { max: maxPlayers }));
       return;
     }
 
@@ -708,7 +720,8 @@
       rosterList.appendChild(row);
     });
 
-    document.getElementById('onlinePlayerCountBadge').textContent = t('player_count_max', { count: state.players.length });
+    const maxPlayers = getMaxPlayers(state);
+    document.getElementById('onlinePlayerCountBadge').textContent = t('player_count_max', { count: state.players.length, max: maxPlayers });
 
     // Pengaturan Role (Hanya Host yang bisa mengubah)
     const hostRoleControls = document.getElementById('onlineHostRoleControls');
@@ -719,6 +732,13 @@
       hostRoleControls.classList.remove('hidden');
       guestRoleSummary.classList.add('hidden');
       btnStartGame.classList.remove('hidden');
+
+      const maxValEl = document.getElementById('onlineMaxPlayersValue');
+      const btnMaxMinus = document.getElementById('btnOnlineMaxPlayersMinus');
+      const btnMaxPlus = document.getElementById('btnOnlineMaxPlayersPlus');
+      if (maxValEl) maxValEl.textContent = maxPlayers;
+      if (btnMaxMinus) btnMaxMinus.disabled = (maxPlayers <= Math.max(5, state.players.length));
+      if (btnMaxPlus) btnMaxPlus.disabled = (maxPlayers >= 30);
 
       ['werewolf', 'villager', 'seer', 'bodyguard', 'hunter'].forEach(role => {
         const countEl = document.getElementById(`onlineRoleCount_${role}`);
@@ -732,7 +752,7 @@
         sumEl.style.color = (totalRoles === state.players.length) ? 'var(--role-hunter)' : 'var(--blood-red)';
       }
 
-      btnStartGame.disabled = (state.players.length < 5 || totalRoles !== state.players.length);
+      btnStartGame.disabled = (state.players.length < 5 || state.players.length > maxPlayers || totalRoles !== state.players.length);
 
       const btnToggleChat = document.getElementById('btnToggleRoomChat');
       if (btnToggleChat) {
@@ -842,6 +862,31 @@
     }, 300);
   }
 
+  let maxPlayersDebounceTimer = null;
+
+  function adjustOnlineMaxPlayers(delta) {
+    if (!isHost || !currentRoomData) return;
+    const state = currentRoomData.game_state;
+    const currentMax = getMaxPlayers(state);
+    const minAllowed = Math.max(5, state.players.length);
+    const nextMax = Math.min(30, Math.max(minAllowed, currentMax + delta));
+    if (nextMax === currentMax) return;
+
+    state.max_players = nextMax;
+    renderLobbyScreen(state);
+
+    if (maxPlayersDebounceTimer) clearTimeout(maxPlayersDebounceTimer);
+    maxPlayersDebounceTimer = setTimeout(async () => {
+      maxPlayersDebounceTimer = null;
+      await updateRoomStateAtomically((freshState, st) => {
+        if (st !== 'lobby') return { abort: 'not_lobby' };
+        const minNow = Math.max(5, freshState.players.length);
+        freshState.max_players = Math.min(30, Math.max(minNow, nextMax));
+        return { status: st, state: freshState };
+      });
+    }, 250);
+  }
+
   // ==========================================
   // 4. MULAI PERMAINAN (AUTO-SHUFFLE & ROLE REVEAL)
   // ==========================================
@@ -852,6 +897,15 @@
     isStartingGame = true;
     try {
       const state = currentRoomData.game_state;
+      const maxPlayers = getMaxPlayers(state);
+      if (state.players.length < 5) {
+        alert(t('min_players_alert'));
+        return;
+      }
+      if (state.players.length > maxPlayers) {
+        alert(t('room_full', { max: maxPlayers }));
+        return;
+      }
       const totalRoles = Object.values(state.role_config).reduce((a, b) => a + b, 0);
       if (totalRoles !== state.players.length) {
         alert(t('role_sum_mismatch', { sum: totalRoles, total: state.players.length }));
@@ -917,6 +971,15 @@
     if (voteResultCountdownTimer) {
       clearInterval(voteResultCountdownTimer);
       voteResultCountdownTimer = null;
+    }
+  }
+
+  let votingCountdownTimer = null;
+
+  function clearVotingTimer() {
+    if (votingCountdownTimer) {
+      clearInterval(votingCountdownTimer);
+      votingCountdownTimer = null;
     }
   }
 
@@ -1089,16 +1152,18 @@
   function renderOnlineNight(state) {
     clearCardPickTimer();
     clearVoteResultTimer();
+    clearVotingTimer();
 
     const me = state.players.find(p => p.id === myPlayerId);
     const currentStep = state.night_step; // 'bodyguard' | 'werewolf' | 'seer' | 'resolving'
-    const isMyTurn = (me && me.alive && me.role === currentStep);
+    const isMyTurn = (isPlayerAlive(me) && me.role === currentStep);
 
     if (window.WerewolfApp && window.WerewolfApp.setHudRole) {
       window.WerewolfApp.setHudRole(me ? me.role : null);
     }
 
-    const nightKey = `${currentStep}:${state.night_step_start_time || 0}:${isMyTurn ? '1' : '0'}`;
+    const aliveCount = state.players.filter(isPlayerAlive).length;
+    const nightKey = `${currentStep}:${state.night_step_start_time || 0}:${isMyTurn ? '1' : '0'}:${aliveCount}`;
     if (lastRenderedNightKey === nightKey) {
       return;
     }
@@ -1156,13 +1221,13 @@
           // Auto-submit bila waktu habis
           if (!mySelectedNightTargetId) {
             if (currentStep === 'bodyguard') {
-              const valids = state.players.filter(p => p.alive && p.id !== me.last_protected);
+              const valids = state.players.filter(p => isPlayerAlive(p) && p.id !== me.last_protected);
               if (valids.length > 0) mySelectedNightTargetId = valids[0].id;
             } else if (currentStep === 'werewolf') {
-              const valids = state.players.filter(p => p.alive && p.role !== 'werewolf');
+              const valids = state.players.filter(p => isPlayerAlive(p) && p.role !== 'werewolf');
               if (valids.length > 0) mySelectedNightTargetId = valids[0].id;
             } else if (currentStep === 'seer') {
-              const valids = state.players.filter(p => p.alive && p.id !== myPlayerId);
+              const valids = state.players.filter(p => isPlayerAlive(p) && p.id !== myPlayerId);
               if (valids.length > 0) mySelectedNightTargetId = valids[0].id;
             }
           }
@@ -1180,7 +1245,7 @@
         window.WerewolfAudio.play('shield');
 
         state.players.forEach(p => {
-          if (!p.alive) return;
+          if (!isPlayerAlive(p)) return;
           const isDisallowed = (p.id === me.last_protected);
           const card = createOnlineTargetCard(p, isDisallowed ? t('tag_protected_last') : t('tag_protect'), isDisallowed);
 
@@ -1206,7 +1271,7 @@
         }
 
         state.players.forEach(p => {
-          if (!p.alive) return;
+          if (!isPlayerAlive(p)) return;
           const isWolf = (p.role === 'werewolf');
           const card = createOnlineTargetCard(p, isWolf ? t('tag_fellow_wolf') : t('tag_prey'), isWolf);
 
@@ -1226,7 +1291,7 @@
         window.WerewolfAudio.play('seer');
 
         state.players.forEach(p => {
-          if (!p.alive || p.id === myPlayerId) return;
+          if (!isPlayerAlive(p) || p.id === myPlayerId) return;
           const card = createOnlineTargetCard(p, t('tag_inspect'));
           card.onclick = () => {
             if (mySelectedNightTargetId !== null) return; // Batasi klik Seer hanya 1 kali!
@@ -1312,13 +1377,23 @@
   async function submitNightAction(role, targetId) {
     if (!currentRoomData) return;
     await updateRoomStateAtomically((state, status) => {
+      if (status !== 'night' || state.night_step !== role) {
+        return { abort: 'stale_night_step' };
+      }
+      const me = state.players.find(p => p.id === myPlayerId);
+      const target = state.players.find(p => p.id === targetId);
+      if (!me || !isPlayerAlive(me) || !target || !isPlayerAlive(target)) {
+        return { abort: 'invalid_dead_target' };
+      }
       if (role === 'bodyguard') {
+        if (target.id === me.last_protected) return { abort: 'protected_last_night' };
         state.night_actions.protected_id = targetId;
-        const me = state.players.find(p => p.id === myPlayerId);
-        if (me) me.last_protected = targetId;
+        me.last_protected = targetId;
       } else if (role === 'werewolf') {
+        if (target.role === 'werewolf') return { abort: 'cannot_target_wolf' };
         state.night_actions.wolf_target_id = targetId;
       } else if (role === 'seer') {
+        if (target.id === myPlayerId) return { abort: 'cannot_target_self' };
         state.night_actions.seer_target_id = targetId;
       }
       return applyAdvanceNightStep(state, status);
@@ -1338,11 +1413,12 @@
     const wolfTarget = state.players.find(p => p.id === state.night_actions.wolf_target_id);
     let victim = null;
 
-    if (wolfTarget && wolfTarget.alive) {
+    if (wolfTarget && isPlayerAlive(wolfTarget)) {
       if (state.night_actions.protected_id === wolfTarget.id) {
         victim = null;
       } else {
         wolfTarget.alive = false;
+        wolfTarget.status = 'dead';
         victim = wolfTarget;
       }
     }
@@ -1433,16 +1509,15 @@
         clearInterval(onlineDiscussionTimer);
         onlineDiscussionTimer = null;
       }
-      state.phase = 'day_voting';
-      state.players.forEach(p => p.vote = null);
-      await supabaseClient
-        .from('werewolf_rooms')
-        .update({
-          status: 'day_voting',
-          game_state: state,
-          updated_at: new Date().toISOString()
-        })
-        .eq('room_code', currentRoomCode);
+      await updateRoomStateAtomically((freshState, st) => {
+        if (st !== 'day_announcement') return { abort: 'not_day_announcement' };
+        const endsAt = Date.now() + 45000;
+        freshState.phase = 'day_voting';
+        freshState.phase_ends_at = endsAt;
+        freshState.voting_ends_at = endsAt;
+        freshState.players.forEach(p => { p.vote = null; });
+        return { status: 'day_voting', state: freshState };
+      });
     };
 
     // Tombol Lanjut ke Voting & Lewati Diskusi
@@ -1509,7 +1584,7 @@
     mySelectedHunterShotId = null;
 
     state.players.forEach(p => {
-      if (!p.alive || p.id === myPlayerId) return;
+      if (!isPlayerAlive(p) || p.id === myPlayerId) return;
       const card = createOnlineTargetCard(p, t('tag_shoot'));
       card.onclick = () => {
         list.querySelectorAll('.target-card').forEach(c => c.classList.remove('selected'));
@@ -1527,7 +1602,10 @@
       }
 
       const shotVictim = state.players.find(p => p.id === mySelectedHunterShotId);
-      if (shotVictim) shotVictim.alive = false;
+      if (shotVictim) {
+        shotVictim.alive = false;
+        shotVictim.status = 'dead';
+      }
 
       window.WerewolfAudio.play('gunshot');
       hunterPanel.classList.add('hidden');
@@ -1561,6 +1639,7 @@
     lastRenderedNightKey = null;
     clearCardPickTimer();
     clearVoteResultTimer();
+    clearVotingTimer();
     if (onlineDiscussionTimer) {
       clearInterval(onlineDiscussionTimer);
       onlineDiscussionTimer = null;
@@ -1579,22 +1658,22 @@
       window.WerewolfApp.setHudRole(me ? me.role : null);
     }
     const hasVoted = Boolean(me && me.vote !== null && me.vote !== undefined);
-    const alivePlayers = state.players.filter(p => p.alive);
+    const alivePlayers = state.players.filter(isPlayerAlive);
     const remainingVoters = alivePlayers.filter(p => p.vote === null || p.vote === undefined).length;
 
     const list = document.getElementById('votingTargetList');
     list.innerHTML = '';
-    if (hasVoted || !me || !me.alive) {
+    if (hasVoted || !isPlayerAlive(me)) {
       mySelectedVoteTargetId = null;
     }
 
     state.players.forEach(p => {
-      if (!p.alive) return;
+      if (!isPlayerAlive(p)) return;
       const card = createOnlineTargetCard(p, t('tag_vote_execute'));
       if (mySelectedVoteTargetId === p.id && !hasVoted) {
         card.classList.add('selected');
       }
-      if (me && me.alive && !hasVoted) {
+      if (isPlayerAlive(me) && !hasVoted) {
         card.onclick = () => {
           list.querySelectorAll('.target-card').forEach(c => c.classList.remove('selected'));
           card.classList.add('selected');
@@ -1608,7 +1687,7 @@
     });
 
     const btnConfirm = document.getElementById('btnConfirmExecution');
-    if (!me || !me.alive) {
+    if (!isPlayerAlive(me)) {
       btnConfirm.textContent = t('you_are_dead');
       btnConfirm.disabled = true;
     } else if (hasVoted) {
@@ -1626,9 +1705,84 @@
         await submitVoteOnline(mySelectedVoteTargetId);
       };
     }
+
+    const endsAt = state.phase_ends_at || state.voting_ends_at || (Date.now() + 45000);
+    const voteDigits = document.getElementById('votingTimerDigits');
+    const updateVoteTimer = async () => {
+      const remain = Math.max(0, Math.ceil((endsAt - Date.now()) / 1000));
+      if (voteDigits) voteDigits.textContent = `${remain}s`;
+      if (remain <= 0) {
+        clearVotingTimer();
+        await finalizeVotingOnTimeout(endsAt);
+      }
+    };
+    const initRemain = Math.max(0, Math.ceil((endsAt - Date.now()) / 1000));
+    if (voteDigits) voteDigits.textContent = `${initRemain}s`;
+    votingCountdownTimer = setInterval(updateVoteTimer, 1000);
   }
 
   let isSubmittingVote = false;
+
+  function resolveOnlineVoting(state, alivePlayers) {
+    const voteCounts = {};
+    let totalSubmitted = 0;
+    alivePlayers.forEach(p => {
+      if (p.vote !== null && p.vote !== undefined) {
+        voteCounts[p.vote] = (voteCounts[p.vote] || 0) + 1;
+        totalSubmitted++;
+      }
+    });
+
+    let highestTargetId = null;
+    let maxVotes = 0;
+    Object.keys(voteCounts).forEach(tid => {
+      if (voteCounts[tid] > maxVotes) {
+        maxVotes = voteCounts[tid];
+        highestTargetId = tid;
+      }
+    });
+
+    const executed = highestTargetId ? state.players.find(p => p.id === highestTargetId && isPlayerAlive(p)) : null;
+    if (executed) {
+      executed.alive = false;
+      executed.status = 'dead';
+      window.WerewolfAudio.play('gavel');
+    }
+
+    const isWin = checkOnlineWin(state);
+    state.last_vote_result = {
+      counts: voteCounts,
+      executed: executed ? { id: executed.id, name: executed.name, role: executed.role } : null,
+      total_votes: totalSubmitted,
+      result_start_time: Date.now(),
+      is_win: isWin
+    };
+    state.phase_ends_at = null;
+    state.voting_ends_at = null;
+    state.phase = 'day_vote_result';
+    return { status: 'day_vote_result', state };
+  }
+
+  async function finalizeVotingOnTimeout(expectedEndsAt) {
+    if (isSubmittingVote) return;
+    isSubmittingVote = true;
+    try {
+      await updateRoomStateAtomically((state, status) => {
+        if (status !== 'day_voting') return { abort: 'not_voting' };
+        const phaseEnd = state.phase_ends_at || state.voting_ends_at;
+        if (phaseEnd && Date.now() < phaseEnd - 500) {
+          return { abort: 'voting_not_expired' };
+        }
+        if (expectedEndsAt && phaseEnd && phaseEnd !== expectedEndsAt) {
+          return { abort: 'phase_mismatch' };
+        }
+        const alivePlayers = state.players.filter(isPlayerAlive);
+        return resolveOnlineVoting(state, alivePlayers);
+      });
+    } finally {
+      isSubmittingVote = false;
+    }
+  }
 
   async function submitVoteOnline(targetId) {
     if (isSubmittingVote) return;
@@ -1639,44 +1793,19 @@
           return { abort: 'not_voting' };
         }
         const me = state.players.find(p => p.id === myPlayerId);
-        if (me && me.alive && (me.vote === null || me.vote === undefined)) {
+        const target = state.players.find(p => p.id === targetId);
+        if (!isPlayerAlive(me) || !isPlayerAlive(target)) {
+          return { abort: 'invalid_vote_target' };
+        }
+        if (me.vote === null || me.vote === undefined) {
           me.vote = targetId;
         }
 
-        const alivePlayers = state.players.filter(p => p.alive);
+        const alivePlayers = state.players.filter(isPlayerAlive);
         const allVoted = alivePlayers.every(p => p.vote !== null && p.vote !== undefined);
 
         if (allVoted) {
-          const voteCounts = {};
-          alivePlayers.forEach(p => {
-            voteCounts[p.vote] = (voteCounts[p.vote] || 0) + 1;
-          });
-
-          let highestTargetId = null;
-          let maxVotes = 0;
-          Object.keys(voteCounts).forEach(tid => {
-            if (voteCounts[tid] > maxVotes) {
-              maxVotes = voteCounts[tid];
-              highestTargetId = tid;
-            }
-          });
-
-          const executed = state.players.find(p => p.id === highestTargetId);
-          if (executed) {
-            executed.alive = false;
-            window.WerewolfAudio.play('gavel');
-          }
-
-          const isWin = checkOnlineWin(state);
-          state.last_vote_result = {
-            counts: voteCounts,
-            executed: executed ? { id: executed.id, name: executed.name, role: executed.role } : null,
-            total_votes: alivePlayers.length,
-            result_start_time: Date.now(),
-            is_win: isWin
-          };
-          state.phase = 'day_vote_result';
-          return { status: 'day_vote_result', state };
+          return resolveOnlineVoting(state, alivePlayers);
         }
 
         return { status, state };
@@ -1776,12 +1905,16 @@
     }
 
     const startTime = res.result_start_time || Date.now();
+    const durationMs = 6000;
     const timerDigits = document.getElementById('voteResultTimerDigits');
+    const progressBar = document.getElementById('voteResultProgressBar');
     const updateTimer = async () => {
-      const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      const remain = Math.max(0, 6 - elapsed);
+      const elapsedMs = Date.now() - startTime;
+      const remainMs = Math.max(0, durationMs - elapsedMs);
+      const remain = Math.ceil(remainMs / 1000);
       if (timerDigits) timerDigits.textContent = `${remain}s`;
-      if (remain <= 0) {
+      if (progressBar) progressBar.style.width = `${(remainMs / durationMs) * 100}%`;
+      if (remainMs <= 0) {
         clearVoteResultTimer();
         if (isHost && voteResultTransitionedAt !== startTime) {
           voteResultTransitionedAt = startTime;
@@ -1790,9 +1923,10 @@
       }
     };
 
-    const initRemain = Math.max(0, 6 - Math.floor((Date.now() - startTime) / 1000));
-    if (timerDigits) timerDigits.textContent = `${initRemain}s`;
-    voteResultCountdownTimer = setInterval(updateTimer, 1000);
+    const initRemainMs = Math.max(0, durationMs - (Date.now() - startTime));
+    if (timerDigits) timerDigits.textContent = `${Math.ceil(initRemainMs / 1000)}s`;
+    if (progressBar) progressBar.style.width = `${(initRemainMs / durationMs) * 100}%`;
+    voteResultCountdownTimer = setInterval(updateTimer, 200);
   }
 
   function checkOnlineWin(state) {
@@ -1885,6 +2019,11 @@
     try {
       clearCardPickTimer();
       clearVoteResultTimer();
+      clearVotingTimer();
+      if (maxPlayersDebounceTimer) {
+        clearTimeout(maxPlayersDebounceTimer);
+        maxPlayersDebounceTimer = null;
+      }
       if (roleAdjustDebounceTimer) {
         clearTimeout(roleAdjustDebounceTimer);
         roleAdjustDebounceTimer = null;
@@ -1993,6 +2132,7 @@
   window.WerewolfOnlineEngine = {
     createRoom,
     joinRoom,
+    adjustOnlineMaxPlayers,
     adjustOnlineRole,
     startOnlineGame,
     leaveRoom,

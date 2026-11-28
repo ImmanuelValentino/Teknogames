@@ -1,3 +1,14 @@
+### 2026-11-28 - Werewolf: Custom Max Players, Voting Countdown, Role Privacy Toggle, Vote Result Pause & Dead Target Fix
+- **Folder Game:** public/games/werewolf
+- **Deskripsi:** Pembaruan 5 fitur dan perbaikan bug pada game Werewolf (Mode Online & Offline): (1) Host dapat mengatur batas maksimal pemain room (max_players 5-30) di lobi beserta validasi join dan tombol Mulai Game, (2) Timer hitung mundur otomatis 45 detik pada fase voting dengan auto-advance saat waktu habis menggunakan guard isSubmittingVote dan Optimistic Concurrency Control, (3) Tombol toggle Hide/Unhide peran pribadi (eye/eyeOff SVG) di HUD atas dan modal info peran, (4) Jeda rekap hasil voting 6 detik di #screenVoteResult dengan progress bar sebelum lanjut ke fase berikutnya (Online & Offline), serta (5) Filter ketat live === true dan status !== 'dead' serta validasi submit agar pemain yang sudah gugur tidak bisa dipilih pada malam berikutnya.
+- **Fitur Utama:**
+  - [x] Custom Max Players Room oleh Host (5-30 Pemain) + Validasi Join
+  - [x] Countdown Otomatis Fase Voting 45 Detik & Auto-Advance Anti-AFK
+  - [x] Toggle Hide/Unhide Personal Role Anti-Intip (Zero-Database Local State)
+  - [x] Layar Rekap Hasil Voting 6 Detik + Progress Bar (Online & Offline)
+  - [x] Filter Ketat & Validasi Target Hidup pada Aksi Malam (Bodyguard, Werewolf, Seer, Hunter)
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
 ### 2026-11-26 - Werewolf: Auto-Shuffle Role, Room Chat Broadcast, Hemat Query Supabase, Session IP Auto-Restore, & Keluar Room
 - **Folder Game:** `public/games/werewolf`
 - **Deskripsi:** Revisi dan optimasi besar pada game Werewolf: menghapus fase pilih kartu manual di mode online & offline (role langsung diacak dan dibagikan otomatis saat game mulai), menambahkan Room Chat diskusi berbasis Supabase Realtime Broadcast (dengan toggle Host dan pemisahan Dead/Spectator Chat), menghentikan polling 1.2 detik agar hemat query Supabase, menambahkan auto-restore sesi berbasis IP publik + fallback Device ID di `localStorage`, serta mengaktifkan tombol Keluar Room persisten di HUD dengan transfer Host otomatis dan pembersihan room kosong.

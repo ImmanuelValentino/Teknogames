@@ -371,7 +371,7 @@
       window.WerewolfAudio.play('shield');
 
       players.forEach(p => {
-        if (!p.alive) return;
+        if (p.alive !== true || p.status === 'dead') return;
         const isDisallowed = (p.id === previousProtectedId);
         const card = createTargetCard(p, isDisallowed ? t('tag_protected_last') : t('tag_protect'), isDisallowed);
 
@@ -397,7 +397,7 @@
       }
 
       players.forEach(p => {
-        if (!p.alive) return;
+        if (p.alive !== true || p.status === 'dead') return;
         const isWolf = (p.role === 'werewolf');
         const card = createTargetCard(p, isWolf ? t('tag_fellow_wolf') : t('tag_prey'), isWolf);
 
@@ -417,7 +417,7 @@
       window.WerewolfAudio.play('seer');
 
       players.forEach(p => {
-        if (!p.alive || p.role === 'seer') return;
+        if (p.alive !== true || p.status === 'dead' || p.role === 'seer') return;
         const card = createTargetCard(p, t('tag_inspect'));
         card.onclick = () => {
           if (selectedNightChoiceId !== null) return; // Batasi hanya tepat 1 kali klik!
@@ -449,6 +449,12 @@
 
     btnConfirm.onclick = () => {
       if (selectedNightChoiceId === null) {
+        alert(t('must_pick_target'));
+        return;
+      }
+
+      const chosenTarget = players.find(p => p.id === selectedNightChoiceId);
+      if (!chosenTarget || chosenTarget.alive !== true || chosenTarget.status === 'dead') {
         alert(t('must_pick_target'));
         return;
       }
@@ -489,11 +495,12 @@
     const target = players.find(p => p.id === nightDecisions.wolfTargetId);
     let victim = null;
 
-    if (target && target.alive) {
+    if (target && target.alive === true && target.status !== 'dead') {
       if (nightDecisions.protectedId === target.id) {
         victim = null; // Selamat berkat bodyguard!
       } else {
         target.alive = false;
+        target.status = 'dead';
         victim = target;
       }
     }
@@ -547,7 +554,7 @@
     selectedHunterShotId = null;
 
     players.forEach(p => {
-      if (!p.alive) return;
+      if (p.alive !== true || p.status === 'dead') return;
       const card = createTargetCard(p, t('tag_shoot'));
       card.onclick = () => {
         targetList.querySelectorAll('.target-card').forEach(c => c.classList.remove('selected'));
@@ -564,7 +571,10 @@
         return;
       }
       const target = players.find(p => p.id === selectedHunterShotId);
-      target.alive = false;
+      if (target) {
+        target.alive = false;
+        target.status = 'dead';
+      }
       window.WerewolfAudio.play('gunshot');
 
       alert(t('hunter_shot_alert', { hunter: hunter.name, target: target.name, role: getRoleDef(target.role).name }));
@@ -627,7 +637,7 @@
     list.innerHTML = '';
 
     players.forEach(p => {
-      if (!p.alive) return;
+      if (p.alive !== true || p.status === 'dead') return;
       const card = createTargetCard(p, t('tag_vote_execute'));
       card.onclick = () => {
         list.querySelectorAll('.target-card').forEach(c => c.classList.remove('selected'));
@@ -638,34 +648,123 @@
       list.appendChild(card);
     });
 
+    let voteRemain = 45;
+    const voteDigits = document.getElementById('votingTimerDigits');
+    if (voteDigits) voteDigits.textContent = `${voteRemain}s`;
+    let offlineVoteTimer = setInterval(() => {
+      voteRemain--;
+      if (voteDigits) voteDigits.textContent = `${Math.max(0, voteRemain)}s`;
+      if (voteRemain <= 0) {
+        clearInterval(offlineVoteTimer);
+        offlineVoteTimer = null;
+        finalizeOfflineVote(null);
+      }
+    }, 1000);
+
+    function finalizeOfflineVote(executedPlayer) {
+      if (offlineVoteTimer) {
+        clearInterval(offlineVoteTimer);
+        offlineVoteTimer = null;
+      }
+      if (executedPlayer) {
+        executedPlayer.alive = false;
+        executedPlayer.status = 'dead';
+        window.WerewolfAudio.play('gavel');
+      }
+
+      window.WerewolfApp.switchScreen('screenVoteResult');
+      window.WerewolfApp.setHudStatusKey('hud_vote_result');
+
+      const elimEl = document.getElementById('voteResultEliminatedText');
+      if (elimEl) {
+        if (executedPlayer) {
+          const def = getRoleDef(executedPlayer.role);
+          elimEl.innerHTML = t('vote_eliminated_html', {
+            name: executedPlayer.name,
+            color: def.color,
+            role: def.name
+          });
+        } else {
+          elimEl.textContent = t('vote_none_eliminated');
+        }
+      }
+
+      const tallyEl = document.getElementById('voteResultList');
+      if (tallyEl) {
+        tallyEl.innerHTML = '';
+        if (executedPlayer) {
+          const row = document.createElement('div');
+          row.className = 'roster-item is-me';
+          row.innerHTML = `
+            <div class="roster-name-wrap"><span class="roster-name">${executedPlayer.name}</span></div>
+            <span class="roster-status-badge" style="border-color:var(--blood-glow); color:var(--rose-light);">${t('status_dead')}</span>
+          `;
+          tallyEl.appendChild(row);
+        }
+      }
+
+      let resultTimer = null;
+      let advanced = false;
+      const proceedNext = () => {
+        if (advanced) return;
+        advanced = true;
+        if (resultTimer) {
+          clearInterval(resultTimer);
+          resultTimer = null;
+        }
+        if (executedPlayer && executedPlayer.role === 'hunter') {
+          window.WerewolfApp.switchScreen('screenDayAnnouncement');
+          triggerHunterRevenge(executedPlayer);
+          return;
+        }
+        if (checkWinCondition()) return;
+        window.WerewolfApp.showPrivacyScreen(
+          t('trial_done_title'),
+          t('trial_done_desc'),
+          t('enter_next_night'),
+          () => {
+            startNightCycle();
+          }
+        );
+      };
+
+      const btnContinue = document.getElementById('btnContinueAfterVote');
+      if (btnContinue) {
+        btnContinue.classList.remove('hidden');
+        btnContinue.disabled = false;
+        btnContinue.textContent = t('continue_btn');
+        btnContinue.onclick = proceedNext;
+      }
+
+      const startMs = Date.now();
+      const durationMs = 6000;
+      const timerDigits = document.getElementById('voteResultTimerDigits');
+      const progressBar = document.getElementById('voteResultProgressBar');
+      if (timerDigits) timerDigits.textContent = '6s';
+      if (progressBar) progressBar.style.width = '100%';
+
+      resultTimer = setInterval(() => {
+        const elapsed = Date.now() - startMs;
+        const remainMs = Math.max(0, durationMs - elapsed);
+        if (timerDigits) timerDigits.textContent = `${Math.ceil(remainMs / 1000)}s`;
+        if (progressBar) progressBar.style.width = `${(remainMs / durationMs) * 100}%`;
+        if (remainMs <= 0) {
+          proceedNext();
+        }
+      }, 200);
+    }
+
     document.getElementById('btnConfirmExecution').onclick = () => {
       if (selectedVoteTargetId === null) {
         alert(t('must_pick_vote'));
         return;
       }
-
-      const executed = players.find(p => p.id === selectedVoteTargetId);
-      executed.alive = false;
-      window.WerewolfAudio.play('gavel');
-
-      alert(t('vote_result_alert', { name: executed.name, role: getRoleDef(executed.role).name }));
-
-      if (executed.role === 'hunter') {
-        triggerHunterRevenge(executed);
+      const executed = players.find(p => p.id === selectedVoteTargetId && p.alive === true && p.status !== 'dead');
+      if (!executed) {
+        alert(t('must_pick_vote'));
         return;
       }
-
-      if (checkWinCondition()) return;
-
-      // Kembali ke siklus malam
-      window.WerewolfApp.showPrivacyScreen(
-        t('trial_done_title'),
-        t('trial_done_desc'),
-        t('enter_next_night'),
-        () => {
-          startNightCycle();
-        }
-      );
+      finalizeOfflineVote(executed);
     };
   }
 

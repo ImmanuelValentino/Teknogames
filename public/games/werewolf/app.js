@@ -15,6 +15,7 @@
   let currentHudKey = null;
   let currentHudVars = null;
   let currentHudRole = null;
+  let isRoleHidden = false;
 
   const HUD_ROLE_META = {
     werewolf: { nameKey: 'role_werewolf_name', descKey: 'role_werewolf_desc', color: 'var(--role-wolf)' },
@@ -37,45 +38,109 @@
     const iconEl = document.getElementById('roleModalIcon');
     const titleEl = document.getElementById('roleModalTitle');
     const descEl = document.getElementById('roleModalDesc');
+    const toggleBtn = document.getElementById('btnModalToggleRolePrivacy');
     if (!modal) return;
 
     const meta = HUD_ROLE_META[currentHudRole];
-    if (iconEl && window.WerewolfIcons) {
-      iconEl.innerHTML = window.WerewolfIcons.get(currentHudRole);
-    }
-    if (titleEl) {
-      titleEl.textContent = t(meta.nameKey);
-      titleEl.style.color = meta.color;
-    }
-    if (descEl) {
-      descEl.textContent = t(meta.descKey);
+    if (isRoleHidden) {
+      if (iconEl && window.WerewolfIcons) {
+        iconEl.innerHTML = window.WerewolfIcons.get('eyeOff');
+      }
+      if (titleEl) {
+        titleEl.textContent = t('role_hidden_modal_title');
+        titleEl.style.color = 'var(--text-muted)';
+      }
+      if (descEl) {
+        descEl.textContent = t('role_hidden_modal_desc');
+      }
+      if (toggleBtn) {
+        toggleBtn.textContent = t('role_show_btn');
+      }
+    } else {
+      if (iconEl && window.WerewolfIcons) {
+        iconEl.innerHTML = window.WerewolfIcons.get(currentHudRole);
+      }
+      if (titleEl) {
+        titleEl.textContent = t(meta.nameKey);
+        titleEl.style.color = meta.color;
+      }
+      if (descEl) {
+        descEl.textContent = t(meta.descKey);
+      }
+      if (toggleBtn) {
+        toggleBtn.textContent = t('role_hide_btn');
+      }
     }
     modal.classList.remove('hidden');
     modal.style.display = 'flex';
   }
 
-  function setHudRole(role) {
-    currentHudRole = role && HUD_ROLE_META[role] ? role : null;
+  function renderHudRoleUI() {
     const badge = document.getElementById('hudMyRoleBadge');
     const iconEl = document.getElementById('hudMyRoleIcon');
     const valEl = document.getElementById('hudMyRoleValue');
+    const toggleBtn = document.getElementById('btnToggleRolePrivacy');
     if (!badge || !valEl) return;
 
     if (!currentHudRole) {
       badge.classList.add('hidden');
       badge.style.display = 'none';
+      if (toggleBtn) {
+        toggleBtn.classList.add('hidden');
+        toggleBtn.style.display = 'none';
+      }
       closeRoleModal();
       return;
     }
 
     const meta = HUD_ROLE_META[currentHudRole];
-    if (iconEl && window.WerewolfIcons) {
-      iconEl.innerHTML = window.WerewolfIcons.get(currentHudRole);
+    if (isRoleHidden) {
+      if (iconEl && window.WerewolfIcons) {
+        iconEl.innerHTML = window.WerewolfIcons.get('eyeOff');
+      }
+      valEl.textContent = t('hud_role_hidden');
+      valEl.style.color = 'var(--text-muted)';
+      if (toggleBtn && window.WerewolfIcons) {
+        toggleBtn.innerHTML = window.WerewolfIcons.get('eye');
+        toggleBtn.setAttribute('title', t('role_show_hint'));
+      }
+    } else {
+      if (iconEl && window.WerewolfIcons) {
+        iconEl.innerHTML = window.WerewolfIcons.get(currentHudRole);
+      }
+      valEl.textContent = t(meta.nameKey);
+      valEl.style.color = meta.color;
+      if (toggleBtn && window.WerewolfIcons) {
+        toggleBtn.innerHTML = window.WerewolfIcons.get('eyeOff');
+        toggleBtn.setAttribute('title', t('role_hide_hint'));
+      }
     }
-    valEl.textContent = t(meta.nameKey);
-    valEl.style.color = meta.color;
+
     badge.classList.remove('hidden');
     badge.style.display = 'inline-flex';
+    if (toggleBtn) {
+      toggleBtn.classList.remove('hidden');
+      toggleBtn.style.display = 'inline-flex';
+    }
+  }
+
+  function toggleRolePrivacy() {
+    if (!currentHudRole) return;
+    isRoleHidden = !isRoleHidden;
+    renderHudRoleUI();
+    const modal = document.getElementById('roleInfoModal');
+    if (modal && !modal.classList.contains('hidden')) {
+      openRoleModal();
+    }
+  }
+
+  function setHudRole(role) {
+    const nextRole = role && HUD_ROLE_META[role] ? role : null;
+    if (!nextRole) {
+      isRoleHidden = false;
+    }
+    currentHudRole = nextRole;
+    renderHudRoleUI();
   }
 
   function switchScreen(targetScreenId) {
@@ -138,6 +203,20 @@
       hudRoleBtn.onclick = () => {
         window.WerewolfAudio.play('click');
         openRoleModal();
+      };
+    }
+    const btnToggleRolePrivacy = document.getElementById('btnToggleRolePrivacy');
+    if (btnToggleRolePrivacy) {
+      btnToggleRolePrivacy.onclick = () => {
+        window.WerewolfAudio.play('click');
+        toggleRolePrivacy();
+      };
+    }
+    const btnModalToggleRolePrivacy = document.getElementById('btnModalToggleRolePrivacy');
+    if (btnModalToggleRolePrivacy) {
+      btnModalToggleRolePrivacy.onclick = () => {
+        window.WerewolfAudio.play('click');
+        toggleRolePrivacy();
       };
     }
     const btnCloseRole = document.getElementById('btnCloseRoleModal');
@@ -279,6 +358,11 @@
       if (btnMinusOn) btnMinusOn.onclick = () => window.WerewolfOnlineEngine.adjustOnlineRole(role, -1);
       if (btnPlusOn) btnPlusOn.onclick = () => window.WerewolfOnlineEngine.adjustOnlineRole(role, 1);
     });
+
+    const btnMaxMinus = document.getElementById('btnOnlineMaxPlayersMinus');
+    const btnMaxPlus = document.getElementById('btnOnlineMaxPlayersPlus');
+    if (btnMaxMinus) btnMaxMinus.onclick = () => window.WerewolfOnlineEngine.adjustOnlineMaxPlayers(-1);
+    if (btnMaxPlus) btnMaxPlus.onclick = () => window.WerewolfOnlineEngine.adjustOnlineMaxPlayers(1);
 
     // Game Over Restart / Back to Menu
     const btnRestartGame = document.getElementById('btnRestartGame');
