@@ -1,3 +1,11 @@
+### 2026-11-28 - [DELETED] Lembah Bromo: Hang Glider
+- **Folder Game:** public/games/lembah-bromo (DIHAPUS)
+- **Deskripsi:** Game lembah-bromo telah dihapus dari direktori public/games/lembah-bromo/, registrasi katalog di src/lib/games-data.ts, serta output statis out/ atas permintaan pengguna.
+- **Fitur Utama:**
+  - [x] Penghapusan direktori public/games/lembah-bromo/
+  - [x] Penghapusan entri lembah-bromo dari src/lib/games-data.ts
+- **Status Akhir:** REMOVED
+- **Dibuat oleh:** AI Agent
 ### 2026-11-28 - Werewolf: Hotfix Tombol Keluar Room (Custom Modal Anti-Sandbox)
 - **Folder Game:** public/games/werewolf
 - **Deskripsi:** Mengganti pemanggilan window.confirm() pada tombol Keluar Room (tnHudLeaveRoom dan tnLeaveOnlineRoom) dengan modal konfirmasi in-game #leaveRoomConfirmModal, karena iframe portal di GameFrame.tsx tidak mengaktifkan llow-modals sehingga confirm() selalu mengembalikan alse.

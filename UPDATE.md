@@ -151,6 +151,11 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 
 - **Auto Ads Only Mode:** Menyembunyikan placeholder `GoogleAdSlot` dan bar `AdBottomAnchor` saat `NEXT_PUBLIC_ADSENSE_CLIENT_ID` atau `adSlot` belum diisi, sehingga tampilan tetap bersih sambil mengandalkan Google AdSense Auto Ads dari `layout.tsx`.
 
+## [3.15.4] - 2026-11-28
+### Removed (Lembah Bromo Game Deletion)
+- **Penghapusan Game Lembah Bromo:**
+  - Menghapus direktori public/games/lembah-bromo/ dan output statisnya.
+  - Menghapus registrasi game lembah-bromo dari [src/lib/games-data.ts](src/lib/games-data.ts).
 ## [3.15.3] - 2026-11-24
 
 ### Improved (Lazy Loading & Asset Priority)
@@ -158,6 +163,11 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **Code-Splitting Komponen Sekunder:** Menggunakan `next/dynamic` untuk `AdBottomAnchor`, `AdSkyscraper`, `AdCompanion`, `AdNativeTile`, dan `GoogleAdSlot`.
 - **Optimasi Iframe & Gambar:** Menambahkan `loading="lazy"` pada `<iframe>` di `GameFrame.tsx`, `fetchPriority="high"` + `decoding="async"` pada gambar hero di `GameHero.tsx`, serta memprioritaskan `.webp` sebelum `.png` di `GameCard.tsx`.
 
+## [3.15.4] - 2026-11-28
+### Removed (Lembah Bromo Game Deletion)
+- **Penghapusan Game Lembah Bromo:**
+  - Menghapus direktori public/games/lembah-bromo/ dan output statisnya.
+  - Menghapus registrasi game lembah-bromo dari [src/lib/games-data.ts](src/lib/games-data.ts).
 ## [3.15.3] - 2026-11-28
 ### Fixed (Werewolf Leave Room Button inside Iframe Sandbox)
 - **Modal Konfirmasi Keluar Room ([public/games/werewolf/index.html](public/games/werewolf/index.html), [app.js](public/games/werewolf/app.js)):**
@@ -180,6 +190,11 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 1. Menyesuaikan warna notifikasi perolehan skor/poin saat menang atau kalah permainan agar lebih mudah terlihat.
 2. Memindahkan posisi tombol tutup (X) pada banner Google AdSense ke sisi kanan di dalam area banner iklan.
 
+## [3.15.4] - 2026-11-28
+### Removed (Lembah Bromo Game Deletion)
+- **Penghapusan Game Lembah Bromo:**
+  - Menghapus direktori public/games/lembah-bromo/ dan output statisnya.
+  - Menghapus registrasi game lembah-bromo dari [src/lib/games-data.ts](src/lib/games-data.ts).
 ## [3.15.3] - 2026-11-28
 ### Fixed (Werewolf Leave Room Button inside Iframe Sandbox)
 - **Modal Konfirmasi Keluar Room ([public/games/werewolf/index.html](public/games/werewolf/index.html), [app.js](public/games/werewolf/app.js)):**
@@ -205,6 +220,11 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **About Portal card:** Matched its dark background to the Papan Skor Saya rank card (`#292a31`).
 - **Files:** [globals.css](src/app/globals.css), [page.tsx](src/app/page.tsx), [AdBottomAnchor.tsx](src/components/ads/AdBottomAnchor.tsx), [GameCard.tsx](src/components/game/GameCard.tsx), [GameFrame.tsx](src/components/game/GameFrame.tsx), [GameGrid.tsx](src/components/game/GameGrid.tsx), [GameHero.tsx](src/components/game/GameHero.tsx), [Footer.tsx](src/components/layout/Footer.tsx), [LayoutWrapper.tsx](src/components/layout/LayoutWrapper.tsx), [Navbar.tsx](src/components/layout/Navbar.tsx)
 
+## [3.15.4] - 2026-11-28
+### Removed (Lembah Bromo Game Deletion)
+- **Penghapusan Game Lembah Bromo:**
+  - Menghapus direktori public/games/lembah-bromo/ dan output statisnya.
+  - Menghapus registrasi game lembah-bromo dari [src/lib/games-data.ts](src/lib/games-data.ts).
 ## [3.15.3] - 2026-11-28
 ### Fixed (Werewolf Leave Room Button inside Iframe Sandbox)
 - **Modal Konfirmasi Keluar Room ([public/games/werewolf/index.html](public/games/werewolf/index.html), [app.js](public/games/werewolf/app.js)):**

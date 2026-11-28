@@ -144,24 +144,6 @@ export const INITIAL_GAMES: Game[] = [
       touch: "Tap tombol SEDOH di bawah cangkir",
     },
   },
-  // 9. Lembah Bromo (New from list-game2.md)
-  {
-    id: "lembah-bromo",
-    slug: "lembah-bromo",
-    title: "Lembah Bromo: Hang Glider",
-    description: "Kemudikan paralayang melintasi bukit pasir Bromo! Tukik menuruni lembah untuk momentum terbang melayang di udara!",
-    category: "adventure",
-    thumbnailUrl: "/games/images/games/.webp",
-    gamePath: "/games/lembah-bromo/index.html",
-    playCount: 8450,
-    likesCount: 720,
-    rating: 4.8,
-    badge: "BARU",
-    controlsGuide: {
-      keyboard: ["Tahan Spasi : Menukik ke Bawah (Dive)", "Lepas Spasi : Meluncur ke Atas"],
-      touch: "Tahan layar saat menuruni bukit, lepas di puncak bukit",
-    },
-  },
   // 10. Pasar Terapung (New from list-game2.md)
   {
     id: "pasar-terapung",
