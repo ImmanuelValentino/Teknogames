@@ -1,3 +1,9 @@
+### [2026-11-28 09:46] - [Frontend] - Pemasangan Script & Meta Google AdSense Auto Ads (ca-pub-2185327779136938)
+- **Kondisi Sebelum:** src/app/layout.tsx masih menggunakan <Script strategy="afterInteractive"> dengan ID publisher lama ca-pub-3146007647541379 di dalam <body>, dan ke-13 file public/games/*/index.html belum memiliki tag <meta name="google-adsense-account"> maupun script Auto Ads di <head>.
+- **Perubahan Sesudah:** Menambahkan <meta name="google-adsense-account" content="ca-pub-2185327779136938"> dan <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2185327779136938" crossorigin="anonymous"> di <head> pada src/app/layout.tsx (menggantikan loader lama) serta pada seluruh 13 file public/games/*/index.html.
+- **Masalah yang Ditemukan:** Tidak ada.
+- **Penyelesaian:** Memperbarui src/app/layout.tsx dan menyisipkan tag <meta> serta <script> sebelum </head> di seluruh file index.html game.
+- **File Terdampak:** src/app/layout.tsx, public/games/*/index.html (13 file), UPDATE.md, laporan.md, out/*
 ### [2026-11-24 19:10] - [Frontend] - Kembalikan Latar Badge Hero
 - **Kondisi Sebelum:** Latar badge hero berubah menjadi putih saat warna teks dan ikon disesuaikan ke merah.
 - **Perubahan Sesudah:** Latar dan border kembali seperti semula; teks dan ikon tetap merah #D9141D.
@@ -145,8 +151,8 @@
 - **Penyelesaian:** Menghapus kebutuhan unduh font dan memakai font sistem lokal agar build bisa berjalan offline; tracking kontrol dikurangi.
 - **File Terdampak:** `src/app/layout.tsx`, `src/app/globals.css`, `UPDATE.md`, `game/UPDATE.md`, `laporan.md`
 
-### [2026-11-24 18:32] - [Frontend] - Tampilan Ringkas Peringkat 2–5
-- **Kondisi Sebelum:** Baris peringkat 2–5 menampilkan thumbnail besar dan angka skor dengan ukuran besar.
+### [2026-11-24 18:32] - [Frontend] - Tampilan Ringkas Peringkat 2ï¿½5
+- **Kondisi Sebelum:** Baris peringkat 2ï¿½5 menampilkan thumbnail besar dan angka skor dengan ukuran besar.
 - **Perubahan Sesudah:** Thumbnail dihapus, nomor peringkat dan nama game tetap ditampilkan, sementara angka poin diperkecil agar lebih proporsional.
 - **Masalah yang Ditemukan:** Tidak ada.
 - **Penyelesaian:** Merapikan layout daftar skor pada section papan rekor.

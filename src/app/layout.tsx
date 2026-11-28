@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import "./globals.css";
 import ClientLayout from "@/components/layout/ClientLayout";
 import {
@@ -165,15 +164,16 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://teknotama.com" />
 
+        <meta name="google-adsense-account" content="ca-pub-2185327779136938" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2185327779136938"
+          crossOrigin="anonymous"
+        />
+
       </head>
       <body className="min-h-full" suppressHydrationWarning>
         <ClientLayout>{children}</ClientLayout>
-        {/* Google AdSense Official Loader (afterInteractive agar tidak menggeser DOM <head> saat hydration) */}
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3146007647541379"
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
       </body>
     </html>
   );

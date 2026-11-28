@@ -186,6 +186,13 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **About Portal card:** Matched its dark background to the Papan Skor Saya rank card (`#292a31`).
 - **Files:** [globals.css](src/app/globals.css), [page.tsx](src/app/page.tsx), [AdBottomAnchor.tsx](src/components/ads/AdBottomAnchor.tsx), [GameCard.tsx](src/components/game/GameCard.tsx), [GameFrame.tsx](src/components/game/GameFrame.tsx), [GameGrid.tsx](src/components/game/GameGrid.tsx), [GameHero.tsx](src/components/game/GameHero.tsx), [Footer.tsx](src/components/layout/Footer.tsx), [LayoutWrapper.tsx](src/components/layout/LayoutWrapper.tsx), [Navbar.tsx](src/components/layout/Navbar.tsx)
 
+## [3.15.1] - 2026-11-28
+### Changed & Added (Google AdSense Auto Ads Header Integration)
+- **Layout Utama ([src/app/layout.tsx](src/app/layout.tsx)):**
+  - Mengganti loader AdSense lama (ca-pub-3146007647541379) di ody dengan tag <meta name="google-adsense-account" content="ca-pub-2185327779136938" /> dan <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2185327779136938" crossOrigin="anonymous" /> di dalam <head> untuk seluruh halaman portal.
+- **Semua Halaman Game (public/games/*/index.html):**
+  - Menambahkan <meta name="google-adsense-account" ...> dan <script async src="...adsbygoogle.js?client=ca-pub-2185327779136938" ...> di <head> pada seluruh 13 game (ecak-drift, candi-stacker, circuit-flow, cyber-bird, kapal-feri, kopi-klotok, layangan-sanur, lembah-bromo, 
+usantara-runner, packing-master, pasar-terapung, 	ekno-memory, werewolf).
 ## [3.15.0] - 2026-11-21
 
 ### Added & Improved (Content Management System Indexing & Ranking Game di /manage-games)
