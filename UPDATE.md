@@ -158,6 +158,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **Code-Splitting Komponen Sekunder:** Menggunakan `next/dynamic` untuk `AdBottomAnchor`, `AdSkyscraper`, `AdCompanion`, `AdNativeTile`, dan `GoogleAdSlot`.
 - **Optimasi Iframe & Gambar:** Menambahkan `loading="lazy"` pada `<iframe>` di `GameFrame.tsx`, `fetchPriority="high"` + `decoding="async"` pada gambar hero di `GameHero.tsx`, serta memprioritaskan `.webp` sebelum `.png` di `GameCard.tsx`.
 
+## [3.15.3] - 2026-11-28
+### Fixed (Werewolf Leave Room Button inside Iframe Sandbox)
+- **Modal Konfirmasi Keluar Room ([public/games/werewolf/index.html](public/games/werewolf/index.html), [app.js](public/games/werewolf/app.js)):**
+  - Mengganti window.confirm() pada handleLeaveOnlineClick dengan modal konfirmasi in-game #leaveRoomConfirmModal agar tombol keluar room di HUD dan lobi berfungsi normal di dalam iframe GameFrame.tsx (yang tidak menyertakan llow-modals pada atribut sandbox).
 ## [3.15.2] - 2026-11-23
 
 ### Added, Changed, & Fixed (Dukungan Bahasa ID/EN, Kontras & Ikon Responsif, Notifikasi Skor, & Tombol Tutup Ads)
@@ -176,6 +180,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 1. Menyesuaikan warna notifikasi perolehan skor/poin saat menang atau kalah permainan agar lebih mudah terlihat.
 2. Memindahkan posisi tombol tutup (X) pada banner Google AdSense ke sisi kanan di dalam area banner iklan.
 
+## [3.15.3] - 2026-11-28
+### Fixed (Werewolf Leave Room Button inside Iframe Sandbox)
+- **Modal Konfirmasi Keluar Room ([public/games/werewolf/index.html](public/games/werewolf/index.html), [app.js](public/games/werewolf/app.js)):**
+  - Mengganti window.confirm() pada handleLeaveOnlineClick dengan modal konfirmasi in-game #leaveRoomConfirmModal agar tombol keluar room di HUD dan lobi berfungsi normal di dalam iframe GameFrame.tsx (yang tidak menyertakan llow-modals pada atribut sandbox).
 ## [3.15.2] - 2026-11-28
 ### Added & Fixed (Werewolf Max Players, Voting Timer, Role Privacy, Vote Result Pause & Dead Target Fix)
 - **Custom Max Players Room ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js), [index.html](public/games/werewolf/index.html)):**
@@ -197,6 +205,10 @@ Dokumen ini mencatat seluruh riwayat pembaruan, perbaikan bug, penambahan fitur,
 - **About Portal card:** Matched its dark background to the Papan Skor Saya rank card (`#292a31`).
 - **Files:** [globals.css](src/app/globals.css), [page.tsx](src/app/page.tsx), [AdBottomAnchor.tsx](src/components/ads/AdBottomAnchor.tsx), [GameCard.tsx](src/components/game/GameCard.tsx), [GameFrame.tsx](src/components/game/GameFrame.tsx), [GameGrid.tsx](src/components/game/GameGrid.tsx), [GameHero.tsx](src/components/game/GameHero.tsx), [Footer.tsx](src/components/layout/Footer.tsx), [LayoutWrapper.tsx](src/components/layout/LayoutWrapper.tsx), [Navbar.tsx](src/components/layout/Navbar.tsx)
 
+## [3.15.3] - 2026-11-28
+### Fixed (Werewolf Leave Room Button inside Iframe Sandbox)
+- **Modal Konfirmasi Keluar Room ([public/games/werewolf/index.html](public/games/werewolf/index.html), [app.js](public/games/werewolf/app.js)):**
+  - Mengganti window.confirm() pada handleLeaveOnlineClick dengan modal konfirmasi in-game #leaveRoomConfirmModal agar tombol keluar room di HUD dan lobi berfungsi normal di dalam iframe GameFrame.tsx (yang tidak menyertakan llow-modals pada atribut sandbox).
 ## [3.15.2] - 2026-11-28
 ### Added & Fixed (Werewolf Max Players, Voting Timer, Role Privacy, Vote Result Pause & Dead Target Fix)
 - **Custom Max Players Room ([public/games/werewolf/online-supabase.js](public/games/werewolf/online-supabase.js), [index.html](public/games/werewolf/index.html)):**

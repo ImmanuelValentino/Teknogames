@@ -529,6 +529,23 @@
       </div>
     </div>
 
+    <!-- POPUP KONFIRMASI KELUAR ROOM -->
+    <div id="leaveRoomConfirmModal" class="hidden" style="position:fixed; inset:0; z-index:999; background:rgba(0,0,0,0.75); display:none; align-items:center; justify-content:center; padding:16px;">
+      <div class="panel" style="width:100%; max-width:340px; text-align:center; border-color:var(--border-strong); margin:0;">
+        <div style="width:44px; height:44px; margin:0 auto 10px; color:var(--blood-glow);" data-icon="logOut"></div>
+        <h3 style="font-size:18px; font-weight:900; color:#fff;" data-i18n="confirm_leave_title">Keluar dari Room?</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin:8px 0 18px; line-height:1.5;" data-i18n="confirm_leave_room">Apakah kamu yakin ingin keluar dari room ini?</p>
+        <div style="display:flex; gap:8px;">
+          <button id="btnCancelLeaveRoom" type="button" class="btn-secondary" style="flex:1; margin-top:0;">
+            <span data-i18n="close_btn">Batal</span>
+          </button>
+          <button id="btnConfirmLeaveRoom" type="button" class="btn-primary" style="flex:1;">
+            <span data-i18n="confirm_leave_yes">Ya, Keluar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- DRAWER ROOM CHAT DISKUSI (EPHEMERAL REALTIME BROADCAST) -->
     <div id="roomChatDrawer" class="chat-drawer-backdrop hidden" style="display:none;">
       <div class="chat-drawer-panel">
@@ -785,7 +802,9 @@
           role_hide_btn: "Sembunyikan",
           role_show_btn: "Tampilkan",
           role_hidden_modal_title: "PERAN TERSEMBUNYI",
-          role_hidden_modal_desc: "Mode anti-intip aktif. Tekan Tampilkan untuk melihat kembali peran dan tugasmu."
+          role_hidden_modal_desc: "Mode anti-intip aktif. Tekan Tampilkan untuk melihat kembali peran dan tugasmu.",
+          confirm_leave_title: "Keluar dari Room?",
+          confirm_leave_yes: "Ya, Keluar"
         },
         en: {
           page_title: "Werewolf: Night & Village - TeknoGame",
@@ -1001,7 +1020,9 @@
           role_hide_btn: "Hide",
           role_show_btn: "Show",
           role_hidden_modal_title: "ROLE HIDDEN",
-          role_hidden_modal_desc: "Anti-peek mode is active. Press Show to reveal your role and task."
+          role_hidden_modal_desc: "Anti-peek mode is active. Press Show to reveal your role and task.",
+          confirm_leave_title: "Leave Room?",
+          confirm_leave_yes: "Yes, Leave"
         }
       };
 

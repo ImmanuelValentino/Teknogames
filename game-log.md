@@ -1,3 +1,11 @@
+### 2026-11-28 - Werewolf: Hotfix Tombol Keluar Room (Custom Modal Anti-Sandbox)
+- **Folder Game:** public/games/werewolf
+- **Deskripsi:** Mengganti pemanggilan window.confirm() pada tombol Keluar Room (tnHudLeaveRoom dan tnLeaveOnlineRoom) dengan modal konfirmasi in-game #leaveRoomConfirmModal, karena iframe portal di GameFrame.tsx tidak mengaktifkan llow-modals sehingga confirm() selalu mengembalikan alse.
+- **Fitur Utama:**
+  - [x] Modal Konfirmasi Keluar Room In-Game (#leaveRoomConfirmModal)
+  - [x] Kompatibel dengan Iframe Sandbox Portal TeknoGame
+- **Status Akhir:** READY
+- **Dibuat oleh:** AI Agent
 ### 2026-11-28 - Werewolf: Custom Max Players, Voting Countdown, Role Privacy Toggle, Vote Result Pause & Dead Target Fix
 - **Folder Game:** public/games/werewolf
 - **Deskripsi:** Pembaruan 5 fitur dan perbaikan bug pada game Werewolf (Mode Online & Offline): (1) Host dapat mengatur batas maksimal pemain room (max_players 5-30) di lobi beserta validasi join dan tombol Mulai Game, (2) Timer hitung mundur otomatis 45 detik pada fase voting dengan auto-advance saat waktu habis menggunakan guard isSubmittingVote dan Optimistic Concurrency Control, (3) Tombol toggle Hide/Unhide peran pribadi (eye/eyeOff SVG) di HUD atas dan modal info peran, (4) Jeda rekap hasil voting 6 detik di #screenVoteResult dengan progress bar sebelum lanjut ke fase berikutnya (Online & Offline), serta (5) Filter ketat live === true dan status !== 'dead' serta validasi submit agar pemain yang sudah gugur tidak bisa dipilih pada malam berikutnya.

@@ -1,4 +1,4 @@
 :HL["/games/_next/static/css/79ea0aad8c9aceb4.css","style"]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"_not-found","h":96,"c":"$Q2"}]]
-0:{"b":"9UuIRJdHniwsuyBCn2ke0","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"-d9zZtBON26S0lk-xUZkU","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

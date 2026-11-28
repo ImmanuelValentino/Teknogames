@@ -298,10 +298,45 @@
     }
 
     // Tombol Keluar Room Online (Lobby & HUD)
-    const handleLeaveOnlineClick = () => {
-      if (confirm(t('confirm_leave_room'))) {
+    const leaveModal = document.getElementById('leaveRoomConfirmModal');
+    const closeLeaveModal = () => {
+      if (!leaveModal) return;
+      leaveModal.classList.add('hidden');
+      leaveModal.style.display = 'none';
+    };
+    const openLeaveModal = () => {
+      if (!leaveModal) {
         window.WerewolfOnlineEngine.leaveRoom(true);
+        return;
       }
+      leaveModal.classList.remove('hidden');
+      leaveModal.style.display = 'flex';
+    };
+
+    const btnCancelLeaveRoom = document.getElementById('btnCancelLeaveRoom');
+    if (btnCancelLeaveRoom) {
+      btnCancelLeaveRoom.onclick = () => {
+        window.WerewolfAudio.play('click');
+        closeLeaveModal();
+      };
+    }
+    const btnConfirmLeaveRoom = document.getElementById('btnConfirmLeaveRoom');
+    if (btnConfirmLeaveRoom) {
+      btnConfirmLeaveRoom.onclick = () => {
+        window.WerewolfAudio.play('click');
+        closeLeaveModal();
+        window.WerewolfOnlineEngine.leaveRoom(true);
+      };
+    }
+    if (leaveModal) {
+      leaveModal.onclick = (e) => {
+        if (e.target === leaveModal) closeLeaveModal();
+      };
+    }
+
+    const handleLeaveOnlineClick = () => {
+      window.WerewolfAudio.play('click');
+      openLeaveModal();
     };
     const btnLeaveOnlineRoom = document.getElementById('btnLeaveOnlineRoom');
     if (btnLeaveOnlineRoom) {
